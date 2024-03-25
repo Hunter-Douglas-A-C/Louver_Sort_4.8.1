@@ -19,7 +19,6 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using System.Diagnostics;
 using System.Windows;
 using Zebra.Sdk.Printer;
 
@@ -64,7 +63,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
         #region Global
 
-        private DataQ _DataQ;
+        private DataQHelper _DataQ;
         private ZebraPrinterHelper _zebra = new ZebraPrinterHelper();
 
         #endregion
@@ -206,7 +205,7 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             Thread test = new Thread(() =>
             {
-                _DataQ = new DataQ();
+                _DataQ = new DataQHelper();
                 _DataQ.Connect();
                 _DataQ.Start();
 

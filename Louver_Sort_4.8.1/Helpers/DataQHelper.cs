@@ -11,7 +11,7 @@ namespace Louver_Sort_4._8._1.Helpers
     /// <summary>
     /// Manages Dataq Device operations including connection, configuration, data acquisition, and disconnection.
     /// </summary>
-    public class DataQ
+    public class DataQHelper
     {
         private DataqDevice[] DataqDeviceArray; // Array of all connected Dataq devices
         private string _outputString; // Stores the latest data received from the device
@@ -153,16 +153,16 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             try
             {
-                if (!string.IsNullOrEmpty(_outputString))
-                {
-                    string pattern = ",";
-                    string replacement = "";
-                    // Using InvariantCulture to ensure consistent parsing regardless of system settings.
-                    return Convert.ToDouble(Regex.Replace(_outputString, pattern, replacement), CultureInfo.InvariantCulture);
-                }
-                // Consider whether returning 0 is appropriate for all scenarios.
-                // It might be better to throw an exception if _outputString is null or empty.
-                return 0;
+                //if (!string.IsNullOrEmpty(_outputString))
+                //{
+                //    string pattern = ",";
+                //    string replacement = "";
+                //    // Using InvariantCulture to ensure consistent parsing regardless of system settings.
+                //    return Convert.ToDouble(Regex.Replace(_outputString, pattern, replacement), CultureInfo.InvariantCulture);
+                //}
+                //// Consider whether returning 0 is appropriate for all scenarios.
+                //// It might be better to throw an exception if _outputString is null or empty.
+                return Convert.ToDouble(_outputString);
             }
             catch (FormatException ex)
             {
@@ -331,14 +331,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 for (int Row = 0; Row < Scans; Row++)
                 {
-                    for (int Ch = 0; Ch < Channels; Ch++)
-                    {
-                        ResponseString += DI_155_Data[Row * Channels + Ch].ToString("F4");
-                        if (Ch < Channels - 1)
-                        {
-                            ResponseString += ", ";
-                        }
-                    }
+
+                    ResponseString += DI_155_Data[Row * Channels + 0].ToString("F4");
 
                     _outputString = ResponseString;
                     OnAnalogUpdated();
@@ -365,7 +359,7 @@ namespace Louver_Sort_4._8._1.Helpers
     /// </summary>
     public class DeviceConnectionMonitor
     {
-        private readonly DataQ _dataQ; // Reference to the associated DataQ device
+        private readonly DataQHelper _dataQ; // Reference to the associated DataQ device
         public event EventHandler IsConnectedChanged; // Event triggered on connection status change
 
         private bool _lastIsConnectedState; // Tracks the last known connection state
@@ -376,7 +370,7 @@ namespace Louver_Sort_4._8._1.Helpers
         /// Initializes a new instance of the DeviceConnectionMonitor class.
         /// </summary>
         /// <param name="dataQ">The DataQ device to monitor.</param>
-        public DeviceConnectionMonitor(DataQ dataQ)
+        public DeviceConnectionMonitor(DataQHelper dataQ)
         {
             _dataQ = dataQ;
         }

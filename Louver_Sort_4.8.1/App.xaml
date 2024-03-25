@@ -1,0 +1,10 @@
+﻿<Application x:Class="Louver_Sort_4._8._1.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Louver_Sort_4._8._1"
+             xmlns:views="clr-namespace:Louver_Sort_4._8._1.Views"
+             StartupUri="pack://application:,,,/Views/MainWindow.xaml">
+    <Application.Resources>
+
+    </Application.Resources>
+</Application>

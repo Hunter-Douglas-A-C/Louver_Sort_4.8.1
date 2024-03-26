@@ -21,6 +21,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using System.Windows;
 using Zebra.Sdk.Printer;
+using System.Text.RegularExpressions;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -323,5 +324,42 @@ namespace Louver_Sort_4._8._1.Helpers
 
             #endregion
         }
+
+
+
+
+
+        private LouverSet TestSet = new LouverSet();
+
+        private string _Barcode1;
+        public string Barcode1
+        {
+            get => _Barcode1;
+            set
+            {
+                if (Regex.IsMatch(value, @"^\d{16}L\d$"))
+                {
+                    SetProperty(ref _Barcode1, value);
+                    TestSet.AssignFromBarcode1(_Barcode1);
+                }
+            }
+        }
+
+        private string _Barcode2;
+        public string Barcode2
+        {
+            get => _Barcode2;
+            set
+            {
+                if (Regex.IsMatch(value, @"^PST\d\sP\d/L[A-Z]L/L\d\.\d/L\d+\.\d+/LT$"))
+                {
+                    SetProperty(ref _Barcode2, value);
+                    TestSet.AssignFromBarcode2(_Barcode2);
+                }
+            }
+        }
+
+
+
     }
 }

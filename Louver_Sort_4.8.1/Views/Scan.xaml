@@ -66,9 +66,11 @@
                             Grid.Row="0"
                             Grid.Column="0">
                     <TextBlock Text="Search Barcode 1:"
-                               VerticalAlignment="Center" />
+                               VerticalAlignment="Center"/>
                     <TextBox Width="150"
-                             Margin="5,15,0,15" />
+                             Margin="5,15,0,15" 
+                             Text="{Binding Barcode1}"/>
+
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal"
@@ -77,7 +79,8 @@
                     <TextBlock Text="Search Barcode 2:"
                                VerticalAlignment="Center" />
                     <TextBox Width="150"
-                             Margin="5,15,0,15" />
+                             Margin="5,15,0,15"
+                             Text="{Binding Barcode2}" />
                 </StackPanel>
 
                 <Button Grid.Column="1"

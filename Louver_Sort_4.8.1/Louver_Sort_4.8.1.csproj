@@ -38,6 +38,9 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.8.5.2\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
+    <Reference Include="Clipper, Version=6.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ParagonClipper.6.4.2\lib\netstandard2.0\Clipper.dll</HintPath>
+    </Reference>
     <Reference Include="Csv, Version=2.0.93.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Csv.2.0.93\lib\net40\Csv.dll</HintPath>
     </Reference>
@@ -164,8 +167,11 @@
     <Compile Include="Helpers\DataQHelper.cs" />
     <Compile Include="Helpers\Louver.cs" />
     <Compile Include="Helpers\LouverSet.cs" />
+    <Compile Include="Helpers\Nester.cs" />
+    <Compile Include="Helpers\ObjHandler.cs" />
     <Compile Include="Helpers\SortingHelper.cs" />
     <Compile Include="Helpers\LouverOrder.cs" />
+    <Compile Include="Helpers\WPFHelper.cs" />
     <Compile Include="Helpers\ZebraPrinterHelper.cs" />
     <Compile Include="Views\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
@@ -176,6 +182,14 @@
     <Compile Include="Views\Scan.xaml.cs">
       <DependentUpon>Scan.xaml</DependentUpon>
     </Compile>
+    <Page Include="Dictionary-en-US.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionary-es-ES.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -219,6 +233,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="OBJFiles\boxes.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="OBJFiles\TestObj.obj" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

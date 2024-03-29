@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
-    internal class Louver
+    public class Louver
     {
         private double _ID;
         private DateTime _timestamp;
@@ -24,10 +24,29 @@ namespace Louver_Sort_4._8._1.Helpers
         private bool _rejected;
         private string _CauseofRejection;
 
+
+        public void AssignLouvers(List<Louver> destination, List<Louver> source)
+        {
+            // Clear the destination list to ensure it's empty before adding elements
+            destination.Clear();
+
+            // Add all elements from the source list to the destination list
+            destination.AddRange(source);
+        }
+
+
+
+
         // Parameterless constructor
         public Louver()
         {
 
+        }
+
+        public Louver(double absWarp, bool orientation)
+        {
+            _absWarp = absWarp;
+            _orientation = orientation;
         }
 
         // Parameterized constructor

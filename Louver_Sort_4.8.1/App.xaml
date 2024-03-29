@@ -5,6 +5,10 @@
              xmlns:views="clr-namespace:Louver_Sort_4._8._1.Views"
              StartupUri="pack://application:,,,/Views/MainWindow.xaml">
     <Application.Resources>
-
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Dictionary-en-US.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

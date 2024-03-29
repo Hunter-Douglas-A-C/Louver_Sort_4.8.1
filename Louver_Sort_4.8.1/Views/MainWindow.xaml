@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Louver_Sort_4._8._1"
         mc:Ignorable="d"
-        d:DesignHeight="450"
+        d:DesignHeight="800"
         d:DesignWidth="800"
         Title="MainWindow"
         Closing="Window_Closing">
@@ -15,12 +15,29 @@
                         Panel.ZIndex="1"
                         VerticalAlignment="Stretch"
                         HorizontalAlignment="Stretch"
-                        Content="{Binding Popup}" />
+                        Content="{Binding Popup}" IsEnabled="True"/>
 
         <ContentControl x:Name="CTCMain"
                         Panel.ZIndex="0"
                         VerticalAlignment="Stretch"
                         HorizontalAlignment="Stretch"
-                        Content="{Binding SelectedView}" />
+                        Content="{Binding SelectedView}" IsEnabled="True"/>
+
+
+        <!--<Canvas x:Name="CanvasMain"
+                HorizontalAlignment="Left"
+                Height="650"
+                Margin="10,10,0,0"
+                VerticalAlignment="Top"
+                Width="672"
+                Background="FloralWhite" />
+        <Button x:Name="button_play"
+                Content="Nest"
+                HorizontalAlignment="Left"
+                Margin="10,665,0,0"
+                VerticalAlignment="Top"
+                Width="672"
+                Click="Button_play_Click" />-->
+
     </Grid>
 </Window>

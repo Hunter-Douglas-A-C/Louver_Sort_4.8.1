@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,5 +33,6 @@ namespace Louver_Sort_4._8._1.Views
             boundProperities = (BoundProperities)Application.Current.MainWindow.DataContext;
             this.DataContext = boundProperities;
         }
+        
     }
 }

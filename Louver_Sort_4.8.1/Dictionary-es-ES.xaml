@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=mscorlib">
+
+    <System:String x:Key="MainMenuHeader">menú principal</System:String>
+    <System:String x:Key="BtnLouver">Posicionamiento de las rejillas</System:String>
+    <System:String x:Key="BtnRecut">Recortar la rejilla</System:String>
+    <System:String x:Key="BtnExit">Salida</System:String>
+</ResourceDictionary>

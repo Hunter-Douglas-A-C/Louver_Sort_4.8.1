@@ -18,29 +18,51 @@
 
         <StackPanel VerticalAlignment="Center"
                     HorizontalAlignment="Center">
-            <TextBlock Text="Main Menu"
+            <TextBlock Text="{DynamicResource MainMenuHeader}"
                        FontWeight="Bold"
                        FontSize="25"
                        HorizontalAlignment="Left"
                        Margin="0,0,0,20"
                        Background="CornflowerBlue" />
-            <Button Content="Louver Positioning"
+            <Button Content="{DynamicResource BtnLouver}"
                     Command="{Binding UpdateView}"
                     CommandParameter="Scan"
                     Width="200"
                     Height="60"
                     Margin="0,0,0,10" />
-            <Button Content="Re-Cut Louver"
+            <Button Content="{DynamicResource BtnRecut}"
                     Command="{Binding UpdateView}"
                     CommandParameter="Recut"
                     Width="200"
                     Height="60"
                     Margin="0,0,0,10" />
-            <Button Content="Exit"
+            <Button Content="{DynamicResource BtnExit}"
                     Command="{Binding UpdateView}"
                     CommandParameter="Exit"
                     Width="200"
                     Height="60" />
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,25,0,0">
+                <Button x:Name="EnglishBtn"
+                        Content="English"
+                        Padding="10,5"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        IsEnabled="{Binding en_USEnabled}"
+                        Command="{Binding   ChangeLanguage}"
+                        CommandParameter="en-US"/>
+                <Button x:Name="SpanishBtn"
+                        Content="Español"
+                        Padding="10,5"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Margin="10,0,0,0"
+                        IsEnabled="{Binding es_ESEnabled}"
+                        Command="{Binding   ChangeLanguage}"
+                        CommandParameter="es-ES" />
+            </StackPanel>
         </StackPanel>
 
     </Grid>

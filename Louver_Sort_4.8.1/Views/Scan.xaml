@@ -402,7 +402,8 @@
                 <Button Content="Sort Louver Set"
                         Width="175"
                         Height="30"
-                        Margin="5,5,5,5" />
+                        Margin="5,5,5,5" 
+                        Command="{Binding test}"/>
                 <Button Content="Review Louver Report"
                         Width="175"
                         Height="30"
@@ -427,7 +428,7 @@
                     Height="30"
                     Margin="5,5,5,5"
                     Command="{Binding UpdateView}"
-                    CommandParameter="Chart" />
+                    CommandParameter="Main" />
 
 
         </Grid>

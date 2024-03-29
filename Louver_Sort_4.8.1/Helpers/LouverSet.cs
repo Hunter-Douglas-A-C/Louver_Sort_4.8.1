@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
-    internal class LouverSet
+    internal class LouverSet : IEnumerable<Louver>
     {
         private string _barcode1;
         private string _barcode2;
@@ -143,7 +144,6 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 throw new FormatException("Error parsing barcode data");
             }
-
         }
 
         public void AssignFromBarcode1(string barcode)
@@ -171,5 +171,23 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         #endregion
 
+
+
+
+        // Implementation of the IEnumerable<LouverSet> interface
+        public IEnumerator<Louver> GetEnumerator()
+        {
+            foreach (var louver in _louverList)
+            {
+                yield return louver;
+            }
+        }
+
+        // Explicit non-generic interface implementation for IEnumerable
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            // This simply calls the generic version above
+            return GetEnumerator();
+        }
     }
 }

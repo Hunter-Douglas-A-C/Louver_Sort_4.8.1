@@ -22,6 +22,23 @@ using System.Windows.Threading;
 using System.Windows;
 using Zebra.Sdk.Printer;
 using System.Text.RegularExpressions;
+using PolyNester;
+using System.Windows.Markup;
+using Louver_Sort_4._8._1.Helpers;
+using Microsoft.Win32;
+using System.Windows.Shapes;
+using ClipperLib;
+using System.Windows.Media;
+using ClipperLib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Globalization;
+using Louver_Sort_4._8._1.Properties;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -180,11 +197,11 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             try
             {
-                _DataQ.Stop();
-                _DataQ.Disconnect();
-                stopwatch.Stop();
-                stopwatch.Reset();
-                DisconnectedEnabled = Visibility.Visible;
+                //_DataQ.Stop();
+                //_DataQ.Disconnect();
+                //stopwatch.Stop();
+                //stopwatch.Reset();
+                //DisconnectedEnabled = Visibility.Visible;
             }
             catch (Exception)
             {
@@ -249,6 +266,21 @@ namespace Louver_Sort_4._8._1.Helpers
 
         #endregion
 
+
+        public ICommand test { get; set; }
+        public ICommand ChangeLanguage { get; set; }
+
+        List<Louver> louvers = new List<Louver>();
+        LouverSet LouverSetT = new LouverSet();
+        LouverSet LouverSetM = new LouverSet();
+        LouverSet LouverSetB = new LouverSet();
+
+
+
+        private ItemsControl _ItemsToShowInCanvas;
+        public ItemsControl ItemsToShowInCanvas { get => _ItemsToShowInCanvas; set => SetProperty(ref _ItemsToShowInCanvas, value); }
+
+
         public BoundProperities()
         {
             TestZebra = new BaseCommand(obj =>
@@ -267,6 +299,65 @@ namespace Louver_Sort_4._8._1.Helpers
                 _zebra.PrintLouverIDs(_Printer, Values);
                 _zebra.Disconnect(_Printer);
             });
+
+            test = new BaseCommand(obj =>
+            {
+                for (int i = 1; i < 18 + 1; i++)
+                {
+                    louvers.Add(new Louver(i, true));
+                }
+                for (int i = 18; i < 18 + 19; i++)
+                {
+                    louvers.Add(new Louver(i, false));
+                }
+                LouverOrder LouverOrder = new LouverOrder(LouverSetT, LouverSetM, LouverSetB);
+
+                LouverOrder = LouverOrder.Sort(louvers, LouverOrder);
+
+
+                int iset = 0;
+                foreach (LouverSet set in LouverOrder)
+                {
+                    Debug.WriteLine("Set " + (iset+1));
+                    foreach (Louver louver in set)
+                    {
+                        Debug.WriteLine(louver.AbsWarp.ToString());
+                    }
+                    Debug.WriteLine("End Set " + (iset + 1));
+                    iset++;
+                }
+
+            });
+
+            ChangeLanguage = new BaseCommand(obj =>
+                {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo(obj.ToString());
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(obj.ToString());
+
+                    Application.Current.Resources.MergedDictionaries.Clear();
+                    ResourceDictionary resdict = new ResourceDictionary()
+                    {
+                        Source = new Uri($"/Dictionary-{obj.ToString()}.xaml", UriKind.Relative)
+                    };
+                    Application.Current.Resources.MergedDictionaries.Add(resdict);
+
+                    switch (obj.ToString())
+                    {
+                        case "en-US":
+                            en_USEnabled = false;
+                            es_ESEnabled = true;
+                            break;
+                        case "es-ES":
+                            en_USEnabled = true;
+                            es_ESEnabled = false;
+                            break;
+                        default:
+                            break;
+                    }
+                });
+
+
+
 
             #region MainWindow
 
@@ -295,9 +386,9 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 if (obj.ToString() != "Scan")
                 {
-                    _DataQ.Stop();
-                    _DataQ.Disconnect();
-                    DisconnectedEnabled = Visibility.Visible;
+                    //    _DataQ.Stop();
+                    //    _DataQ.Disconnect();
+                    //    DisconnectedEnabled = Visibility.Visible;
                 }
             });
 
@@ -325,7 +416,19 @@ namespace Louver_Sort_4._8._1.Helpers
             #endregion
         }
 
+        private bool _en_USEnabled;
+        public bool en_USEnabled
+        {
+            get => _en_USEnabled;
+            set{SetProperty(ref _en_USEnabled, value);}
+        }
 
+        private bool _es_ESEnabled;
+        public bool es_ESEnabled
+        {
+            get => _es_ESEnabled;
+            set { SetProperty(ref _es_ESEnabled, value); }
+        }
 
 
 
@@ -358,8 +461,5 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             }
         }
-
-
-
     }
 }

@@ -14,6 +14,21 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -161,16 +176,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Helpers\BarcodeHelper.cs" />
+    <Compile Include="Helpers\LouverStructure\BarcodeHelper.cs" />
     <Compile Include="Helpers\BoundProperities.cs" />
     <Compile Include="Helpers\BaseCommand.cs" />
     <Compile Include="Helpers\DataQHelper.cs" />
-    <Compile Include="Helpers\Louver.cs" />
-    <Compile Include="Helpers\LouverSet.cs" />
+    <Compile Include="Helpers\LouverStructure\BarcodeSet.cs" />
+    <Compile Include="Helpers\LouverStructure\Louver.cs" />
+    <Compile Include="Helpers\LouverStructure\LouverStyle.cs" />
+    <Compile Include="Helpers\LouverStructure\Opening.cs" />
+    <Compile Include="Helpers\LouverStructure\Order.cs" />
+    <Compile Include="Helpers\LouverStructure\OrderManager.cs" />
+    <Compile Include="Helpers\LouverStructure\Panel.cs" />
+    <Compile Include="Helpers\LouverStructure\Set.cs" />
+    <Compile Include="Helpers\LouverStructure\SetID.cs" />
     <Compile Include="Helpers\Nester.cs" />
     <Compile Include="Helpers\ObjHandler.cs" />
     <Compile Include="Helpers\SortingHelper.cs" />
-    <Compile Include="Helpers\LouverOrder.cs" />
     <Compile Include="Helpers\WPFHelper.cs" />
     <Compile Include="Helpers\ZebraPrinterHelper.cs" />
     <Compile Include="Views\Menu.xaml.cs">
@@ -248,6 +269,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

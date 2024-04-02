@@ -1,44 +1,19 @@
 ﻿using LiveCharts;
 using LiveCharts.Configurations;
-using LiveCharts.Defaults;
 using Louver_Sort_4._8._1.Views;
-using Newtonsoft.Json.Linq;
-using Org.BouncyCastle.Utilities.Collections;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
 using System.Windows;
 using Zebra.Sdk.Printer;
 using System.Text.RegularExpressions;
-using PolyNester;
-using System.Windows.Markup;
-using Louver_Sort_4._8._1.Helpers;
-using Microsoft.Win32;
-using System.Windows.Shapes;
-using ClipperLib;
-using System.Windows.Media;
-using ClipperLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using System.Globalization;
-using Louver_Sort_4._8._1.Properties;
+using Louver_Sort_4._8._1.Helpers.LouverStructure;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -270,10 +245,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand test { get; set; }
         public ICommand ChangeLanguage { get; set; }
 
-        List<Louver> louvers = new List<Louver>();
-        LouverSet LouverSetT = new LouverSet();
-        LouverSet LouverSetM = new LouverSet();
-        LouverSet LouverSetB = new LouverSet();
+        
 
 
 
@@ -300,33 +272,39 @@ namespace Louver_Sort_4._8._1.Helpers
                 _zebra.Disconnect(_Printer);
             });
 
+            OrderManager o; ;
             test = new BaseCommand(obj =>
             {
-                for (int i = 1; i < 18 + 1; i++)
-                {
-                    louvers.Add(new Louver(i, true));
-                }
-                for (int i = 18; i < 18 + 19; i++)
-                {
-                    louvers.Add(new Louver(i, false));
-                }
-                LouverOrder LouverOrder = new LouverOrder(LouverSetT, LouverSetM, LouverSetB);
+                o = new OrderManager();
+                o.CreateOrderAfterScanAndFillAllVariables(new BarcodeSet(Barcode1, Barcode2), 20);
 
-                LouverOrder = LouverOrder.Sort(louvers, LouverOrder);
-
-
-                int iset = 0;
-                foreach (LouverSet set in LouverOrder)
+                foreach (var orderEntry in o.ordersByBarcode)
                 {
-                    Debug.WriteLine("Set " + (iset+1));
-                    foreach (Louver louver in set)
+                    BarcodeSet barcodeSet = orderEntry.Key;
+                    Order order = orderEntry.Value;
+
+                    Debug.WriteLine($"Order Barcode1: {barcodeSet.Barcode1}, Barcode2: {barcodeSet.Barcode2}");
+
+                    foreach (var opening in order.Openings)
                     {
-                        Debug.WriteLine(louver.AbsWarp.ToString());
-                    }
-                    Debug.WriteLine("End Set " + (iset + 1));
-                    iset++;
-                }
+                        Debug.WriteLine($"\tOpening Line: {opening.Line}, ModelNum: {opening.ModelNum}, Style: {opening.Style}, Width: {opening.Width}, Length: {opening.Length}");
 
+                        foreach (var panel in opening.Panels)
+                        {
+                            Debug.WriteLine($"\t\tPanel ID: {panel.ID}");
+
+                            foreach (var set in panel.Sets)
+                            {
+                                Debug.WriteLine($"\t\t\tSet ID: {set.ID}, Date Sort Started: {set.DateSortStarted}, Date Sort Finished: {set.DateSortFinished}, Louver Count: {set.LouverCount}");
+
+                                foreach (var louver in set.Louvers)
+                                {
+                                    Debug.WriteLine($"\t\t\t\tLouver ID: {louver.ID}, Processed: {louver.Processed}, Warp: {louver.Warp}, Rejected: {louver.Rejected}, Cause of Rejection: {louver.CauseOfRejection}");
+                                }
+                            }
+                        }
+                    }
+                }
             });
 
             ChangeLanguage = new BaseCommand(obj =>
@@ -432,9 +410,9 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
-        private LouverSet TestSet = new LouverSet();
+        //private Order TestSet = new Order();
 
-        private string _Barcode1;
+        private string _Barcode1 = "1018652406000001L1";
         public string Barcode1
         {
             get => _Barcode1;
@@ -443,7 +421,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 if (Regex.IsMatch(value, @"^\d{16}L\d$"))
                 {
                     SetProperty(ref _Barcode1, value);
-                    TestSet.AssignFromBarcode1(_Barcode1);
                 }
             }
         }
@@ -457,7 +434,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 if (Regex.IsMatch(value, @"^PST\d\sP\d/L[A-Z]L/L\d\.\d/L\d+\.\d+/LT$"))
                 {
                     SetProperty(ref _Barcode2, value);
-                    TestSet.AssignFromBarcode2(_Barcode2);
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,25 +13,54 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
     internal class OrderManager
     {
-        public Dictionary<BarcodeSet, Order> ordersByBarcode = new Dictionary<BarcodeSet, Order>();
+        private Dictionary<BarcodeSet, Order> ordersByBarcode = new Dictionary<BarcodeSet, Order>();
 
 
         #region Orders
 
-        public Order GetOrCreateOrder(BarcodeSet b)
+        //public Order GetOrCreateOrder(BarcodeSet b)
+        //{
+        //    // Check if the order already exists.
+        //    if (ordersByBarcode.TryGetValue(b, out var existingOrder))
+        //    {
+        //        // Return the existing order.
+        //        return existingOrder;
+        //    }
+
+        //    // If not, create a new order and add to the dictionary.
+        //    var newOrder = new Order(b);
+        //    ordersByBarcode[b] = newOrder;
+
+        //    return newOrder;
+        //}
+
+        public (Order, bool) CreateOrder(BarcodeSet b)
         {
-            // Check if the order already exists.
-            if (ordersByBarcode.TryGetValue(b, out var existingOrder))
+            var testbarcodehelper = new BarcodeHelper(b);
+
+            // Search for an existing order with matching attributes
+            foreach (var entry in ordersByBarcode)
             {
-                // Return the existing order.
-                return existingOrder;
+                var existingOrder = entry.Value;
+                var existingBarcodeHelper = existingOrder.BarcodeHelper;
+
+                // Compare based on defined "equality" criteria
+                if (existingBarcodeHelper.Line == testbarcodehelper.Line &&
+                    existingBarcodeHelper.Style == testbarcodehelper.Style &&
+                    existingBarcodeHelper.Width == testbarcodehelper.Width &&
+                    existingBarcodeHelper.Length == testbarcodehelper.Length &&
+                    existingBarcodeHelper.PanelID == testbarcodehelper.PanelID &&
+                    existingBarcodeHelper.Set == testbarcodehelper.Set)
+                {
+                    // Return existing order if it matches the new order's criteria
+                    return (existingOrder, false);
+                }
             }
 
-            // If not, create a new order and add to the dictionary.
             var newOrder = new Order(b);
             ordersByBarcode[b] = newOrder;
 
-            return newOrder;
+            return (newOrder, true);
         }
 
 
@@ -40,74 +70,74 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         #region Get all of class with barcodeset
 
 
-        public IEnumerable<Opening> GetAllOpenings(BarcodeSet barcodeSet)
-        {
-            var order = GetOrCreateOrder(barcodeSet);
-            return order.Openings;
-        }
+        //public IEnumerable<Opening> GetAllOpenings(BarcodeSet barcodeSet)
+        //{
+        //    var order = CreateOrder(barcodeSet);
+        //    return order.Openings;
+        //}
 
-        public IEnumerable<Panel> GetAllPanels(BarcodeSet barcodeSet)
-        {
-            var order = GetOrCreateOrder(barcodeSet);
-            return order.Openings.SelectMany(opening => opening.Panels);
-        }
+        //public IEnumerable<Panel> GetAllPanels(BarcodeSet barcodeSet)
+        //{
+        //    var order = CreateOrder(barcodeSet);
+        //    return order.Openings.SelectMany(opening => opening.Panels);
+        //}
 
-        public IEnumerable<Set> GetAllSets(BarcodeSet barcodeSet)
-        {
-            var order = GetOrCreateOrder(barcodeSet);
-            return order.Openings.SelectMany(opening => opening.Panels)
-                                 .SelectMany(panel => panel.Sets);
-        }
+        //public IEnumerable<Set> GetAllSets(BarcodeSet barcodeSet)
+        //{
+        //    var order = CreateOrder(barcodeSet);
+        //    return order.Openings.SelectMany(opening => opening.Panels)
+        //                         .SelectMany(panel => panel.Sets);
+        //}
 
-        public IEnumerable<Louver> GetAllLouvers(BarcodeSet barcodeSet)
-        {
-            var order = GetOrCreateOrder(barcodeSet);
-            return order.Openings.SelectMany(opening => opening.Panels)
-                                 .SelectMany(panel => panel.Sets)
-                                 .SelectMany(set => set.Louvers);
-        }
+        //public IEnumerable<Louver> GetAllLouvers(BarcodeSet barcodeSet)
+        //{
+        //    var order = CreateOrder(barcodeSet);
+        //    return order.Openings.SelectMany(opening => opening.Panels)
+        //                         .SelectMany(panel => panel.Sets)
+        //                         .SelectMany(set => set.Louvers);
+        //}
 
 
 
-        #endregion
+        //#endregion
 
-        #region Add to order
+        //#region Add to order
 
-        public void AddOpening(BarcodeSet barcodeSet, Opening o)
-        {
-            var order = GetOrCreateOrder(barcodeSet);
-            order.AddOpening(o);
-        }
+        //public void AddOpening(BarcodeSet barcodeSet, Opening o)
+        //{
+        //    var order = CreateOrder(barcodeSet);
+        //    order.AddOpening(o);
+        //}
 
-        public void AddPanel(BarcodeSet barcodeSet, Panel p)
-        {
-            var order = GetOrCreateOrder(barcodeSet);
-            order.Openings[1].AddPanel(p);
-        }
+        //public void AddPanel(BarcodeSet barcodeSet, Panel p)
+        //{
+        //    var order = CreateOrder(barcodeSet);
+        //    order.Openings[1].AddPanel(p);
+        //}
 
-        public void AddSet(BarcodeSet barcodeSet, Set s)
-        {
-            var order = GetOrCreateOrder(barcodeSet);
-            order.Openings[1].Panels[1].AddSet(s);
-        }
+        //public void AddSet(BarcodeSet barcodeSet, Set s)
+        //{
+        //    var order = CreateOrder(barcodeSet);
+        //    order.Openings[1].Panels[1].AddSet(s);
+        //}
 
-        public void AddLouver(BarcodeSet barcodeSet, Louver l)
-        {
-            var order = GetOrCreateOrder(barcodeSet);
-            order.Openings[1].Panels[1].Sets[1].AddLouver(l);
-        }
+        //public void AddLouver(BarcodeSet barcodeSet, Louver l)
+        //{
+        //    var order = CreateOrder(barcodeSet);
+        //    order.Openings[1].Panels[1].Sets[1].AddLouver(l);
+        //}
 
-        public void AddLouvers(BarcodeSet barcodeSet, List<Louver> l)
-        {
-            var order = GetOrCreateOrder(barcodeSet);
-            order.Openings[1].Panels[1].Sets[1].AddLouvers(l);
-        }
+        //public void AddLouvers(BarcodeSet barcodeSet, List<Louver> l)
+        //{
+        //    var order = CreateOrder(barcodeSet);
+        //    order.Openings[1].Panels[1].Sets[1].AddLouvers(l);
+        //}
 
         #endregion
 
         #region Get specific w/ IDs
 
-        public Opening GetOpening(double line, BarcodeSet barcodeSet)
+        public Opening GetOpening(int line, BarcodeSet barcodeSet)
         {
 
             // Find the order using the barcode key
@@ -122,7 +152,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         }
 
 
-        public Panel GetPanel(string PanelID, double Openingline, BarcodeSet barcodeSet)
+        public Panel GetPanel(double PanelID, double Openingline, BarcodeSet barcodeSet)
         {
 
             // Find the order using the barcode key
@@ -142,7 +172,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         }
 
 
-        public Set GetSet(SetID.SetId SetID, string PanelID, double OpeningLine, BarcodeSet barcodeSet)
+        public Set GetSet(SetID.SetId SetID, double PanelID, double OpeningLine, BarcodeSet barcodeSet)
         {
 
             // Find the order using the barcode key
@@ -181,7 +211,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             return null;
         }
 
-        public Panel FindPanelInOpening(Opening open, string ID)
+        public Panel FindPanelInOpening(Opening open, double ID)
         {
             // Check if the order is not null and has openings
             if (open != null && open.Panels != null)
@@ -211,13 +241,34 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 
         public Order CreateOrderAfterScanAndFillAllVariables(BarcodeSet barcodeSet, int LouverCount)
         {
-            var order = GetOrCreateOrder(barcodeSet);
-            order.AddOpening(new Opening(order.BarcodeHelper.Line, Opening.LouverModels.MSL01, order.BarcodeHelper.Style, order.BarcodeHelper.Width, order.BarcodeHelper.Length));
-            GetOpening(order.BarcodeHelper.Line, barcodeSet).AddPanel(new Panel(order.BarcodeHelper.PanelID));
-            GetPanel(order.BarcodeHelper.PanelID, order.BarcodeHelper.Line, barcodeSet).AddSet(new Set(order.BarcodeHelper.Set, LouverCount));
-            for (int i = 1; i < LouverCount+1; i++)
+            //var order = GetOrCreateOrder(barcodeSet);
+            //order.AddOpening(new Opening(order.BarcodeHelper.Line, order.BarcodeHelper.Style, order.BarcodeHelper.Width, order.BarcodeHelper.Length));
+            //GetOpening(order.BarcodeHelper.Line, barcodeSet).AddPanel(new Panel(order.BarcodeHelper.PanelID));
+            //GetPanel(order.BarcodeHelper.PanelID, order.BarcodeHelper.Line, barcodeSet).AddSet(new Set(order.BarcodeHelper.Set, LouverCount));
+            //for (int i = 1; i < LouverCount+1; i++)
+            //{
+            //    var l = GetSet(order.BarcodeHelper.Set, order.BarcodeHelper.PanelID, order.BarcodeHelper.Line, barcodeSet).AddLouver(new Louver(i));
+            //    l.SetWarp(i);
+            //}
+
+            //return order;
+
+            var (order, isNewOrder) = CreateOrder(barcodeSet);
+
+            if (!isNewOrder)
             {
-                GetSet(order.BarcodeHelper.Set, order.BarcodeHelper.PanelID, order.BarcodeHelper.Line, barcodeSet).AddLouver(new Louver(i));
+                Debug.WriteLine("An existing order matches the criteria. Skipping the rest of the function.");
+                return order; // Skip the rest of the function if an existing order was found.
+            }
+            var open = order.AddOpening(new Opening(order.BarcodeHelper.Line, order.BarcodeHelper.Style, order.BarcodeHelper.Width, order.BarcodeHelper.Length));
+            var pan = open.AddPanel(new Panel(order.BarcodeHelper.PanelID));
+            var set = pan.AddSet(new Set(order.BarcodeHelper.Set, LouverCount));
+            for (int i = 0; i < LouverCount+1; i++)
+            {
+                var l =set.AddLouver(new Louver(i));
+                l.SetReading1(i);
+                l.SetReading2(i*(i/1000));
+                l.CalcValues();
             }
 
             return order;
@@ -225,7 +276,22 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 
 
 
+        public Order GetOrder(BarcodeSet b)
+        {
+            if (ordersByBarcode.TryGetValue(b, out var existingOrder))
+            {
+                return existingOrder;
+            }
+            else 
+            { 
+                return  null;
+            }
+        }
 
+        public IEnumerable<Order> GetAllOrders()
+        {
+            return ordersByBarcode.Values;
+        }
 
 
 

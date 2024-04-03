@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
-    internal class Opening : LouverStyle
+    internal class Opening
     {
         public enum LouverModels
         {
@@ -19,109 +15,78 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             MSL06
         }
 
+        private readonly int _line;
+        private readonly LouverModels _modelNum;
+        private readonly LouverStructure.LouverStyle.LouverStyles _style;
+        private readonly double _width;
+        private readonly double _length;
+        private readonly List<Panel> _panels = new List<Panel>();
 
+        public int Line => _line;
 
-        private double _line;
-        private LouverModels _modelNum;
-        private LouverStyles _style;
-        private double _width;
-        private double _length;
-        private List<Panel> _panels = new List<Panel>();
+        public LouverModels ModelNum => _modelNum;
 
-        public double Line
+        public LouverStructure.LouverStyle.LouverStyles Style => _style;
+
+        public double Width => _width;
+
+        public double Length => _length;
+
+        public List<Panel> Panels => _panels;
+
+        public Opening(int line, LouverStructure.LouverStyle.LouverStyles style, double width, double length)
         {
-            get { return _line; }
-            set { _line = value; }
+            _line = line;
+            _style = style;
+            _width = width;
+            _length = length;
+            _modelNum = AssignModelNum();
         }
 
-        public LouverModels ModelNum
-        {
-            get { return _modelNum; }
-            set { _modelNum = value; }
-        }
-
-        public LouverStyles Style
-        {
-            get { return _style; }
-            set { _style = value; }
-        }
-
-        public double Width
-        {
-            get { return _width; }
-            set { _width = value; }
-        }
-
-        public double Length
-        {
-            get { return _length; }
-            set { _length = value; }
-        }
-
-        public List<Panel> Panels
-        {
-            get { return _panels; }
-            set { _panels = value; }
-        }
-
-        public Opening(double line, LouverModels modelNum, LouverStyles style, double width, double length)
-        {
-            Line = line;
-            ModelNum = modelNum;
-            Style = style;
-            Width = width;
-            Length = length;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        private void AssignModelNum()
+        private LouverModels AssignModelNum()
         {
             var combinedInput = $"{Style}:{Width}";
             switch (combinedInput)
             {
-                case ("Standard:2.5"):
-                    ModelNum = LouverModels.MSL01;
-                    break;
-                case ("Standard:3.5"):
-                    ModelNum = LouverModels.MSL02;
-                    break;
-                case ("Standard:4.5"):
-                    ModelNum = LouverModels.MSL03;
-                    break;
-                case ("XL:2.5"):
-                    ModelNum = LouverModels.MSL04;
-                    break;
-                case ("XL:3.5"):
-                    ModelNum = LouverModels.MSL05;
-                    break;
-                case ("XL:4.5"):
-                    ModelNum = LouverModels.MSL06;
-                    break;
+                case "Standard:2.5":
+                    return LouverModels.MSL01;
+                case "Standard:3.5":
+                    return LouverModels.MSL02;
+                case "Standard:4.5":
+                    return LouverModels.MSL03;
+                case "XL:2.5":
+                    return LouverModels.MSL04;
+                case "XL:3.5":
+                    return LouverModels.MSL05;
+                case "XL:4.5":
+                    return LouverModels.MSL06;
                 default:
-                    break;
+                    throw new System.ArgumentException("Invalid combination of style and width");
             }
         }
 
-
-
-        public void AddPanel(Panel p)
+        public Panel AddPanel(Panel p)
         {
             Panels.Add(p);
+            return Panels[Panels.Count - 1];
+        }
+
+
+        public void RemovePanel(Panel p)
+        {
+            Panels.Remove(p);
+        }
+
+        public Panel GetPanel(int Id)
+        {
+            foreach (Panel panel in Panels)
+            {
+                if (panel.ID == Id)
+                {
+                    return panel;
+                }
+            }
+            throw new ArgumentException("Panel with the specified ID not found.", nameof(Id));
         }
     }
 }

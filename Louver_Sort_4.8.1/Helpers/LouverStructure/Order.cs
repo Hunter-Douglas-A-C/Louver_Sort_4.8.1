@@ -1,61 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
     internal class Order
     {
-        private string _barcode1;
-        private string _barcode2;
-        private BarcodeHelper _barcodeHelper;
-        private double _unit;
+        private readonly BarcodeHelper _barcodeHelper;
+        private readonly List<Opening> _openings = new List<Opening>();
 
-        private List<Opening> _openings = new List<Opening>();
+        public BarcodeHelper BarcodeHelper => _barcodeHelper;
+        public double Unit => _barcodeHelper.Unit;
+        public List<Opening> Openings => _openings;
 
-        public string Barcode1
+        public Order(BarcodeSet barcodeSet)
         {
-            get { return _barcode1; }
-            set { _barcode1 = value; }
+            _barcodeHelper = new BarcodeHelper(barcodeSet);
         }
 
-        public string Barcode2
+        public Opening AddOpening(Opening opening)
         {
-            get { return _barcode2; }
-            set { _barcode2 = value; }
+            Openings.Add(opening);
+            return Openings[Openings.Count -1];
         }
 
-        public BarcodeHelper BarcodeHelper
+        public Opening GetOpeningByLine(int l)
         {
-            get { return _barcodeHelper; }
-            set { _barcodeHelper = value; }
-        }
+            // Searching for the opening with the specified ID
+            foreach (Opening opening in Openings)
+            {
+                if (opening.Line == l)
+                {
+                    return opening;
+                }
+            }
 
-        public double Unit
-        {
-            get { return _unit; }
-            set { _unit = value; }
+            // If no opening with the specified ID is found, throw an exception
+            throw new ArgumentException("Opening with the specified ID not found.", nameof(l));
         }
-
-        public List<Opening> Openings
-        {
-            get { return _openings; }
-            set { _openings = value; }
-        }
-
-        public Order(BarcodeSet b)
-        {
-            Barcode1 = b.Barcode1;
-            Barcode2 = b.Barcode2;
-            BarcodeHelper = new BarcodeHelper(b);
-            Unit = BarcodeHelper.Unit;
-        }
-
-        public void AddOpening(Opening o)
-        {
-            Openings.Add(o);
-        }
+    
     }
 }

@@ -1,114 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Controls;
+using static Louver_Sort_4._8._1.Helpers.LouverStructure.SetID;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
-    internal class Set : SetID
+    internal class Set
     {
-        private SetId _ID; 
-        private DateTime _dateSortStarted = new DateTime();
-        private DateTime _dateSortFinished = new DateTime();
-        private double _louverCount;
+        private SetId _id;
+        private DateTime _dateSortStarted;
+        private DateTime _dateSortFinished;
+        private int _louverCount;
         private List<Louver> _louvers = new List<Louver>();
 
         public SetId ID
         {
-            get { return _ID; }
-            set { _ID = value; }
+            get { return _id; }
+            set { _id = value; }
         }
 
-        public DateTime DateSortStarted
-        {
-            get { return _dateSortStarted; }
-            set { _dateSortStarted = value; }
-        }
+        public DateTime DateSortStarted => _dateSortStarted;
 
-        public DateTime DateSortFinished
-        {
-            get { return _dateSortFinished; }
-            set { _dateSortFinished = value; }
-        }
+        public DateTime DateSortFinished => _dateSortFinished;
 
-        public double LouverCount
-        {
-            get { return _louverCount; }
-            set { _louverCount = value; }
-        }
+        public double LouverCount => _louverCount;
 
-        public List<Louver> Louvers
-        {
-            get { return _louvers; }
-            set { _louvers = value; }
-        }
+        public List<Louver> Louvers => _louvers;
 
-
-        public Set(SetId id, double louverCount)
+        public Set(SetId id, int louverCount)
         {
-            _ID = id;
+            _id = id;
             _louverCount = louverCount;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public void AssignLouverCount(double louvercount)
+        public void AssignLouverCount(int louverCount)
         {
-            LouverCount = louvercount;
-            for (int i = 0; i < louvercount - 1; i++)
+            _louvers.Clear();
+            _louverCount = louverCount;
+            for (int i = 0; i < louverCount; i++)
             {
-                Louvers.Add(new Louver(i));
+                _louvers.Add(new Louver(i));
             }
         }
 
-        public void AddLouver(Louver l)
+        public Louver AddLouver(Louver l)
         {
-            Louvers.Add(l);
+            _louvers.Add(l);
+            return _louvers.Contains(l) ? l : null;
         }
 
-        public void AddLouvers(List<Louver> l)
+        public Louver AddLouvers(List<Louver> l)
         {
-            foreach (var Louver in l)
+            _louvers.AddRange(l);
+            return Louvers[Louvers.Count - 1];
+        }
+
+        public void StartSort(DateTime interactionTime)
+        {
+            _dateSortStarted = interactionTime;
+        }
+
+        public void StopSort(DateTime interactionTime)
+        {
+            _dateSortFinished = interactionTime;
+        }
+
+        public Louver GetLouver(int id)
+        {
+            foreach (Louver louver in Louvers)
             {
-                Louvers.Add(Louver);
+                if (louver.ID == id)
+                {
+                    return louver;
+                }
             }
-        }
-
-        public void StartSort()
-        {
-            DateSortStarted = DateTime.Now;
-        }
-
-        public void StopSort()
-        {
-            DateSortFinished = DateTime.Now;
+            throw new ArgumentException("Panel with the specified ID not found.", nameof(id));
         }
     }
 }

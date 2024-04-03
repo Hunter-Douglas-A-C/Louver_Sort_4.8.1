@@ -1,120 +1,72 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
     internal class Louver
     {
-        private double _ID;
+        // Fields
+        private readonly int _ID;
         private bool _processed;
         private double _reading1;
         private double _reading2;
-        private double _warp;
         private double _absWarp;
-        private double _sag;
         private bool _orientation;
         private bool _rejected;
         private string _causeOfRejection;
         private double _sortedId;
 
-        public double ID
+        // Properties
+        public int ID => _ID;
+        public bool Processed => _processed;
+        public double Reading1 => _reading1;
+        public double Reading2 => _reading2;
+        public double Warp => Math.Abs(_reading2 - _reading1);
+        public double AbsWarp => _absWarp;
+        public bool Orientation => _orientation;
+        public bool Rejected => _rejected;
+        public string CauseOfRejection => _causeOfRejection;
+        public double SortedId => _sortedId;
+
+        // Constructor
+        public Louver(int id)
         {
-            get { return _ID; }
-            set { _ID = value; }
+            _ID = id;
+            Reset();
         }
 
-        public bool Processed
+        // Methods
+        public void SetReading1(double r1) => _reading1 = r1;
+        public void SetReading2(double r2) => _reading2 = r2;
+
+        public void CalcValues()
         {
-            get { return _processed; }
-            set { _processed = value; }
+            _processed = true;
+            // Perform calculations here
+            // For example:
+            _absWarp = Math.Abs(_reading2 - _reading1);
         }
 
-        public double Reading1
+        public void SetWarp(double w) => _absWarp = w;
+
+        public void Reject(string cause)
         {
-            get { return _reading1; }
-            set { _reading1 = value; }
+            _rejected = true;
+            _causeOfRejection = cause;
         }
 
-        public double Reading2
+        public void Reset()
         {
-            get { return _reading2; }
-            set { _reading2 = value; }
-        }
-
-        public double Warp
-        {
-            get { return _warp; }
-            set { _warp = value; }
-        }
-
-        public double AbsWarp
-        {
-            get { return _absWarp; }
-            set { _absWarp = value; }
-        }
-
-        public double Sag
-        {
-            get { return _sag; }
-            set { _sag = value; }
-        }
-
-        public bool Orientation
-        {
-            get { return _orientation; }
-            set { _orientation = value; }
-        }
-
-        public bool Rejected
-        {
-            get { return _rejected; }
-            set { _rejected = value; }
-        }
-
-        public string CauseOfRejection
-        {
-            get { return _causeOfRejection; }
-            set { _causeOfRejection = value; }
-        }
-
-        public double SortedId
-        {
-            get { return _sortedId; }
-            set { _sortedId = value; }
-        }
-
-        public Louver(double ID)
-        {
-            _ID = ID;
             _processed = false;
             _reading1 = 0;
             _reading2 = 0;
-            _warp = 0;
             _absWarp = 0;
-            _sag = 0;
             _orientation = true;
             _rejected = false;
             _causeOfRejection = "";
             _sortedId = 0;
         }
 
-        public void SetReading1(double R1)
-        {
-            Reading1 = R1;
-        }
-        public void SetReading2(double R2)
-        { 
-            Reading2 = R2;
-        }
-
-        public void CalcValues()
-        {
-            Processed = true;
-            //ADD REST HERE
-        }
 
 
     }

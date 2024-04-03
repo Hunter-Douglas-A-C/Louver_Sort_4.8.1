@@ -9,7 +9,31 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
     internal class SetID
     {
-        public SetId Value { get; set; } // Property, not a method
+        //public SetId Value { get; set; } // Property, not a method
+
+        //public enum SetId
+        //{
+        //    Top,
+        //    Middle,
+        //    Bottom
+        //}
+
+        //public static SetId ConvertStringToSetId(string input)
+        //{
+        //    switch (input.ToUpper()) // Use ToUpper to make the comparison case-insensitive
+        //    {
+        //        case "T":
+        //            return SetId.Top;
+        //        case "M":
+        //            return SetId.Middle;
+        //        case "B":
+        //            return SetId.Bottom;
+        //        default:
+        //            return SetId.Top;
+        //    }
+        //}
+
+        public SetId Value { get; set; }
 
         public enum SetId
         {
@@ -18,20 +42,22 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             Bottom
         }
 
+        private static readonly Dictionary<string, SetId> setIdMap = new Dictionary<string, SetId>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "T", SetId.Top },
+            { "M", SetId.Middle },
+            { "B", SetId.Bottom }
+        };
+
         public static SetId ConvertStringToSetId(string input)
         {
-            switch (input.ToUpper()) // Use ToUpper to make the comparison case-insensitive
+            if (setIdMap.TryGetValue(input, out SetId setId))
             {
-                case "T":
-                    return SetId.Top;
-                case "M":
-                    return SetId.Middle;
-                case "B":
-                    return SetId.Bottom;
-                default:
-                    throw new ArgumentException("Invalid input for SetId conversion.");
+                return setId;
             }
+            return SetId.Top; // Default value if input is not found
         }
+
 
         // Overloading the == operator
         public static bool operator ==(SetID a, SetID b)

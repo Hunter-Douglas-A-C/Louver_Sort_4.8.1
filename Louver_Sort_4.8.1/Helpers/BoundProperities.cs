@@ -245,7 +245,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand test { get; set; }
         public ICommand ChangeLanguage { get; set; }
 
-        
+
 
 
 
@@ -272,18 +272,14 @@ namespace Louver_Sort_4._8._1.Helpers
                 _zebra.Disconnect(_Printer);
             });
 
-            OrderManager o; ;
+            OrderManager o = new OrderManager();
             test = new BaseCommand(obj =>
             {
-                o = new OrderManager();
                 o.CreateOrderAfterScanAndFillAllVariables(new BarcodeSet(Barcode1, Barcode2), 20);
 
-                foreach (var orderEntry in o.ordersByBarcode)
+                foreach (var order in o.GetAllOrders())
                 {
-                    BarcodeSet barcodeSet = orderEntry.Key;
-                    Order order = orderEntry.Value;
-
-                    Debug.WriteLine($"Order Barcode1: {barcodeSet.Barcode1}, Barcode2: {barcodeSet.Barcode2}");
+                    Debug.WriteLine($"Order Barcode1: {order.BarcodeHelper.Barcode.Barcode1}, Barcode2: {order.BarcodeHelper.Barcode.Barcode2}");
 
                     foreach (var opening in order.Openings)
                     {
@@ -305,6 +301,19 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                     }
                 }
+                Debug.WriteLine("\n\n\n\n\n\n\n\n\n\n\n");
+
+
+                //var s = o.CreateOrder(new BarcodeSet(Barcode1, Barcode2)).Openings[0].Panels[0].Sort();
+                //foreach (var set in s)
+                //{
+                //    Debug.WriteLine($"\t\t\tSet ID: {set.ID}, Date Sort Started: {set.DateSortStarted}, Date Sort Finished: {set.DateSortFinished}, Louver Count: {set.LouverCount}");
+
+                //    foreach (var louver in set.Louvers)
+                //    {
+                //        Debug.WriteLine($"\t\t\t\tLouver ID: {louver.ID}, Processed: {louver.Processed}, Warp: {louver.Warp}, Rejected: {louver.Rejected}, Cause of Rejection: {louver.CauseOfRejection}");
+                //    }
+                //}
             });
 
             ChangeLanguage = new BaseCommand(obj =>
@@ -398,7 +407,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public bool en_USEnabled
         {
             get => _en_USEnabled;
-            set{SetProperty(ref _en_USEnabled, value);}
+            set { SetProperty(ref _en_USEnabled, value); }
         }
 
         private bool _es_ESEnabled;
@@ -431,7 +440,7 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _Barcode2;
             set
             {
-                if (Regex.IsMatch(value, @"^PST\d\sP\d/L[A-Z]L/L\d\.\d/L\d+\.\d+/LT$"))
+                if (Regex.IsMatch(value, @"^(PNL[1-9])\/(LXL)\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$"))
                 {
                     SetProperty(ref _Barcode2, value);
                 }

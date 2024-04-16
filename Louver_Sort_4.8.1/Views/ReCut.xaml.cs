@@ -17,12 +17,12 @@ using System.Windows.Shapes;
 namespace Louver_Sort_4._8._1.Views
 {
     /// <summary>
-    /// Interaction logic for Report.xaml
+    /// Interaction logic for ReCut.xaml
     /// </summary>
-    public partial class Report : UserControl
+    public partial class ReCut : UserControl
     {
         BoundProperities boundProperities;
-        public Report()
+        public ReCut()
         {
             InitializeComponent();
 
@@ -32,7 +32,7 @@ namespace Louver_Sort_4._8._1.Views
             boundProperities = (BoundProperities)Application.Current.MainWindow.DataContext;
             this.DataContext = boundProperities;
 
-            boundProperities.ReportInitialize();
+            boundProperities.ReCutInitialize();
         }
     }
 }

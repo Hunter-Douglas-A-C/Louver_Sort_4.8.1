@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Org.BouncyCastle.Asn1.X509;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -239,39 +241,43 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 
         #endregion
 
+        public Order CheckifOrderExists(BarcodeSet barcodeSet)
+        {
+            Order order = null;
+            foreach (var item in ordersByBarcode)
+            {
+                if (item.Key.Barcode1 == barcodeSet.Barcode1 && item.Key.Barcode2 == barcodeSet.Barcode2)
+                {
+                    order = item.Value;
+                }
+            }
+            return order;
+        }
+
+
         public Order CreateOrderAfterScanAndFillAllVariables(BarcodeSet barcodeSet, int LouverCount)
         {
-            //var order = GetOrCreateOrder(barcodeSet);
-            //order.AddOpening(new Opening(order.BarcodeHelper.Line, order.BarcodeHelper.Style, order.BarcodeHelper.Width, order.BarcodeHelper.Length));
-            //GetOpening(order.BarcodeHelper.Line, barcodeSet).AddPanel(new Panel(order.BarcodeHelper.PanelID));
-            //GetPanel(order.BarcodeHelper.PanelID, order.BarcodeHelper.Line, barcodeSet).AddSet(new Set(order.BarcodeHelper.Set, LouverCount));
-            //for (int i = 1; i < LouverCount+1; i++)
-            //{
-            //    var l = GetSet(order.BarcodeHelper.Set, order.BarcodeHelper.PanelID, order.BarcodeHelper.Line, barcodeSet).AddLouver(new Louver(i));
-            //    l.SetWarp(i);
-            //}
-
-            //return order;
-
             var (order, isNewOrder) = CreateOrder(barcodeSet);
-
             if (!isNewOrder)
             {
                 Debug.WriteLine("An existing order matches the criteria. Skipping the rest of the function.");
                 return order; // Skip the rest of the function if an existing order was found.
             }
-            var open = order.AddOpening(new Opening(order.BarcodeHelper.Line, order.BarcodeHelper.Style, order.BarcodeHelper.Width, order.BarcodeHelper.Length));
-            var pan = open.AddPanel(new Panel(order.BarcodeHelper.PanelID));
-            var set = pan.AddSet(new Set(order.BarcodeHelper.Set, LouverCount));
-            for (int i = 0; i < LouverCount+1; i++)
+            else
             {
-                var l =set.AddLouver(new Louver(i));
-                l.SetReading1(i);
-                l.SetReading2(i*(i/1000));
-                l.CalcValues();
-            }
+                var open = order.AddOpening(new Opening(order.BarcodeHelper.Line, order.BarcodeHelper.Style, order.BarcodeHelper.Width, order.BarcodeHelper.Length));
+                var pan = open.AddPanel(new Panel(order.BarcodeHelper.PanelID));
+                var set = pan.AddSet(new Set(order.BarcodeHelper.Set, LouverCount));
+                for (int i = 0; i < LouverCount-1 + 1; i++)
+                {
+                    var l = set.AddLouver(new Louver(i));
+                    l.SetReading1(i);
+                    l.SetReading2(i * (i / 1000));
+                    l.CalcValues();
+                }
 
-            return order;
+                return order;
+            }
         }
 
 

@@ -6,15 +6,152 @@
              xmlns:local="clr-namespace:Louver_Sort_4._8._1.Views"
              mc:Ignorable="d"
              
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Red">
-        <Button Grid.Column="1"
+             d:DesignHeight="1080" d:DesignWidth="1920">
+
+
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Louver Report"
+                   FontSize="25"
+                   Grid.Row="0" 
+                   Background="CornflowerBlue"/>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    Margin="5,5,5,5"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Order"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="150"
+                         Text="{Binding CurOrder}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Line"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding CurLine}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Unit"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding CurUnit}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="PanelID"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding CurPanelID}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Louver Set"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding CurLouverSet}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="XL"
+                           HorizontalAlignment="Center" />
+                <CheckBox IsChecked="{Binding CurXL}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Width"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding CurWidth}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Length"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding CurLength}" />
+            </StackPanel>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Center">
+            <ListView ItemsSource="{Binding ReportContent}">
+
+                <ListView.View>
+
+                    <GridView AllowsColumnReorder="true"
+                              ColumnHeaderToolTip="Louver Data">
+                        <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
+                                        Header="LouverID"
+                                        Width="100" />
+                        <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
+                                        Header="LouverOrder"
+                                        Width="100" />
+                        <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
+                                        Header="CurrWarp"
+                                        Width="100" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Status}"
+                                        Header="Status"
+                                        Width="100" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </ScrollViewer>
+
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
                 Grid.Row="5"
-                Content="Main Menu"
+                Content="Rework Set"
                 Width="175"
                 Height="30"
                 Margin="5,5,5,5"
-                Command="{Binding UpdateView}"
-                CommandParameter="Menu" />
+                Command="{Binding ReworkSet}"/>
+            
+            
+            <Button Grid.Column="1"
+                Grid.Row="5"
+                Content="Approve"
+                Width="175"
+                Height="30"
+                Margin="5,5,5,5"
+                Command="{Binding ReportApproved}"/>
+
+
+        </Grid>
+
     </Grid>
 </UserControl>
+
+
+
+
+
+
+
+

@@ -37,31 +37,13 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
                 }
             }
             throw new ArgumentException("Panel with the specified ID not found.", nameof(id));
+        } 
+
+        public IEnumerable<Set> GetAllSets() 
+        { 
+            return _sets;
         }
 
-
-        //        // Flatten all louvers across all sets into a single sorted list.
-        //        var sortedLouvers = Sets.SelectMany(s => s.Louvers)
-        //                                .OrderBy(l => l.AbsWarp)
-        //                                .ToList();
-
-        //    // Assuming the goal is to redistribute these louvers evenly across sets.
-        //    // Reset each set's louvers to empty to redistribute.
-        //    foreach (var set in Sets)
-        //    {
-        //        set.Louvers.Clear();
-        //    }
-
-        //    // Distribute louvers evenly across sets based on sorted order.
-        //    int setIndex = 0;
-        //    foreach (var louver in sortedLouvers)
-        //    {
-        //        Sets[setIndex].Louvers.Add(louver);
-        //        setIndex = (setIndex + 1) % Sets.Count; // Cycle through sets.
-        //    }
-
-        //// Note: This example assumes you want to distribute sorted louvers evenly.
-        //// If the sorting logic is different, adjust the LINQ query and distribution logic accordingly.
 
         public List<Set> Sort()
         {
@@ -71,7 +53,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
                 CollectAll.AddRange(S.Louvers);
             }
 
-            List<Louver> ByWarp = CollectAll.OrderBy(x => x.AbsWarp).ToList();
+            List<Louver> ByWarp = CollectAll.OrderBy(x => x.AbsDevation).ToList();
             List<Louver> StoreBottom = new List<Louver>();
 
             foreach (Set set in Sets)
@@ -104,15 +86,11 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 
 
 
-
             foreach (Set set in Sets)
             {
                 set.Louvers.Add(StoreBottom[0]);
                 StoreBottom.Remove(StoreBottom[0]);
             }
-
-
-
             return Sets;
         }
     }

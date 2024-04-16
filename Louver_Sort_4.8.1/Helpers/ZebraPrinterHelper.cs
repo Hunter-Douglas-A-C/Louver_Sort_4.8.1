@@ -63,12 +63,22 @@ namespace Louver_Sort_4._8._1.Helpers
         /// <param name="printer">The ZebraPrinter instance to use for printing.</param>
         /// <param name="louverSet">A list of double values representing Louver IDs to print.</param>
         /// <exception cref="PrinterException">Thrown if there is an error during the print operation.</exception>
-        public void PrintLouverIDs(ZebraPrinter printer, List<double> louverSet)
+        public void PrintLouverIDs(ZebraPrinter printer, List<Louver_Sort_4._8._1.Helpers.LouverStructure.Louver> louvers)
         {
             if (!CheckStatus(printer).IsReady)
                 return;
 
-            Print(printer, GenerateZplForLouverIDs(louverSet));
+            Print(printer, GenerateZplForLouverIDs(louvers, false));
+            Print(printer, _ZPLSpacerLabel);
+        }
+
+
+        public void PrintSortedLouverIDs(ZebraPrinter printer, List<Louver_Sort_4._8._1.Helpers.LouverStructure.Louver> louvers)
+        {
+            if (!CheckStatus(printer).IsReady)
+                return;
+
+            Print(printer, GenerateZplForLouverIDs(louvers, true));
             Print(printer, _ZPLSpacerLabel);
         }
 
@@ -77,7 +87,7 @@ namespace Louver_Sort_4._8._1.Helpers
         /// </summary>
         /// <param name="louverSet">A list of double values representing Louver IDs.</param>
         /// <returns>A string containing the ZPL commands for printing Louver IDs.</returns>
-        private string GenerateZplForLouverIDs(List<double> louverSet)
+        private string GenerateZplForLouverIDs(List<Louver_Sort_4._8._1.Helpers.LouverStructure.Louver> louverSet, bool sorted)
         {
             try
             {
@@ -87,7 +97,22 @@ namespace Louver_Sort_4._8._1.Helpers
                     if (i % 2 == 0) zplBuilder.Append("^XA");
 
                     zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},40^A0N,40,40^FDLouver ID:^FS");
-                    zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 120 : 360)},120^A0N,40,40^FD{louverSet[i]}^FS");
+                    if (!sorted)
+                    {
+                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 120 : 360)},120^A0N,40,40^FD{louverSet[i].ID}^FS");
+                    }
+                    else
+                    {
+                        if (louverSet[i].Orientation)
+                        {
+                            zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 120 : 360)},120^A0N,40,40^FD{louverSet[i].ID}^FS");
+                        }
+                        else
+                        {
+                            zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 120 : 360)},120^A0N,40,40^FD{louverSet[i].ID} F^FS");
+                        }
+                    }
+
 
                     if (i % 2 == 1 || i == louverSet.Count - 1) zplBuilder.Append("^XZ");
                 }

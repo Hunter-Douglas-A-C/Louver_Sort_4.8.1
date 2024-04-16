@@ -14,25 +14,22 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Louver_Sort_4._8._1.Views
+namespace Louver_Sort_4._8._1.Views.PopUps
 {
     /// <summary>
-    /// Interaction logic for Report.xaml
+    /// Interaction logic for LouverCount.xaml
     /// </summary>
-    public partial class Report : UserControl
+    public partial class LouverCount : UserControl
     {
         BoundProperities boundProperities;
-        public Report()
+        public LouverCount()
         {
             InitializeComponent();
 
 
 
-
             boundProperities = (BoundProperities)Application.Current.MainWindow.DataContext;
             this.DataContext = boundProperities;
-
-            boundProperities.ReportInitialize();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
-    internal class LouverListView
+    public class LouverListView
     {
         public int LouverID { get; set; }
         public string Side { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
-    internal class Opening
+    public class Opening
     {
         public enum LouverModels
         {
@@ -15,12 +15,12 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             MSL06
         }
 
-        private readonly int _line;
-        private readonly LouverModels _modelNum;
-        private readonly LouverStructure.LouverStyle.LouverStyles _style;
-        private readonly double _width;
-        private readonly double _length;
-        private readonly List<Panel> _panels = new List<Panel>();
+        public readonly int _line;
+        public readonly LouverModels _modelNum;
+        public readonly LouverStructure.LouverStyle.LouverStyles _style;
+        public readonly double _width;
+        public readonly double _length;
+        public readonly List<Panel> _panels = new List<Panel>();
 
         public int Line => _line;
 

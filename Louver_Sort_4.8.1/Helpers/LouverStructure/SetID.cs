@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
-    internal class SetID
+    public class SetID
     {
         //public SetId Value { get; set; } // Property, not a method
 
@@ -42,7 +42,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             Bottom
         }
 
-        private static readonly Dictionary<string, SetId> setIdMap = new Dictionary<string, SetId>(StringComparer.OrdinalIgnoreCase)
+        public static readonly Dictionary<string, SetId> setIdMap = new Dictionary<string, SetId>(StringComparer.OrdinalIgnoreCase)
         {
             { "T", SetId.Top },
             { "M", SetId.Middle },

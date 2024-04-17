@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
-    internal class Order
+    public class Order
     {
-        private readonly BarcodeHelper _barcodeHelper;
-        private readonly List<Opening> _openings = new List<Opening>();
+        public readonly BarcodeHelper _barcodeHelper;
+        public readonly List<Opening> _openings = new List<Opening>();
 
         public BarcodeHelper BarcodeHelper => _barcodeHelper;
         public double Unit => _barcodeHelper.Unit;

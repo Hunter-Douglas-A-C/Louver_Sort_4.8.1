@@ -8,7 +8,7 @@ using System.Windows.Navigation;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
-    internal class LouverStyle
+    public class LouverStyle
     {
         public enum LouverStyles
         {

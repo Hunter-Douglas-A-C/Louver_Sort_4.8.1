@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
-    internal class ReportListView
+    public class ReportListView
     {
         public int LouverID { get; set; }
         public int LouverOrder { get; set; }

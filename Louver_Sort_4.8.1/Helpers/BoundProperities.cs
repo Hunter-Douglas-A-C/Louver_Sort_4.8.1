@@ -20,6 +20,9 @@ using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Data;
+using Newtonsoft.Json;
+using System.IO;
+using System.Security.Principal;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -74,7 +77,7 @@ namespace Louver_Sort_4._8._1.Helpers
         private bool _es_ESEnabled;
         private string _Barcode1 = "1018652406000001L1";
         private string _Barcode2 = "PNL1/LXL/L4.5/L30.5188/LT";
-        private OrderManager AllOrders = new OrderManager();
+        public OrderManager AllOrders = new OrderManager();
         private int _ActiveLouverId;
         public Louver_Sort_4._8._1.Helpers.LouverStructure.Panel _ActivePanel;
         public Louver_Sort_4._8._1.Helpers.LouverStructure.Set _ActiveSet;
@@ -491,6 +494,12 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public BoundProperities()
         {
+            string json = File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\json.txt");
+            JsonConvert.DeserializeObject<OrderManager>(json);
+
+
+
+
             var Mapper = Mappers.Xy<MeasureModel>()
             .X(x => x.ElapsedMilliseconds)
             .Y(x => x.Value);
@@ -686,14 +695,14 @@ namespace Louver_Sort_4._8._1.Helpers
                 ActiveSet.StartSort(DateTime.Now);
 
 
-                ZebraPrinter _Printer = _zebra.Connect();
-                List<Louver> ToPrint = new List<Louver>();
-                foreach (var sets in ActivePanel.GetAllSets())
-                {
-                    ToPrint.AddRange(sets.GetLouverSet());
-                }
-                _zebra.PrintLouverIDs(_Printer, ToPrint);
-                _zebra.Disconnect(_Printer);
+                //ZebraPrinter _Printer = _zebra.Connect();
+                //List<Louver> ToPrint = new List<Louver>();
+                //foreach (var sets in ActivePanel.GetAllSets())
+                //{
+                //    ToPrint.AddRange(sets.GetLouverSet());
+                //}
+                //_zebra.PrintLouverIDs(_Printer, ToPrint);
+                //_zebra.Disconnect(_Printer);
 
                 //Debug.WriteLine("Printed first set of labels");
 
@@ -711,8 +720,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 int randomInt = random.Next(-1000, 1001);
 
                 // Divide the random integer by 1000 to get increments of 0.001
-                //double value = randomInt / 1000.0;
-                double value = RecordWhenStable(0.01);
+                double value = randomInt / 1000.0;
+                //double value = RecordWhenStable(0.01);
                 ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
                 Reading1 = value;
 
@@ -730,8 +739,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 int randomInt = random.Next(-1000, 1001);
 
                 // Divide the random integer by 1000 to get increments of 0.001
-                //double value = randomInt / 1000.0;
-                double value = RecordWhenStable(0.01);
+                double value = randomInt / 1000.0;
+                //double value = RecordWhenStable(0.01);
                 ActiveSet.Louvers[ActiveLouverID].SetReading2(value);
                 Reading2 = value;
 
@@ -777,14 +786,14 @@ namespace Louver_Sort_4._8._1.Helpers
 
             PrintSortedLabels = new BaseCommand(obj =>
             {
-                ZebraPrinter _Printer = _zebra.Connect();
-                List<Louver> ToPrint = new List<Louver>();
-                foreach (var sets in ActivePanel.GetAllSets())
-                {
-                    ToPrint.AddRange(sets.GetLouverSet());
-                }
-                _zebra.PrintSortedLouverIDs(_Printer, ToPrint);
-                _zebra.Disconnect(_Printer);
+                //ZebraPrinter _Printer = _zebra.Connect();
+                //List<Louver> ToPrint = new List<Louver>();
+                //foreach (var sets in ActivePanel.GetAllSets())
+                //{
+                //    ToPrint.AddRange(sets.GetLouverSet());
+                //}
+                //_zebra.PrintSortedLouverIDs(_Printer, ToPrint);
+                //_zebra.Disconnect(_Printer);
 
                 //Debug.WriteLine("Printed sorted set of labels");
 
@@ -838,7 +847,42 @@ namespace Louver_Sort_4._8._1.Helpers
                 PrintLouverSortedLabels = true;
             });
 
-            ShutDown = new BaseCommand(obj => { Application.Current.Shutdown(); });
+            ShutDown = new BaseCommand(obj => {
+
+
+                //// Serialize to JSON
+                JsonSerializer serializer = new JsonSerializer();
+                using (StreamWriter sw = new StreamWriter(System.IO.Directory.GetCurrentDirectory() + @"\json.txt"))
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, AllOrders);
+                }
+
+
+
+
+
+
+
+
+
+
+                //// Serialize the object to JSON
+                //string j = JsonConvert.SerializeObject(AllOrders, Formatting.Indented);
+
+                //// Specify the file path where you want to write the JSON
+                //string filePath = System.IO.Directory.GetCurrentDirectory() + @"\json.txt";
+
+                //// Write the JSON string to the file
+                //File.WriteAllText(filePath, j);
+
+
+                Console.WriteLine("JSON exported and saved to file.");
+
+                Application.Current.Shutdown(); 
+            
+            
+            });
 
             SearchOrder = new BaseCommand(obj => 
             {
@@ -901,10 +945,10 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             try
             {
-                _DataQ.Stop();
-                _DataQ.Disconnect();
-                stopwatch.Stop();
-                stopwatch.Reset();
+                //_DataQ.Stop();
+                //_DataQ.Disconnect();
+                //stopwatch.Stop();
+                //stopwatch.Reset();
                 DisconnectedEnabled = Visibility.Visible;
             }
             catch (Exception)
@@ -919,7 +963,7 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             if (!runonce)
             {
-                ConnectToDataQ();
+                //ConnectToDataQ();
                 PrintLouverIDLabelsEnabled = false;
                 Acquare1Enabled = false;
                 Acquare2Enabled = false;

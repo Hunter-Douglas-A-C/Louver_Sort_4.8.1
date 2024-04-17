@@ -5,19 +5,19 @@ using System.Windows.Controls;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
-    internal class Louver
+    public class Louver
     {
         // Fields
-        private readonly int _ID;
-        private bool _processed;
-        private double _reading1;
-        private double _reading2;
-        private double _devation;
-        private double _absDevation;
-        private bool _orientation;
-        private bool _rejected;
-        private string _causeOfRejection;
-        private int _sortedId;
+        public readonly int _ID;
+        public bool _processed;
+        public double _reading1;
+        public double _reading2;
+        public double _devation;
+        public double _absDevation;
+        public bool _orientation;
+        public bool _rejected;
+        public string _causeOfRejection;
+        public int _sortedId;
 
         // Properties
         public int ID => _ID;

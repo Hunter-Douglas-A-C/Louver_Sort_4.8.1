@@ -7,10 +7,10 @@ using System.Windows.Controls;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
-    internal class Panel
+    public class Panel
     {
-        private int _id;
-        private List<Set> _sets = new List<Set>();
+        public int _id;
+        public List<Set> _sets = new List<Set>();
 
         public int ID => _id;
         public List<Set> Sets => _sets;

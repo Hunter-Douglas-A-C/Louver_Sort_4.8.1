@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
-    internal class BarcodeHelper
+    public class BarcodeHelper
     {
-        private readonly BarcodeSet _barcode;
+        public readonly BarcodeSet _barcode;
 
         public BarcodeSet Barcode => _barcode;
 

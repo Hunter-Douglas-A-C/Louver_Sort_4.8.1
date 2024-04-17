@@ -8,15 +8,15 @@ using System.Data.Odbc;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
-    internal class Set
+    public class Set
     {
-        private SetId _id;
-        private DateTime _dateSortStarted;
-        private DateTime _dateSortFinished;
-        private int _louverCount;
-        private List<Louver> _louvers = new List<Louver>();
-        private ObservableCollection<LouverListView> _recordedLouvers = new ObservableCollection<LouverListView>();
-        private ObservableCollection<ReportListView> _ReportData = new ObservableCollection<ReportListView>();
+        public SetId _id;
+        public DateTime _dateSortStarted;
+        public DateTime _dateSortFinished;
+        public double _louverCount;
+        public List<Louver> _louvers = new List<Louver>();
+        public ObservableCollection<LouverListView> _recordedLouvers = new ObservableCollection<LouverListView>();
+        public ObservableCollection<ReportListView> _ReportData = new ObservableCollection<ReportListView>();
 
         public ObservableCollection<LouverListView> RecordedLouvers
         {
@@ -45,13 +45,13 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 
         public List<Louver> Louvers => _louvers;
 
-        public Set(SetId id, int louverCount)
+        public Set(SetId id, double louverCount)
         {
             _id = id;
             _louverCount = louverCount;
         }
 
-        public void AssignLouverCount(int louverCount)
+        public void AssignLouverCount(double louverCount)
         {
             _louvers.Clear();
             _louverCount = louverCount;

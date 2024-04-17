@@ -27,7 +27,7 @@
         
         <Border BorderBrush="Black"
                 BorderThickness="5"
-                CornerRadius="15"
+                CornerRadius="5"
                 Panel.ZIndex="1"
                 VerticalAlignment="Stretch"
                 HorizontalAlignment="Stretch"

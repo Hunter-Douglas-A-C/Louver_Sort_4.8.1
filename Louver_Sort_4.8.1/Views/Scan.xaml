@@ -74,13 +74,14 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="101*" />
+                    <ColumnDefinition Width="91*" />
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal"
                             Grid.Row="0"
-                            Grid.Column="0">
+                            Grid.Column="0"
+                            VerticalAlignment="Bottom">
                     <TextBlock Text="Search Barcode 1:"
                                VerticalAlignment="Center" />
                     <TextBox x:Name="TxtBarcode1"
@@ -100,7 +101,8 @@
 
                 <StackPanel Orientation="Horizontal"
                             Grid.Row="1"
-                            Grid.Column="0">
+                            Grid.Column="0"
+                            VerticalAlignment="Top">
                     <TextBlock Text="Search Barcode 2:"
                                VerticalAlignment="Center" />
                     <TextBox Width="400"
@@ -120,7 +122,8 @@
                 <Button Grid.Column="1"
                         Grid.RowSpan="2"
                         Margin="50,50,50,50"
-                        Content="Enter Barcode"
+                        Content="Enter Barcodes"
+                        FontSize="25"
                         Command="{Binding EnterBarcodes}" />
             </Grid>
         </Grid>
@@ -135,13 +138,15 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Row="0"
                         Grid.Column="0"
-                        Margin="10,0,5,0">
+                        Margin="10,0,5,0"
+                        HorizontalAlignment="Center">
                 <TextBlock Text="Barcodes"
                            FontSize="25"
                            HorizontalAlignment="Left" />
@@ -159,7 +164,8 @@
             <StackPanel Grid.Row="1"
                         Grid.Column="0"
                         Orientation="Horizontal"
-                        Margin="5,5,5,5">
+                        Margin="5,5,5,5"
+                        HorizontalAlignment="Center">
                 <StackPanel VerticalAlignment="Center"
                             Margin="5,0,5,0">
                     <TextBlock Text="Order"
@@ -168,6 +174,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="150"
                              FontSize="25"
+                             HorizontalContentAlignment="Center"
                              Text="{Binding CurOrder}" />
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
@@ -178,6 +185,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="50"
                              FontSize="25"
+                             HorizontalContentAlignment="Center"
                              Text="{Binding CurLine}" />
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
@@ -188,6 +196,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="50"
                              FontSize="25"
+                             HorizontalContentAlignment="Center"
                              Text="{Binding CurUnit}" />
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
@@ -198,6 +207,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="50"
                              FontSize="25"
+                             HorizontalContentAlignment="Center"
                              Text="{Binding CurPanelID}" />
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
@@ -208,14 +218,16 @@
                     <TextBox VerticalAlignment="Center"
                              Width="50"
                              FontSize="25"
+                             HorizontalContentAlignment="Center"
                              Text="{Binding CurLouverSet}" />
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
-                            Margin="5,0,5,0">
+                            Margin="15,0,15,20">
                     <TextBlock Text="XL"
                                FontSize="25"
                                HorizontalAlignment="Center" />
-                    <CheckBox IsChecked="{Binding CurXL}" />
+                    <CheckBox IsChecked="{Binding CurXL}"
+                              Margin="5,0,0,0"/>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
                             Margin="5,0,5,0">
@@ -225,6 +237,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="50"
                              FontSize="25"
+                             HorizontalContentAlignment="Center"
                              Text="{Binding CurWidth}" />
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
@@ -233,15 +246,17 @@
                                FontSize="25"
                                HorizontalAlignment="Center" />
                     <TextBox VerticalAlignment="Center"
-                             Width="50"
+                             Width="150"
                              FontSize="25"
+                             HorizontalContentAlignment="Center"
                              Text="{Binding CurLength}" />
                 </StackPanel>
             </StackPanel>
 
 
             <Grid Grid.Row="2"
-                  Grid.Column="0">
+                  Grid.Column="0"
+                  HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
@@ -252,12 +267,14 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Row="0"
-                            Grid.Column="0">
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                                 Margin="5,0,5,0">
-                        <TextBlock Text="Current Louver ID:"
+                        <TextBlock Text="Current ID:"
                                    FontSize="25"
                                    HorizontalAlignment="Center" />
                         <TextBox VerticalAlignment="Center"
@@ -270,19 +287,21 @@
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                                 Margin="5,0,5,0">
-                        <TextBlock Text="Current Reading:"
+                        <!--<TextBlock Text="Current Reading:"
                                    FontSize="25"
                                    HorizontalAlignment="Center" />
                         <TextBox VerticalAlignment="Center"
                                  HorizontalAlignment="Right"
                                  FontSize="25"
                                  Width="75"
-                                 Text="{Binding CurrentReading}" />
+                                 Text="{Binding CurrentReading}" />-->
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Grid.Row="0"
-                            Grid.Column="1">
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
@@ -339,83 +358,20 @@
 
 
             <Grid Grid.Row="3"
-                  Grid.Column="0">
+                  Grid.Column="0"
+                  Grid.RowSpan="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
 
 
-
-
-
-
-                <!--<Grid Background="#7EBE8E">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width=".7*"></ColumnDefinition>
-                        <ColumnDefinition Width=".3*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Border Grid.ColumnSpan="2"></Border>
-                    <lvc:CartesianChart Name="Chart"
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="2"
-                                        Margin="15">
-                        <lvc:CartesianChart.Series>
-                            <lvc:LineSeries Values="{Binding VoltageValues}"
-                                            LineSmoothness="1"
-                                            StrokeThickness="3"
-                                            DataLabels="False"
-                                            FontSize="20"
-                                            Foreground="#6B303030"
-                                            Stroke="White"
-                                            Fill="Transparent"
-                                            PointGeometrySize="0" />
-                        </lvc:CartesianChart.Series>
-                        <lvc:CartesianChart.AxisX>
-                            <lvc:Axis IsEnabled="True"
-                                      ShowLabels="True"
-                                      Labels="X" />
-                        </lvc:CartesianChart.AxisX>
-                        <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Foreground="White"
-                                      FontSize="14">
-                                <lvc:Axis.Separator>
-                                    <lvc:Separator StrokeThickness="1"
-                                                   Stroke="#8EFFFFFF"
-                                                   StrokeDashArray="8"
-                                                   Step="10" />
-                                </lvc:Axis.Separator>
-                            </lvc:Axis>
-                        </lvc:CartesianChart.AxisY>
-                    </lvc:CartesianChart>
-                </Grid>-->
-
-
-                <!--<lvc:CartesianChart   LegendLocation="Right"
-                                    Pan="x"
-                                    Background="DarkGray">
-                    <lvc:CartesianChart.Series>
-                        <lvc:LineSeries Values="{Binding VoltageValues}" />
-                    </lvc:CartesianChart.Series>
-                    <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Raw Voltage" />
-                    </lvc:CartesianChart.AxisY>
-                    <lvc:CartesianChart.AxisX>
-                        <lvc:Axis Title="Scan Rate" />
-                    </lvc:CartesianChart.AxisX>
-                </lvc:CartesianChart>-->
-
-
-                <Grid>
+                <Grid Grid.RowSpan="2"
+                      Grid.ColumnSpan="2">
                     <lvc:CartesianChart x:Name="Chart">
                         <lvc:CartesianChart.Series>
                             <lvc:LineSeries Values="{Binding VoltageValues}" />
@@ -436,31 +392,38 @@
 
 
 
-                <ScrollViewer Grid.Column="1">
-                    <ListView ItemsSource="{Binding ListViewContent}"
-                              FontSize="25">
-
-                        <ListView.View>
-
-                            <GridView AllowsColumnReorder="true"
-                                      ColumnHeaderToolTip="Louver Data">
-                                <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
-                                                Header="LouverID"
-                                                Width="150" />
-                                <GridViewColumn DisplayMemberBinding="{Binding Side}"
-                                                Header="Side"
-                                                Width="100" />
-                                <GridViewColumn DisplayMemberBinding="{Binding Distance}"
-                                                Header="Distance"
-                                                Width="100" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </ScrollViewer>
+               
             </Grid>
 
 
-            <StackPanel Grid.Column="1"
+
+            <ScrollViewer Grid.Column="1"
+                          Grid.RowSpan="5"
+                          HorizontalContentAlignment="Center">
+                <ListView ItemsSource="{Binding ListViewContent}"
+                          FontSize="25"
+                          HorizontalContentAlignment="Center">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="true"
+                                  ColumnHeaderToolTip="Louver Data">
+                            <GridViewColumn Header="LouverID"
+                                            Width="150"
+                                            DisplayMemberBinding="{Binding LouverID}" />
+                            <GridViewColumn Header="Side"
+                                            Width="100"
+                                            DisplayMemberBinding="{Binding Side}" />
+                            <GridViewColumn Header="Distance"
+                                            Width="100"
+                                            DisplayMemberBinding="{Binding Distance}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </ScrollViewer>
+            
+            
+            
+
+            <StackPanel Grid.Column="2"
                         Grid.RowSpan="4">
                 <Button Content="Print Louver ID Labels"
                         Width="400"
@@ -514,7 +477,7 @@
 
             </StackPanel>
 
-            <Button Grid.Column="1"
+            <Button Grid.Column="2"
                     Grid.Row="5"
                     Content="Main Menu"
                     Width="400"

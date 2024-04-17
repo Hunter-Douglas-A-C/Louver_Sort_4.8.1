@@ -30,6 +30,13 @@ namespace Louver_Sort_4._8._1.Views.PopUps
 
             boundProperities = (BoundProperities)Application.Current.MainWindow.DataContext;
             this.DataContext = boundProperities;
+            
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            //boundProperities.LouverCountPopUpLoaded();
+            InputTextBox.Focus();
         }
     }
 }

@@ -284,14 +284,16 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 
         public Order GetOrder(BarcodeSet b)
         {
-            if (ordersByBarcode.TryGetValue(b, out var existingOrder))
-            {
-                return existingOrder;
-            }
-            else 
-            { 
-                return  null;
-            }
+            //if (ordersByBarcode.TryGetValue(b, out var existingOrder))
+            //{
+            //    return existingOrder;
+            //}
+            //else 
+            //{ 
+            //    return  null;
+            //}
+
+            return ordersByBarcode[b];
         }
 
         public IEnumerable<Order> GetAllOrders()

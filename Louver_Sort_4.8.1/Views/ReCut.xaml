@@ -5,8 +5,171 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Louver_Sort_4._8._1.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             d:DesignHeight="1080" d:DesignWidth="1920">
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="50,0,0,0">
+                <TextBlock Text="Search Barcode 1:"
+                           VerticalAlignment="Center" />
+                <TextBox x:Name="TxtBarcode1"
+                         Width="400"
+                         Focusable="True"
+                         Height="50"
+                         Margin="5,15,0,15"
+                         Text="{Binding Barcode1}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter"
+                                    Command="{Binding Barcode1KeyDown}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="50,0,0,0">
+                <TextBlock Text="Search Barcode 2:"
+                           VerticalAlignment="Center" />
+                <TextBox Width="400"
+                         Height="50"
+                         Margin="5,15,0,15"
+                         Text="{Binding Barcode2}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter"
+                                    Command="{Binding EnterBarcodes}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+
+
+            </StackPanel>
+
+            <Button Grid.Column="1"
+                    Grid.RowSpan="2"
+                    Margin="50,50,50,50"
+                    Content="Search Order"
+                    Command="{Binding SearchOrder}" />
+        </Grid>
+
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    Margin="5,5,5,5"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Order"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="150"
+                         Text="{Binding ReCutOrder}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Line"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding ReCutLine}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Unit"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding ReCutUnit}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="PanelID"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding ReCutPanelID}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Louver Set"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding ReCutLouverSet}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="XL"
+                           HorizontalAlignment="Center" />
+                <CheckBox IsChecked="{Binding ReCutXL}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Width"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding ReCutWidth}" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center"
+                        Margin="5,0,5,0">
+                <TextBlock Text="Length"
+                           HorizontalAlignment="Center" />
+                <TextBox VerticalAlignment="Center"
+                         Width="50"
+                         Text="{Binding ReCutHeight}" />
+            </StackPanel>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="2"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Center">
+            <ListView ItemsSource="{Binding ReCutContent}">
+
+                <ListView.View>
+
+                    <GridView AllowsColumnReorder="true"
+                              ColumnHeaderToolTip="Louver Data">
+                        <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
+                                        Header="LouverID"
+                                        Width="100" />
+                        <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
+                                        Header="LouverOrder"
+                                        Width="100" />
+                        <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
+                                        Header="CurrWarp"
+                                        Width="100" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Status}"
+                                        Header="Status"
+                                        Width="100" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </ScrollViewer>
+
         <Button Grid.Column="1"
                 Grid.Row="5"
                 Content="Main Menu"

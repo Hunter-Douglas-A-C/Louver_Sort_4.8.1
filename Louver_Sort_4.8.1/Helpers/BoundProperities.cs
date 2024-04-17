@@ -101,12 +101,25 @@ namespace Louver_Sort_4._8._1.Helpers
         private ObservableCollection<LouverListView> _ListViewContent = new ObservableCollection<LouverListView>();
         private Visibility _popUpVisible;
         private bool _mainEnabled;
-        private int _txtLouverCount;
+        private int? _txtLouverCount = null;
         private int _MainContentBlurRadius;
         private ObservableCollection<ReportListView> _ReportContent = new ObservableCollection<ReportListView>();
         private double _deviation;
         private bool _focusBarcode1;
         private bool _focusBarcode2;
+        private bool _focusLouverCount;
+
+
+        private string _ReCutOrder;
+        private string _ReCutLine;
+        private string _ReCutUnit;
+        private string _ReCutPanelID;
+        private string _ReCutLouverSet;
+        private bool   _ReCutXL;
+        private string _ReCutWidth;
+        private string _ReCutLength;
+        private string _ReCutBarcode1;
+        private string _ReCutBarcode2;
 
 
         #endregion
@@ -114,7 +127,65 @@ namespace Louver_Sort_4._8._1.Helpers
         #region Public Properities
 
 
+        public string ReCutOrder
+        {
+            get => _ReCutOrder;
+            set { SetProperty(ref _ReCutOrder, value); }
+        }
 
+        public string ReCutLine
+        {
+            get => _ReCutLine;
+            set { SetProperty(ref _ReCutLine, value); }
+        }
+
+        public string ReCutUnit
+        {
+            get => _ReCutUnit;
+            set { SetProperty(ref _ReCutUnit, value); }
+        }
+
+        public string ReCutPanelID
+        {
+            get => _ReCutPanelID;
+            set { SetProperty(ref _ReCutPanelID, value); }
+        }
+
+        public string ReCutLouverSet
+        {
+            get => _ReCutLouverSet;
+            set { SetProperty(ref _ReCutLouverSet, value); }
+        }
+
+        public bool ReCutXL
+        {
+            get => _ReCutXL;
+            set { SetProperty(ref _ReCutXL, value); }
+        }
+
+        public string ReCutWidth
+        {
+            get => _ReCutWidth;
+            set { SetProperty(ref _ReCutWidth, value); }
+        }
+
+        public string ReCutLength
+        {
+            get => _ReCutLength;
+            set { SetProperty(ref _ReCutLength, value); }
+        }
+
+        public string ReCutBarcode1
+        {
+            get => _ReCutBarcode1;
+            set { SetProperty(ref _ReCutBarcode1, value); }
+        }
+
+        public string ReCutBarcode2
+        {
+            get => _ReCutBarcode2;
+            set { SetProperty(ref _ReCutBarcode2, value); }
+        }
 
         public bool FocusBarcode1
         {
@@ -347,7 +418,7 @@ namespace Louver_Sort_4._8._1.Helpers
             set { SetProperty(ref _mainEnabled, value); }
         }
 
-        public int TxtLouverCount
+        public int? TxtLouverCount
         {
             get => _txtLouverCount;
             set
@@ -374,6 +445,13 @@ namespace Louver_Sort_4._8._1.Helpers
             set { SetProperty(ref _deviation, value); }
         }
 
+        public bool FocusLouverCount
+        {
+            get => _focusLouverCount;
+            set { SetProperty(ref _focusLouverCount, value); }
+        }
+
+
         #endregion
 
         #region Commands
@@ -397,8 +475,12 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand FilterEnter { get; set; }
         public ICommand EnterLouverCount { get; set; }
         public ICommand ReportApproved { get; set; }
-    
+
         public ICommand ShutDown { get; set; }
+
+        public ICommand SearchOrder { get; set; }
+
+        public ICommand ClosePopUp { get; set; }
         #endregion
 
 
@@ -422,6 +504,14 @@ namespace Louver_Sort_4._8._1.Helpers
             Barcode1KeyDown = new BaseCommand(obj =>
             {
                 FocusBarcode2 = true;
+            });
+
+            ClosePopUp = new BaseCommand(obj =>
+            {
+                PopUpVisible = Visibility.Hidden;
+                MainEnabled = true;
+                SelectedPopUp = null;
+                MainContentBlurRadius = 0;
             });
 
             FilterEnter = new BaseCommand(obj =>
@@ -504,6 +594,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     case "LouverCount":
                         SelectedPopUp = new Views.PopUps.LouverCount();
+                        FocusLouverCount = true;
                         break;
                     default:
                         break;
@@ -555,20 +646,21 @@ namespace Louver_Sort_4._8._1.Helpers
 
             LouverCountOk = new BaseCommand(obj =>
             {
-                //var focusedElement = Keyboard.FocusedElement as FrameworkElement;
+                var focusedElement = Keyboard.FocusedElement as FrameworkElement;
 
-                //if (focusedElement is TextBox)
-                //{
-                //    BindingExpression be = focusedElement.GetBindingExpression(TextBox.TextProperty);
-                //    be.UpdateSource();
-                //}
+                if (focusedElement is TextBox)
+                {
+                    BindingExpression be = focusedElement.GetBindingExpression(TextBox.TextProperty);
+                    be.UpdateSource();
+                }
 
 
-                PopUpVisible = Visibility.Hidden;
-                MainEnabled = true;
-                SelectedPopUp = null;
-                MainContentBlurRadius = 0;
-                SelectedView = new Scan();
+                //PopUpVisible = Visibility.Hidden;
+                //MainEnabled = true;
+                //SelectedPopUp = null;
+                //MainContentBlurRadius = 0;
+                //SelectedView = new Scan();
+                ClosePopUp.Execute("");
                 var order = AllOrders.CreateOrderAfterScanAndFillAllVariables(new BarcodeSet(Barcode1, Barcode2), Convert.ToInt32(TxtLouverCount));
                 ActiveLouverID = 0;
                 ActivePanel = order.GetOpeningByLine(order.BarcodeHelper.Line).GetPanel(order.BarcodeHelper.PanelID);
@@ -619,8 +711,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 int randomInt = random.Next(-1000, 1001);
 
                 // Divide the random integer by 1000 to get increments of 0.001
-                double value = randomInt / 1000.0;
-                //double value = RecordWhenStable(0.01);
+                //double value = randomInt / 1000.0;
+                double value = RecordWhenStable(0.01);
                 ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
                 Reading1 = value;
 
@@ -638,8 +730,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 int randomInt = random.Next(-1000, 1001);
 
                 // Divide the random integer by 1000 to get increments of 0.001
-                double value = randomInt / 1000.0;
-                //double value = RecordWhenStable(0.01);
+                //double value = randomInt / 1000.0;
+                double value = RecordWhenStable(0.01);
                 ActiveSet.Louvers[ActiveLouverID].SetReading2(value);
                 Reading2 = value;
 
@@ -720,7 +812,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 CurBarcode1 = "";
                 CurBarcode2 = "";
                 //Barcode1 = "";
-                Barcode2 = "";
+                //Barcode2 = "";
 
                 PrintLouverIDLabelsEnabled = false;
                 Acquare1Enabled = false;
@@ -747,6 +839,25 @@ namespace Louver_Sort_4._8._1.Helpers
             });
 
             ShutDown = new BaseCommand(obj => { Application.Current.Shutdown(); });
+
+            SearchOrder = new BaseCommand(obj => 
+            {
+                var order = AllOrders.GetOrder(new BarcodeSet(Barcode1, Barcode2));
+                ActivePanel = order.GetOpeningByLine(order.BarcodeHelper.Line).GetPanel(order.BarcodeHelper.PanelID);
+                ActiveSet = ActivePanel.GetSet(order.BarcodeHelper.Set);
+
+
+                ReCutBarcode1 = order.BarcodeHelper.Barcode.Barcode1.ToString();
+                ReCutBarcode2 = order.BarcodeHelper.Barcode.Barcode2.ToString();
+                ReCutOrder = order.BarcodeHelper.Order.ToString();
+                ReCutLine = order.BarcodeHelper.Line.ToString();
+                ReCutUnit = order.BarcodeHelper.Unit.ToString();
+                ReCutPanelID = order.BarcodeHelper.PanelID.ToString();
+                ReCutLouverSet = order.BarcodeHelper.Set.ToString();
+                ReCutXL = order.BarcodeHelper.Style == LouverStructure.LouverStyle.LouverStyles.XL;
+                ReCutWidth = order.BarcodeHelper.Width.ToString();
+                ReCutLength = order.BarcodeHelper.Length.ToString();
+            });
 
         }
 
@@ -790,10 +901,10 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             try
             {
-                //_DataQ.Stop();
-                //_DataQ.Disconnect();
-                //stopwatch.Stop();
-                //stopwatch.Reset();
+                _DataQ.Stop();
+                _DataQ.Disconnect();
+                stopwatch.Stop();
+                stopwatch.Reset();
                 DisconnectedEnabled = Visibility.Visible;
             }
             catch (Exception)
@@ -802,16 +913,22 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
+        bool runonce = false;
+
         public void ScanInitialize()
         {
-            //ConnectToDataQ();
-            PrintLouverIDLabelsEnabled = false;
-            Acquare1Enabled = false;
-            Acquare2Enabled = false;
-            SortLouverSetEnabled = false;
-            ReviewLouverReportEnabled = false;
-            PrintLouverIDLabelsEnabled = false;
-            NextLouverSetEnabled = false;
+            if (!runonce)
+            {
+                ConnectToDataQ();
+                PrintLouverIDLabelsEnabled = false;
+                Acquare1Enabled = false;
+                Acquare2Enabled = false;
+                SortLouverSetEnabled = false;
+                ReviewLouverReportEnabled = false;
+                PrintLouverIDLabelsEnabled = false;
+                NextLouverSetEnabled = false;
+                runonce = true;
+            }
         }
 
         public void ConnectToDataQ()
@@ -859,7 +976,7 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 VoltageValues.RemoveAt(0);
             }
-            CurrentReading = VoltageValues[VoltageValues.Count].Value.ToString();
+            //CurrentReading = VoltageValues[VoltageValues.Count].Value.ToString();
         }
 
         public void DataQLostConnection(object sender, EventArgs e)
@@ -870,6 +987,11 @@ namespace Louver_Sort_4._8._1.Helpers
         public void CreateOrderFromBarCodeSet()
         {
 
+        }
+
+        public void LouverCountPopUpLoaded()
+        {
+            FocusLouverCount = true;
         }
 
         #endregion

@@ -57,7 +57,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             {
                 _devation = Reading2;
             }
-            _orientation = _devation > 0 ? false : true;
+            _orientation = _devation > 0 ? true : false;
             _absDevation = Math.Abs(_devation);
         }
 

@@ -1,11 +1,14 @@
 ﻿<UserControl x:Class="Louver_Sort_4._8._1.Views.ReCut"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helpers="clr-namespace:Louver_Sort_4._8._1.Helpers"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:local="clr-namespace:Louver_Sort_4._8._1.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="1920">
+             mc:Ignorable="d"
+             d:DesignHeight="1080"
+             d:DesignWidth="1920">
     <Grid Background="WhiteSmoke">
         <Grid.RowDefinitions>
             <RowDefinition Height="1.5*" />
@@ -144,31 +147,119 @@
             </StackPanel>
         </StackPanel>
 
-        <ScrollViewer Grid.Row="2"
-                      VerticalAlignment="Stretch"
-                      HorizontalAlignment="Center">
-            <ListView ItemsSource="{Binding ReCutContent}">
+        <Grid  Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-                <ListView.View>
+            <ScrollViewer VerticalAlignment="Stretch"
+                          HorizontalAlignment="Center"
+                          HorizontalContentAlignment="Center"
+                          HorizontalScrollBarVisibility="Auto"
+                          helpers:ScrollViewerExtensions.AlwaysScrollToEnd="True">
+                <ListView ItemsSource="{Binding ReCutContent}"
+                          SelectedItem="{Binding ReCutSelectedLouver}">
+                    <ListView.View>
 
-                    <GridView AllowsColumnReorder="true"
-                              ColumnHeaderToolTip="Louver Data">
-                        <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
-                                        Header="LouverID"
-                                        Width="100" />
-                        <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
-                                        Header="LouverOrder"
-                                        Width="100" />
-                        <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
-                                        Header="CurrWarp"
-                                        Width="100" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Status}"
-                                        Header="Status"
-                                        Width="100" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </ScrollViewer>
+                        <GridView AllowsColumnReorder="true"
+                                  ColumnHeaderToolTip="Louver Data">
+                            <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
+                                            Header="LouverID"
+                                            Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
+                                            Header="LouverOrder"
+                                            Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
+                                            Header="CurrWarp"
+                                            Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Status}"
+                                            Header="Status"
+                                            Width="100" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </ScrollViewer>
+
+
+            <StackPanel Grid.Column="1">
+   
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <StackPanel>
+                        <TextBlock Text="Reading 1" />
+                        <TextBox VerticalAlignment="Center"
+                                 Width="50"
+                                 Text="{Binding RecutReading1}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Reading 2" />
+                        <TextBox VerticalAlignment="Center"
+                                 Width="50"
+                                 Text="{Binding RecutReading2}" />
+                    </StackPanel>
+                </StackPanel>
+
+
+                <Grid Height="350">
+                    <lvc:CartesianChart>
+                        <lvc:CartesianChart.Series>
+                            <lvc:LineSeries Values="{Binding VoltageValues}" />
+                        </lvc:CartesianChart.Series>
+                    </lvc:CartesianChart>
+                    <Button Content="Reconnect"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            FontSize="30"
+                            FontWeight="ExtraBold"
+                            Foreground="#521919"
+                            Background="Transparent"
+                            Visibility="{Binding DisconnectedEnabled}"
+                            Command="{Binding ReconnectToDataQ}" />
+                </Grid>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Check Top Value"
+                            Width="400"
+                            Height="80"
+                            FontSize="30"
+                            Margin="5,5,5,5"
+                            Command="{Binding CheckTop}"
+                            IsEnabled="{Binding CheckTopEnabled}" />
+                    <StackPanel>
+                        <TextBlock Text="Is louver an acceptable replacement" />
+                        <TextBox Text="{Binding TxtTopAcceptableReplacement}" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Check Bottom Value"
+                            Width="400"
+                            Height="80"
+                            FontSize="30"
+                            Margin="5,5,5,5"
+                            Command="{Binding CheckBottom}"
+                            IsEnabled="{Binding CheckBottomEnabled}" />
+                    <StackPanel>
+                        <TextBlock Text="Is louver an acceptable replacement" />
+                        <TextBox Text="{Binding TxtBottomAcceptableReplacement}" />
+                    </StackPanel>
+                </StackPanel>
+
+
+            </StackPanel>
+
+
+
+
+        </Grid>
+
+
+
+
+
 
         <Button Grid.Column="1"
                 Grid.Row="5"

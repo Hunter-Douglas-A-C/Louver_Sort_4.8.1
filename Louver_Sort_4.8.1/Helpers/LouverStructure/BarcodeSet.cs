@@ -57,79 +57,79 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
     //    }
     //}
 
-    public class BarcodeSetConverter : JsonConverter
-    {
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(BarcodeSet);
-        }
+    //public class BarcodeSetConverter : JsonConverter
+    //{
+    //    public override bool CanConvert(Type objectType)
+    //    {
+    //        return objectType == typeof(BarcodeSet);
+    //    }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            JObject obj = JObject.Load(reader);
-            string barcode1 = obj["Barcode1"].Value<string>();
-            string barcode2 = obj["Barcode2"].Value<string>();
-            return new BarcodeSet(barcode1, barcode2);
-        }
+    //    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    //    {
+    //        JObject obj = JObject.Load(reader);
+    //        string barcode1 = obj["Barcode1"].Value<string>();
+    //        string barcode2 = obj["Barcode2"].Value<string>();
+    //        return new BarcodeSet(barcode1, barcode2);
+    //    }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            BarcodeSet barcodeSet = (BarcodeSet)value;
-            JObject obj = new JObject
-        {
-            { "Barcode1", barcodeSet.Barcode1 },
-            { "Barcode2", barcodeSet.Barcode2 }
-        };
-            obj.WriteTo(writer);
-        }
+    //    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    //    {
+    //        BarcodeSet barcodeSet = (BarcodeSet)value;
+    //        JObject obj = new JObject
+    //    {
+    //        { "Barcode1", barcodeSet.Barcode1 },
+    //        { "Barcode2", barcodeSet.Barcode2 }
+    //    };
+    //        obj.WriteTo(writer);
+    //    }
 
-    }
+    //}
 
-    public class BarcodeSetTypeConverter : TypeConverter
-    {
+    //public class BarcodeSetTypeConverter : TypeConverter
+    //{
 
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
-        }
+    //    public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+    //    {
+    //        return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+    //    }
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value is string stringValue)
-            {
-                // Check for null or whitespace
-                if (String.IsNullOrWhiteSpace(stringValue))
-                {
-                    throw new ArgumentException("The string is null or whitespace.");
-                }
+    //    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    //    {
+    //        if (value is string stringValue)
+    //        {
+    //            // Check for null or whitespace
+    //            if (String.IsNullOrWhiteSpace(stringValue))
+    //            {
+    //                throw new ArgumentException("The string is null or whitespace.");
+    //            }
 
-                // Split the string by comma
-                var parts = stringValue.Split(',');
-                // Check for the expected number of parts
-                if (parts.Length == 2)
-                {
-                    // Further validation, if necessary, can go here
-                    return new BarcodeSet(parts[0].Trim(), parts[1].Trim());
-                }
-                else
-                {
-                    // Log the stringValue for debugging purposes
-                    // Logger.Log($"Unexpected format for BarcodeSet: {stringValue}");
-                    throw new ArgumentException($"Invalid format for BarcodeSet: {stringValue}");
-                }
-            }
-            else
-            {
-                // This else block can handle cases where value is not a string
-                // Logger.Log("Expected a string for BarcodeSet conversion.");
-                throw new ArgumentException("Expected a string for BarcodeSet conversion.");
-            }
-        }
-    }
+    //            // Split the string by comma
+    //            var parts = stringValue.Split(',');
+    //            // Check for the expected number of parts
+    //            if (parts.Length == 2)
+    //            {
+    //                // Further validation, if necessary, can go here
+    //                return new BarcodeSet(parts[0].Trim(), parts[1].Trim());
+    //            }
+    //            else
+    //            {
+    //                // Log the stringValue for debugging purposes
+    //                // Logger.Log($"Unexpected format for BarcodeSet: {stringValue}");
+    //                throw new ArgumentException($"Invalid format for BarcodeSet: {stringValue}");
+    //            }
+    //        }
+    //        else
+    //        {
+    //            // This else block can handle cases where value is not a string
+    //            // Logger.Log("Expected a string for BarcodeSet conversion.");
+    //            throw new ArgumentException("Expected a string for BarcodeSet conversion.");
+    //        }
+    //    }
+    //}
 
-    // Apply the JsonConverter attribute to the BarcodeSet class
-    [JsonConverter(typeof(BarcodeSetConverter))]
-    [TypeConverter(typeof(BarcodeSetTypeConverter))]
+    //// Apply the JsonConverter attribute to the BarcodeSet class
+    //[JsonConverter(typeof(BarcodeSetConverter))]
+    //[TypeConverter(typeof(BarcodeSetTypeConverter))]
     public class BarcodeSet
     {
         public string Barcode1 { get; set; }
@@ -153,6 +153,17 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             return obj is BarcodeSet other &&
                    Barcode1 == other.Barcode1 &&
                    Barcode2 == other.Barcode2;
+        }
+        public override int GetHashCode()
+        {
+            unchecked // Overflow is fine, just wrap
+            {
+                int hash = 17;
+                // Suitable nullity checks etc, of course :)
+                hash = hash * 23 + (Barcode1 != null ? Barcode1.GetHashCode() : 0);
+                hash = hash * 23 + (Barcode2 != null ? Barcode2.GetHashCode() : 0);
+                return hash;
+            }
         }
     }
 }

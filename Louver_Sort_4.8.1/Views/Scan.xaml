@@ -8,8 +8,6 @@
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:helpers="clr-namespace:Louver_Sort_4._8._1.Helpers"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:ii="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:iiii="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d"
              d:DesignHeight="1080"
              d:DesignWidth="1920">
@@ -399,10 +397,13 @@
 
             <ScrollViewer Grid.Column="1"
                           Grid.RowSpan="5"
-                          HorizontalContentAlignment="Center">
+                          HorizontalContentAlignment="Center"
+                          HorizontalScrollBarVisibility="Auto"
+                          helpers:ScrollViewerExtensions.AlwaysScrollToEnd="True">
                 <ListView ItemsSource="{Binding ListViewContent}"
                           FontSize="25"
-                          HorizontalContentAlignment="Center">
+                          HorizontalContentAlignment="Center"
+                          SelectedItem="{Binding ListViewSelectedLouver}">
                     <ListView.View>
                         <GridView AllowsColumnReorder="true"
                                   ColumnHeaderToolTip="Louver Data">
@@ -446,13 +447,6 @@
                         Margin="5,5,5,5"
                         Command="{Binding AcqReading2}"
                         IsEnabled="{Binding Acquare2Enabled}" />
-                <Button Content="Sort Louver Set"
-                        Width="400"
-                        Height="80"
-                        FontSize="30"
-                        Margin="5,5,5,5"
-                        Command="{Binding SortActiveSet}"
-                        IsEnabled="{Binding SortLouverSetEnabled}" />
                 <Button Content="Review Louver Report"
                         Width="400"
                         Height="80"

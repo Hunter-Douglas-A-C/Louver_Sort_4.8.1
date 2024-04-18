@@ -24,31 +24,56 @@
     <!--Topmost="True"-->
     <Grid>
 
+        <TabControl>
+            <TabItem Header="Sorting">
+                <Grid>
+                    <Border BorderBrush="Black"
+                            BorderThickness="5"
+                            CornerRadius="5"
+                            Panel.ZIndex="1"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"
+                            Width="400"
+                            Height="400"
+                            Visibility="{Binding PopUpVisible}">
+                        <ContentControl x:Name="CTCPopup"
+                                        Content="{Binding SelectedPopUp}" />
+                    </Border>
+
+
+                    <Border Panel.ZIndex="0"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch">
+                        <Border.Effect>
+                            <BlurEffect Radius="{Binding MainContentBlurRadius}" />
+                        </Border.Effect>
+                        <ContentControl x:Name="CTCMain"
+                                        Content="{Binding SelectedView}"
+                                        IsEnabled="{Binding MainEnabled}" />
+                    </Border>
+                </Grid>
+            </TabItem>
+
+
+
+
+            <TabItem Header="Maintance">
+                <Grid>
+                    
+                </Grid>
+                
+            </TabItem>
+
+
+
+            <TabItem Header="Reporting">
+                <Grid>
+                    
+                </Grid>
+            </TabItem>
+        </TabControl>
         
-        <Border BorderBrush="Black"
-                BorderThickness="5"
-                CornerRadius="5"
-                Panel.ZIndex="1"
-                VerticalAlignment="Stretch"
-                HorizontalAlignment="Stretch"
-                Width="400"
-                Height="400"
-                Visibility="{Binding PopUpVisible}">
-            <ContentControl x:Name="CTCPopup"
-                            Content="{Binding SelectedPopUp}" />
-        </Border>
+        
 
-
-        <Border Panel.ZIndex="0"
-                VerticalAlignment="Stretch"
-                HorizontalAlignment="Stretch"
-                >
-            <Border.Effect>
-                <BlurEffect Radius="{Binding MainContentBlurRadius}" />
-            </Border.Effect>
-            <ContentControl x:Name="CTCMain"
-                            Content="{Binding SelectedView}"
-                            IsEnabled="{Binding MainEnabled}" />
-        </Border>
     </Grid>
 </Window>

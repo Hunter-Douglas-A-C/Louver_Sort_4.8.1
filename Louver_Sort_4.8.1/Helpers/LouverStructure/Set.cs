@@ -18,17 +18,17 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         public ObservableCollection<LouverListView> _recordedLouvers = new ObservableCollection<LouverListView>();
         public ObservableCollection<ReportListView> _ReportData = new ObservableCollection<ReportListView>();
 
-        public ObservableCollection<LouverListView> RecordedLouvers
-        {
-            get { return _recordedLouvers; }
-            set { _recordedLouvers = value; }
-        }
+        //public ObservableCollection<LouverListView> RecordedLouvers
+        //{
+        //    get { return _recordedLouvers; }
+        //    set { _recordedLouvers = value; }
+        //}
 
-        public ObservableCollection<ReportListView> ReportData
-        {
-            get { return _ReportData; }
-            set { _ReportData = value; }
-        }
+        //public ObservableCollection<ReportListView> ReportData
+        //{
+        //    get { return _ReportData; }
+        //    set { _ReportData = value; }
+        //}
 
 
         public SetId ID
@@ -163,28 +163,30 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             //}
 
             // Update the collection
-            UpdateCollection();
+            _recordedLouvers = GenerateRecordedLouvers();
         }
 
 
-        public void UpdateCollection()
+        public ObservableCollection<LouverListView> GenerateRecordedLouvers()
         {
-            RecordedLouvers.Clear();
+            _recordedLouvers.Clear();
             foreach (var item in Louvers)
             {
-                RecordedLouvers.Add(new LouverListView(item.ID, "Top", item.Reading1));
-                RecordedLouvers.Add(new LouverListView(item.ID, "Bottom", item.Reading2));
+                _recordedLouvers.Add(new LouverListView(item.ID, "Top", item.Reading1));
+                _recordedLouvers.Add(new LouverListView(item.ID, "Bottom", item.Reading2));
             }
+            return _recordedLouvers;
         }
 
 
-        public void GenerateReport()
+        public ObservableCollection<ReportListView> GenerateReport()
         {
-            ReportData.Clear();
+            _ReportData.Clear();
             foreach (var item in Louvers)
             {
-                ReportData.Add(new ReportListView(item.ID, item.SortedID, item.AbsDevation, item.Rejected));
+                _ReportData.Add(new ReportListView(item.ID, item.SortedID, item.AbsDevation, item.Rejected));
             }
+            return _ReportData;
         }
     }
 }

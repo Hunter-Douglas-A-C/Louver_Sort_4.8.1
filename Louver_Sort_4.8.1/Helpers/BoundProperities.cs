@@ -28,9 +28,6 @@ namespace Louver_Sort_4._8._1.Helpers
 {
     internal class BoundProperities : INotifyPropertyChanged
     {
-
-
-
         #region SetProperty
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -104,31 +101,139 @@ namespace Louver_Sort_4._8._1.Helpers
         private ObservableCollection<LouverListView> _ListViewContent = new ObservableCollection<LouverListView>();
         private Visibility _popUpVisible;
         private bool _mainEnabled;
-        private int? _txtLouverCount = null;
+        private int? _txtLouverCount = 5;
         private int _MainContentBlurRadius;
         private ObservableCollection<ReportListView> _ReportContent = new ObservableCollection<ReportListView>();
         private double _deviation;
         private bool _focusBarcode1;
         private bool _focusBarcode2;
         private bool _focusLouverCount;
-
+        private ObservableCollection<ReportListView> _ReCutContent;
+        private ReportListView _ReCutSelectedLouver;
+        private bool _ApproveSetEnabled = true;
 
         private string _ReCutOrder;
         private string _ReCutLine;
         private string _ReCutUnit;
         private string _ReCutPanelID;
         private string _ReCutLouverSet;
-        private bool   _ReCutXL;
+        private bool _ReCutXL;
         private string _ReCutWidth;
         private string _ReCutLength;
         private string _ReCutBarcode1;
         private string _ReCutBarcode2;
-
+        private ReportListView _ReportSelectedLouver;
+        private LouverListView _ListViewSelectedLouver;
+        private bool _RejectSelectedLouverEnabled = false;
+        private bool _ReworkSetEnabled = false;
+        private string _RecutReading1;
+        private string _RecutReading2;
+        private bool _CheckValueEnabled = false;
+        private string _TxtTopAcceptableReplacement;
+        private string _TxtBottomAcceptableReplacement;
 
         #endregion
 
         #region Public Properities
 
+        public bool ApproveSetEnabled
+        {
+            get => _ApproveSetEnabled;
+            set { SetProperty(ref _ApproveSetEnabled, value); }
+        }
+
+        public string TxtTopAcceptableReplacement
+        {
+            get => _TxtTopAcceptableReplacement;
+            set { SetProperty(ref _TxtTopAcceptableReplacement, value); }
+        }
+
+        public string TxtBottomAcceptableReplacement
+        {
+            get => _TxtBottomAcceptableReplacement;
+            set { SetProperty(ref _TxtBottomAcceptableReplacement, value); }
+        }
+
+        public bool CheckValueEnabled
+        {
+            get => _CheckValueEnabled;
+            set { SetProperty(ref _CheckValueEnabled, value); }
+        }
+
+        public string RecutReading1
+        {
+            get => _RecutReading1;
+            set { SetProperty(ref _RecutReading1, value); }
+        }
+
+        public string RecutReading2
+        {
+            get => _RecutReading2;
+            set { SetProperty(ref _RecutReading2, value); }
+        }
+
+        public ReportListView ReCutSelectedLouver
+        {
+            get => _ReCutSelectedLouver;
+            set
+            {
+                SetProperty(ref _ReCutSelectedLouver, value);
+                // Find the index of the Louver object with the same ID as ReportSelectedLouver.
+                int index = ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID);
+
+                // If the Louver with the same ID is found, remove it from the collection.
+                if (index != -1)
+                {
+                    RecutReading1 = ActiveSet.Louvers[index].Reading1.ToString();
+                    RecutReading2 = ActiveSet.Louvers[index].Reading2.ToString();
+                }
+            }
+        }
+
+
+        public ObservableCollection<ReportListView> ReCutContent
+        {
+            get => _ReCutContent;
+            set { SetProperty(ref _ReCutContent, value); }
+        }
+
+        public bool ReworkSetEnabled
+        {
+            get => _ReworkSetEnabled;
+            set { SetProperty(ref _ReworkSetEnabled, value); }
+        }
+
+        public bool RejectSelectedLouverEnabled
+        {
+            get => _RejectSelectedLouverEnabled;
+            set { SetProperty(ref _RejectSelectedLouverEnabled, value); }
+        }
+
+        public ReportListView ReportSelectedLouver
+        {
+            get => _ReportSelectedLouver;
+            set
+            {
+                SetProperty(ref _ReportSelectedLouver, value);
+                if (_ReportSelectedLouver != null)
+                {
+                    RejectSelectedLouverEnabled = true;
+                }
+            }
+        }
+
+        public LouverListView ListViewSelectedLouver
+        {
+            get => _ListViewSelectedLouver;
+            set
+            {
+                SetProperty(ref _ListViewSelectedLouver, value);
+                if (_ListViewSelectedLouver != null)
+                {
+                    ActiveLouverID = _ListViewSelectedLouver.LouverID;
+                }
+            }
+        }
 
         public string ReCutOrder
         {
@@ -474,17 +579,18 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand LouverCountOk { get; set; }
         public ICommand ScanLoaded { get; set; }
         public ICommand Barcode1KeyDown { get; set; }
-
         public ICommand FilterEnter { get; set; }
         public ICommand EnterLouverCount { get; set; }
         public ICommand ReportApproved { get; set; }
-
         public ICommand ShutDown { get; set; }
-
         public ICommand SearchOrder { get; set; }
-
         public ICommand ClosePopUp { get; set; }
+        public ICommand RejectSelected { get; set; }
+        public ICommand ReworkSet { get; set; }
+        public ICommand CheckTop { get; set; }
+        public ICommand CheckBottom { get; set; }
         #endregion
+
 
 
 
@@ -494,10 +600,14 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public BoundProperities()
         {
-            string json = File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\json.txt");
-            JsonConvert.DeserializeObject<OrderManager>(json);
+            //string json = File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\json.txt");
 
-
+            //var settings = new JsonSerializerSettings
+            //{
+            //    NullValueHandling = NullValueHandling.Ignore,
+            //    MissingMemberHandling = MissingMemberHandling.Ignore
+            //};
+            //AllOrders = JsonConvert.DeserializeObject<OrderManager>(json, settings);
 
 
             var Mapper = Mappers.Xy<MeasureModel>()
@@ -508,6 +618,97 @@ namespace Louver_Sort_4._8._1.Helpers
             ScanLoaded = new BaseCommand(obj =>
             {
                 FocusBarcode1 = true;
+            });
+
+
+
+            CheckTop = new BaseCommand(obj =>
+            {
+                Random random = new Random();
+
+                // Generate a random integer between -1000 and 1000
+                int randomInt = random.Next(-1000, 1001);
+
+                // Divide the random integer by 1000 to get increments of 0.001
+                double value = randomInt / 1000.0;
+                //double value = RecordWhenStable(0.01);
+                //ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
+                //Reading1 = value;
+
+                if (Math.Abs(value - Convert.ToDouble(RecutReading1)) <= 0.1)
+                {
+                    TxtTopAcceptableReplacement = "Yes";
+                }
+                else
+                {
+                    TxtTopAcceptableReplacement = "no";
+                }
+            });
+
+            CheckBottom = new BaseCommand(obj =>
+            {
+                Random random = new Random();
+
+                // Generate a random integer between -1000 and 1000
+                int randomInt = random.Next(-1000, 1001);
+
+                // Divide the random integer by 1000 to get increments of 0.001
+                double value = randomInt / 1000.0;
+                //double value = RecordWhenStable(0.01);
+                //ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
+                //Reading1 = value;
+
+                if (Math.Abs(value - Convert.ToDouble(RecutReading2)) <= 0.1)
+                {
+                    TxtBottomAcceptableReplacement = "Yes";
+                }
+                else
+                {
+                    TxtBottomAcceptableReplacement = "no";
+                }
+            });
+
+
+            ReworkSet = new BaseCommand(obj =>
+            {
+                ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                Acquare1Enabled = true;
+                PrintLouverSortedLabels = false;
+
+                UpdateView.Execute("Scan");
+                ReworkSetEnabled = false;
+                foreach (var louver in ActiveSet._louvers)
+                {
+                    if (louver.Reading1 == 0 && louver.Reading2 == 0)
+                    {
+                        ActiveLouverID = louver.ID;
+                        Acquare1Enabled = true;
+                        Acquare2Enabled = false;
+                        return;
+                    }
+                }
+            });
+
+            RejectSelected = new BaseCommand(obj =>
+            {
+                // Check if ReportSelectedLouver is not null and ActiveSet is initialized.
+                if (ReportSelectedLouver != null && ActiveSet != null)
+                {
+                    // Find the index of the Louver object with the same ID as ReportSelectedLouver.
+                    int index = ActiveSet.Louvers.FindIndex(louver => louver.ID == ReportSelectedLouver.LouverID);
+
+                    // If the Louver with the same ID is found, remove it from the collection.
+                    if (index != -1)
+                    {
+                        ReportContent.Remove(ReportSelectedLouver);
+                        ActiveSet.Louvers[index].SetReading1(0);
+                        ActiveSet.Louvers[index].SetReading2(0);
+                    }
+                }
+
+                ReworkSetEnabled = true;
+                ApproveSetEnabled = false;
+                RejectSelectedLouverEnabled = false;
             });
 
             Barcode1KeyDown = new BaseCommand(obj =>
@@ -644,7 +845,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     MessageBox.Show("Already Sorted Order");
                     //Barcode1 = "";
-                    Barcode2 = "";
+                    //Barcode2 = "";
                     return;
                 }
                 else
@@ -676,6 +877,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 ActiveSet = ActivePanel.GetSet(order.BarcodeHelper.Set);
 
 
+
                 CurBarcode1 = order.BarcodeHelper.Barcode.Barcode1.ToString();
                 CurBarcode2 = order.BarcodeHelper.Barcode.Barcode2.ToString();
                 CurOrder = order.BarcodeHelper.Order.ToString();
@@ -688,6 +890,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 CurLength = order.BarcodeHelper.Length.ToString();
 
                 PrintLouverIDLabelsEnabled = true;
+
+                ListViewContent = ActiveSet.GenerateRecordedLouvers();
             });
 
             PrintStartingLabels = new BaseCommand(obj =>
@@ -725,8 +929,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
                 Reading1 = value;
 
-                ActiveSet.RecordedLouvers.Add(new LouverListView(ActiveLouverID, "Top", value));
-                ListViewContent = ActiveSet.RecordedLouvers;
+                ListViewContent = ActiveSet.GenerateRecordedLouvers();
                 Acquare1Enabled = false;
                 Acquare2Enabled = true;
             });
@@ -749,36 +952,32 @@ namespace Louver_Sort_4._8._1.Helpers
                 ActiveSet.Louvers[ActiveLouverID].CalcValues();
                 Deviation = ActiveSet.Louvers[ActiveLouverID].Devation;
 
+                ListViewContent = ActiveSet.GenerateRecordedLouvers();
 
-                ActiveSet.RecordedLouvers.Add(new LouverListView(ActiveLouverID, "Bottom", value));
-                ListViewContent = ActiveSet.RecordedLouvers;
 
-                if (ActiveLouverID + 1 < ActiveSet.LouverCount)
+
+
+                foreach (var louver in ActiveSet.Louvers)
                 {
-                    ActiveLouverID += 1;
-                    Acquare1Enabled = true;
-                    Acquare2Enabled = false;
+                    if (louver.Reading1 == 0 && louver.Reading2 == 0)
+                    {
+                        ActiveLouverID = louver.ID;
+                        Acquare1Enabled = true;
+                        Acquare2Enabled = false;
+                        return;
+                    }
                 }
-                else if (ActiveSet.LouverCount == ActiveLouverID + 1)
-                {
-                    Acquare1Enabled = false;
-                    Acquare2Enabled = false;
-                    SortLouverSetEnabled = true;
-                }
-            });
-
-            SortActiveSet = new BaseCommand(obj =>
-            {
-                //var sets = ActivePanel.Sort();
-                ActiveSet.Sort();
-                ListViewContent = null;
-                ListViewContent = ActiveSet.RecordedLouvers;
-                SortLouverSetEnabled = false;
+                Acquare1Enabled = false;
+                Acquare2Enabled = false;
                 ReviewLouverReportEnabled = true;
+
             });
 
             ReviewLouverReport = new BaseCommand(obj =>
             {
+                ActiveSet.Sort();
+                ListViewContent = null;
+                ListViewContent = ActiveSet.GenerateRecordedLouvers();
                 UpdateView.Execute("Report");
                 ReviewLouverReportEnabled = false;
 
@@ -847,7 +1046,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 PrintLouverSortedLabels = true;
             });
 
-            ShutDown = new BaseCommand(obj => {
+            ShutDown = new BaseCommand(obj =>
+            {
 
 
                 //// Serialize to JSON
@@ -879,16 +1079,17 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 Console.WriteLine("JSON exported and saved to file.");
 
-                Application.Current.Shutdown(); 
-            
-            
+                Application.Current.Shutdown();
+
+
             });
 
-            SearchOrder = new BaseCommand(obj => 
+            SearchOrder = new BaseCommand(obj =>
             {
                 var order = AllOrders.GetOrder(new BarcodeSet(Barcode1, Barcode2));
                 ActivePanel = order.GetOpeningByLine(order.BarcodeHelper.Line).GetPanel(order.BarcodeHelper.PanelID);
                 ActiveSet = ActivePanel.GetSet(order.BarcodeHelper.Set);
+
 
 
                 ReCutBarcode1 = order.BarcodeHelper.Barcode.Barcode1.ToString();
@@ -901,6 +1102,9 @@ namespace Louver_Sort_4._8._1.Helpers
                 ReCutXL = order.BarcodeHelper.Style == LouverStructure.LouverStyle.LouverStyles.XL;
                 ReCutWidth = order.BarcodeHelper.Width.ToString();
                 ReCutLength = order.BarcodeHelper.Length.ToString();
+
+                var report = ActiveSet.GenerateReport();
+                ReCutContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
             });
 
         }
@@ -999,8 +1203,9 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public void ReportInitialize()
         {
-            ActiveSet.GenerateReport();
-            ReportContent = new ObservableCollection<ReportListView>(ActiveSet.ReportData.OrderBy(r => r.LouverOrder));
+            var report = ActiveSet.GenerateReport();
+            ReportContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
+            ApproveSetEnabled = true;
         }
 
         public void ReCutInitialize()

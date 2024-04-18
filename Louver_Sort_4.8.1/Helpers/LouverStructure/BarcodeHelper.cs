@@ -28,8 +28,15 @@ namespace Louver_Sort_4._8._1.Helpers
 
         private void ParseBarcode()
         {
-            ParseBarcode1(_barcode.Barcode1);
-            ParseBarcode2(_barcode.Barcode2);
+            if (_barcode?.Barcode1 != null)
+            {
+                ParseBarcode1(_barcode.Barcode1);
+            }
+            if (_barcode?.Barcode2 != null)
+            {
+                ParseBarcode2(_barcode.Barcode2);
+            }
+
         }
 
         private void ParseBarcode1(string barcode1)

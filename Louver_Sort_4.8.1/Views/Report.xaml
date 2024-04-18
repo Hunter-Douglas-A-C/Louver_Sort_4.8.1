@@ -1,20 +1,19 @@
 ﻿<UserControl x:Class="Louver_Sort_4._8._1.Views.Report"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helpers="clr-namespace:Louver_Sort_4._8._1.Helpers"
              xmlns:local="clr-namespace:Louver_Sort_4._8._1.Views"
              mc:Ignorable="d"
-             
-             d:DesignHeight="1080" d:DesignWidth="1920">
-
+             d:DesignHeight="1080"
+             d:DesignWidth="1920">
 
     <Grid Background="WhiteSmoke">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="10*" />
-            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -94,57 +93,74 @@
             </StackPanel>
         </StackPanel>
 
-        <ScrollViewer Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Center">
-            <ListView ItemsSource="{Binding ReportContent}">
 
-                <ListView.View>
-
-                    <GridView AllowsColumnReorder="true"
-                              ColumnHeaderToolTip="Louver Data">
-                        <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
-                                        Header="LouverID"
-                                        Width="100" />
-                        <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
-                                        Header="LouverOrder"
-                                        Width="100" />
-                        <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
-                                        Header="CurrWarp"
-                                        Width="100" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Status}"
-                                        Header="Status"
-                                        Width="100" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </ScrollViewer>
-
-
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0"
-                Grid.Row="5"
-                Content="Rework Set"
-                Width="175"
-                Height="30"
-                Margin="5,5,5,5"
-                Command="{Binding ReworkSet}"/>
-            
-            
-            <Button Grid.Column="1"
-                Grid.Row="5"
-                Content="Approve"
-                Width="175"
-                Height="30"
-                Margin="5,5,5,5"
-                Command="{Binding ReportApproved}"/>
 
+            <ScrollViewer Grid.Column="0"
+                          VerticalAlignment="Stretch"
+                          HorizontalAlignment="Center"
+                          HorizontalContentAlignment="Center"
+                          HorizontalScrollBarVisibility="Auto"
+                          helpers:ScrollViewerExtensions.AlwaysScrollToEnd="True">
+                <ListView ItemsSource="{Binding ReportContent}"
+                          SelectedItem="{Binding ReportSelectedLouver}">
+
+                    <ListView.View>
+
+                        <GridView AllowsColumnReorder="true"
+                                  ColumnHeaderToolTip="Louver Data">
+                            <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
+                                            Header="LouverID"
+                                            Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
+                                            Header="LouverOrder"
+                                            Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
+                                            Header="CurrWarp"
+                                            Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Status}"
+                                            Header="Status"
+                                            Width="100" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </ScrollViewer>
+
+
+            <StackPanel Grid.Column="1"
+                        VerticalAlignment="Center">
+                <Button Content="Reject Selected Louver"
+                        Width="400"
+                        Height="80"
+                        FontSize="30"
+                        Margin="5,5,5,5"
+                        Command="{Binding RejectSelected}"
+                        IsEnabled="{Binding RejectSelectedLouverEnabled}" />
+                <Button Content="Rework Set"
+                        Width="400"
+                        Height="80"
+                        FontSize="30"
+                        Margin="5,5,5,5"
+                        Command="{Binding ReworkSet}"
+                        IsEnabled="{Binding ReworkSetEnabled}" />
+                <Button Content="Approve Set"
+                        Width="400"
+                        Height="80"
+                        FontSize="30"
+                        Margin="5,5,5,5"
+                        Command="{Binding ReportApproved}"
+                        IsEnabled="{Binding ApproveSetEnabled}" />
+            </StackPanel>
 
         </Grid>
-
     </Grid>
 </UserControl>
 

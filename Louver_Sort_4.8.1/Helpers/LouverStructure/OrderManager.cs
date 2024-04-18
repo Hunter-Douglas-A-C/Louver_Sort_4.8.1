@@ -278,9 +278,9 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
                 for (int i = 0; i < LouverCount - 1 + 1; i++)
                 {
                     var l = set.AddLouver(new Louver(i));
-                    l.SetReading1(i);
-                    l.SetReading2(i * (i / 1000));
-                    l.CalcValues();
+                    //l.SetReading1(i);
+                    //l.SetReading2(i * (i / 1000));
+                    //l.CalcValues();
                 }
 
                 return order;

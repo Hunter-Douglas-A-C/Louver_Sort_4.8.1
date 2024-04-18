@@ -34,10 +34,5 @@ namespace Louver_Sort_4._8._1.Views
 
             boundProperities.ScanInitialize();
         }
-
-        private void GotFocus(object sender, RoutedEventArgs e)
-        {
-            
-        }
     }
 }

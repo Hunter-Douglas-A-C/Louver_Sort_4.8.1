@@ -1,41 +1,89 @@
-﻿using Lextm.SharpSnmpLib.Objects;
+﻿using Newtonsoft.Json;
 using System;
-using System.Configuration;
-using System.Windows.Controls;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
+    /// <summary>
+    /// Represents a louver object.
+    /// </summary>
+    [Serializable]
     public class Louver
     {
-        // Fields
-        public readonly int _ID;
-        public bool _processed;
-        public double _reading1;
-        public double _reading2;
-        public double _devation;
-        public double _absDevation;
-        public bool _orientation;
-        public bool _rejected;
-        public string _causeOfRejection;
-        public int _sortedId;
+        private readonly int _ID;
+        private bool _processed;
+        private double _reading1;
+        private double _reading2;
+        private double _devation;
+        private double _absDevation;
+        private bool _orientation;
+        private bool _rejected;
+        private string _causeOfRejection;
+        private int _sortedId;
 
-        // Properties
+        [JsonProperty("id")]
         public int ID => _ID;
-        public bool Processed => _processed;
-        public double Reading1 => _reading1;
-        public double Reading2 => _reading2;
-        public double Devation => _devation;
-        public double AbsDevation => _absDevation;
-        public bool Orientation => _orientation;
-        public bool Rejected => _rejected;
-        public string CauseOfRejection => _causeOfRejection;
-        public int SortedID
+
+        [JsonProperty("processed")]
+        public bool Processed { get => _processed; set => _processed = value; }
+
+        [JsonProperty("reading1")]
+        public double Reading1 { get => _reading1; set => _reading1 = value; }
+
+        [JsonProperty("reading2")]
+        public double Reading2 { get => _reading2; set => _reading2 = value; }
+
+        [JsonProperty("deviation")]
+        public double Deviation { get => _devation; set => _devation = value; }
+
+        [JsonProperty("absDeviation")]
+        public double AbsDeviation { get => _absDevation; set => _absDevation = value; }
+
+        [JsonProperty("orientation")]
+        public bool Orientation { get => _orientation; set => _orientation = value; }
+
+        [JsonProperty("rejected")]
+        public bool Rejected { get => _rejected; set => _rejected = value; }
+
+        [JsonProperty("causeOfRejection")]
+        public string CauseOfRejection { get => _causeOfRejection; set => _causeOfRejection = value; }
+
+        [JsonProperty("sortedId")]
+        public int SortedID { get => _sortedId; set => _sortedId = value; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Constructor for deserialization
+        [JsonConstructor]
+        public Louver(int id, bool processed, double reading1, double reading2, double deviation, double absDeviation, bool orientation, bool rejected, string causeOfRejection)
         {
-            get { return _sortedId; }
-            set { _sortedId = value; }
+            _ID = id;
+            _processed = processed;
+            _reading1 = reading1;
+            _reading2 = reading2;
+            _devation = deviation;
+            _absDevation = absDeviation;
+            _orientation = orientation;
+            _rejected = rejected;
+            _causeOfRejection = causeOfRejection;
         }
 
         // Constructor
+        /// <summary>
+        /// Initializes a new instance of the Louver class.
+        /// </summary>
+        /// <param name="id">The ID of the louver.</param>
         public Louver(int id)
         {
             _ID = id;
@@ -43,32 +91,48 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         }
 
         // Methods
+        /// <summary>
+        /// Sets the first reading of the louver.
+        /// </summary>
+        /// <param name="r1">The first reading value.</param>
         public void SetReading1(double r1) => _reading1 = r1;
+
+        /// <summary>
+        /// Sets the second reading of the louver.
+        /// </summary>
+        /// <param name="r2">The second reading value.</param>
         public void SetReading2(double r2) => _reading2 = r2;
 
+        /// <summary>
+        /// Calculates the deviation and orientation values of the louver.
+        /// </summary>
         public void CalcValues()
         {
             _processed = true;
-            if (Math.Abs(Reading1) > Math.Abs(Reading2))
-            {
-                _devation = Reading1;
-            }
-            else
-            {
-                _devation = Reading2;
-            }
-            _orientation = _devation > 0 ? true : false;
+            _devation = Math.Abs(Reading1) > Math.Abs(Reading2) ? Reading1 : Reading2;
+            _orientation = _devation > 0;
             _absDevation = Math.Abs(_devation);
         }
 
+        /// <summary>
+        /// Sets the warp value of the louver.
+        /// </summary>
+        /// <param name="w">The warp value.</param>
         public void SetWarp(double w) => _absDevation = w;
 
+        /// <summary>
+        /// Rejects the louver with the specified cause.
+        /// </summary>
+        /// <param name="cause">The cause of rejection.</param>
         public void Reject(string cause)
         {
             _rejected = true;
             _causeOfRejection = cause;
         }
 
+        /// <summary>
+        /// Resets the louver to its initial state.
+        /// </summary>
         public void Reset()
         {
             _processed = false;
@@ -80,8 +144,5 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             _causeOfRejection = "";
             _sortedId = 0;
         }
-
-
-
     }
 }

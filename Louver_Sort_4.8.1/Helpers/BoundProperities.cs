@@ -1,28 +1,24 @@
-﻿using LiveCharts;
-using LiveCharts.Configurations;
-using Louver_Sort_4._8._1.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows;
-using Zebra.Sdk.Printer;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using Louver_Sort_4._8._1.Helpers.LouverStructure;
-using Dataq.Connections;
-using Org.BouncyCastle.Asn1.X509;
-using System.Reflection;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Data;
+using LiveCharts.Configurations;
+using LiveCharts;
+using Louver_Sort_4._8._1.Helpers.LouverStructure;
+using Louver_Sort_4._8._1.Views;
 using Newtonsoft.Json;
-using System.IO;
-using System.Security.Principal;
+using System.Diagnostics;
+
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -111,7 +107,6 @@ namespace Louver_Sort_4._8._1.Helpers
         private ObservableCollection<ReportListView> _ReCutContent;
         private ReportListView _ReCutSelectedLouver;
         private bool _ApproveSetEnabled = true;
-
         private string _ReCutOrder;
         private string _ReCutLine;
         private string _ReCutUnit;
@@ -177,7 +172,11 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _ReCutSelectedLouver;
             set
             {
-                SetProperty(ref _ReCutSelectedLouver, value);
+                if (value != null)
+                {
+                    SetProperty(ref _ReCutSelectedLouver, value);
+                }
+
                 // Find the index of the Louver object with the same ID as ReportSelectedLouver.
                 int index = ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID);
 
@@ -189,7 +188,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             }
         }
-
 
         public ObservableCollection<ReportListView> ReCutContent
         {
@@ -677,7 +675,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 UpdateView.Execute("Scan");
                 ReworkSetEnabled = false;
-                foreach (var louver in ActiveSet._louvers)
+                foreach (var louver in ActiveSet.Louvers)
                 {
                     if (louver.Reading1 == 0 && louver.Reading2 == 0)
                     {
@@ -840,7 +838,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
             EnterBarcodes = new BaseCommand(obj =>
             {
-                var o = AllOrders.CheckifOrderExists(new BarcodeSet(Barcode1, Barcode2));
+                var o = AllOrders.CheckIfOrderExists(new BarcodeSet(Barcode1, Barcode2));
                 if (o != null)
                 {
                     MessageBox.Show("Already Sorted Order");
@@ -878,8 +876,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
-                CurBarcode1 = order.BarcodeHelper.Barcode.Barcode1.ToString();
-                CurBarcode2 = order.BarcodeHelper.Barcode.Barcode2.ToString();
+                CurBarcode1 = order.BarcodeHelper.BarcodeSet.Barcode1.ToString();
+                CurBarcode2 = order.BarcodeHelper.BarcodeSet.Barcode2.ToString();
                 CurOrder = order.BarcodeHelper.Order.ToString();
                 CurLine = order.BarcodeHelper.Line.ToString();
                 CurUnit = order.BarcodeHelper.Unit.ToString();
@@ -950,7 +948,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
                 ActiveSet.Louvers[ActiveLouverID].CalcValues();
-                Deviation = ActiveSet.Louvers[ActiveLouverID].Devation;
+                Deviation = ActiveSet.Louvers[ActiveLouverID].Deviation;
 
                 ListViewContent = ActiveSet.GenerateRecordedLouvers();
 
@@ -1090,10 +1088,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 ActivePanel = order.GetOpeningByLine(order.BarcodeHelper.Line).GetPanel(order.BarcodeHelper.PanelID);
                 ActiveSet = ActivePanel.GetSet(order.BarcodeHelper.Set);
 
-
-
-                ReCutBarcode1 = order.BarcodeHelper.Barcode.Barcode1.ToString();
-                ReCutBarcode2 = order.BarcodeHelper.Barcode.Barcode2.ToString();
+                ReCutBarcode1 = order.BarcodeHelper.BarcodeSet.Barcode1.ToString();
+                ReCutBarcode2 = order.BarcodeHelper.BarcodeSet.Barcode2.ToString();
                 ReCutOrder = order.BarcodeHelper.Order.ToString();
                 ReCutLine = order.BarcodeHelper.Line.ToString();
                 ReCutUnit = order.BarcodeHelper.Unit.ToString();

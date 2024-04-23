@@ -1,48 +1,36 @@
-﻿using Org.BouncyCastle.Asn1.X509;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using static Louver_Sort_4._8._1.Helpers.LouverStructure.SetID;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
+    /// <summary>
+    /// Manages orders and associated operations.
+    /// </summary>
+    [Serializable]
     public class OrderManager
     {
-        //public Dictionary<BarcodeSet, Order> ordersByBarcode = new Dictionary<BarcodeSet, Order>();
-        public List<OrderWithBarcode> ordersWithBarcodes = new List<OrderWithBarcode>();
+        // Fields
+        private List<OrderWithBarcode> _ordersWithBarcodes = new List<OrderWithBarcode>();
 
+        [JsonProperty("ordersWithBarcodes")]
+        public List<OrderWithBarcode> OrdersWithBarcodes { get => _ordersWithBarcodes; set => _ordersWithBarcodes = value; }
 
         #region Orders
 
-        //public Order GetOrCreateOrder(BarcodeSet b)
-        //{
-        //    // Check if the order already exists.
-        //    if (ordersByBarcode.TryGetValue(b, out var existingOrder))
-        //    {
-        //        // Return the existing order.
-        //        return existingOrder;
-        //    }
-
-        //    // If not, create a new order and add to the dictionary.
-        //    var newOrder = new Order(b);
-        //    ordersByBarcode[b] = newOrder;
-
-        //    return newOrder;
-        //}
-
+        /// <summary>
+        /// Creates a new order or retrieves an existing one based on the provided barcode.
+        /// </summary>
+        /// <param name="b">The barcode set associated with the order.</param>
+        /// <returns>A tuple containing the order and a boolean indicating if it's a new order.</returns>
         public (Order, bool) CreateOrder(BarcodeSet b)
         {
             var testBarcodeHelper = new BarcodeHelper(b);
 
             // Search for an existing order with matching attributes
-            foreach (var orderWithBarcode in ordersWithBarcodes)
+            foreach (var orderWithBarcode in OrdersWithBarcodes)
             {
                 var existingOrder = orderWithBarcode.Order;
                 var existingBarcodeHelper = existingOrder.BarcodeHelper;
@@ -62,207 +50,161 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 
             // If no existing order is found, create and add a new order
             var newOrder = new Order(b);
-            ordersWithBarcodes.Add(new OrderWithBarcode(newOrder));
+            OrdersWithBarcodes.Add(new OrderWithBarcode(newOrder));
 
             // Return the new order along with an indicator that it's new
             return (newOrder, true);
         }
 
-
-        #endregion
-
-
-        #region Get all of class with barcodeset
-
-
-        //public IEnumerable<Opening> GetAllOpenings(BarcodeSet barcodeSet)
-        //{
-        //    var order = CreateOrder(barcodeSet);
-        //    return order.Openings;
-        //}
-
-        //public IEnumerable<Panel> GetAllPanels(BarcodeSet barcodeSet)
-        //{
-        //    var order = CreateOrder(barcodeSet);
-        //    return order.Openings.SelectMany(opening => opening.Panels);
-        //}
-
-        //public IEnumerable<Set> GetAllSets(BarcodeSet barcodeSet)
-        //{
-        //    var order = CreateOrder(barcodeSet);
-        //    return order.Openings.SelectMany(opening => opening.Panels)
-        //                         .SelectMany(panel => panel.Sets);
-        //}
-
-        //public IEnumerable<Louver> GetAllLouvers(BarcodeSet barcodeSet)
-        //{
-        //    var order = CreateOrder(barcodeSet);
-        //    return order.Openings.SelectMany(opening => opening.Panels)
-        //                         .SelectMany(panel => panel.Sets)
-        //                         .SelectMany(set => set.Louvers);
-        //}
-
-
-
-        //#endregion
-
-        //#region Add to order
-
-        //public void AddOpening(BarcodeSet barcodeSet, Opening o)
-        //{
-        //    var order = CreateOrder(barcodeSet);
-        //    order.AddOpening(o);
-        //}
-
-        //public void AddPanel(BarcodeSet barcodeSet, Panel p)
-        //{
-        //    var order = CreateOrder(barcodeSet);
-        //    order.Openings[1].AddPanel(p);
-        //}
-
-        //public void AddSet(BarcodeSet barcodeSet, Set s)
-        //{
-        //    var order = CreateOrder(barcodeSet);
-        //    order.Openings[1].Panels[1].AddSet(s);
-        //}
-
-        //public void AddLouver(BarcodeSet barcodeSet, Louver l)
-        //{
-        //    var order = CreateOrder(barcodeSet);
-        //    order.Openings[1].Panels[1].Sets[1].AddLouver(l);
-        //}
-
-        //public void AddLouvers(BarcodeSet barcodeSet, List<Louver> l)
-        //{
-        //    var order = CreateOrder(barcodeSet);
-        //    order.Openings[1].Panels[1].Sets[1].AddLouvers(l);
-        //}
-
         #endregion
 
         #region Get specific w/ IDs
 
+        /// <summary>
+        /// Retrieves an opening from an order by its line number and barcode set.
+        /// </summary>
+        /// <param name="line">The line number of the opening.</param>
+        /// <param name="barcodeSet">The barcode set associated with the order.</param>
+        /// <returns>The opening with the specified line number.</returns>
         public Opening GetOpening(int line, BarcodeSet barcodeSet)
         {
-
-            {
-                // Find the order using the BarcodeSet as an ID
-                var orderWithBarcode = ordersWithBarcodes.FirstOrDefault(ob => ob.BarcodeSet.Equals(barcodeSet));
-                if (orderWithBarcode != null)
-                {
-                    // Look for the opening with the matching line number within this order
-                    return orderWithBarcode.Order.Openings.FirstOrDefault(opening => opening.Line == line);
-                }
-
-                return null; // or handle the case where the order is not found
-            }
-        }
-
-
-        public Panel GetPanel(double PanelID, double Openingline, BarcodeSet barcodeSet)
-        {
-
-            // Find the order with the matching barcodeSet ID
-            var orderWithBarcode = ordersWithBarcodes.FirstOrDefault(ob => ob.BarcodeSet.Equals(barcodeSet));
+            var orderWithBarcode = OrdersWithBarcodes.FirstOrDefault(ob => ob.BarcodeSet.Equals(barcodeSet));
             if (orderWithBarcode != null)
             {
-                Opening opening = FindOpeningInOrder(orderWithBarcode.Order, Openingline);
-                // Check if the opening is not null and has panels
+                return orderWithBarcode.Order.Openings.FirstOrDefault(opening => opening.Line == line);
+            }
+
+            return null; // or handle the case where the order is not found
+        }
+
+        /// <summary>
+        /// Retrieves a panel from an opening by its panel ID and line number, associated with the specified barcode set.
+        /// </summary>
+        /// <param name="panelId">The ID of the panel.</param>
+        /// <param name="openingLine">The line number of the opening.</param>
+        /// <param name="barcodeSet">The barcode set associated with the order.</param>
+        /// <returns>The panel with the specified ID.</returns>
+        public Panel GetPanel(double panelId, double openingLine, BarcodeSet barcodeSet)
+        {
+            var orderWithBarcode = OrdersWithBarcodes.FirstOrDefault(ob => ob.BarcodeSet.Equals(barcodeSet));
+            if (orderWithBarcode != null)
+            {
+                Opening opening = FindOpeningInOrder(orderWithBarcode.Order, openingLine);
                 if (opening != null && opening.Panels != null)
                 {
-                    // Use LINQ to find the panel with the matching ID
-                    return opening.Panels.FirstOrDefault(panel => panel.ID == PanelID);
+                    return opening.Panels.FirstOrDefault(panel => panel.ID == panelId);
                 }
             }
 
             return null; // or handle the case where the panel is not found
         }
 
-
-        public Set GetSet(SetID.SetId SetID, double PanelID, double OpeningLine, BarcodeSet barcodeSet)
+        /// <summary>
+        /// Retrieves a set from a panel by its set ID, associated with the specified barcode set.
+        /// </summary>
+        /// <param name="setId">The ID of the set.</param>
+        /// <param name="panelId">The ID of the panel.</param>
+        /// <param name="openingLine">The line number of the opening.</param>
+        /// <param name="barcodeSet">The barcode set associated with the order.</param>
+        /// <returns>The set with the specified ID.</returns>
+        public Set GetSet(SetID.SetId setId, double panelId, double openingLine, BarcodeSet barcodeSet)
         {
-            // Find the order with the matching barcodeSet
-            var orderWithBarcode = ordersWithBarcodes.FirstOrDefault(ob => ob.BarcodeSet.Equals(barcodeSet));
+            var orderWithBarcode = OrdersWithBarcodes.FirstOrDefault(ob => ob.BarcodeSet.Equals(barcodeSet));
             if (orderWithBarcode != null)
             {
-                Opening o = FindOpeningInOrder(orderWithBarcode.Order, OpeningLine);
-                // Check if the order is not null and has openings
-                if (o != null)
+                Opening opening = FindOpeningInOrder(orderWithBarcode.Order, openingLine);
+                if (opening != null)
                 {
-                    Panel p = FindPanelInOpening(o, PanelID);
-                    // Check if the panel is not null and has sets
-                    if (p != null)
+                    Panel panel = FindPanelInOpening(opening, panelId);
+                    if (panel != null)
                     {
-                        // Use LINQ to find the set with the matching ID
-                        return p.Sets.FirstOrDefault(set => set.ID == SetID);
+                        return panel.Sets.FirstOrDefault(set => set.ID == setId);
                     }
                 }
             }
 
-            // If the order doesn't exist or no opening with the given line or panel with the given ID is found
             return null;
         }
+
         #endregion
 
         #region Find one level down w/ ID
 
+        /// <summary>
+        /// Finds an opening in an order by its line number.
+        /// </summary>
+        /// <param name="order">The order to search in.</param>
+        /// <param name="line">The line number of the opening.</param>
+        /// <returns>The opening with the specified line number.</returns>
         public Opening FindOpeningInOrder(Order order, double line)
         {
-            // Check if the order is not null and has openings
             if (order != null && order.Openings != null)
             {
-                // Use LINQ to find the opening with the matching ID
                 return order.Openings.FirstOrDefault(opening => opening.Line == line);
             }
 
-            // Return null if no opening with the given ID is found or if the order is null
             return null;
         }
 
-        public Panel FindPanelInOpening(Opening open, double ID)
+        /// <summary>
+        /// Finds a panel in an opening by its ID.
+        /// </summary>
+        /// <param name="open">The opening to search in.</param>
+        /// <param name="id">The ID of the panel.</param>
+        /// <returns>The panel with the specified ID.</returns>
+        public Panel FindPanelInOpening(Opening open, double id)
         {
-            // Check if the order is not null and has openings
             if (open != null && open.Panels != null)
             {
-                // Use LINQ to find the opening with the matching ID
-                return open.Panels.FirstOrDefault(panel => panel.ID == ID);
+                return open.Panels.FirstOrDefault(panel => panel.ID == id);
             }
 
-            // Return null if no opening with the given ID is found or if the order is null
             return null;
         }
 
-        public Set FindSetInPanel(Panel panel, SetID.SetId ID)
+        /// <summary>
+        /// Finds a set in a panel by its ID.
+        /// </summary>
+        /// <param name="panel">The panel to search in.</param>
+        /// <param name="id">The ID of the set.</param>
+        /// <returns>The set with the specified ID.</returns>
+        public Set FindSetInPanel(Panel panel, SetID.SetId id)
         {
-            // Check if the order is not null and has openings
             if (panel != null && panel.Sets != null)
             {
-                // Use LINQ to find the opening with the matching ID
-                return panel.Sets.FirstOrDefault(set => set.ID == ID);
+                return panel.Sets.FirstOrDefault(set => set.ID == id);
             }
 
-            // Return null if no opening with the given ID is found or if the order is null
             return null;
         }
 
         #endregion
 
-        public Order CheckifOrderExists(BarcodeSet barcodeSet)
+        /// <summary>
+        /// Checks if an order exists based on the provided barcode set.
+        /// </summary>
+        /// <param name="barcodeSet">The barcode set to check.</param>
+        /// <returns>The existing order if found; otherwise, null.</returns>
+        public Order CheckIfOrderExists(BarcodeSet barcodeSet)
         {
-            foreach (var item in ordersWithBarcodes)
+            foreach (var item in OrdersWithBarcodes)
             {
                 if (item.BarcodeSet.Barcode1 == barcodeSet.Barcode1 && item.BarcodeSet.Barcode2 == barcodeSet.Barcode2)
                 {
                     return item.Order;
                 }
             }
-            // If no matching order is found, return null
-            return null;
 
+            return null;
         }
 
-
-        public Order CreateOrderAfterScanAndFillAllVariables(BarcodeSet barcodeSet, int LouverCount)
+        /// <summary>
+        /// Creates an order after scanning and fills all associated variables.
+        /// </summary>
+        /// <param name="barcodeSet">The barcode set associated with the order.</param>
+        /// <param name="louverCount">The number of louvers to add to the order.</param>
+        /// <returns>The created order.</returns>
+        public Order CreateOrderAfterScanAndFillAllVariables(BarcodeSet barcodeSet, int louverCount)
         {
             var (order, isNewOrder) = CreateOrder(barcodeSet);
             if (!isNewOrder)
@@ -274,8 +216,8 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             {
                 var open = order.AddOpening(new Opening(order.BarcodeHelper.Line, order.BarcodeHelper.Style, order.BarcodeHelper.Width, order.BarcodeHelper.Length));
                 var pan = open.AddPanel(new Panel(order.BarcodeHelper.PanelID));
-                var set = pan.AddSet(new Set(order.BarcodeHelper.Set, LouverCount));
-                for (int i = 0; i < LouverCount - 1 + 1; i++)
+                var set = pan.AddSet(new Set(order.BarcodeHelper.Set, louverCount));
+                for (int i = 0; i < louverCount; i++)
                 {
                     var l = set.AddLouver(new Louver(i));
                     //l.SetReading1(i);
@@ -287,12 +229,14 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             }
         }
 
-
-
+        /// <summary>
+        /// Retrieves the order associated with the provided barcode set.
+        /// </summary>
+        /// <param name="barcodeSet">The barcode set associated with the order.</param>
+        /// <returns>The order if found; otherwise, null.</returns>
         public Order GetOrder(BarcodeSet barcodeSet)
         {
-            // Iterate over the list and find the Order with the matching BarcodeSet
-            foreach (var orderWithBarcode in ordersWithBarcodes)
+            foreach (var orderWithBarcode in OrdersWithBarcodes)
             {
                 if (orderWithBarcode.BarcodeSet.Equals(barcodeSet))
                 {
@@ -300,10 +244,14 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
                 }
             }
 
-            // If not found, return null
             return null;
         }
 
+        /// <summary>
+        /// Retrieves all orders from the specified list of order-with-barcode pairs.
+        /// </summary>
+        /// <param name="ordersWithBarcodes">The list of order-with-barcode pairs.</param>
+        /// <returns>An enumerable collection of orders.</returns>
         public IEnumerable<Order> GetAllOrders(List<OrderWithBarcode> ordersWithBarcodes)
         {
             foreach (var orderWithBarcode in ordersWithBarcodes)
@@ -311,6 +259,5 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
                 yield return orderWithBarcode.Order;
             }
         }
-
     }
 }

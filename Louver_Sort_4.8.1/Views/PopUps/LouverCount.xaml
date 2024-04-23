@@ -1,23 +1,63 @@
 ﻿<UserControl x:Class="Louver_Sort_4._8._1.Views.PopUps.LouverCount"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:Louver_Sort_4._8._1.Helpers"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Louver_Sort_4._8._1.Views.PopUps"
-             mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="800">
+             mc:Ignorable="d"
+             d:DesignHeight="800"
+             d:DesignWidth="800">
     <!--<i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LouverCountPopUpLoaded}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>-->
-    
-    <Grid Background="WhiteSmoke">
-        <StackPanel Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Enter Louver Count:" />
-            <TextBox x:Name="InputTextBox"
+
+    <Grid>
+        <materialDesign:ColorZone VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                                  Padding="16"
+                                  materialDesign:ElevationAssist.Elevation="Dp4"
+                                  ClipToBounds="False"
+                                  CornerRadius="10"
+                                  Mode="PrimaryDark">
+            <StackPanel Margin="10"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <materialDesign:ColorZone Grid.Row="0"
+                                          Grid.ColumnSpan="3"
+                                          Padding="16"
+                                          Margin="0,0,50,0"
+                                          materialDesign:ElevationAssist.Elevation="Dp4"
+                                          ClipToBounds="False"
+                                          CornerRadius="10"
+                                          Mode="SecondaryDark"
+                                          HorizontalAlignment="Left">
+                    <TextBlock Text="Enter Louver Count:" />
+                </materialDesign:ColorZone>
+
+                <TextBox x:Name="barcode1TextBox"
+                         materialDesign:HintAssist.Hint="Louver Count"
+                         materialDesign:HintAssist.HelperTextFontSize="16"
+                         Margin="0,0,0,0"
+                         FontSize="24"
+                         Focusable="True"
+                         helpers:FocusExtension.IsFocused="{Binding Path=FocusLouverCount}"
+                         materialDesign:TextFieldAssist.HasClearButton="True">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter"
+                                    Command="{Binding LouverCountOk}" />
+                    </TextBox.InputBindings>
+                    <TextBox.Text>
+                        <Binding Path="TxtLouverCount"
+                                 UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <!--<TextBox x:Name="InputTextBox"
                      Margin="0,10"
                      Text="{Binding TxtLouverCount}"
                      helpers:FocusExtension.IsFocused="{Binding Path=FocusLouverCount}"
@@ -27,18 +67,19 @@
                     <KeyBinding Key="Enter"
                                 Command="{Binding LouverCountOk}" />
                 </TextBox.InputBindings>
-            </TextBox>
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        Margin="0,20,0,0">
-                <Button x:Name="CancelButton"
-                        Content="Cancel"
-                        Margin="0,0,10,0" 
-                        Command="{Binding ClosePopUp}"/>
-                <Button x:Name="OkButton"
-                        Content="OK"
-                        Command="{Binding LouverCountOk}" />
+            </TextBox>-->
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="0,20,0,0">
+                    <Button x:Name="CancelButton"
+                            Content="Cancel"
+                            Margin="0,0,10,0"
+                            Command="{Binding ClosePopUp}" />
+                    <Button x:Name="OkButton"
+                            Content="OK"
+                            Command="{Binding LouverCountOk}" />
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </materialDesign:ColorZone>
     </Grid>
 </UserControl>

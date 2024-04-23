@@ -1,30 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Navigation;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
+    /// <summary>
+    /// Represents different styles of louvers.
+    /// </summary>
+    [Serializable]
     public class LouverStyle
     {
+        /// <summary>
+        /// Enum representing the available louver styles.
+        /// </summary>
         public enum LouverStyles
         {
-            XL,
-            Standard
+            XL,        // Extra Large
+            Standard   // Standard
         }
 
+        /// <summary>
+        /// Converts a boolean value to a LouverStyles enum.
+        /// </summary>
+        /// <param name="isXL">A boolean indicating if the louver style is XL.</param>
+        /// <returns>The corresponding LouverStyles enum value.</returns>
         public static LouverStyles ConvertToStyle(bool isXL)
         {
-            switch (isXL)
-            {
-                case (true):
-                   return LouverStyles.XL;
-                default:
-                    return LouverStyles.Standard;
-            }
+            return isXL ? LouverStyles.XL : LouverStyles.Standard;
         }
     }
 }

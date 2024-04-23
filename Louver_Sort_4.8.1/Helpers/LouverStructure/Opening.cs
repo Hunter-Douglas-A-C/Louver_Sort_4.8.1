@@ -1,8 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
+    /// <summary>
+    /// Represents an opening with louvers.
+    /// </summary>
+    [Serializable]
     public class Opening
     {
         public enum LouverModels
@@ -15,26 +20,62 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             MSL06
         }
 
-        public readonly int _line;
-        public readonly LouverModels _modelNum;
-        public readonly LouverStructure.LouverStyle.LouverStyles _style;
-        public readonly double _width;
-        public readonly double _length;
-        public readonly List<Panel> _panels = new List<Panel>();
+        private LouverModels _modelNum;
+        private LouverStyle.LouverStyles _style;
+        private double _width;
+        private double _length;
+        private List<Panel> _panels = new List<Panel>();
+        private int _line;
 
-        public int Line => _line;
+        [JsonProperty("modelNum")]
+        public LouverModels ModelNum { get => _modelNum; set => _modelNum = value; }
 
-        public LouverModels ModelNum => _modelNum;
+        [JsonProperty("style")]
+        public LouverStyle.LouverStyles Style { get => _style; set => _style = value; }
 
-        public LouverStructure.LouverStyle.LouverStyles Style => _style;
+        [JsonProperty("width")]
+        public double Width { get => _width; set => _width = value; }
 
-        public double Width => _width;
+        [JsonProperty("length")]
+        public double Length { get => _length; set => _length = value; }
 
-        public double Length => _length;
+        [JsonProperty("line")]
+        public int Line { get => _line; set => _line = value; }
 
-        public List<Panel> Panels => _panels;
+        [JsonProperty("panels")]
+        public List<Panel> Panels
+        {
+            get => _panels;
+            set => _panels.AddRange(value);
+        }
 
-        public Opening(int line, LouverStructure.LouverStyle.LouverStyles style, double width, double length)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Constructor
+        /// <summary>
+        /// Initializes a new instance of the Opening class.
+        /// </summary>
+        /// <param name="line">The line number.</param>
+        /// <param name="style">The louver style.</param>
+        /// <param name="width">The width of the opening.</param>
+        /// <param name="length">The length of the opening.</param>
+        public Opening(int line, LouverStyle.LouverStyles style, double width, double length)
         {
             _line = line;
             _style = style;
@@ -43,9 +84,14 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             _modelNum = AssignModelNum();
         }
 
+        // Methods
+        /// <summary>
+        /// Assigns a louver model number based on the style and width of the opening.
+        /// </summary>
+        /// <returns>The assigned louver model number.</returns>
         private LouverModels AssignModelNum()
         {
-            var combinedInput = $"{Style}:{Width}";
+            var combinedInput = $"{_style}:{_width}";
             switch (combinedInput)
             {
                 case "Standard:2.5":
@@ -61,32 +107,45 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
                 case "XL:4.5":
                     return LouverModels.MSL06;
                 default:
-                    throw new System.ArgumentException("Invalid combination of style and width");
+                    throw new ArgumentException("Invalid combination of style and width");
             }
         }
 
+        /// <summary>
+        /// Adds a panel to the opening.
+        /// </summary>
+        /// <param name="p">The panel to add.</param>
+        /// <returns>The added panel.</returns>
         public Panel AddPanel(Panel p)
         {
-            Panels.Add(p);
-            return Panels[Panels.Count - 1];
+            _panels.Add(p);
+            return _panels[_panels.Count - 1];
         }
 
-
+        /// <summary>
+        /// Removes a panel from the opening.
+        /// </summary>
+        /// <param name="p">The panel to remove.</param>
         public void RemovePanel(Panel p)
         {
-            Panels.Remove(p);
+            _panels.Remove(p);
         }
 
-        public Panel GetPanel(int Id)
+        /// <summary>
+        /// Gets a panel from the opening by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the panel.</param>
+        /// <returns>The panel with the specified ID.</returns>
+        public Panel GetPanel(int id)
         {
-            foreach (Panel panel in Panels)
+            foreach (Panel panel in _panels)
             {
-                if (panel.ID == Id)
+                if (panel.ID == id)
                 {
                     return panel;
                 }
             }
-            throw new ArgumentException("Panel with the specified ID not found.", nameof(Id));
+            throw new ArgumentException("Panel with the specified ID not found.", nameof(id));
         }
     }
 }

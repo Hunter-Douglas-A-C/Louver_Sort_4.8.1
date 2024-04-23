@@ -8,9 +8,15 @@
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:helpers="clr-namespace:Louver_Sort_4._8._1.Helpers"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="1080"
-             d:DesignWidth="1920">
+             d:DesignWidth="1920"
+             TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+             Background="{DynamicResource MaterialDesign.Brush.Background}"
+             TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -24,110 +30,579 @@
     </UserControl.InputBindings>
 
     <Grid>
-
-
         <Grid.RowDefinitions>
+            <RowDefinition Height="205" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="430" />
         </Grid.ColumnDefinitions>
 
-
-        <Grid Grid.Row="0"
-              Background="CornflowerBlue">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="3*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Louver Set Data Acquisition"
-                           FontSize="50"
-                           Grid.Row="0" />
-                <TextBlock Text="Barcodes"
-                           FontSize="15"
-                           Grid.Row="1"
-                           VerticalAlignment="Bottom"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,15" />
-            </Grid>
+        <materialDesign:ColorZone Grid.Row="0"
+                                  Grid.ColumnSpan="2"
+                                  Margin="30,15,30,0"
+                                  Padding="16"
+                                  materialDesign:ElevationAssist.Elevation="Dp4"
+                                  ClipToBounds="False"
+                                  CornerRadius="10"
+                                  Height="175"
+                                  Mode="SecondaryDark">
 
 
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="101*" />
-                    <ColumnDefinition Width="91*" />
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Orientation="Horizontal"
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            VerticalAlignment="Bottom">
-                    <TextBlock Text="Search Barcode 1:"
-                               VerticalAlignment="Center" />
-                    <TextBox x:Name="TxtBarcode1"
-                             Width="400"
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <StackPanel Margin="40,0,40,20"
+                            Width="1300"
+                            HorizontalAlignment="Left">
+                    <TextBox x:Name="barcode1TextBox"
+                             materialDesign:HintAssist.HelperText="Enter Barcode 1"
+                             materialDesign:HintAssist.Hint="Barcode 1"
+                             materialDesign:HintAssist.HelperTextFontSize="16"
+                             Margin="0,0,0,40"
+                             FontSize="24"
                              Focusable="True"
                              helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode1}"
-                             Height="50"
-                             Margin="5,15,0,15"
-                             Text="{Binding Barcode1}">
+                             materialDesign:TextFieldAssist.HasClearButton="True">
                         <TextBox.InputBindings>
                             <KeyBinding Key="Enter"
                                         Command="{Binding Barcode1KeyDown}" />
                         </TextBox.InputBindings>
+                        <TextBox.Text>
+                            <Binding Path="Barcode1"
+                                     UpdateSourceTrigger="PropertyChanged">
+                            </Binding>
+                        </TextBox.Text>
                     </TextBox>
-
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal"
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            VerticalAlignment="Top">
-                    <TextBlock Text="Search Barcode 2:"
-                               VerticalAlignment="Center" />
-                    <TextBox Width="400"
+                    <TextBox x:Name="Barcode2TextBox"
+                             materialDesign:HintAssist.HelperText="Enter Barcode 2"
+                             materialDesign:HintAssist.Hint="Barcode 2"
+                             materialDesign:HintAssist.HelperTextFontSize="16"
+                             FontSize="24"
+                             Focusable="True"
                              helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode2}"
-                             Height="50"
-                             Margin="5,15,0,15"
-                             Text="{Binding Barcode2}">
+                             materialDesign:TextFieldAssist.HasClearButton="True">
                         <TextBox.InputBindings>
                             <KeyBinding Key="Enter"
-                                        Command="{Binding EnterBarcodes}" />
+                                        Command="{Binding Barcode2KeyDown}" />
                         </TextBox.InputBindings>
+                        <TextBox.Text>
+                            <Binding Path="Barcode2"
+                                     UpdateSourceTrigger="PropertyChanged">
+                            </Binding>
+                        </TextBox.Text>
                     </TextBox>
-
 
                 </StackPanel>
 
                 <Button Grid.Column="1"
-                        Grid.RowSpan="2"
-                        Margin="50,50,50,50"
+                        Grid.Row="0"
                         Content="Enter Barcodes"
-                        FontSize="25"
-                        Command="{Binding EnterBarcodes}" />
+                        HorizontalAlignment="Center"
+                        Command="{Binding EnterBarcodes}"
+                        Width="400"
+                        Height="100"
+                        FontSize="30"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        ToolTip="Clear all values and start a new set" />
+            </StackPanel>
+
+
+            <!--<StackPanel Orientation="Horizontal"
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                VerticalAlignment="Bottom">
+                        <TextBlock Text="Search Barcode 1:"
+                                   VerticalAlignment="Center" />
+                        <TextBox x:Name="TxtBarcode1"
+                                 Width="400"
+                                 Focusable="True"
+                                 helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode1}"
+                                 Height="50"
+                                 Margin="5,15,0,15"
+                                 Text="{Binding Barcode1}">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter"
+                                            Command="{Binding Barcode1KeyDown}" />
+                            </TextBox.InputBindings>
+                        </TextBox>
+
+                    </StackPanel>-->
+            <!--<StackPanel Orientation="Horizontal"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                VerticalAlignment="Top">
+                        <TextBlock Text="Search Barcode 2:"
+                                   VerticalAlignment="Center" />
+                        <TextBox Width="400"
+                                 helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode2}"
+                                 Height="50"
+                                 Margin="5,15,0,15"
+                                 Text="{Binding Barcode2}">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter"
+                                            Command="{Binding EnterBarcodes}" />
+                            </TextBox.InputBindings>
+                        </TextBox>
+
+
+                    </StackPanel>-->
+
+
+
+        </materialDesign:ColorZone>
+
+
+        <Grid Grid.Row="1"
+              Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0"
+                    Content="Print Louver ID Labels"
+                    Command="{Binding PrintStartingLabels}"
+                    IsEnabled="{Binding PrintLouverIDLabelsEnabled}"
+                    Width="400"
+                    Height="100"
+                    FontSize="30"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    ToolTip="Print the first set of labels" />
+            <Button Grid.Row="1"
+                    Content="Acquire Reading #1"
+                    Command="{Binding AcqReading1}"
+                    IsEnabled="{Binding Acquare1Enabled}"
+                    Width="400"
+                    Height="100"
+                    FontSize="30"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    ToolTip="Record the top side warp measurement" />
+            <Button Grid.Row="2"
+                    Content="Acquire Reading #2"
+                    Command="{Binding AcqReading2}"
+                    IsEnabled="{Binding Acquare2Enabled}"
+                    Width="400"
+                    Height="100"
+                    FontSize="30"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    ToolTip="Record the bottom side warp measurment" />
+            <Button Grid.Row="3"
+                    Content="Review Louver Report"
+                    Command="{Binding ReviewLouverReport}"
+                    IsEnabled="{Binding ReviewLouverReportEnabled}"
+                    Width="400"
+                    Height="100"
+                    FontSize="30"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    ToolTip="Review the results of the sorted set" />
+            <Button Grid.Row="4"
+                    Content="Print Sorted Louver Labels"
+                    Command="{Binding PrintSortedLabels}"
+                    IsEnabled="{Binding PrintLouverSortedLabels}"
+                    Width="400"
+                    Height="100"
+                    FontSize="30"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    ToolTip="Print out the sorted label set" />
+            <Button Grid.Row="5"
+                    Content="Next Louver Set"
+                    Command="{Binding NextLouverSet}"
+                    IsEnabled="{Binding NextLouverSetEnabled}"
+                    Width="400"
+                    Height="100"
+                    FontSize="30"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    ToolTip="Clear all values and start a new set" />
+            <Button Grid.Row="5"
+                    Content="Main Menu"
+                    Command="{Binding UpdateView}"
+                    CommandParameter="Menu"
+                    Width="400"
+                    Height="100"
+                    FontSize="30"
+                    Margin="5,5,5,5"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    ToolTip="Return to the main menu" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="1.5*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+            <Grid>
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
+                    <!--barcodes here-->
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Margin="0, 15, 0, 15">
+                        <StackPanel VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Margin="30,0,30,0">
+                            <TextBlock Text="Barcode 1"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="300"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding CurBarcode1}" />
+                        </StackPanel>
+
+                        <StackPanel VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Margin="30,0,30,0">
+                            <TextBlock Text="Barcode 2"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="300"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding CurBarcode2}" />
+                        </StackPanel>
+                    </StackPanel>
+
+
+
+
+
+
+
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Margin="0, 15, 0, 15">
+                        <!--order info here-->
+                        <StackPanel Grid.Column="0"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Order"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     Margin="5,0,5,0"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="100"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding CurOrder}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Line"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     Margin="5,0,5,0"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="100"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding CurLine}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Unit"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     Margin="5,0,5,0"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="100"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding CurUnit}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="3"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Panel ID"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     Margin="5,0,5,0"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="100"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding CurPanelID}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="4"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Louver Set"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     Margin="5,0,5,0"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="100"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding CurLouverID}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="5"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="XL"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <CheckBox IsChecked="{Binding CurIsXL}">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="3"
+                                                    ScaleY="3" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="6"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Width"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     Margin="5,0,5,0"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="100"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding CurWidth}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="7"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Length"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     Margin="5,0,5,0"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="100"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding CurLength}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!--Current Readings here-->
+                    <StackPanel  Orientation="Horizontal"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"
+                                 Margin="0, 15, 0, 15">
+
+                        <StackPanel Grid.Column="0"
+                                    Grid.Row="1"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Active ID"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     Margin="5,0,5,0"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="100"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding ActiveLouverID}" />
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Center"
+                                    Margin="0, 5, 0, 5">
+                            <TextBlock Text="Top Reading"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     Margin="5,0,5,0"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="100"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding ActiveTopReading}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1"
+                                    Grid.Row="1"
+                                    VerticalAlignment="Center"
+                                    Margin="0, 5, 0, 5">
+                            <TextBlock Text="Bottom Reading"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     Margin="5,0,5,0"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="100"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding ActiveBottomReading}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1"
+                                    Grid.Row="2"
+                                    VerticalAlignment="Center"
+                                    Margin="0, 5, 0, 5">
+                            <TextBlock Text="Deviation"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,15" />
+                            <TextBox MaxWidth="400"
+                                     Margin="5,0,5,0"
+                                     VerticalAlignment="Top"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     Width="100"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding ActiveDeviation}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Column="1"
+                  Grid.RowSpan="2">
+
+                <!--Listview here-->
+
+                <materialDesign:ColorZone VerticalAlignment="Stretch"
+                                          HorizontalAlignment="Stretch"
+                                          Margin="15,15,15,15"
+                                          Padding="16"
+                                          materialDesign:ElevationAssist.Elevation="Dp4"
+                                          ClipToBounds="False"
+                                          CornerRadius="10"
+                                          Mode="PrimaryDark">
+                    <ScrollViewer Grid.Column="1"
+                                  Grid.RowSpan="5"
+                                  HorizontalContentAlignment="Center"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  helpers:ScrollViewerExtensions.AlwaysScrollToEnd="True">
+                        <ListView ItemsSource="{Binding ListViewContent}"
+                                  FontSize="20"
+                                  HorizontalContentAlignment="Center"
+                                  SelectedItem="{Binding ListViewSelectedLouver}">
+                            <ListView.View>
+                                <GridView AllowsColumnReorder="true"
+                                          ColumnHeaderToolTip="Louver Data">
+                                    <GridViewColumn Header="LouverID"
+                                                    Width="150"
+                                                    DisplayMemberBinding="{Binding LouverID}" />
+                                    <GridViewColumn Header="Side"
+                                                    Width="125"
+                                                    DisplayMemberBinding="{Binding Side}" />
+                                    <GridViewColumn Header="Distance"
+                                                    Width="150"
+                                                    DisplayMemberBinding="{Binding Distance}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </ScrollViewer>
+                </materialDesign:ColorZone>
+
+
+            </Grid>
+
+            <Grid Grid.Column="0"
+                  Grid.Row="1">
+
+
+                <!--Live chart here-->
+                <materialDesign:ColorZone VerticalAlignment="Stretch"
+                                          HorizontalAlignment="Stretch"
+                                          Margin="15,15,15,15"
+                                          Padding="16"
+                                          materialDesign:ElevationAssist.Elevation="Dp4"
+                                          ClipToBounds="False"
+                                          CornerRadius="10"
+                                          Mode="PrimaryDark">
+                    <Grid Margin="15,15,15,15">
+                        <lvc:CartesianChart x:Name="Chart">
+                            <lvc:CartesianChart.Series>
+                                <lvc:LineSeries Values="{Binding VoltageValues}" />
+                            </lvc:CartesianChart.Series>
+                        </lvc:CartesianChart>
+                        <Button Content="Reconnect"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                FontSize="30"
+                                FontWeight="ExtraBold"
+                                Foreground="#521919"
+                                Background="Transparent"
+                                Visibility="{Binding DisconnectedEnabled}"
+                                Command="{Binding ReconnectToDataQ}" />
+                    </Grid>
+                </materialDesign:ColorZone>
             </Grid>
         </Grid>
 
-        <Grid Grid.Row="1"
-              Background="WhiteSmoke">
+
+
+
+
+
+
+        <!--<Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -151,10 +626,12 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBox Width="400"
                              Margin="0,0,0,0"
+                             IsReadOnly="True"
                              Text="{Binding CurBarcode1}" />
                     <TextBox Width="400"
                              Height="50"
                              Margin="20,0,0,0"
+                             IsReadOnly="True"
                              Text="{Binding CurBarcode2}" />
                 </StackPanel>
             </StackPanel>
@@ -172,6 +649,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="150"
                              FontSize="25"
+                             IsReadOnly="True"
                              HorizontalContentAlignment="Center"
                              Text="{Binding CurOrder}" />
                 </StackPanel>
@@ -183,6 +661,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="50"
                              FontSize="25"
+                             IsReadOnly="True"
                              HorizontalContentAlignment="Center"
                              Text="{Binding CurLine}" />
                 </StackPanel>
@@ -194,6 +673,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="50"
                              FontSize="25"
+                             IsReadOnly="True"
                              HorizontalContentAlignment="Center"
                              Text="{Binding CurUnit}" />
                 </StackPanel>
@@ -205,6 +685,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="50"
                              FontSize="25"
+                             IsReadOnly="True"
                              HorizontalContentAlignment="Center"
                              Text="{Binding CurPanelID}" />
                 </StackPanel>
@@ -216,6 +697,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="50"
                              FontSize="25"
+                             IsReadOnly="True"
                              HorizontalContentAlignment="Center"
                              Text="{Binding CurLouverSet}" />
                 </StackPanel>
@@ -225,7 +707,7 @@
                                FontSize="25"
                                HorizontalAlignment="Center" />
                     <CheckBox IsChecked="{Binding CurXL}"
-                              Margin="5,0,0,0"/>
+                              Margin="5,0,0,0" />
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
                             Margin="5,0,5,0">
@@ -235,6 +717,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="50"
                              FontSize="25"
+                             IsReadOnly="True"
                              HorizontalContentAlignment="Center"
                              Text="{Binding CurWidth}" />
                 </StackPanel>
@@ -246,6 +729,7 @@
                     <TextBox VerticalAlignment="Center"
                              Width="150"
                              FontSize="25"
+                             IsReadOnly="True"
                              HorizontalContentAlignment="Center"
                              Text="{Binding CurLength}" />
                 </StackPanel>
@@ -279,13 +763,15 @@
                                  HorizontalAlignment="Right"
                                  FontSize="25"
                                  Width="75"
+                                 IsReadOnly="True"
                                  Text="{Binding ActiveLouverID}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                                 Margin="5,0,5,0">
-                        <!--<TextBlock Text="Current Reading:"
+                        -->
+        <!--<TextBlock Text="Current Reading:"
                                    FontSize="25"
                                    HorizontalAlignment="Center" />
                         <TextBox VerticalAlignment="Center"
@@ -293,6 +779,7 @@
                                  FontSize="25"
                                  Width="75"
                                  Text="{Binding CurrentReading}" />-->
+        <!--
                     </StackPanel>
                 </StackPanel>
 
@@ -310,6 +797,7 @@
                         <TextBox VerticalAlignment="Center"
                                  Width="75"
                                  FontSize="25"
+                                 IsReadOnly="True"
                                  Text="{Binding Reading1}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"
@@ -323,6 +811,7 @@
                                  HorizontalAlignment="Right"
                                  Width="75"
                                  FontSize="25"
+                                 IsReadOnly="True"
                                  Text="{Binding Reading2}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"
@@ -336,9 +825,11 @@
                                  HorizontalAlignment="Right"
                                  Width="75"
                                  FontSize="25"
+                                 IsReadOnly="True"
                                  Text="{Binding Deviation}" />
                     </StackPanel>
-                    <!--<StackPanel Orientation="Horizontal"
+                    -->
+        <!--<StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                                 Margin="5,0,5,0">
@@ -349,6 +840,7 @@
                                  Width="75"
                                  Text="{Binding Sag}" />
                     </StackPanel>-->
+        <!--
                 </StackPanel>
 
 
@@ -390,7 +882,7 @@
 
 
 
-               
+
             </Grid>
 
 
@@ -420,69 +912,16 @@
                     </ListView.View>
                 </ListView>
             </ScrollViewer>
-            
-            
-            
-
-            <StackPanel Grid.Column="2"
-                        Grid.RowSpan="4">
-                <Button Content="Print Louver ID Labels"
-                        Width="400"
-                        Height="80"
-                        FontSize="30"
-                        Margin="5,5,5,5"
-                        Command="{Binding PrintStartingLabels}"
-                        IsEnabled="{Binding PrintLouverIDLabelsEnabled}" />
-                <Button Content="Acquire Reading #1"
-                        Width="400"
-                        Height="80"
-                        FontSize="30"
-                        Margin="5,5,5,5"
-                        Command="{Binding AcqReading1}"
-                        IsEnabled="{Binding Acquare1Enabled}" />
-                <Button Content="Acquire Reading #2"
-                        Width="400"
-                        Height="80"
-                        FontSize="30"
-                        Margin="5,5,5,5"
-                        Command="{Binding AcqReading2}"
-                        IsEnabled="{Binding Acquare2Enabled}" />
-                <Button Content="Review Louver Report"
-                        Width="400"
-                        Height="80"
-                        FontSize="30"
-                        Margin="5,5,5,5"
-                        Command="{Binding ReviewLouverReport}"
-                        IsEnabled="{Binding ReviewLouverReportEnabled}" />
-                <Button Content="Print Sorted Louver Labels"
-                        Width="400"
-                        Height="80"
-                        FontSize="30"
-                        Margin="5,5,5,5"
-                        Command="{Binding PrintSortedLabels}"
-                        IsEnabled="{Binding PrintLouverSortedLabels}" />
-                <Button Content="Next Louver Set"
-                        Width="400"
-                        Height="80"
-                        FontSize="30"
-                        Margin="5,5,5,5"
-                        Command="{Binding NextLouverSet}"
-                        IsEnabled="{Binding NextLouverSetEnabled}" />
-
-            </StackPanel>
-
-            <Button Grid.Column="2"
-                    Grid.Row="5"
-                    Content="Main Menu"
-                    Width="400"
-                    Height="80"
-                    FontSize="30"
-                    Margin="5,5,5,5"
-                    Command="{Binding UpdateView}"
-                    CommandParameter="Menu" />
 
 
-        </Grid>
+
+
+
+
+
+
+
+        </Grid>-->
 
 
 

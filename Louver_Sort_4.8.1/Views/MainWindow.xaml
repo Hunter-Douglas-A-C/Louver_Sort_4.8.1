@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Louver_Sort_4._8._1"
         mc:Ignorable="d"
         d:DesignHeight="1080"
@@ -24,56 +25,130 @@
     <!--Topmost="True"-->
     <Grid>
 
-        <TabControl>
-            <TabItem Header="Sorting">
-                <Grid>
-                    <Border BorderBrush="Black"
-                            BorderThickness="5"
-                            CornerRadius="5"
-                            Panel.ZIndex="1"
-                            VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch"
-                            Width="400"
-                            Height="400"
-                            Visibility="{Binding PopUpVisible}">
-                        <ContentControl x:Name="CTCPopup"
-                                        Content="{Binding SelectedPopUp}" />
-                    </Border>
+        <materialDesign:Card>
+            <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryMid"
+                        materialDesign:NavigationRailAssist.SelectionCornerRadius="50 10 10 10"
+                        materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
+                        Style="{StaticResource MaterialDesignNavigationRailTabControl}"
+                        TabStripPlacement="Top">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Width="auto"
+                                    Height="auto">
+                            <materialDesign:PackIcon Width="24"
+                                                     Height="24"
+                                                     HorizontalAlignment="Center"
+                                                     Kind="ViewSequentialOutline" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Sort" />
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <!--Sorting Tab Content-->
+                    <Grid>
+                        <Grid>
+                            <Border BorderBrush="Black"
+                                    BorderThickness="5"
+                                    CornerRadius="5"
+                                    Panel.ZIndex="1"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"
+                                    Width="400"
+                                    Height="400"
+                                    Visibility="{Binding PopUpVisible}">
+                                <ContentControl x:Name="CTCPopup"
+                                                Content="{Binding SelectedPopUp}" />
+                            </Border>
 
 
-                    <Border Panel.ZIndex="0"
-                            VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch">
-                        <Border.Effect>
-                            <BlurEffect Radius="{Binding MainContentBlurRadius}" />
-                        </Border.Effect>
-                        <ContentControl x:Name="CTCMain"
-                                        Content="{Binding SelectedView}"
-                                        IsEnabled="{Binding MainEnabled}" />
-                    </Border>
-                </Grid>
-            </TabItem>
+                            <Border Panel.ZIndex="0"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch">
+                                <Border.Effect>
+                                    <BlurEffect Radius="{Binding MainContentBlurRadius}" />
+                                </Border.Effect>
+                                <ContentControl x:Name="CTCMain"
+                                                Content="{Binding SelectedView}"
+                                                IsEnabled="{Binding MainEnabled}" />
+                            </Border>
+                        </Grid>
 
 
 
 
-            <TabItem Header="Maintance">
-                <Grid>
-                    
-                </Grid>
-                
-            </TabItem>
+                    </Grid>
+
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Width="auto"
+                                    Height="auto">
+                            <materialDesign:PackIcon Width="24"
+                                                     Height="24"
+                                                     HorizontalAlignment="Center"
+                                                     Kind="ChartAreaspline" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Reporting" />
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <!--Reporting Tab Content-->
+                    <Grid>
+
+                    </Grid>
+
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Width="auto"
+                                    Height="auto">
+                            <materialDesign:PackIcon Width="24"
+                                                     Height="24"
+                                                     HorizontalAlignment="Center"
+                                                     Kind="Wrench" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Settings" />
+                        </StackPanel>
+                    </TabItem.Header>
 
 
+                    <!--Settings tab content-->
+                    <Grid>
 
-            <TabItem Header="Reporting">
-                <Grid>
-                    
-                </Grid>
-            </TabItem>
-        </TabControl>
-        
-        
+                    </Grid>
+
+                </TabItem>
+            </TabControl>
+        </materialDesign:Card>
+
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Margin="0,10,15,0">
+            <Button Margin="8"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    Command="{Binding ChangeLanguage}"
+                    ToolTip="Change language to english">
+
+                <StackPanel Width="auto"
+                            Height="auto">
+                    <materialDesign:PackIcon HorizontalAlignment="Center"
+                                             Width="24"
+                                             Height="24"
+                                             Kind="TranslateVariant" />
+                </StackPanel>
+
+
+            </Button>
+            <Button Margin="8"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    Command="{Binding ShutDown}"
+                    ToolTip="Close the Program">
+                <materialDesign:PackIcon Width="24"
+                                         Height="24"
+                                         Kind="Close" />
+            </Button>
+        </StackPanel>
 
     </Grid>
 </Window>

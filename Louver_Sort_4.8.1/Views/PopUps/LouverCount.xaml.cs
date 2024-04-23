@@ -36,7 +36,7 @@ namespace Louver_Sort_4._8._1.Views.PopUps
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             //boundProperities.LouverCountPopUpLoaded();
-            InputTextBox.Focus();
+            //InputTextBox.Focus();
         }
     }
 }

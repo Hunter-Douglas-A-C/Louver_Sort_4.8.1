@@ -1,40 +1,31 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
+    /// <summary>
+    /// Represents an identifier for a set.
+    /// </summary>
+    [Serializable]
     public class SetID
     {
-        //public SetId Value { get; set; } // Property, not a method
+        private SetId _value;
 
-        //public enum SetId
-        //{
-        //    Top,
-        //    Middle,
-        //    Bottom
-        //}
+        [JsonProperty("set_id")]
+        public SetId Value { get => _value; set => _value = value; }
 
-        //public static SetId ConvertStringToSetId(string input)
-        //{
-        //    switch (input.ToUpper()) // Use ToUpper to make the comparison case-insensitive
-        //    {
-        //        case "T":
-        //            return SetId.Top;
-        //        case "M":
-        //            return SetId.Middle;
-        //        case "B":
-        //            return SetId.Bottom;
-        //        default:
-        //            return SetId.Top;
-        //    }
-        //}
 
-        public SetId Value { get; set; }
 
+
+
+
+
+
+
+        /// <summary>
+        /// Enum representing possible set identifiers.
+        /// </summary>
         public enum SetId
         {
             Top,
@@ -42,13 +33,21 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             Bottom
         }
 
-        public static readonly Dictionary<string, SetId> setIdMap = new Dictionary<string, SetId>(StringComparer.OrdinalIgnoreCase)
+        /// <summary>
+        /// Dictionary to map string representations to SetId enum values.
+        /// </summary>
+        private static readonly Dictionary<string, SetId> setIdMap = new Dictionary<string, SetId>(StringComparer.OrdinalIgnoreCase)
         {
             { "T", SetId.Top },
             { "M", SetId.Middle },
             { "B", SetId.Bottom }
         };
 
+        /// <summary>
+        /// Converts a string representation to the corresponding SetId enum value.
+        /// </summary>
+        /// <param name="input">The string representation of the set identifier.</param>
+        /// <returns>The SetId enum value corresponding to the input string.</returns>
         public static SetId ConvertStringToSetId(string input)
         {
             if (setIdMap.TryGetValue(input, out SetId setId))
@@ -58,8 +57,9 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             return SetId.Top; // Default value if input is not found
         }
 
-
-        // Overloading the == operator
+        /// <summary>
+        /// Overloads the == operator to compare two SetID objects.
+        /// </summary>
         public static bool operator ==(SetID a, SetID b)
         {
             // If both are null, or both are same instance, return true.
@@ -75,23 +75,29 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             }
 
             // Return true if the fields match:
-            return a.Value == b.Value;
+            return a._value == b._value;
         }
 
-        // Overloading the != operator
+        /// <summary>
+        /// Overloads the != operator to compare two SetID objects.
+        /// </summary>
         public static bool operator !=(SetID a, SetID b)
         {
             return !(a == b);
         }
 
-        // Override the Equals method
+        /// <summary>
+        /// Overrides the Equals method to compare two SetID objects.
+        /// </summary>
         public override bool Equals(object obj)
         {
             var other = obj as SetID;
-            return other != null && this.Value == other.Value;
+            return other != null && this._value == other._value;
         }
 
-        // Override the GetHashCode method
+        /// <summary>
+        /// Overrides the GetHashCode method to compute the hash code of the SetID object.
+        /// </summary>
         public override int GetHashCode()
         {
             return Value.GetHashCode();

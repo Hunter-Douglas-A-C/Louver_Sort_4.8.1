@@ -1,43 +1,104 @@
-﻿using System;
+﻿using Louver_Sort_4._8._1.Helpers.LouverStructure;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
+    /// <summary>
+    /// Represents an order containing barcode information and openings.
+    /// </summary>
+    [Serializable]
     public class Order
     {
-        public readonly BarcodeHelper _barcodeHelper;
-        public readonly List<Opening> _openings = new List<Opening>();
+        private BarcodeHelper _barcodeHelper;
+        private List<Opening> _openings = new List<Opening>();
+        private double _unit;
 
-        public BarcodeHelper BarcodeHelper => _barcodeHelper;
-        public double Unit => _barcodeHelper.Unit;
-        public List<Opening> Openings => _openings;
+        [JsonProperty("barcodeHelper")]
+        public BarcodeHelper BarcodeHelper
+        {
+            get => _barcodeHelper;
+            set => _barcodeHelper = value; 
+        }
 
+        [JsonProperty("unit")]
+        public double Unit
+        {
+            get => _unit;
+            set => _unit = value;
+        }
+
+        [JsonProperty("openings")]
+        public List<Opening> Openings
+        {
+            get => _openings;
+            set => _openings = value;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Constructor
+        /// <summary>
+        /// Initializes a new instance of the Order class.
+        /// </summary>
+        /// <param name="barcodeSet">The barcode set associated with the order.</param>
         public Order(BarcodeSet barcodeSet)
         {
-            _barcodeHelper = new BarcodeHelper(barcodeSet);
+            if (barcodeSet != null)
+            {
+                _barcodeHelper = new BarcodeHelper(barcodeSet);
+            }
         }
 
+        // Methods
+        /// <summary>
+        /// Adds an opening to the order.
+        /// </summary>
+        /// <param name="opening">The opening to add.</param>
+        /// <returns>The added opening.</returns>
         public Opening AddOpening(Opening opening)
         {
-            Openings.Add(opening);
-            return Openings[Openings.Count -1];
+            _openings.Add(opening);
+            return _openings[_openings.Count - 1];
         }
 
-        public Opening GetOpeningByLine(int l)
+        /// <summary>
+        /// Gets an opening from the order by its line number.
+        /// </summary>
+        /// <param name="line">The line number of the opening.</param>
+        /// <returns>The opening with the specified line number.</returns>
+        public Opening GetOpeningByLine(int line)
         {
-            // Searching for the opening with the specified ID
-            foreach (Opening opening in Openings)
+            foreach (Opening opening in _openings)
             {
-                if (opening.Line == l)
+                if (opening.Line == line)
                 {
                     return opening;
                 }
             }
-
-            // If no opening with the specified ID is found, throw an exception
-            throw new ArgumentException("Opening with the specified ID not found.", nameof(l));
+            throw new ArgumentException("Opening with the specified line number not found.", nameof(line));
         }
-    
     }
 }

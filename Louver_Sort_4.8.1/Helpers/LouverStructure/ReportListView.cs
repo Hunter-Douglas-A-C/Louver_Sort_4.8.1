@@ -1,27 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.ObjectModel;
+﻿using Newtonsoft.Json; // Make sure to add this using statement
+using System;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
+    /// <summary>
+    /// Represents an item in the report list view.
+    /// </summary>
+    [Serializable]
     public class ReportListView
     {
-        public int LouverID { get; set; }
-        public int LouverOrder { get; set; }
-        public double CurrWarp { get; set; }
-        public string Status { get; set; }
+        private int _louverID;
+        private int _louverOrder;
+        private double _currWarp;
+        private string _status;
 
+        [JsonProperty("louver_id")]
+        public int LouverID { get => _louverID; set => _louverID = value; }
+
+        [JsonProperty("louver_order")]
+        public int LouverOrder { get => _louverOrder; set => _louverOrder = value; }
+
+        [JsonProperty("current_warp")]
+        public double CurrWarp { get => _currWarp; set => _currWarp = value; }
+
+        [JsonProperty("status")]
+        public string Status { get => _status; set => _status = value; }
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReportListView"/> class.
+        /// </summary>
+        /// <param name="id">The ID of the louver.</param>
+        /// <param name="order">The order of the louver.</param>
+        /// <param name="warp">The current warp of the louver.</param>
+        /// <param name="rejected">A boolean indicating whether the louver is rejected.</param>
         public ReportListView(int id, int order, double warp, bool rejected)
         {
-            LouverID = id;
-            LouverOrder = order;
-            CurrWarp = warp;
-            Status = rejected ? "FAIL" : "PASS";
+            _louverID = id;
+            _louverOrder = order;
+            _currWarp = warp;
+            _status = rejected ? "FAIL" : "PASS";
         }
-
     }
 }

@@ -100,64 +100,6 @@
             </StackPanel>
         </materialDesign:ColorZone>
 
-        <!--<materialDesign:ColorZone Grid.Row="0"
-                                  Grid.ColumnSpan="3"
-                                  Padding="16"
-                                  materialDesign:ElevationAssist.Elevation="Dp4"
-                                  ClipToBounds="False"
-                                  CornerRadius="10"
-                                  Height="300"
-                                  Mode="SecondaryDark">
-
-            <StackPanel Margin="80,15,80,0"
-                        Width="1300"
-                        HorizontalAlignment="Left">
-                <TextBox x:Name="barcode1TextBox"
-                         materialDesign:HintAssist.HelperText="Enter Barcode 1"
-                         materialDesign:HintAssist.Hint="Barcode 1"
-                         materialDesign:HintAssist.HelperTextFontSize="24"
-                         Margin="0,0,0,40"
-                         FontSize="40"
-                         Focusable="True"
-                         helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode1}"
-                         materialDesign:TextFieldAssist.HasClearButton="True">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter"
-                                    Command="{Binding Barcode1KeyDown}" />
-                    </TextBox.InputBindings>
-                    <TextBox.Text>
-                        <Binding Path="Barcode1"
-                                 UpdateSourceTrigger="PropertyChanged">
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-                <TextBox x:Name="Barcode2TextBox"
-                         materialDesign:HintAssist.HelperText="Enter Barcode 2"
-                         materialDesign:HintAssist.Hint="Barcode 2"
-                         materialDesign:HintAssist.HelperTextFontSize="24"
-                         FontSize="40"
-                         Focusable="True"
-                         helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode2}"
-                         materialDesign:TextFieldAssist.HasClearButton="True">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter"
-                                    Command="{Binding Barcode2KeyDown}" />
-                    </TextBox.InputBindings>
-                    <TextBox.Text>
-                        <Binding Path="Barcode2"
-                                 UpdateSourceTrigger="PropertyChanged">
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-
-            </StackPanel>
-        </materialDesign:ColorZone>-->
-
-
-
-
-
-
         <materialDesign:ColorZone Grid.Row="1"
                                   VerticalAlignment="Stretch"
                                   HorizontalAlignment="Stretch"
@@ -200,9 +142,6 @@
             </ScrollViewer>
         </materialDesign:ColorZone>
 
-
-
-
         <Grid Grid.Row="1"
               Grid.Column="1"
               Grid.ColumnSpan="2">
@@ -214,29 +153,88 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="3*" />
             </Grid.RowDefinitions>
 
-
             <StackPanel Grid.Row="0"
-                        Grid.Column="0">
-                <TextBlock Text="Reading 1" />
-                <TextBox VerticalAlignment="Center"
-                         Width="50"
-                         IsReadOnly="True"
-                         Text="{Binding RecutReading1}" />
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Margin="0, 5, 0, 5">
+                        <TextBlock Text="Top Reading"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,15" />
+                        <TextBox MaxWidth="400"
+                                 Margin="5,0,5,0"
+                                 VerticalAlignment="Top"
+                                 AcceptsReturn="True"
+                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Width="100"
+                                 TextWrapping="Wrap"
+                                 Text="{Binding RecutReading1}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Margin="0, 5, 0, 5">
+                        <TextBlock Text="Bottom Reading"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,15" />
+                        <TextBox MaxWidth="400"
+                                 Margin="5,0,5,0"
+                                 VerticalAlignment="Top"
+                                 AcceptsReturn="True"
+                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Width="100"
+                                 TextWrapping="Wrap"
+                                 Text="{Binding RecutReading2}" />
+                    </StackPanel>
+                </StackPanel>
+                <Button Grid.Row="0"
+                        Content="Check Top Reading"
+                        Command="{Binding CheckTop}"
+                        IsEnabled="{Binding CheckTopEnabled}"
+                        Width="400"
+                        Height="100"
+                        FontSize="30"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        ToolTip="Print the first set of labels" />
+                <Button Grid.Row="0"
+                        Content="Check Bottom Reading"
+                        Command="{Binding CheckBottom}"
+                        IsEnabled="{Binding CheckBottomEnabled}"
+                        Width="400"
+                        Height="100"
+                        FontSize="30"
+                        Margin="5,5,5,5"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        ToolTip="Print the first set of labels" />
             </StackPanel>
 
             <StackPanel Grid.Row="0"
-                        Grid.Column="1">
-                <TextBlock Text="Reading 2" />
-                <TextBox VerticalAlignment="Center"
-                         Width="50"
-                         IsReadOnly="True"
-                         Text="{Binding RecutReading2}" />
+                        Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Is louver an acceptable replacement"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Margin="5,5,5,5" />
+                <TextBox Text="{Binding TxtTopAcceptableReplacement}"
+                         IsReadOnly="True" />
             </StackPanel>
 
-            
+
             <materialDesign:ColorZone Grid.Row="2"
                                       Grid.ColumnSpan="2"
                                       VerticalAlignment="Stretch"
@@ -264,372 +262,8 @@
                             Command="{Binding ReconnectToDataQ}" />
                 </Grid>
             </materialDesign:ColorZone>
-
-            <StackPanel Grid.Row="1"
-                        Grid.Column="0">
-
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Check Top Value"
-                            Width="400"
-                            Height="80"
-                            FontSize="30"
-                            Margin="5,5,5,5"
-                            Command="{Binding CheckTop}"
-                            IsEnabled="{Binding CheckTopEnabled}" />
-                    <StackPanel>
-                        <TextBlock Text="Is louver an acceptable replacement" />
-                        <TextBox Text="{Binding TxtTopAcceptableReplacement}"
-                                 IsReadOnly="True" />
-                    </StackPanel>
-                </StackPanel>
-
-
-
-            </StackPanel>
-
-
-
-            <StackPanel Grid.Row="1"
-                        Grid.Column="1">
-
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Check Bottom Value"
-                            Width="400"
-                            Height="80"
-                            FontSize="30"
-                            Margin="5,5,5,5"
-                            Command="{Binding CheckBottom}"
-                            IsEnabled="{Binding CheckBottomEnabled}" />
-                    <StackPanel>
-                        <TextBlock Text="Is louver an acceptable replacement" />
-                        <TextBox Text="{Binding TxtBottomAcceptableReplacement}"
-                                 IsReadOnly="True" />
-                    </StackPanel>
-                </StackPanel>
-
-
-            </StackPanel>
-
-
-
-
-
-
-
-
+            
         </Grid>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
     </Grid>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--<Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1.5*" />
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="5*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Orientation="Horizontal"
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Margin="50,0,0,0">
-                <TextBlock Text="Search Barcode 1:"
-                           VerticalAlignment="Center" />
-                <TextBox x:Name="TxtBarcode1"
-                         Width="400"
-                         Focusable="True"
-                         Height="50"
-                         Margin="5,15,0,15"
-                         Text="{Binding Barcode1}">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter"
-                                    Command="{Binding Barcode1KeyDown}" />
-                    </TextBox.InputBindings>
-                </TextBox>
-
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal"
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Margin="50,0,0,0">
-                <TextBlock Text="Search Barcode 2:"
-                           VerticalAlignment="Center" />
-                <TextBox Width="400"
-                         Height="50"
-                         Margin="5,15,0,15"
-                         Text="{Binding Barcode2}">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Enter"
-                                    Command="{Binding EnterBarcodes}" />
-                    </TextBox.InputBindings>
-                </TextBox>
-
-
-            </StackPanel>
-
-            <Button Grid.Column="1"
-                    Grid.RowSpan="2"
-                    Margin="50,50,50,50"
-                    Content="Search Order"
-                    Command="{Binding SearchOrder}" />
-        </Grid>
-
-
-        <StackPanel Grid.Row="1"
-                    Orientation="Horizontal"
-                    Margin="5,5,5,5"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
-            <StackPanel VerticalAlignment="Center"
-                        Margin="5,0,5,0">
-                <TextBlock Text="Order"
-                           HorizontalAlignment="Center" />
-                <TextBox VerticalAlignment="Center"
-                         Width="150"
-                         IsReadOnly="True"
-                         Text="{Binding ReCutOrder}" />
-            </StackPanel>
-            <StackPanel VerticalAlignment="Center"
-                        Margin="5,0,5,0">
-                <TextBlock Text="Line"
-                           HorizontalAlignment="Center" />
-                <TextBox VerticalAlignment="Center"
-                         Width="50"
-                         IsReadOnly="True"
-                         Text="{Binding ReCutLine}" />
-            </StackPanel>
-            <StackPanel VerticalAlignment="Center"
-                        Margin="5,0,5,0">
-                <TextBlock Text="Unit"
-                           HorizontalAlignment="Center" />
-                <TextBox VerticalAlignment="Center"
-                         Width="50"
-                         IsReadOnly="True"
-                         Text="{Binding ReCutUnit}" />
-            </StackPanel>
-            <StackPanel VerticalAlignment="Center"
-                        Margin="5,0,5,0">
-                <TextBlock Text="PanelID"
-                           HorizontalAlignment="Center" />
-                <TextBox VerticalAlignment="Center"
-                         Width="50"
-                         IsReadOnly="True"
-                         Text="{Binding ReCutPanelID}" />
-            </StackPanel>
-            <StackPanel VerticalAlignment="Center"
-                        Margin="5,0,5,0">
-                <TextBlock Text="Louver Set"
-                           HorizontalAlignment="Center" />
-                <TextBox VerticalAlignment="Center"
-                         Width="50"
-                         IsReadOnly="True"
-                         Text="{Binding ReCutLouverSet}" />
-            </StackPanel>
-            <StackPanel VerticalAlignment="Center"
-                        Margin="5,0,5,0">
-                <TextBlock Text="XL"
-                           HorizontalAlignment="Center" />
-                <CheckBox IsChecked="{Binding ReCutXL}" />
-            </StackPanel>
-            <StackPanel VerticalAlignment="Center"
-                        Margin="5,0,5,0">
-                <TextBlock Text="Width"
-                           HorizontalAlignment="Center" />
-                <TextBox VerticalAlignment="Center"
-                         Width="50"
-                         IsReadOnly="True"
-                         Text="{Binding ReCutWidth}" />
-            </StackPanel>
-            <StackPanel VerticalAlignment="Center"
-                        Margin="5,0,5,0">
-                <TextBlock Text="Length"
-                           HorizontalAlignment="Center" />
-                <TextBox VerticalAlignment="Center"
-                         Width="50"
-                         IsReadOnly="True"
-                         Text="{Binding ReCutHeight}" />
-            </StackPanel>
-        </StackPanel>
-
-        <Grid  Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <ScrollViewer VerticalAlignment="Stretch"
-                          HorizontalAlignment="Center"
-                          HorizontalContentAlignment="Center"
-                          HorizontalScrollBarVisibility="Auto"
-                          helpers:ScrollViewerExtensions.AlwaysScrollToEnd="True">
-                <ListView ItemsSource="{Binding ReCutContent}"
-                          SelectedItem="{Binding ReCutSelectedLouver}">
-                    <ListView.View>
-
-                        <GridView AllowsColumnReorder="true"
-                                  ColumnHeaderToolTip="Louver Data">
-                            <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
-                                            Header="LouverID"
-                                            Width="100" />
-                            <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
-                                            Header="LouverOrder"
-                                            Width="100" />
-                            <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
-                                            Header="CurrWarp"
-                                            Width="100" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Status}"
-                                            Header="Status"
-                                            Width="100" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </ScrollViewer>
-
-
-            <StackPanel Grid.Column="1">
-   
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center">
-                    <StackPanel>
-                        <TextBlock Text="Reading 1" />
-                        <TextBox VerticalAlignment="Center"
-                                 Width="50"
-                                 IsReadOnly="True"
-                                 Text="{Binding RecutReading1}" />
-                    </StackPanel>
-                    <StackPanel>
-                        <TextBlock Text="Reading 2" />
-                        <TextBox VerticalAlignment="Center"
-                                 Width="50"
-                                 IsReadOnly="True"
-                                 Text="{Binding RecutReading2}" />
-                    </StackPanel>
-                </StackPanel>
-
-
-                <Grid Height="350">
-                    <lvc:CartesianChart>
-                        <lvc:CartesianChart.Series>
-                            <lvc:LineSeries Values="{Binding VoltageValues}" />
-                        </lvc:CartesianChart.Series>
-                    </lvc:CartesianChart>
-                    <Button Content="Reconnect"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            FontSize="30"
-                            FontWeight="ExtraBold"
-                            Foreground="#521919"
-                            Background="Transparent"
-                            Visibility="{Binding DisconnectedEnabled}"
-                            Command="{Binding ReconnectToDataQ}" />
-                </Grid>
-
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Check Top Value"
-                            Width="400"
-                            Height="80"
-                            FontSize="30"
-                            Margin="5,5,5,5"
-                            Command="{Binding CheckTop}"
-                            IsEnabled="{Binding CheckTopEnabled}" />
-                    <StackPanel>
-                        <TextBlock Text="Is louver an acceptable replacement" />
-                        <TextBox Text="{Binding TxtTopAcceptableReplacement}"
-                                 IsReadOnly="True" />
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Check Bottom Value"
-                            Width="400"
-                            Height="80"
-                            FontSize="30"
-                            Margin="5,5,5,5"
-                            Command="{Binding CheckBottom}"
-                            IsEnabled="{Binding CheckBottomEnabled}" />
-                    <StackPanel>
-                        <TextBlock Text="Is louver an acceptable replacement" />
-                        <TextBox Text="{Binding TxtBottomAcceptableReplacement}"
-                                 IsReadOnly="True" />
-                    </StackPanel>
-                </StackPanel>
-
-
-            </StackPanel>
-
-
-
-
-        </Grid>
-
-
-
-
-
-
-        <Button Grid.Column="1"
-                Grid.Row="5"
-                Content="Main Menu"
-                Width="400"
-                Height="80"
-                FontSize="30"
-                Margin="5,5,5,5"
-                Command="{Binding UpdateView}"
-                CommandParameter="Menu" />
-    </Grid>-->
 </UserControl>

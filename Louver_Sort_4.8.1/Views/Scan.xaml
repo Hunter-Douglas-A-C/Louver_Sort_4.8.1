@@ -63,17 +63,14 @@
                              Margin="0,0,0,40"
                              FontSize="24"
                              Focusable="True"
+                             IsReadOnly="{Binding IsReadOnlyBarcode}"
                              helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode1}"
-                             materialDesign:TextFieldAssist.HasClearButton="True">
+                             Text="{Binding Barcode1}"
+                             IsEnabled="{Binding IsEnabledBarcode}">
                         <TextBox.InputBindings>
                             <KeyBinding Key="Enter"
                                         Command="{Binding Barcode1KeyDown}" />
                         </TextBox.InputBindings>
-                        <TextBox.Text>
-                            <Binding Path="Barcode1"
-                                     UpdateSourceTrigger="PropertyChanged">
-                            </Binding>
-                        </TextBox.Text>
                     </TextBox>
                     <TextBox x:Name="Barcode2TextBox"
                              materialDesign:HintAssist.HelperText="Enter Barcode 2"
@@ -81,17 +78,14 @@
                              materialDesign:HintAssist.HelperTextFontSize="16"
                              FontSize="24"
                              Focusable="True"
+                             IsReadOnly="{Binding IsReadOnlyBarcode}"
                              helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode2}"
-                             materialDesign:TextFieldAssist.HasClearButton="True">
+                             Text="{Binding Barcode2}"
+                             IsEnabled="{Binding IsEnabledBarcode}">
                         <TextBox.InputBindings>
                             <KeyBinding Key="Enter"
                                         Command="{Binding Barcode2KeyDown}" />
                         </TextBox.InputBindings>
-                        <TextBox.Text>
-                            <Binding Path="Barcode2"
-                                     UpdateSourceTrigger="PropertyChanged">
-                            </Binding>
-                        </TextBox.Text>
                     </TextBox>
 
                 </StackPanel>
@@ -226,7 +220,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     materialDesign:ButtonAssist.CornerRadius="10"
                     ToolTip="Clear all values and start a new set" />
-            <Button Grid.Row="5"
+            <!--<Button Grid.Row="6"
                     Content="Main Menu"
                     Command="{Binding UpdateView}"
                     CommandParameter="Menu"
@@ -236,7 +230,7 @@
                     Margin="5,5,5,5"
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     materialDesign:ButtonAssist.CornerRadius="10"
-                    ToolTip="Return to the main menu" />
+                    ToolTip="Return to the main menu" />-->
         </Grid>
 
         <Grid Grid.Row="1">
@@ -269,9 +263,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="300"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding CurBarcode1}" />
                         </StackPanel>
 
@@ -286,9 +282,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="300"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding CurBarcode2}" />
                         </StackPanel>
                     </StackPanel>
@@ -315,9 +313,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="100"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding CurOrder}" />
                         </StackPanel>
 
@@ -332,9 +332,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="100"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding CurLine}" />
                         </StackPanel>
 
@@ -349,9 +351,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="100"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding CurUnit}" />
                         </StackPanel>
 
@@ -366,9 +370,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="100"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding CurPanelID}" />
                         </StackPanel>
 
@@ -383,10 +389,12 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="100"
                                      TextWrapping="Wrap"
-                                     Text="{Binding CurLouverID}" />
+                                     HorizontalContentAlignment="Center"
+                                     Text="{Binding CurLouverSet}" />
                         </StackPanel>
 
                         <StackPanel Grid.Column="5"
@@ -395,7 +403,7 @@
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,15" />
-                            <CheckBox IsChecked="{Binding CurIsXL}">
+                            <CheckBox IsChecked="{Binding CurXL}">
                                 <CheckBox.LayoutTransform>
                                     <ScaleTransform ScaleX="3"
                                                     ScaleY="3" />
@@ -414,9 +422,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="100"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding CurWidth}" />
                         </StackPanel>
 
@@ -431,9 +441,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="100"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding CurLength}" />
                         </StackPanel>
                     </StackPanel>
@@ -456,9 +468,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="100"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding ActiveLouverID}" />
                         </StackPanel>
                         <StackPanel VerticalAlignment="Center"
@@ -472,9 +486,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="100"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding ActiveTopReading}" />
                         </StackPanel>
 
@@ -491,9 +507,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="100"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding ActiveBottomReading}" />
                         </StackPanel>
 
@@ -510,9 +528,11 @@
                                      VerticalAlignment="Top"
                                      AcceptsReturn="True"
                                      IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                     IsReadOnly="True"
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                      Width="100"
                                      TextWrapping="Wrap"
+                                     HorizontalContentAlignment="Center"
                                      Text="{Binding ActiveDeviation}" />
                         </StackPanel>
                     </StackPanel>

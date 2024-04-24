@@ -70,12 +70,14 @@ namespace Louver_Sort_4._8._1.Helpers
         private bool _es_ESEnabled;
         private string _Barcode1 = "1018652406000001L1";
         private string _Barcode2 = "PNL1/LXL/L4.5/L30.5188/LT";
+        //private string _Barcode1;
+        //private string _Barcode2;
         public OrderManager AllOrders = new OrderManager();
         private int _ActiveLouverId;
         public Louver_Sort_4._8._1.Helpers.LouverStructure.Panel _ActivePanel;
         public Louver_Sort_4._8._1.Helpers.LouverStructure.Set _ActiveSet;
-        public double _Reading1;
-        public double _Reading2;
+        public double _ActiveTopReading;
+        public double _ActiveBottomReading;
         private string _CurOrder;
         private string _CurLine;
         private string _CurUnit;
@@ -100,7 +102,7 @@ namespace Louver_Sort_4._8._1.Helpers
         private int? _txtLouverCount = 5;
         private int _MainContentBlurRadius;
         private ObservableCollection<ReportListView> _ReportContent = new ObservableCollection<ReportListView>();
-        private double _deviation;
+        private double _ActiveDeviation;
         private bool _focusBarcode1;
         private bool _focusBarcode2;
         private bool _focusLouverCount;
@@ -126,10 +128,28 @@ namespace Louver_Sort_4._8._1.Helpers
         private bool _CheckValueEnabled = false;
         private string _TxtTopAcceptableReplacement;
         private string _TxtBottomAcceptableReplacement;
+        private bool _IsReadOnlyBarcode;
+        private bool _IsEnabledBarcode = true;
 
         #endregion
 
         #region Public Properities
+
+        public bool IsReadOnlyBarcode
+        {
+            get => _IsReadOnlyBarcode;
+            set
+            {
+                SetProperty(ref _IsReadOnlyBarcode, value);
+            }
+
+        }
+
+        public bool IsEnabledBarcode
+        {
+            get => _IsEnabledBarcode;
+            set { SetProperty(ref _IsEnabledBarcode, value); }
+        }
 
         public bool ApproveSetEnabled
         {
@@ -340,14 +360,23 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _Barcode1;
             set
             {
-                if (Regex.IsMatch(value, @"^\d{16}L\d$"))
+                if (value == null)
                 {
-                    SetProperty(ref _Barcode1, value);
+                    SetProperty(ref _Barcode1, "");
                 }
-                else if (Regex.IsMatch(value, @"^$"))
+                else
                 {
-                    SetProperty(ref _Barcode1, value);
+                    if (Regex.IsMatch(value, @"^\d{16}L\d$"))
+                    {
+                        SetProperty(ref _Barcode1, value);
+                    }
+                    else if (Regex.IsMatch(value, @"^$"))
+                    {
+                        SetProperty(ref _Barcode1, value);
+                    }
                 }
+
+
             }
         }
 
@@ -357,14 +386,22 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _Barcode2;
             set
             {
-                if (Regex.IsMatch(value, @"^(PNL[1-9])\/(LXL)\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$"))
+                if (value == null)
                 {
-                    SetProperty(ref _Barcode2, value);
+                    SetProperty(ref _Barcode2, "");
                 }
-                else if (Regex.IsMatch(value, @"^$"))
+                else
                 {
-                    SetProperty(ref _Barcode2, value);
+                    if (Regex.IsMatch(value, @"^(PNL[1-9])\/(LXL)\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$"))
+                    {
+                        SetProperty(ref _Barcode2, value);
+                    }
+                    else if (Regex.IsMatch(value, @"^$"))
+                    {
+                        SetProperty(ref _Barcode2, value);
+                    }
                 }
+
             }
         }
 
@@ -386,16 +423,16 @@ namespace Louver_Sort_4._8._1.Helpers
             set { SetProperty(ref _ActiveSet, value); }
         }
 
-        public double Reading1
+        public double ActiveTopReading
         {
-            get => _Reading1;
-            set { SetProperty(ref _Reading1, value); }
+            get => _ActiveTopReading;
+            set { SetProperty(ref _ActiveTopReading, value); }
         }
 
-        public double Reading2
+        public double ActiveBottomReading
         {
-            get => _Reading2;
-            set { SetProperty(ref _Reading2, value); }
+            get => _ActiveBottomReading;
+            set { SetProperty(ref _ActiveBottomReading, value); }
         }
 
         public string CurOrder
@@ -545,10 +582,10 @@ namespace Louver_Sort_4._8._1.Helpers
             set { SetProperty(ref _ReportContent, value); }
         }
 
-        public double Deviation
+        public double ActiveDeviation
         {
-            get => _deviation;
-            set { SetProperty(ref _deviation, value); }
+            get => _ActiveDeviation;
+            set { SetProperty(ref _ActiveDeviation, value); }
         }
 
         public bool FocusLouverCount
@@ -838,18 +875,29 @@ namespace Louver_Sort_4._8._1.Helpers
 
             EnterBarcodes = new BaseCommand(obj =>
             {
-                var o = AllOrders.CheckIfOrderExists(new BarcodeSet(Barcode1, Barcode2));
-                if (o != null)
+                if (Barcode1 != "" && Barcode2 != "")
                 {
-                    MessageBox.Show("Already Sorted Order");
-                    //Barcode1 = "";
-                    //Barcode2 = "";
-                    return;
+                    var o = AllOrders.CheckIfOrderExists(new BarcodeSet(Barcode1, Barcode2));
+                    if (o != null)
+                    {
+                        MessageBox.Show("Already Sorted Order");
+                        //Barcode1 = "";
+                        //Barcode2 = "";
+                        return;
+                    }
+                    else
+                    {
+                        IsReadOnlyBarcode = true;
+                        IsEnabledBarcode = false;
+                        UpdatePopUp.Execute("LouverCount");
+                    }
                 }
                 else
                 {
-                    UpdatePopUp.Execute("LouverCount");
+                    //CHANGE
+                    //Add warning to user that they need barcode values
                 }
+                
             });
 
             LouverCountOk = new BaseCommand(obj =>
@@ -925,7 +973,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 double value = randomInt / 1000.0;
                 //double value = RecordWhenStable(0.01);
                 ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
-                Reading1 = value;
+                ActiveTopReading = value;
 
                 ListViewContent = ActiveSet.GenerateRecordedLouvers();
                 Acquare1Enabled = false;
@@ -943,12 +991,12 @@ namespace Louver_Sort_4._8._1.Helpers
                 double value = randomInt / 1000.0;
                 //double value = RecordWhenStable(0.01);
                 ActiveSet.Louvers[ActiveLouverID].SetReading2(value);
-                Reading2 = value;
+                ActiveBottomReading = value;
 
 
 
                 ActiveSet.Louvers[ActiveLouverID].CalcValues();
-                Deviation = ActiveSet.Louvers[ActiveLouverID].Deviation;
+                ActiveDeviation = ActiveSet.Louvers[ActiveLouverID].Deviation;
 
                 ListViewContent = ActiveSet.GenerateRecordedLouvers();
 
@@ -1012,13 +1060,16 @@ namespace Louver_Sort_4._8._1.Helpers
                 CurXL = false;
                 CurWidth = "";
                 CurLength = "";
-                Reading1 = 0;
-                Reading2 = 0;
+                ActiveTopReading = 0;
+                ActiveBottomReading = 0;
                 ListViewContent.Clear();
                 CurBarcode1 = "";
                 CurBarcode2 = "";
+                //CHANGE
                 //Barcode1 = "";
                 //Barcode2 = "";
+                IsReadOnlyBarcode = false;
+                IsEnabledBarcode = true;
 
                 PrintLouverIDLabelsEnabled = false;
                 Acquare1Enabled = false;
@@ -1027,7 +1078,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 ReviewLouverReportEnabled = false;
                 PrintLouverIDLabelsEnabled = false;
                 NextLouverSetEnabled = false;
-                Deviation = 0;
+                ActiveDeviation = 0;
 
 
                 FocusBarcode1 = true;

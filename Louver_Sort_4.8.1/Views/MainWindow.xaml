@@ -127,6 +127,22 @@
                     Margin="0,10,15,0">
             <Button Margin="8"
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    Command="{Binding UpdateView}"
+                    CommandParameter="Menu"
+                    ToolTip="Return to main menu">
+
+                <StackPanel Width="auto"
+                            Height="auto">
+                    <materialDesign:PackIcon HorizontalAlignment="Center"
+                                             Width="24"
+                                             Height="24"
+                                             Kind="Home" />
+                </StackPanel>
+
+
+            </Button>
+            <Button Margin="8"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     Command="{Binding ChangeLanguage}"
                     ToolTip="Change language to english">
 
@@ -152,3 +168,17 @@
 
     </Grid>
 </Window>
+    
+    
+    
+<!--<Button Grid.Row="6"
+        Content="Main Menu"
+        Command="{Binding UpdateView}"
+        CommandParameter="Menu"
+        Width="400"
+        Height="100"
+        FontSize="30"
+        Margin="5,5,5,5"
+        Style="{StaticResource MaterialDesignRaisedButton}"
+        materialDesign:ButtonAssist.CornerRadius="10"
+        ToolTip="Return to the main menu" />-->

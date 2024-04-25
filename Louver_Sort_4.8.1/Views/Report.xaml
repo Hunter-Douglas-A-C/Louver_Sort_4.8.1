@@ -17,7 +17,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="205" />
+            <RowDefinition Height="105" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -27,7 +27,7 @@
         <materialDesign:ColorZone Grid.Row="0"
                                   Padding="16"
                                   Margin="30,15,30,0"
-                                  Height="175"
+                                  Height="75"
                                   materialDesign:ElevationAssist.Elevation="Dp4"
                                   ClipToBounds="False"
                                   CornerRadius="10"
@@ -40,152 +40,171 @@
                            FontSize="30" />
 
 
+                <!--<materialDesign:ColorZone VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          IsEnabled="False"
+                                          materialDesign:ElevationAssist.Elevation="Dp4"
+                                          ClipToBounds="False"
+                                          CornerRadius="10"
+                                          Mode="PrimaryDark">
+                    <StackPanel VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal"
+                                Margin="5,5,5,5">
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Margin="0, 0, 0, 15">
+                            --><!--order info here--><!--
+                            <StackPanel Grid.Column="0"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Order"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,0" />
+                                <TextBox MaxWidth="400"
+                                         Margin="5,0,5,0"
+                                         VerticalAlignment="Top"
+                                         AcceptsReturn="True"
+                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                         IsReadOnly="True"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         Width="100"
+                                         TextWrapping="Wrap"
+                                         HorizontalContentAlignment="Center"
+                                         Text="{Binding CurOrder}" />
+                            </StackPanel>
 
-                <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Margin="0, 15, 0, 15">
-                    <!--order info here-->
-                    <StackPanel Grid.Column="0"
-                                VerticalAlignment="Center">
-                        <TextBlock Text="Order"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,15" />
-                        <TextBox MaxWidth="400"
-                                 Margin="5,0,5,0"
-                                 VerticalAlignment="Top"
-                                 AcceptsReturn="True"
-                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                 IsReadOnly="True"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 Width="100"
-                                 TextWrapping="Wrap"
-                                 Text="{Binding CurOrder}" />
-                    </StackPanel>
+                            <StackPanel Grid.Column="1"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Line"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,0" />
+                                <TextBox MaxWidth="400"
+                                         Margin="5,0,5,0"
+                                         VerticalAlignment="Top"
+                                         AcceptsReturn="True"
+                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                         IsReadOnly="True"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         Width="100"
+                                         TextWrapping="Wrap"
+                                         HorizontalContentAlignment="Center"
+                                         Text="{Binding CurLine}" />
+                            </StackPanel>
 
-                    <StackPanel Grid.Column="1"
-                                VerticalAlignment="Center">
-                        <TextBlock Text="Line"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,15" />
-                        <TextBox MaxWidth="400"
-                                 Margin="5,0,5,0"
-                                 VerticalAlignment="Top"
-                                 AcceptsReturn="True"
-                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                 IsReadOnly="True"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 Width="100"
-                                 TextWrapping="Wrap"
-                                 Text="{Binding CurLine}" />
-                    </StackPanel>
+                            <StackPanel Grid.Column="2"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Unit"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,0" />
+                                <TextBox MaxWidth="400"
+                                         Margin="5,0,5,0"
+                                         VerticalAlignment="Top"
+                                         AcceptsReturn="True"
+                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                         IsReadOnly="True"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         Width="100"
+                                         TextWrapping="Wrap"
+                                         HorizontalContentAlignment="Center"
+                                         Text="{Binding CurUnit}" />
+                            </StackPanel>
 
-                    <StackPanel Grid.Column="2"
-                                VerticalAlignment="Center">
-                        <TextBlock Text="Unit"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,15" />
-                        <TextBox MaxWidth="400"
-                                 Margin="5,0,5,0"
-                                 VerticalAlignment="Top"
-                                 AcceptsReturn="True"
-                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                 IsReadOnly="True"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 Width="100"
-                                 TextWrapping="Wrap"
-                                 Text="{Binding CurUnit}" />
-                    </StackPanel>
+                            <StackPanel Grid.Column="3"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Panel ID"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,0" />
+                                <TextBox MaxWidth="400"
+                                         Margin="5,0,5,0"
+                                         VerticalAlignment="Top"
+                                         AcceptsReturn="True"
+                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                         IsReadOnly="True"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         Width="100"
+                                         TextWrapping="Wrap"
+                                         HorizontalContentAlignment="Center"
+                                         Text="{Binding CurPanelID}" />
+                            </StackPanel>
 
-                    <StackPanel Grid.Column="3"
-                                VerticalAlignment="Center">
-                        <TextBlock Text="Panel ID"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,15" />
-                        <TextBox MaxWidth="400"
-                                 Margin="5,0,5,0"
-                                 VerticalAlignment="Top"
-                                 AcceptsReturn="True"
-                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                 IsReadOnly="True"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 Width="100"
-                                 TextWrapping="Wrap"
-                                 Text="{Binding CurPanelID}" />
-                    </StackPanel>
+                            <StackPanel Grid.Column="4"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Louver Set"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,0" />
+                                <TextBox MaxWidth="400"
+                                         Margin="5,0,5,0"
+                                         VerticalAlignment="Top"
+                                         AcceptsReturn="True"
+                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                         IsReadOnly="True"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         Width="100"
+                                         TextWrapping="Wrap"
+                                         HorizontalContentAlignment="Center"
+                                         Text="{Binding CurLouverSet}" />
+                            </StackPanel>
 
-                    <StackPanel Grid.Column="4"
-                                VerticalAlignment="Center">
-                        <TextBlock Text="Louver Set"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,15" />
-                        <TextBox MaxWidth="400"
-                                 Margin="5,0,5,0"
-                                 VerticalAlignment="Top"
-                                 AcceptsReturn="True"
-                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                 IsReadOnly="True"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 Width="100"
-                                 TextWrapping="Wrap"
-                                 Text="{Binding CurLouverSet}" />
-                    </StackPanel>
+                            <StackPanel Grid.Column="5"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="XL"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,0" />
+                                <CheckBox IsChecked="{Binding CurXL}">
+                                    <CheckBox.LayoutTransform>
+                                        <ScaleTransform ScaleX="3"
+                                                        ScaleY="3" />
+                                    </CheckBox.LayoutTransform>
+                                </CheckBox>
+                            </StackPanel>
 
-                    <StackPanel Grid.Column="5"
-                                VerticalAlignment="Center">
-                        <TextBlock Text="XL"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,15" />
-                        <CheckBox IsChecked="{Binding CurXL}">
-                            <CheckBox.LayoutTransform>
-                                <ScaleTransform ScaleX="3"
-                                                ScaleY="3" />
-                            </CheckBox.LayoutTransform>
-                        </CheckBox>
-                    </StackPanel>
+                            <StackPanel Grid.Column="6"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Width"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,0" />
+                                <TextBox MaxWidth="400"
+                                         Margin="5,0,5,0"
+                                         VerticalAlignment="Top"
+                                         AcceptsReturn="True"
+                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                         IsReadOnly="True"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         Width="100"
+                                         TextWrapping="Wrap"
+                                         HorizontalContentAlignment="Center"
+                                         Text="{Binding CurWidth}" />
+                            </StackPanel>
 
-                    <StackPanel Grid.Column="6"
-                                VerticalAlignment="Center">
-                        <TextBlock Text="Width"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,15" />
-                        <TextBox MaxWidth="400"
-                                 Margin="5,0,5,0"
-                                 VerticalAlignment="Top"
-                                 AcceptsReturn="True"
-                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                 IsReadOnly="True"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 Width="100"
-                                 TextWrapping="Wrap"
-                                 Text="{Binding CurWidth}" />
+                            <StackPanel Grid.Column="7"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Length"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,0" />
+                                <TextBox MaxWidth="400"
+                                         Margin="5,0,5,0"
+                                         VerticalAlignment="Top"
+                                         AcceptsReturn="True"
+                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                         IsReadOnly="True"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         Width="100"
+                                         TextWrapping="Wrap"
+                                         HorizontalContentAlignment="Center"
+                                         Text="{Binding CurLength}" />
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
-
-                    <StackPanel Grid.Column="7"
-                                VerticalAlignment="Center">
-                        <TextBlock Text="Length"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,15" />
-                        <TextBox MaxWidth="400"
-                                 Margin="5,0,5,0"
-                                 VerticalAlignment="Top"
-                                 AcceptsReturn="True"
-                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                 IsReadOnly="True"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 Width="100"
-                                 TextWrapping="Wrap"
-                                 Text="{Binding CurLength}" />
-                    </StackPanel>
-                </StackPanel>
+                </materialDesign:ColorZone>-->
             </StackPanel>
 
         </materialDesign:ColorZone>
@@ -234,7 +253,7 @@
                                                 Header="LouverOrder"
                                                 Width="225" />
                                 <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
-                                                Header="CurrWarp"
+                                                Header="Warp"
                                                 Width="225" />
                                 <GridViewColumn DisplayMemberBinding="{Binding Status}"
                                                 Header="Status"
@@ -269,8 +288,9 @@
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:ButtonAssist.CornerRadius="10"
                         ToolTip="Print the first set of labels" />
-                <Button Content="Approve Set"
-                        Command="{Binding ReportApproved}"
+                <Button Grid.Row="4"
+                        Content="Approve Set"
+                        Command="{Binding PrintSortedLabels}"
                         IsEnabled="{Binding ApproveSetEnabled}"
                         Margin="15,15,15,15"
                         Width="400"
@@ -278,7 +298,30 @@
                         FontSize="30"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:ButtonAssist.CornerRadius="10"
-                        ToolTip="Print the first set of labels" />
+                        ToolTip="Print out the sorted label set" />
+                <!--<Button Content="Exit Report"
+                        Command="{Binding ReportApproved}"
+                        IsEnabled="{Binding IsEnabledExitReport}"
+                        Margin="15,15,15,15"
+                        Width="400"
+                        Height="100"
+                        FontSize="30"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        ToolTip="Exit Report" />-->
+            </StackPanel>
+
+
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        Margin="0,100,0,0"
+                        IsEnabled="False">
+                <materialDesign:PackIcon Width="24"
+                                         Height="24"
+                                         HorizontalAlignment="Center"
+                                         Kind="ArrowBottomLeftThick" Foreground="Gray"/>
+                <TextBlock Text="To Reject a Louver - Click from list"
+                           Foreground="Gray" />
             </StackPanel>
 
         </Grid>

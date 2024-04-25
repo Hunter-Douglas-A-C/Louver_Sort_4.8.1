@@ -5,6 +5,7 @@ using System;
 using System.Threading;
 using System.Globalization;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -19,6 +20,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public event EventHandler AnalogUpdated; // Event triggered when new analog data is received
         public event EventHandler LostConnection; // Event triggered when connection is lost
+        List<double> validReadings = new List<double>();
+        double AverageReading;
 
         public string SerialNumber { get; private set; } = "";
 
@@ -335,8 +338,16 @@ namespace Louver_Sort_4._8._1.Helpers
                     ResponseString += DI_155_Data[Row * Channels + 0].ToString("F4");
 
                     _outputString = ResponseString;
+                    validReadings.Add(Convert.ToDouble(_outputString));
                     OnAnalogUpdated();
                     ResponseString = ""; // reset ResponseString for next iteration
+
+
+                    if (validReadings.Count() == 5)
+                    {
+                        AverageReading = validReadings.Average();
+                        validReadings.Clear();
+                    }
                 }
             }
             catch (Exception ex)
@@ -348,6 +359,62 @@ namespace Louver_Sort_4._8._1.Helpers
                 throw new DataQException("An error occurred while retrieving data from the DI-155 device.", ex);
             }
         }
+
+
+
+
+        public double GetLatestData()
+        {
+            return Convert.ToDouble(_outputString);
+        }
+
+
+        public double RecordAndAverageReadings()
+        {
+            const int numberOfReadings = 5;
+            const double threshold = 0.2; // Adjust this threshold as needed
+
+            List<double> validReadings = new List<double>();
+
+            for (int i = 0; i < numberOfReadings; i++)
+            {
+                try
+                {
+                    double reading = GetLatestData(); // Get the recorded reading
+                    Thread.Sleep(1000);
+
+                    //Check if the reading is within threshold of the others
+                    if (validReadings.Count > 0)
+                    {
+                        double average = validReadings.Average();
+                        double difference = Math.Abs(reading - average);
+                        if (difference > threshold * average)
+                        {
+                            //Reading is vastly different, discard it
+                            continue;
+                        }
+                    }
+
+                    //Reading is valid, add it to the list
+                    validReadings.Add(reading);
+                }
+                catch (DataQException ex)
+                {
+                    //Handle the exception, log or notify as needed
+                    Console.WriteLine("Error recording reading: " + ex.Message);
+                }
+            }
+
+            //Calculate the average of valid readings
+            double averageReading = 0.0;
+            if (validReadings.Count > 0)
+            {
+                averageReading = validReadings.Average();
+            }
+
+            return averageReading;
+        }
+
 
         #endregion
     }
@@ -363,7 +430,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public event EventHandler IsConnectedChanged; // Event triggered on connection status change
 
         private bool _lastIsConnectedState; // Tracks the last known connection state
-        private readonly int _pollingInterval = 1000; // Time between connection checks in milliseconds
+        private readonly int _pollingInterval = 10; // Time between connection checks in milliseconds
         private Timer _pollingTimer; // Timer for periodic connection checks
 
         /// <summary>
@@ -414,6 +481,8 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             IsConnectedChanged?.Invoke(this, EventArgs.Empty);
         }
+
+       
     }
 
     /// <summary>
@@ -444,5 +513,11 @@ namespace Louver_Sort_4._8._1.Helpers
         /// if no inner exception is specified.</param>
         public DataQException(string message, Exception inner)
             : base(message, inner) { }
+
+
+
+      
+
+
     }
 }

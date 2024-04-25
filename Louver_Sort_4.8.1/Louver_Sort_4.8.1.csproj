@@ -58,6 +58,9 @@
     <Reference Include="Clipper, Version=6.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ParagonClipper.6.4.2\lib\netstandard2.0\Clipper.dll</HintPath>
     </Reference>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
+    </Reference>
     <Reference Include="Csv, Version=2.0.93.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Csv.2.0.93\lib\net40\Csv.dll</HintPath>
     </Reference>
@@ -75,6 +78,15 @@
     </Reference>
     <Reference Include="FluentFTP, Version=45.1.0.0, Culture=neutral, PublicKeyToken=f4af092b1d8df44f, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentFTP.45.1.0\lib\net472\FluentFTP.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
@@ -168,6 +180,9 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -197,6 +212,7 @@
     <Compile Include="Helpers\BaseCommand.cs" />
     <Compile Include="Helpers\DataQHelper.cs" />
     <Compile Include="Helpers\LouverStructure\BarcodeSet.cs" />
+    <Compile Include="Helpers\LouverStructure\LabelID.cs" />
     <Compile Include="Helpers\LouverStructure\Louver.cs" />
     <Compile Include="Helpers\LouverStructure\LouverListView.cs" />
     <Compile Include="Helpers\LouverStructure\LouverStyle.cs" />
@@ -218,6 +234,9 @@
     </Compile>
     <Compile Include="Views\PopUps\LouverCount.xaml.cs">
       <DependentUpon>LouverCount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PopUps\SortedLabelsPopUp.xaml.cs">
+      <DependentUpon>SortedLabelsPopUp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReCut.xaml.cs">
       <DependentUpon>ReCut.xaml</DependentUpon>
@@ -253,6 +272,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PopUps\LouverCount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PopUps\SortedLabelsPopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

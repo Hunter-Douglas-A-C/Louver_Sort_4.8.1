@@ -218,7 +218,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             _reportData.Clear();
             foreach (var item in _louvers)
             {
-                _reportData.Add(new ReportListView(item.ID, item.SortedID, item.AbsDeviation, item.Rejected));
+                _reportData.Add(new ReportListView(item.ID, item.SortedID, item.AbsDeviation, item.Rejected, item.Orientation));
             }
             return _reportData;
         }

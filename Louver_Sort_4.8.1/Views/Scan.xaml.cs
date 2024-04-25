@@ -34,5 +34,10 @@ namespace Louver_Sort_4._8._1.Views
 
             boundProperities.ScanInitialize();
         }
+
+        private void ListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

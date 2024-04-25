@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:Louver_Sort_4._8._1"
         mc:Ignorable="d"
         d:DesignHeight="1080"
@@ -24,13 +25,18 @@
 
     <!--Topmost="True"-->
     <Grid>
-
         <materialDesign:Card>
             <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryMid"
                         materialDesign:NavigationRailAssist.SelectionCornerRadius="50 10 10 10"
                         materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
                         Style="{StaticResource MaterialDesignNavigationRailTabControl}"
                         TabStripPlacement="Top">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <!--<cmd:EventToCommand Command="{Binding TabSelectionChangedCommand}"
+                                            PassEventArgsToCommand="True" />-->
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <TabItem>
                     <TabItem.Header>
                         <StackPanel Width="auto"
@@ -47,17 +53,18 @@
                     <!--Sorting Tab Content-->
                     <Grid>
                         <Grid>
-                            <Border BorderBrush="Black"
+                            <Border BorderBrush="Transparent"
                                     BorderThickness="5"
                                     CornerRadius="5"
                                     Panel.ZIndex="1"
                                     VerticalAlignment="Stretch"
                                     HorizontalAlignment="Stretch"
-                                    Width="400"
-                                    Height="400"
-                                    Visibility="{Binding PopUpVisible}">
+                                    Width="1000"
+                                    Height="900"
+                                    Visibility="{Binding PopUpVisible}"
+                                    >
                                 <ContentControl x:Name="CTCPopup"
-                                                Content="{Binding SelectedPopUp}" />
+                                                Content="{Binding SelectedPopUp}" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
                             </Border>
 
 
@@ -95,10 +102,35 @@
                     <!--Reporting Tab Content-->
                     <Grid>
 
+                        <StackPanel VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Width="300"
+                                    Visibility="{Binding VisilityReportingPassword}">
+                            <PasswordBox VerticalContentAlignment="Bottom"
+                                         materialDesign:HintAssist.HelperText="{Binding ReportingPasswordToolTip}"
+                                         materialDesign:HintAssist.Hint="Password"
+                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                         IsEnabled="{Binding ElementName=RevealPasswordOutlinedEnabled, Path=IsChecked}"
+                                         Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}"
+                                         materialDesign:PasswordBoxAssist.Password="{Binding PasswordReporting, Mode=TwoWay}" />
+                            <Button Width="100"
+                                    Margin="0,40,0,0"
+                                    Content="Login"
+                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                    ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
+                                    Command="{Binding PasswordEnter}"
+                                    CommandParameter="Reporting" />
+                        </StackPanel>
+                        <Grid Visibility="{Binding VisibilityReporting}"
+                              Background="Red"
+                              >
+                            <!--STUFF GO HERE-->
+                        </Grid>
                     </Grid>
 
                 </TabItem>
-                <TabItem>
+                <TabItem >
                     <TabItem.Header>
                         <StackPanel Width="auto"
                                     Height="auto">
@@ -114,7 +146,32 @@
 
                     <!--Settings tab content-->
                     <Grid>
-
+                        <StackPanel VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Width="300"
+                                    Visibility="{Binding VisilitySettingsPassword}">
+                            <PasswordBox VerticalContentAlignment="Bottom"
+                                         materialDesign:HintAssist.HelperText="{Binding SettingsPasswordToolTip}"
+                                         materialDesign:HintAssist.Hint="Password"
+                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                         IsEnabled="{Binding ElementName=RevealPasswordOutlinedEnabled, Path=IsChecked}"
+                                         Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}"
+                                         materialDesign:PasswordBoxAssist.Password="{Binding PasswordSettings, Mode=TwoWay}">
+                            </PasswordBox>
+                            <Button Width="100"
+                                    Margin="0,40,0,0"
+                                    Content="Login"
+                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                    ToolTip="Resource name: MaterialDesignRaisedLightDarkButton" 
+                                    Command="{Binding PasswordEnter}"
+                                    CommandParameter="Settings"/>
+                        </StackPanel>
+                        <Grid Visibility="{Binding VisibilitySettings}"
+                              Background="Red"
+                              >
+                            <!--STUFF GO HERE-->
+                        </Grid>
                     </Grid>
 
                 </TabItem>
@@ -168,9 +225,9 @@
 
     </Grid>
 </Window>
-    
-    
-    
+
+
+
 <!--<Button Grid.Row="6"
         Content="Main Menu"
         Command="{Binding UpdateView}"

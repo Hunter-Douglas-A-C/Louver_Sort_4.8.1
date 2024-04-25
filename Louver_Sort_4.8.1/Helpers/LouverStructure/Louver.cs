@@ -108,9 +108,21 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         /// </summary>
         public void CalcValues()
         {
+            //_processed = true;
+            //_devation = Math.Abs(Reading1) > Math.Abs(Reading2) ? Reading1 : Reading2;
+            //_orientation = _devation > 0;
+            //_absDevation = Math.Abs(_devation);
+
             _processed = true;
-            _devation = Math.Abs(Reading1) > Math.Abs(Reading2) ? Reading1 : Reading2;
-            _orientation = _devation > 0;
+            _devation = Reading1 - Reading2;
+            if (_devation > 0)
+            {
+                _orientation = true;
+            }
+            else
+            {
+                _orientation = false;
+            }
             _absDevation = Math.Abs(_devation);
         }
 

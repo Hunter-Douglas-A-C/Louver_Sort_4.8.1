@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json; // Make sure to add this using statement
 using System;
+using System.Windows.Controls;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
@@ -13,6 +14,8 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         private int _louverOrder;
         private double _currWarp;
         private string _status;
+        private string _orientation;
+        public string Orientation { get => _orientation; set => _orientation = value; }
 
         [JsonProperty("louver_id")]
         public int LouverID { get => _louverID; set => _louverID = value; }
@@ -40,12 +43,20 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         /// <param name="order">The order of the louver.</param>
         /// <param name="warp">The current warp of the louver.</param>
         /// <param name="rejected">A boolean indicating whether the louver is rejected.</param>
-        public ReportListView(int id, int order, double warp, bool rejected)
+        public ReportListView(int id, int order, double warp, bool rejected, bool _o)
         {
             _louverID = id;
             _louverOrder = order;
             _currWarp = warp;
             _status = rejected ? "FAIL" : "PASS";
+            if (!_o)
+            {
+                _orientation = "Flip";
+            }
+            else
+            {
+                _orientation = "";
+            }
         }
     }
 }

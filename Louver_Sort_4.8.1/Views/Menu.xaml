@@ -33,7 +33,7 @@
 
             <StackPanel VerticalAlignment="Center"
                         HorizontalAlignment="Center">
-                <materialDesign:ColorZone Padding="16"
+                <!--<materialDesign:ColorZone Padding="16"
                                           materialDesign:ElevationAssist.Elevation="Dp4"
                                           ClipToBounds="False"
                                           CornerRadius="10"
@@ -48,7 +48,7 @@
                                    FontWeight="ExtraBold"
                                    FontSize="30" />
                     </StackPanel>
-                </materialDesign:ColorZone>
+                </materialDesign:ColorZone>-->
 
                 <Button Content="{DynamicResource BtnLouver}"
                         Command="{Binding UpdateView}"

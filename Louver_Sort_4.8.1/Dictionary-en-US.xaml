@@ -3,7 +3,7 @@
     xmlns:System="clr-namespace:System;assembly=mscorlib">
 
     <System:String x:Key="MainMenuHeader">Main Menu</System:String>
-    <System:String x:Key="BtnLouver">Louver Positioning</System:String>
+    <System:String x:Key="BtnLouver">Sort Set</System:String>
     <System:String x:Key="BtnRecut">Re-Cut Louver</System:String>
     <System:String x:Key="BtnExit">Exit</System:String>
 </ResourceDictionary>

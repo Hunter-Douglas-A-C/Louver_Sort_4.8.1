@@ -198,7 +198,7 @@
                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                  Width="100"
                                  TextWrapping="Wrap"
-                                 Text="{Binding RecutReading1}" />
+                                 Text="{Binding RecutReadingTop}" />
                     </StackPanel>
                     <StackPanel Grid.Row="0"
                                 Grid.Column="1"
@@ -217,13 +217,13 @@
                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                  Width="100"
                                  TextWrapping="Wrap"
-                                 Text="{Binding RecutReading2}" />
+                                 Text="{Binding RecutReadingBottom}" />
                     </StackPanel>
                 </StackPanel>
                 <Button Grid.Row="0"
                         Content="Check Top Reading"
                         Command="{Binding CheckTop}"
-                        IsEnabled="{Binding CheckTopEnabled}"
+                        IsEnabled="{Binding IsEnabledCheckTop}"
                         Width="300"
                         Height="100"
                         FontSize="30"
@@ -233,7 +233,7 @@
                 <Button Grid.Row="0"
                         Content="Check Bottom Reading"
                         Command="{Binding CheckBottom}"
-                        IsEnabled="{Binding CheckBottomEnabled}"
+                        IsEnabled="{Binding IsEnabledCheckBottom}"
                         Width="300"
                         Height="100"
                         FontSize="30"
@@ -277,7 +277,7 @@
                             FontWeight="ExtraBold"
                             Foreground="#521919"
                             Background="Transparent"
-                            Visibility="{Binding DisconnectedEnabled}"
+                            Visibility="{Binding VisibilityDisconnected}"
                             Command="{Binding ReconnectToDataQ}" />
                 </Grid>
             </materialDesign:ColorZone>

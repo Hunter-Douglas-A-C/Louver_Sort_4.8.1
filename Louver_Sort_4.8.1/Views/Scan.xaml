@@ -24,10 +24,10 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <UserControl.InputBindings>
+    <!--<UserControl.InputBindings>
         <KeyBinding Key="Enter"
                     Command="{Binding FilterEnter}" />
-    </UserControl.InputBindings>
+    </UserControl.InputBindings>-->
 
     <Grid>
         <Grid.RowDefinitions>
@@ -298,8 +298,8 @@
 
             <Button Grid.Row="0"
                     Content="Print First Labels"
-                    Command="{Binding PrintStartingLabels}"
-                    IsEnabled="{Binding PrintLouverIDLabelsEnabled}"
+                    Command="{Binding PrintUnsortedLabels}"
+                    IsEnabled="{Binding IsEnabledPrintUnsortedLabels}"
                     Width="400"
                     Height="100"
                     FontSize="30"
@@ -308,8 +308,8 @@
                     ToolTip="Print the first set of labels" />
             <Button Grid.Row="1"
                     Content="Measure Top Side"
-                    Command="{Binding AcqReading1}"
-                    IsEnabled="{Binding Acquare1Enabled}"
+                    Command="{Binding AcqReadingTop}"
+                    IsEnabled="{Binding IsEnabledAcquareTop}"
                     Width="400"
                     Height="100"
                     FontSize="30"
@@ -318,8 +318,8 @@
                     ToolTip="Record the top side warp measurement" />
             <Button Grid.Row="2"
                     Content="Measure Bottom Side"
-                    Command="{Binding AcqReading2}"
-                    IsEnabled="{Binding Acquare2Enabled}"
+                    Command="{Binding AcqReadingBottom}"
+                    IsEnabled="{Binding IsEnabledAcquireBottom}"
                     Width="400"
                     Height="100"
                     FontSize="30"
@@ -329,7 +329,7 @@
             <Button Grid.Row="3"
                     Content="Review Sorted Report"
                     Command="{Binding ReviewLouverReport}"
-                    IsEnabled="{Binding ReviewLouverReportEnabled}"
+                    IsEnabled="{Binding IsEnabledReviewReport}"
                     Width="400"
                     Height="100"
                     FontSize="30"
@@ -534,7 +534,7 @@
                                 FontWeight="ExtraBold"
                                 Foreground="#521919"
                                 Background="Transparent"
-                                Visibility="{Binding DisconnectedEnabled}"
+                                Visibility="{Binding VisibilityDisconnected}"
                                 Command="{Binding ReconnectToDataQ}" />
                     </Grid>
                 </materialDesign:ColorZone>

@@ -270,7 +270,7 @@
                         VerticalAlignment="Center">
                 <Button Content="Reject Selected Louver"
                         Command="{Binding RejectSelected}"
-                        IsEnabled="{Binding RejectSelectedLouverEnabled}"
+                        IsEnabled="{Binding IsEnabledRejectSelectedLouver}"
                         Margin="15,15,15,15"
                         Width="400"
                         Height="100"
@@ -280,7 +280,7 @@
                         ToolTip="Select a louver from the list and remove it" />
                 <Button Content="Rework Set"
                         Command="{Binding ReworkSet}"
-                        IsEnabled="{Binding ReworkSetEnabled}"
+                        IsEnabled="{Binding IsEnabledReworkSet}"
                         Margin="15,15,15,15"
                         Width="400"
                         Height="100"
@@ -291,7 +291,7 @@
                 <Button Grid.Row="4"
                         Content="Approve Set"
                         Command="{Binding PrintSortedLabels}"
-                        IsEnabled="{Binding ApproveSetEnabled}"
+                        IsEnabled="{Binding IsEnabledApproveSet}"
                         Margin="15,15,15,15"
                         Width="400"
                         Height="100"

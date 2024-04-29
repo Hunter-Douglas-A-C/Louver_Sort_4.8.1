@@ -61,7 +61,7 @@
                                     HorizontalAlignment="Stretch"
                                     Width="1000"
                                     Height="900"
-                                    Visibility="{Binding PopUpVisible}"
+                                    Visibility="{Binding VisibilityPopUp}"
                                     >
                                 <ContentControl x:Name="CTCPopup"
                                                 Content="{Binding SelectedPopUp}" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
@@ -76,7 +76,7 @@
                                 </Border.Effect>
                                 <ContentControl x:Name="CTCMain"
                                                 Content="{Binding SelectedView}"
-                                                IsEnabled="{Binding MainEnabled}" />
+                                                IsEnabled="{Binding IsEnabledMain}" />
                             </Border>
                         </Grid>
 
@@ -119,14 +119,10 @@
                                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                     ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
-                                    Command="{Binding PasswordEnter}"
+                                    Command="{Binding UpdateView}"
                                     CommandParameter="Reporting" />
                         </StackPanel>
-                        <Grid Visibility="{Binding VisibilityReporting}"
-                              Background="Red"
-                              >
-                            <!--STUFF GO HERE-->
-                        </Grid>
+                        <ContentControl Visibility="{Binding VisibilityReporting}" Content="{Binding ReportingView}"/>
                     </Grid>
 
                 </TabItem>
@@ -164,14 +160,11 @@
                                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                     ToolTip="Resource name: MaterialDesignRaisedLightDarkButton" 
-                                    Command="{Binding PasswordEnter}"
+                                    Command="{Binding UpdateView}"
                                     CommandParameter="Settings"/>
                         </StackPanel>
-                        <Grid Visibility="{Binding VisibilitySettings}"
-                              Background="Red"
-                              >
-                            <!--STUFF GO HERE-->
-                        </Grid>
+                        <ContentControl Visibility="{Binding VisibilitySettings}"
+                                        Content="{Binding SettingsView}" Panel.ZIndex="0" />
                     </Grid>
 
                 </TabItem>

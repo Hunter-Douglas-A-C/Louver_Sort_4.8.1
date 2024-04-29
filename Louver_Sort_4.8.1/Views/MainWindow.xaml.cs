@@ -41,8 +41,8 @@ namespace Louver_Sort_4._8._1.Views
             boundProperities.SelectedView = new Menu();
             boundProperities.en_USEnabled = false;
             boundProperities.es_ESEnabled = true;
-            boundProperities.PopUpVisible = Visibility.Hidden;
-            boundProperities.MainEnabled = true;
+            boundProperities.VisibilityPopUp = Visibility.Hidden;
+            boundProperities.IsEnabledMain = true;
             boundProperities.MainContentBlurRadius = 0;
         }
 

@@ -106,8 +106,11 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         /// <summary>
         /// Calculates the deviation and orientation values of the louver.
         /// </summary>
-        public void CalcValues()
+        public void CalcValues(double rejectionValue)
         {
+
+
+
             //_processed = true;
             //_devation = Math.Abs(Reading1) > Math.Abs(Reading2) ? Reading1 : Reading2;
             //_orientation = _devation > 0;
@@ -124,6 +127,14 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
                 _orientation = false;
             }
             _absDevation = Math.Abs(_devation);
+            if (_absDevation > rejectionValue)
+            {
+                _rejected = true;
+            }
+            else
+            {
+                _rejected = false;
+            }
         }
 
         /// <summary>

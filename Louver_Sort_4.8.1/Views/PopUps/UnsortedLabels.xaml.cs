@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Louver_Sort_4._8._1.Views
+namespace Louver_Sort_4._8._1.Views.PopUps
 {
     /// <summary>
-    /// Interaction logic for Settings.xaml
+    /// Interaction logic for UnsortedLabels.xaml
     /// </summary>
-    public partial class Settings : UserControl
+    public partial class UnsortedLabels : UserControl
     {
-        public Settings()
+        public UnsortedLabels()
         {
             InitializeComponent();
         }

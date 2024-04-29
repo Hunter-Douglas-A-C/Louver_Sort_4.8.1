@@ -241,9 +241,13 @@
                     <ListView ItemsSource="{Binding ReportContent}"
                               SelectedItem="{Binding ReportSelectedLouver}"
                               FontSize="20">
-
+                        <ListView.Resources>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </ListView.Resources>
                         <ListView.View>
-
                             <GridView AllowsColumnReorder="true"
                                       ColumnHeaderToolTip="Louver Data">
                                 <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
@@ -253,7 +257,7 @@
                                                 Header="LouverOrder"
                                                 Width="225" />
                                 <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
-                                                Header="Warp"
+                                                Header="Deviation"
                                                 Width="225" />
                                 <GridViewColumn DisplayMemberBinding="{Binding Status}"
                                                 Header="Status"

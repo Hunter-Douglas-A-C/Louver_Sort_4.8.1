@@ -19,7 +19,6 @@ using ClipperLib;
 using Louver_Sort_4._8._1.Helpers;
 using Louver_Sort_4._8._1.Views;
 using Microsoft.Win32;
-using PolyNester;
 using Menu = Louver_Sort_4._8._1.Views.Menu;
 
 namespace Louver_Sort_4._8._1.Views

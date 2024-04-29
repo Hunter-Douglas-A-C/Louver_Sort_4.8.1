@@ -180,6 +180,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -224,9 +225,6 @@
     <Compile Include="Helpers\LouverStructure\ReportListView.cs" />
     <Compile Include="Helpers\LouverStructure\Set.cs" />
     <Compile Include="Helpers\LouverStructure\SetID.cs" />
-    <Compile Include="Helpers\Nester\Nester.cs" />
-    <Compile Include="Helpers\Nester\ObjHandler.cs" />
-    <Compile Include="Helpers\Nester\WPFHelper.cs" />
     <Compile Include="Helpers\ScrollViewerExtensions.cs" />
     <Compile Include="Helpers\ZebraPrinterHelper.cs" />
     <Compile Include="Views\Menu.xaml.cs">
@@ -238,20 +236,17 @@
     <Compile Include="Views\PopUps\SortedLabelsPopUp.xaml.cs">
       <DependentUpon>SortedLabelsPopUp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PopUps\UnsortedLabels.xaml.cs">
+      <DependentUpon>UnsortedLabels.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ReCut.xaml.cs">
       <DependentUpon>ReCut.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Report.xaml.cs">
       <DependentUpon>Report.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Reporting.xaml.cs">
-      <DependentUpon>Reporting.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Scan.xaml.cs">
       <DependentUpon>Scan.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Page Include="Dictionary-en-US.xaml">
       <SubType>Designer</SubType>
@@ -285,6 +280,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PopUps\UnsortedLabels.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ReCut.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -293,15 +292,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Reporting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Scan.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

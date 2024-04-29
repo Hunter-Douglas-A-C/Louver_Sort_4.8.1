@@ -36,7 +36,9 @@
                                           CornerRadius="10"
                                           Mode="SecondaryDark"
                                           HorizontalAlignment="Left">
-                    <TextBlock Text="Enter Louver Count:" />
+                    <TextBlock Text="Enter Louver Count:"
+                               FontSize="24"
+                               FontWeight="ExtraBold" />
                 </materialDesign:ColorZone>
 
                 <TextBox x:Name="barcode1TextBox"
@@ -74,7 +76,8 @@
                     <Button x:Name="CancelButton"
                             Content="Cancel"
                             Margin="0,0,10,0"
-                            Command="{Binding ClosePopUp}" />
+                            Command="{Binding UpdatePopUp}" 
+                            CommandParameter="Close"/>
                     <Button x:Name="OkButton"
                             Content="OK"
                             Command="{Binding LouverCountOk}" />

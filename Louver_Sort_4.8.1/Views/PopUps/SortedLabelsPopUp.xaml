@@ -27,7 +27,9 @@
                                           CornerRadius="10"
                                           Mode="SecondaryDark"
                                           HorizontalAlignment="Left">
-                    <TextBlock Text="Place sorted label on each louver" />
+                    <TextBlock Text="Place sorted label on each louver"
+                               FontSize="24"
+                               FontWeight="ExtraBold" />
                 </materialDesign:ColorZone>
 
                 <materialDesign:ColorZone VerticalAlignment="Stretch"
@@ -46,7 +48,12 @@
                                   HorizontalScrollBarVisibility="Auto">
                         <ListView ItemsSource="{Binding LabelIDContent}"
                                   FontSize="16">
-
+                            <ListView.Resources>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment"
+                                            Value="Center" />
+                                </Style>
+                            </ListView.Resources>
                             <ListView.View>
 
                                 <GridView AllowsColumnReorder="true"

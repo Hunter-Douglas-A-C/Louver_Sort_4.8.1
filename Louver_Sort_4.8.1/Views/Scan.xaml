@@ -481,12 +481,19 @@
                                   HorizontalContentAlignment="Center"
                                   HorizontalScrollBarVisibility="Auto"
                                   helpers:ScrollViewerExtensions.AlwaysScrollToEnd="True">
+
                         <ListView ItemsSource="{Binding ListViewContent}"
                                   FontSize="20"
                                   HorizontalContentAlignment="Center"
                                   PreviewMouseDown="ListView_PreviewMouseDown"
                                   SelectedIndex="{Binding ListViewSelectedIndex}"
                                   SelectedItem="{Binding ListViewSelectedLouver}">
+                            <!--<ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment"
+                                            Value="Center" />
+                                </Style>
+                            </ListView.ItemContainerStyle>-->
                             <ListView.View>
                                 <GridView AllowsColumnReorder="true"
                                           ColumnHeaderToolTip="Louver Data">

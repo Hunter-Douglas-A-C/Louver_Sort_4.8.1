@@ -61,10 +61,13 @@
                                     HorizontalAlignment="Stretch"
                                     Width="1000"
                                     Height="900"
-                                    Visibility="{Binding VisibilityPopUp}"
-                                    >
+                                    Visibility="{Binding VisibilityPopUp}">
                                 <ContentControl x:Name="CTCPopup"
-                                                Content="{Binding SelectedPopUp}" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                                                Content="{Binding SelectedPopUp}"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                HorizontalContentAlignment="Center" />
                             </Border>
 
 
@@ -97,6 +100,7 @@
                             <TextBlock HorizontalAlignment="Center"
                                        Text="Reporting" />
                         </StackPanel>
+
                     </TabItem.Header>
 
                     <!--Reporting Tab Content-->
@@ -122,11 +126,13 @@
                                     Command="{Binding UpdateView}"
                                     CommandParameter="Reporting" />
                         </StackPanel>
-                        <ContentControl Visibility="{Binding VisibilityReporting}" Content="{Binding ReportingView}"/>
+                        <Grid Visibility="{Binding VisibilityReporting}">
+
+                        </Grid>
                     </Grid>
 
                 </TabItem>
-                <TabItem >
+                <TabItem>
                     <TabItem.Header>
                         <StackPanel Width="auto"
                                     Height="auto">
@@ -142,6 +148,49 @@
 
                     <!--Settings tab content-->
                     <Grid>
+                        <Grid Visibility="{Binding VisibilitySettings}">
+                            <Viewbox Margin="500,0,500,0">
+                                                            <StackPanel VerticalAlignment="Center"
+                                        HorizontalAlignment="Center">
+                                <TextBox MaxWidth="400"
+                                         VerticalAlignment="Top"
+                                         materialDesign:HintAssist.Hint="Admin Password"
+                                         AcceptsReturn="True"
+                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                         Style="{StaticResource MaterialDesignFilledTextBox}"
+                                         TextWrapping="Wrap"
+                                         Text="{Binding AdminPassword, Mode=TwoWay}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox MaxWidth="400"
+                                             VerticalAlignment="Top"
+                                             materialDesign:HintAssist.Hint="Louver Data Save Location"
+                                             AcceptsReturn="True"
+                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                             TextWrapping="Wrap"
+                                             Text="{Binding JSONSaveLocation, Mode=TwoWay}" />
+                                    <Button VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding BrowseForJSONSaveLocation}">
+                                        <Button.Content>
+                                            <materialDesign:PackIcon Kind="FolderSearch" />
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+
+
+                                <TextBox MaxWidth="400"
+                                         VerticalAlignment="Top"
+                                         materialDesign:HintAssist.Hint="Louver Rejection Value"
+                                         AcceptsReturn="True"
+                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                         Style="{StaticResource MaterialDesignFilledTextBox}"
+                                         TextWrapping="Wrap"
+                                         Text="{Binding RejectionSpec, Mode=TwoWay}" />
+                            </StackPanel>
+                            </Viewbox>
+
+                        </Grid>
                         <StackPanel VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
                                     Width="300"
@@ -159,12 +208,11 @@
                                     Content="Login"
                                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                    ToolTip="Resource name: MaterialDesignRaisedLightDarkButton" 
+                                    ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
                                     Command="{Binding UpdateView}"
-                                    CommandParameter="Settings"/>
+                                    CommandParameter="Settings" />
                         </StackPanel>
-                        <ContentControl Visibility="{Binding VisibilitySettings}"
-                                        Content="{Binding SettingsView}" Panel.ZIndex="0" />
+
                     </Grid>
 
                 </TabItem>

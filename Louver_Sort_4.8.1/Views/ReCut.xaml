@@ -124,7 +124,10 @@
                 <ListView ItemsSource="{Binding ReportContent}"
                           SelectedItem="{Binding ReCutSelectedLouver}"
                           FontSize="20">
-
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment"
+                                Value="Center" />
+                    </Style>
                     <ListView.View>
 
                         <GridView AllowsColumnReorder="true"

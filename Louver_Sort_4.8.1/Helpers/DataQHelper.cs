@@ -6,6 +6,7 @@ using System.Threading;
 using System.Globalization;
 using System.Text;
 using System.Collections.Generic;
+using Org.BouncyCastle.Asn1.Cms;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -22,6 +23,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public event EventHandler LostConnection; // Event triggered when connection is lost
         List<double> validReadings = new List<double>();
         double AverageReading;
+        public double ReadingResult;
 
         public string SerialNumber { get; private set; } = "";
 
@@ -369,7 +371,16 @@ namespace Louver_Sort_4._8._1.Helpers
         }
 
 
-        public double RecordAndAverageReadings()
+        public void RecordAndAverageReadings()
+        {
+            Thread Record = new Thread(() =>
+            {
+                 ReadingResult = AverageReadingsFunction();
+            });
+            Record.Start();
+        }
+
+        public double AverageReadingsFunction()
         {
             const int numberOfReadings = 5;
             const double threshold = 0.2; // Adjust this threshold as needed

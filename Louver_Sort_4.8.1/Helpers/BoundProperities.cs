@@ -1140,7 +1140,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 // Divide the random integer by 1000 to get increments of 0.001
                 //double value = randomInt / 1000.0;
-                double value = _DataQ.RecordAndAverageReadings();
+                _DataQ.RecordAndAverageReadings();
+                double value = _DataQ.ReadingResult;
                 ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
                 ActiveTopReading = value;
 
@@ -1159,7 +1160,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 // Divide the random integer by 1000 to get increments of 0.001
                 //double value = randomInt / 1000.0;
-                double value = _DataQ.RecordAndAverageReadings();
+                _DataQ.RecordAndAverageReadings();
+                double value = _DataQ.ReadingResult;
                 ActiveSet.Louvers[ActiveLouverID].SetReading2(value);
                 ActiveBottomReading = value;
 

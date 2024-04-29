@@ -83,7 +83,7 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             Print(printer, zplBuilder.ToString());
             Thread.Sleep(500);
-            Print(printer, _ZPLSpacerLabel);
+            //Print(printer, _ZPLSpacerLabel);
         }
 
 
@@ -114,7 +114,7 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             Print(printer, zplBuilder.ToString());
             Thread.Sleep(500);
-            Print(printer, _ZPLSpacerLabel);
+            //Print(printer, _ZPLSpacerLabel);
         }
 
         ///// <summary>

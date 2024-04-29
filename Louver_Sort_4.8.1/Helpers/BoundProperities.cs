@@ -179,7 +179,7 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _isEnabledCheckTop;
             set { SetProperty(ref _isEnabledCheckTop, value); }
         }
-                private bool _isEnabledCheckBottom;
+        private bool _isEnabledCheckBottom;
         public bool IsEnabledCheckBottom
         {
             get => _isEnabledCheckBottom;
@@ -474,7 +474,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 SetProperty(ref _reportSelectedLouver, value);
                 if (_reportSelectedLouver != null)
                 {
-                   // _reportSelectedLouver = true;
+                    // _reportSelectedLouver = true;
                 }
             }
         }
@@ -868,7 +868,7 @@ namespace Louver_Sort_4._8._1.Helpers
             CurWidth = order.BarcodeHelper.Width.ToString();
             CurLength = order.BarcodeHelper.Length.ToString();
 
-            IsEnabledPrintSortedLabels = true;
+            IsEnabledPrintUnsortedLabels = true;
 
             ListViewContent = ActiveSet.GenerateRecordedLouvers();
             ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
@@ -901,7 +901,7 @@ namespace Louver_Sort_4._8._1.Helpers
             //Debug.WriteLine("Printed first set of labels");
 
 
-            IsEnabledPrintSortedLabels = false;
+            IsEnabledPrintUnsortedLabels = false;
             IsEnabledAcquareTop = true;
             IsEnabledAcquireBottom = false;
         });

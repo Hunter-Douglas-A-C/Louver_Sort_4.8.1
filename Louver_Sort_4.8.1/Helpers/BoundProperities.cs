@@ -99,7 +99,7 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _rejectionSpec;
             set { SetProperty(ref _rejectionSpec, value); }
         }
-        private bool _isCheckedUseFakeValues = true;
+        private bool _isCheckedUseFakeValues = false;
         public bool IsCheckedUseFakeValues
         {
             get => _isCheckedUseFakeValues;
@@ -936,12 +936,12 @@ namespace Louver_Sort_4._8._1.Helpers
                     case 8:
                         UpdatePopUp.Execute("Close");
                         _calibStep = 1;
+                        var value = _dataQ.GetDistance();
+                        var test = _cal.ConvertVoltageToDistance(value);
                         break;
                     default:
                         break;
                 }
-
-
             });
 
             CalibRecord = new BaseCommand(obj =>
@@ -950,11 +950,11 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     ConnectToDataQ();
                 }
-                if (_calibStep == 5)
+                if (_calibStep == 6)
                 {
                     _cal.FlatReading = _dataQ.GetDistance();
                 }
-                else if (_calibStep == 7)
+                else if (_calibStep == 8)
                 {
                     _cal.StepReading = _dataQ.GetDistance();
                 }

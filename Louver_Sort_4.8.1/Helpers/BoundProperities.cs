@@ -236,40 +236,22 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _mainContentBlurRadius;
             set { SetProperty(ref _mainContentBlurRadius, value); }
         }
-        private Visibility _visilitySettingsPassword = Visibility.Visible;
-        public Visibility VisilitySettingsPassword
+        private Visibility _visilityPassword = Visibility.Visible;
+        public Visibility VisilityPassword
         {
-            get => _visilitySettingsPassword;
+            get => _visilityPassword;
             set
             {
-                SetProperty(ref _visilitySettingsPassword, value);
+                SetProperty(ref _visilityPassword, value);
             }
         }
-        private Visibility _visibilitySettings = Visibility.Collapsed;
-        public Visibility VisibilitySettings
+        private Visibility _visibilityAdmin = Visibility.Collapsed;
+        public Visibility VisibilityAdmin
         {
-            get => _visibilitySettings;
+            get => _visibilityAdmin;
             set
             {
-                SetProperty(ref _visibilitySettings, value);
-            }
-        }
-        private Visibility _visilityReportingPassword = Visibility.Visible;
-        public Visibility VisilityReportingPassword
-        {
-            get => _visilityReportingPassword;
-            set
-            {
-                SetProperty(ref _visilityReportingPassword, value);
-            }
-        }
-        private Visibility _visibilityReporting = Visibility.Collapsed;
-        public Visibility VisibilityReporting
-        {
-            get => _visibilityReporting;
-            set
-            {
-                SetProperty(ref _visibilityReporting, value);
+                SetProperty(ref _visibilityAdmin, value);
             }
         }
         private Visibility _visibilityCalibRecord = Visibility.Collapsed;
@@ -481,6 +463,50 @@ namespace Louver_Sort_4._8._1.Helpers
         }
 
 
+
+        //ADMIN
+        private string _password;
+        public string Password
+        {
+            get => _password;
+            set { SetProperty(ref _password, value); }
+        }
+        private string _passwordToolTip;
+        public string PasswordToolTip
+        {
+            get => _passwordToolTip;
+            set { SetProperty(ref _passwordToolTip, value); }
+        }
+        private DateTime _dateRangeStart;
+        public DateTime DateRangeStart
+        {
+            get => _dateRangeStart;
+            set { SetProperty(ref _dateRangeStart, value); }
+        }
+        private DateTime _dateRangeEnd;
+        public DateTime DateRangeEnd
+        {
+            get => _dateRangeEnd;
+            set { SetProperty(ref _dateRangeEnd, value); }
+        }
+        private DateTime _dateTimeToday = DateTime.Now;
+        public DateTime DateTimeToday
+        {
+            get => _dateTimeToday;
+            set { SetProperty(ref _dateTimeToday, value); }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         //Calib
         private string _calibTxtBoxHint;
         public string CalibTxtBoxHint
@@ -647,40 +673,6 @@ namespace Louver_Sort_4._8._1.Helpers
             set { SetProperty(ref _txtBottomAcceptableReplacement, value); }
         }
 
-        //Settings
-        private string _passwordSettings;
-        public string PasswordSettings
-        {
-            get => _passwordSettings;
-            set
-            {
-                SetProperty(ref _passwordSettings, value);
-            }
-        }
-        private string _settingsPasswordToolTip = "Enter your password";
-        public string SettingsPasswordToolTip
-        {
-            get => _settingsPasswordToolTip;
-            set { SetProperty(ref _settingsPasswordToolTip, value); }
-        }
-
-        //Reporting
-        private string _passwordReporting;
-        public string PasswordReporting
-        {
-            get => _passwordReporting;
-            set
-            {
-                SetProperty(ref _passwordReporting, value);
-            }
-        }
-        private string _reportingPasswordToolTip = "Enter your password";
-        public string ReportingPasswordToolTip
-        {
-            get => _reportingPasswordToolTip;
-            set { SetProperty(ref _reportingPasswordToolTip, value); }
-        }
-
         //Observable Collections
         private ObservableCollection<LouverListView> _listViewContent = new ObservableCollection<LouverListView>();
         public ObservableCollection<LouverListView> ListViewContent
@@ -738,6 +730,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand CheckBottom { get; set; }
         public ICommand LostFocusSettings { get; set; }
         public ICommand LostFocusReporting { get; set; }
+        public ICommand ExportExcel { get; set; }
         public ICommand ShutDown { get; set; }
 
         #endregion
@@ -778,26 +771,15 @@ namespace Louver_Sort_4._8._1.Helpers
                      case "Exit":
                          SelectedView = null;
                          break;
-                     case "Settings":
-                         if (PasswordSettings == _adminPassword)
-                         {
-                             VisilitySettingsPassword = Visibility.Collapsed;
-                             VisibilitySettings = Visibility.Visible;
-                         }
-                         else
-                         {
-                             SettingsPasswordToolTip = "Incorrect Password";
-                         }
-                         break;
                      case "Reporting":
-                         if (PasswordReporting == _adminPassword)
+                         if (Password == _adminPassword)
                          {
-                             VisilityReportingPassword = Visibility.Collapsed;
-                             VisibilityReporting = Visibility.Visible;
+                             VisilityPassword = Visibility.Collapsed;
+                             VisibilityAdmin = Visibility.Visible;
                          }
                          else
                          {
-                             ReportingPasswordToolTip = "Incorrect Password";
+                             PasswordToolTip = "Incorrect Password";
                          }
                          break;
                      default:
@@ -1373,42 +1355,14 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             });
 
-
-
-
-
-
-
-
-
-            //LostFocusReporting = new BaseCommand(obj =>
-            //{
-            //    VisilityReportingPassword = Visibility.Visible;
-            //    VisibilityReporting = Visibility.Collapsed;
-            //    ReportingPasswordToolTip = "Enter Your Password";
-            //});
-
-            //LostFocusSettings = new BaseCommand(obj =>
-            //{
-            //    VisilitySettingsPassword = Visibility.Visible;
-            //    VisibilitySettings = Visibility.Collapsed;
-            //    SettingsPasswordToolTip = "Enter Your Password";
-            //});
-
-
-
-
-
-
-
-
-
-
+            ExportExcel = new BaseCommand(obj =>
+            {
+                ExportToExcel("C:\\Users\\jallen\\Documents\\ExcelExport.xlsx");
+            });
 
             ShutDown = new BaseCommand(obj =>
             {
                 //SaveToJson();
-                ExportToExcel("C:\\Users\\jallen\\Documents\\ExcelExport.xlsx");
 
                 Console.WriteLine("JSON exported and saved to file.");
 
@@ -1616,6 +1570,26 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
+        public bool IsInSelectedRange(Order o)
+        {
+            DateTime cutoffDate = DateTime.Now.AddDays(-90);
+            List<OrderWithBarcode> OrderstoRemove = new List<OrderWithBarcode>();
+            foreach (var openings in o.Openings)
+            {
+                foreach (var panels in openings.Panels)
+                {
+                    foreach (var sets in panels.Sets)
+                    {
+                        if (sets.DateSortFinished < DateRangeEnd || sets.DateSortFinished > DateRangeStart)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
         public void ExportToExcel(string filename)
         {
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
@@ -1624,74 +1598,79 @@ namespace Louver_Sort_4._8._1.Helpers
                 var l = 1;
                 foreach (var order in _allOrders.OrdersWithBarcodes)
                 {
-                    var sheet = package.Workbook.Worksheets.Add(l.ToString());
-                    l += 1;
-                    sheet.Cells[1, 1].Value = "Barcode 1:";
-                    sheet.Cells[2, 1].Value = order.BarcodeSet.Barcode1.ToString();
-                    sheet.Cells[1, 2].Value = "Barcode2:";
-                    sheet.Cells[2, 2].Value = order.BarcodeSet.Barcode2.ToString();
-                    foreach (var openings in order.Order.Openings)
+                    if (IsInSelectedRange(order.Order))
                     {
-
-
-
-                        sheet.Cells[1, 3].Value = "Line:";
-                        sheet.Cells[2, 3].Value = openings.Line.ToString();
-                        sheet.Cells[1, 4].Value = "Model:";
-                        sheet.Cells[2, 4].Value = openings.ModelNum.ToString();
-                        sheet.Cells[1, 5].Value = "Style:";
-                        sheet.Cells[2, 5].Value = openings.Style.ToString();
-                        sheet.Cells[1, 6].Value = "Length:";
-                        sheet.Cells[2, 6].Value = openings.Length.ToString();
-                        sheet.Cells[1, 7].Value = "Width:";
-                        sheet.Cells[2, 7].Value = openings.Width.ToString();
-                        foreach (var panels in openings.Panels)
+                        var sheet = package.Workbook.Worksheets.Add(l.ToString());
+                        l += 1;
+                        sheet.Cells[1, 1].Value = "Barcode 1:";
+                        sheet.Cells[2, 1].Value = order.BarcodeSet.Barcode1.ToString();
+                        sheet.Cells[1, 2].Value = "Barcode2:";
+                        sheet.Cells[2, 2].Value = order.BarcodeSet.Barcode2.ToString();
+                        foreach (var openings in order.Order.Openings)
                         {
-                            sheet.Cells[1, 8].Value = "ID:";
-                            sheet.Cells[2, 8].Value = panels.ID.ToString();
-                            foreach (var sets in panels.Sets)
+                            sheet.Cells[1, 3].Value = "Line:";
+                            sheet.Cells[2, 3].Value = openings.Line.ToString();
+                            sheet.Cells[1, 4].Value = "Model:";
+                            sheet.Cells[2, 4].Value = openings.ModelNum.ToString();
+                            sheet.Cells[1, 5].Value = "Style:";
+                            sheet.Cells[2, 5].Value = openings.Style.ToString();
+                            sheet.Cells[1, 6].Value = "Length:";
+                            sheet.Cells[2, 6].Value = openings.Length.ToString();
+                            sheet.Cells[1, 7].Value = "Width:";
+                            sheet.Cells[2, 7].Value = openings.Width.ToString();
+                            foreach (var panels in openings.Panels)
                             {
-                                sheet.Cells[1, 9].Value = "Louver Count:";
-                                sheet.Cells[2, 9].Value = sets.LouverCount.ToString();
-                                sheet.Cells[1, 10].Value = "Date Sort Started:";
-                                sheet.Cells[2, 10].Value = sets.DateSortStarted.ToString();
-                                sheet.Cells[1, 11].Value = "Date Sort Finsihed:";
-                                sheet.Cells[2, 11].Value = sets.DateSortFinished.ToString();
-
-                                var i = 2;
-                                foreach (var louver in sets.Louvers)
+                                sheet.Cells[1, 8].Value = "ID:";
+                                sheet.Cells[2, 8].Value = panels.ID.ToString();
+                                foreach (var sets in panels.Sets)
                                 {
-                                    if (i==2)
+                                    sheet.Cells[1, 9].Value = "Louver Count:";
+                                    sheet.Cells[2, 9].Value = sets.LouverCount.ToString();
+                                    sheet.Cells[1, 10].Value = "Date Sort Started:";
+                                    sheet.Cells[2, 10].Value = sets.DateSortStarted.ToString();
+                                    sheet.Cells[1, 11].Value = "Date Sort Finsihed:";
+                                    sheet.Cells[2, 11].Value = sets.DateSortFinished.ToString();
+
+                                    var i = 2;
+                                    foreach (var louver in sets.Louvers)
                                     {
-                                        sheet.Cells[4, 1].Value = "ID";
-                                        sheet.Cells[5, 1].Value = "Sorted ID";
-                                        sheet.Cells[6, 1].Value = "Orientation";
-                                        sheet.Cells[7, 1].Value = "Processed";
-                                        sheet.Cells[8, 1].Value = "Reading Top";
-                                        sheet.Cells[9, 1].Value = "Reading Bottom";
-                                        sheet.Cells[10, 1].Value = "Deviation";
-                                        sheet.Cells[11, 1].Value = "Abs Deviation";
-                                        sheet.Cells[12, 1].Value = "Rejected";
-                                        sheet.Cells[13, 1].Value = "Cause of Rejection";
+                                        if (i == 2)
+                                        {
+                                            sheet.Cells[4, 1].Value = "ID";
+                                            sheet.Cells[5, 1].Value = "Sorted ID";
+                                            sheet.Cells[6, 1].Value = "Orientation";
+                                            sheet.Cells[7, 1].Value = "Processed";
+                                            sheet.Cells[8, 1].Value = "Reading Top";
+                                            sheet.Cells[9, 1].Value = "Reading Bottom";
+                                            sheet.Cells[10, 1].Value = "Deviation";
+                                            sheet.Cells[11, 1].Value = "Abs Deviation";
+                                            sheet.Cells[12, 1].Value = "Rejected";
+                                            sheet.Cells[13, 1].Value = "Cause of Rejection";
+                                        }
+                                        sheet.Cells[3, i].Value = "Louver";
+                                        sheet.Cells[4, i].Value = louver.ID.ToString();
+                                        sheet.Cells[5, i].Value = louver.SortedID.ToString();
+                                        sheet.Cells[6, i].Value = louver.Orientation.ToString();
+                                        sheet.Cells[7, i].Value = louver.Processed.ToString();
+                                        sheet.Cells[8, i].Value = louver.Reading1.ToString();
+                                        sheet.Cells[9, i].Value = louver.Reading2.ToString();
+                                        sheet.Cells[10, i].Value = louver.Deviation.ToString();
+                                        sheet.Cells[11, i].Value = louver.AbsDeviation.ToString();
+                                        sheet.Cells[12, i].Value = louver.Rejected.ToString();
+                                        sheet.Cells[13, i].Value = louver.CauseOfRejection.ToString();
+                                        i++;
                                     }
-                                    sheet.Cells[3, i].Value = "Louver";
-                                    sheet.Cells[4, i].Value = louver.ID.ToString();
-                                    sheet.Cells[5, i].Value = louver.SortedID.ToString();
-                                    sheet.Cells[6, i].Value = louver.Orientation.ToString();
-                                    sheet.Cells[7, i].Value = louver.Processed.ToString();
-                                    sheet.Cells[8, i].Value = louver.Reading1.ToString();
-                                    sheet.Cells[9, i].Value = louver.Reading2.ToString();
-                                    sheet.Cells[10, i].Value =louver.Deviation.ToString();
-                                    sheet.Cells[11, i].Value = louver.AbsDeviation.ToString();
-                                    sheet.Cells[12, i].Value = louver.Rejected.ToString();
-                                    sheet.Cells[13, i].Value = louver.CauseOfRejection.ToString();
-                                    i++;
                                 }
                             }
                         }
                     }
                 }
-                package.SaveAs(new FileInfo(filename));
+
+                if (package.Workbook.Worksheets.Count > 0)
+                {
+                    package.SaveAs(new FileInfo(filename));
+                }
+
             }
         }
 

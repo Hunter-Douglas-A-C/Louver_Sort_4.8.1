@@ -25,301 +25,270 @@
 
     <!--Topmost="True"-->
     <Grid>
-            <Border BorderBrush="Transparent"
-            BorderThickness="5"
-            CornerRadius="5"
-            Panel.ZIndex="1"
-            VerticalAlignment="Stretch"
-            HorizontalAlignment="Stretch"
-            Width="1000"
-            Height="900"
-            Visibility="{Binding VisibilityPopUp}">
-        <ContentControl x:Name="CTCPopup"
-                        Content="{Binding SelectedPopUp}"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        HorizontalContentAlignment="Center" />
-    </Border>
-    <Border Panel.ZIndex="0">
-        <Border.Effect>
-            <BlurEffect Radius="{Binding MainContentBlurRadius}" />
-        </Border.Effect>
-        <Grid>
+        <Border BorderBrush="Transparent"
+                BorderThickness="5"
+                CornerRadius="5"
+                Panel.ZIndex="1"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch"
+                Width="1000"
+                Height="900"
+                Visibility="{Binding VisibilityPopUp}">
+            <ContentControl x:Name="CTCPopup"
+                            Content="{Binding SelectedPopUp}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            HorizontalContentAlignment="Center" />
+        </Border>
+        <Border Panel.ZIndex="0">
+            <Border.Effect>
+                <BlurEffect Radius="{Binding MainContentBlurRadius}" />
+            </Border.Effect>
+            <Grid>
 
-        
-        
-        <materialDesign:Card>
-            <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryMid"
-                        materialDesign:NavigationRailAssist.SelectionCornerRadius="50 10 10 10"
-                        materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
-                        Style="{StaticResource MaterialDesignNavigationRailTabControl}"
-                        TabStripPlacement="Top">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <!--<cmd:EventToCommand Command="{Binding TabSelectionChangedCommand}"
+
+
+                <materialDesign:Card>
+                    <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryMid"
+                                materialDesign:NavigationRailAssist.SelectionCornerRadius="50 10 10 10"
+                                materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
+                                Style="{StaticResource MaterialDesignNavigationRailTabControl}"
+                                TabStripPlacement="Top">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <!--<cmd:EventToCommand Command="{Binding TabSelectionChangedCommand}"
                                             PassEventArgsToCommand="True" />-->
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel Width="auto"
-                                    Height="auto">
-                            <materialDesign:PackIcon Width="24"
-                                                     Height="24"
-                                                     HorizontalAlignment="Center"
-                                                     Kind="RulerSquare" />
-                            <TextBlock HorizontalAlignment="Center"
-                                       Text="Calibrate" />
-                        </StackPanel>
-                    </TabItem.Header>
-
-                    <!--Calibartion Tab Content-->
-                    <Grid>
-                        <materialDesign:ColorZone VerticalAlignment="Center"
-                                                  HorizontalAlignment="Center"
-                                                  Padding="16"
-                                                  materialDesign:ElevationAssist.Elevation="Dp4"
-                                                  ClipToBounds="False"
-                                                  CornerRadius="10"
-                                                  Mode="PrimaryDark">
-                            <Button Grid.Row="0"
-                                    Content="Start Calibration"
-                                    Command="{Binding Calibrate}"
-                                    Width="400"
-                                    Height="100"
-                                    FontSize="30"
-                                    Style="{StaticResource MaterialDesignRaisedButton}"
-                                    materialDesign:ButtonAssist.CornerRadius="10"
-                                    ToolTip="Start Calibartion" />
-                        </materialDesign:ColorZone>
-                    </Grid>
-
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel Width="auto"
-                                    Height="auto">
-                            <materialDesign:PackIcon Width="24"
-                                                     Height="24"
-                                                     HorizontalAlignment="Center"
-                                                     Kind="ViewSequentialOutline" />
-                            <TextBlock HorizontalAlignment="Center"
-                                       Text="Sort" />
-                        </StackPanel>
-                    </TabItem.Header>
-
-                    <!--Sorting Tab Content-->
-                    <Grid>
-                        <Grid>
-
-
-
-
-                            <ContentControl x:Name="CTCMain"
-                                            Content="{Binding SelectedView}"
-                                            IsEnabled="{Binding IsEnabledMain}" />
-                        </Grid>
-
-
-
-
-                    </Grid>
-
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel Width="auto"
-                                    Height="auto">
-                            <materialDesign:PackIcon Width="24"
-                                                     Height="24"
-                                                     HorizontalAlignment="Center"
-                                                     Kind="ChartAreaspline" />
-                            <TextBlock HorizontalAlignment="Center"
-                                       Text="Reporting" />
-                        </StackPanel>
-
-                    </TabItem.Header>
-
-                    <!--Reporting Tab Content-->
-                    <Grid>
-
-                        <StackPanel VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    Width="300"
-                                    Visibility="{Binding VisilityReportingPassword}">
-                            <PasswordBox VerticalContentAlignment="Bottom"
-                                         materialDesign:HintAssist.HelperText="{Binding ReportingPasswordToolTip}"
-                                         materialDesign:HintAssist.Hint="Password"
-                                         materialDesign:TextFieldAssist.HasClearButton="True"
-                                         IsEnabled="{Binding ElementName=RevealPasswordOutlinedEnabled, Path=IsChecked}"
-                                         Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}"
-                                         materialDesign:PasswordBoxAssist.Password="{Binding PasswordReporting, Mode=TwoWay}" />
-                            <Button Width="100"
-                                    Margin="0,40,0,0"
-                                    Content="Login"
-                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                    ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
-                                    Command="{Binding UpdateView}"
-                                    CommandParameter="Reporting" />
-                        </StackPanel>
-                        <Grid Visibility="{Binding VisibilityReporting}">
-
-                        </Grid>
-                    </Grid>
-
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel Width="auto"
-                                    Height="auto">
-                            <materialDesign:PackIcon Width="24"
-                                                     Height="24"
-                                                     HorizontalAlignment="Center"
-                                                     Kind="Wrench" />
-                            <TextBlock HorizontalAlignment="Center"
-                                       Text="Settings" />
-                        </StackPanel>
-                    </TabItem.Header>
-
-
-                    <!--Settings tab content-->
-                    <Grid>
-                        <Grid Visibility="{Binding VisibilitySettings}">
-                            <Viewbox Margin="500,0,500,0">
-                                <StackPanel VerticalAlignment="Center"
-                                            HorizontalAlignment="Center">
-                                    <TextBox MaxWidth="400"
-                                             VerticalAlignment="Top"
-                                             materialDesign:HintAssist.Hint="Admin Password"
-                                             AcceptsReturn="True"
-                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                             Style="{StaticResource MaterialDesignFilledTextBox}"
-                                             TextWrapping="Wrap"
-                                             Text="{Binding AdminPassword, Mode=TwoWay}" />
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBox MaxWidth="400"
-                                                 VerticalAlignment="Top"
-                                                 materialDesign:HintAssist.Hint="Louver Data Save Location"
-                                                 AcceptsReturn="True"
-                                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                 Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                 TextWrapping="Wrap"
-                                                 Text="{Binding JSONSaveLocation, Mode=TwoWay}" />
-                                        <Button VerticalAlignment="Center"
-                                                HorizontalAlignment="Center"
-                                                Command="{Binding BrowseForJSONSaveLocation}">
-                                            <Button.Content>
-                                                <materialDesign:PackIcon Kind="FolderSearch" />
-                                            </Button.Content>
-                                        </Button>
-                                    </StackPanel>
-
-
-                                    <TextBox MaxWidth="400"
-                                             VerticalAlignment="Top"
-                                             materialDesign:HintAssist.Hint="Louver Rejection Value"
-                                             AcceptsReturn="True"
-                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                             Style="{StaticResource MaterialDesignFilledTextBox}"
-                                             TextWrapping="Wrap"
-                                             Text="{Binding RejectionSpec, Mode=TwoWay}" />
-
-                                    <TextBox MaxWidth="400"
-                                             VerticalAlignment="Top"
-                                             materialDesign:HintAssist.Hint="Data Retintion Period"
-                                             AcceptsReturn="True"
-                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                             Style="{StaticResource MaterialDesignFilledTextBox}"
-                                             TextWrapping="Wrap"
-                                             Text="{Binding DataRetentionPeriod, Mode=TwoWay}" />
-
-                                    <StackPanel Orientation="Horizontal"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Center">
-                                        <TextBlock Text="Use fake Data?" />
-                                        <RadioButton IsChecked="{Binding IsCheckedUseFakeValues}" />
-                                    </StackPanel>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Width="auto"
+                                            Height="auto">
+                                    <materialDesign:PackIcon Width="24"
+                                                             Height="24"
+                                                             HorizontalAlignment="Center"
+                                                             Kind="ViewSequentialOutline" />
+                                    <TextBlock HorizontalAlignment="Center"
+                                               Text="Sort" />
                                 </StackPanel>
-                            </Viewbox>
+                            </TabItem.Header>
 
-                        </Grid>
-                        <StackPanel VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    Width="300"
-                                    Visibility="{Binding VisilitySettingsPassword}">
-                            <PasswordBox VerticalContentAlignment="Bottom"
-                                         materialDesign:HintAssist.HelperText="{Binding SettingsPasswordToolTip}"
-                                         materialDesign:HintAssist.Hint="Password"
-                                         materialDesign:TextFieldAssist.HasClearButton="True"
-                                         IsEnabled="{Binding ElementName=RevealPasswordOutlinedEnabled, Path=IsChecked}"
-                                         Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}"
-                                         materialDesign:PasswordBoxAssist.Password="{Binding PasswordSettings, Mode=TwoWay}">
-                            </PasswordBox>
-                            <Button Width="100"
-                                    Margin="0,40,0,0"
-                                    Content="Login"
-                                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                                    ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
-                                    Command="{Binding UpdateView}"
-                                    CommandParameter="Settings" />
+                            <!--Sorting Tab Content-->
+                            <Grid>
+                                <Grid>
+
+
+
+
+                                    <ContentControl x:Name="CTCMain"
+                                                    Content="{Binding SelectedView}"
+                                                    IsEnabled="{Binding IsEnabledMain}" />
+                                </Grid>
+
+
+
+
+                            </Grid>
+
+                        </TabItem>
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Width="auto"
+                                            Height="auto">
+                                    <materialDesign:PackIcon Width="24"
+                                                             Height="24"
+                                                             HorizontalAlignment="Center"
+                                                             Kind="Cog" />
+                                    <TextBlock HorizontalAlignment="Center"
+                                               Text="Admin" />
+                                </StackPanel>
+
+                            </TabItem.Header>
+
+                            <!--Reporting Tab Content-->
+                            <Grid>
+
+                                <StackPanel VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Width="300"
+                                            Visibility="{Binding VisilityPassword}">
+                                    <PasswordBox VerticalContentAlignment="Bottom"
+                                                 materialDesign:HintAssist.HelperText="{Binding PasswordToolTip}"
+                                                 materialDesign:HintAssist.Hint="Password"
+                                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                                 IsEnabled="{Binding ElementName=RevealPasswordOutlinedEnabled, Path=IsChecked}"
+                                                 Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}"
+                                                 materialDesign:PasswordBoxAssist.Password="{Binding Password, Mode=TwoWay}" />
+                                    <Button Width="100"
+                                            Margin="0,40,0,0"
+                                            Content="Login"
+                                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                            ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
+                                            Command="{Binding UpdateView}"
+                                            CommandParameter="Reporting" />
+                                </StackPanel>
+                                <Grid Visibility="{Binding VisibilityAdmin}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0">
+                                        <StackPanel VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center">
+                                            <TextBox MaxWidth="400"
+                                                     VerticalAlignment="Center"
+                                                     materialDesign:HintAssist.Hint="Admin Password"
+                                                     AcceptsReturn="True"
+                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                     TextWrapping="Wrap"
+                                                     Text="{Binding AdminPassword, Mode=TwoWay}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBox MaxWidth="400"
+                                                         VerticalAlignment="Top"
+                                                         materialDesign:HintAssist.Hint="Louver Data Save Location"
+                                                         AcceptsReturn="True"
+                                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                         Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                         TextWrapping="Wrap"
+                                                         Text="{Binding JSONSaveLocation, Mode=TwoWay}" />
+                                                <Button VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
+                                                        Command="{Binding BrowseForJSONSaveLocation}">
+                                                    <Button.Content>
+                                                        <materialDesign:PackIcon Kind="FolderSearch" />
+                                                    </Button.Content>
+                                                </Button>
+                                            </StackPanel>
+
+
+                                            <TextBox MaxWidth="400"
+                                                     VerticalAlignment="Top"
+                                                     materialDesign:HintAssist.Hint="Louver Rejection Value"
+                                                     AcceptsReturn="True"
+                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                     TextWrapping="Wrap"
+                                                     Text="{Binding RejectionSpec, Mode=TwoWay}" />
+
+                                            <TextBox MaxWidth="400"
+                                                     VerticalAlignment="Top"
+                                                     materialDesign:HintAssist.Hint="Data Retintion Period"
+                                                     AcceptsReturn="True"
+                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                     TextWrapping="Wrap"
+                                                     Text="{Binding DataRetentionPeriod, Mode=TwoWay}" />
+
+                                            <StackPanel Orientation="Horizontal"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center">
+                                                <TextBlock Text="Use fake Data?" />
+                                                <RadioButton IsChecked="{Binding IsCheckedUseFakeValues}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Grid Grid.Column="1">
+                                        <StackPanel VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center">
+                                            <!--<Calendar   materialDesign:CalendarAssist.SelectionColor="DarkOrange"
+                                                        materialDesign:CalendarAssist.HeaderBackground="{DynamicResource MaterialDesign.Brush.Secondary.Dark}"
+                                                        materialDesign:CalendarAssist.HeaderForeground="{DynamicResource MaterialDesign.Brush.Secondary.Dark.Foreground}"
+                                                        Background="{DynamicResource  MaterialDesign.Brush.Primary.Dark}"
+                                                        Foreground="{DynamicResource  MaterialDesign.Brush.Primary.Dark.Foreground}"
+                                                        materialDesign:CalendarAssist.Orientation="Horizontal"
+                                                        materialDesign:ElevationAssist.Elevation="Dp8"
+                                                        SelectionMode="SingleRange"
+                                                        SelectedDate="{Binding DateRange}" />-->
+                                            <StackPanel Orientation="Horizontal"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center">
+                                                <DatePicker Width="140"
+                                                            materialDesign:TextFieldAssist.OutlinedBorderActiveThickness="3"
+                                                            BorderThickness="3"
+                                                            materialDesign:HintAssist.Hint="Pick Start Date"
+                                                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                                                            SelectedDate="{Binding DateRangeStart}"
+                                                            DisplayDate="{Binding DateTimeToday, Mode=TwoWay}"/>
+                                                <DatePicker Width="140"
+                                                            materialDesign:TextFieldAssist.OutlinedBorderActiveThickness="3"
+                                                            BorderThickness="3"
+                                                            materialDesign:HintAssist.Hint="Pick End Date"
+                                                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                                                            SelectedDate="{Binding DateRangeEnd}"
+                                                            DisplayDate="{Binding DateTimeToday, Mode=TwoWay}" />
+                                            </StackPanel>
+                                            <Button Grid.Row="0"
+                                                    Content="Export Excel Report"
+                                                    Command="{Binding ExportExcel}"
+                                                    Margin="0,40,0,40"
+                                                    Width="300"
+                                                    Height="100"
+                                                    FontSize="30"
+                                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    materialDesign:ButtonAssist.CornerRadius="10"
+                                                    ToolTip="Select Folder Location and Export Excel Report for Selected Dates" />
+                                        </StackPanel>
+
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+                        </TabItem>
+                    </TabControl>
+                </materialDesign:Card>
+
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            Margin="0,10,15,0">
+                    <Button Margin="8"
+                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                            Command="{Binding UpdateView}"
+                            CommandParameter="Menu"
+                            ToolTip="Return to main menu">
+
+                        <StackPanel Width="auto"
+                                    Height="auto">
+                            <materialDesign:PackIcon HorizontalAlignment="Center"
+                                                     Width="24"
+                                                     Height="24"
+                                                     Kind="Home" />
                         </StackPanel>
 
-                    </Grid>
 
-                </TabItem>
-            </TabControl>
-        </materialDesign:Card>
+                    </Button>
+                    <Button Margin="8"
+                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                            Command="{Binding ChangeLanguage}"
+                            ToolTip="Change language to english">
 
-        <StackPanel Orientation="Horizontal"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Right"
-                    Margin="0,10,15,0">
-            <Button Margin="8"
-                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    Command="{Binding UpdateView}"
-                    CommandParameter="Menu"
-                    ToolTip="Return to main menu">
+                        <StackPanel Width="auto"
+                                    Height="auto">
+                            <materialDesign:PackIcon HorizontalAlignment="Center"
+                                                     Width="24"
+                                                     Height="24"
+                                                     Kind="TranslateVariant" />
+                        </StackPanel>
 
-                <StackPanel Width="auto"
-                            Height="auto">
-                    <materialDesign:PackIcon HorizontalAlignment="Center"
-                                             Width="24"
-                                             Height="24"
-                                             Kind="Home" />
+
+                    </Button>
+                    <Button Margin="8"
+                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                            Command="{Binding ShutDown}"
+                            ToolTip="Close the Program">
+                        <materialDesign:PackIcon Width="24"
+                                                 Height="24"
+                                                 Kind="Close" />
+                    </Button>
                 </StackPanel>
 
-
-            </Button>
-            <Button Margin="8"
-                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    Command="{Binding ChangeLanguage}"
-                    ToolTip="Change language to english">
-
-                <StackPanel Width="auto"
-                            Height="auto">
-                    <materialDesign:PackIcon HorizontalAlignment="Center"
-                                             Width="24"
-                                             Height="24"
-                                             Kind="TranslateVariant" />
-                </StackPanel>
-
-
-            </Button>
-            <Button Margin="8"
-                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    Command="{Binding ShutDown}"
-                    ToolTip="Close the Program">
-                <materialDesign:PackIcon Width="24"
-                                         Height="24"
-                                         Kind="Close" />
-            </Button>
-        </StackPanel>
-
-    </Grid>
-    </Border>
+            </Grid>
+        </Border>
     </Grid>
 
 </Window>

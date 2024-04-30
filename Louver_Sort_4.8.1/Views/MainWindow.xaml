@@ -187,7 +187,16 @@
                                          Style="{StaticResource MaterialDesignFilledTextBox}"
                                          TextWrapping="Wrap"
                                          Text="{Binding RejectionSpec, Mode=TwoWay}" />
-                            </StackPanel>
+
+                                    <TextBox MaxWidth="400"
+                                             VerticalAlignment="Top"
+                                             materialDesign:HintAssist.Hint="Data Retention Period"
+                                             AcceptsReturn="True"
+                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                             TextWrapping="Wrap"
+                                             Text="{Binding DataRetentionPeriod, Mode=TwoWay}" />
+                                </StackPanel>
                             </Viewbox>
 
                         </Grid>

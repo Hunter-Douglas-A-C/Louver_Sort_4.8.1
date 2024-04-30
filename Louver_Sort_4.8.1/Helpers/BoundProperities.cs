@@ -669,6 +669,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand AcqReadingTop { get; set; }
         public ICommand AcqReadingBottom { get; set; }
         public ICommand ReviewLouverReport { get; set; }
+        public ICommand CancelOrder { get; set; }
         public ICommand RejectSelected { get; set; }
         public ICommand ReworkSet { get; set; }
         public ICommand ReportApproved { get; set; }
@@ -681,6 +682,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand LostFocusSettings { get; set; }
         public ICommand LostFocusReporting { get; set; }
         public ICommand ShutDown { get; set; }
+
         #endregion
 
         #region CommandImplementation
@@ -1004,6 +1006,16 @@ namespace Louver_Sort_4._8._1.Helpers
                 ListViewContent = ActiveSet.GenerateRecordedLouvers();
                 UpdateView.Execute("Report");
                 IsEnabledReviewReport = false;
+            });
+
+            CancelOrder = new BaseCommand(obj =>
+            {
+                var orderToRemove = _allOrders.OrdersWithBarcodes.FirstOrDefault(orderWithBarcode => orderWithBarcode.BarcodeSet.Equals(new BarcodeSet(Barcode1, Barcode2)));
+                if (orderToRemove != null)
+                {
+                    _allOrders.OrdersWithBarcodes.Remove(orderToRemove);
+                }
+                NextLouverSet.Execute("");
             });
 
             RejectSelected = new BaseCommand(obj =>

@@ -213,6 +213,7 @@
     <Compile Include="Helpers\BaseCommand.cs" />
     <Compile Include="Helpers\DataQHelper.cs" />
     <Compile Include="Helpers\LouverStructure\BarcodeSet.cs" />
+    <Compile Include="Helpers\LouverStructure\Calibration.cs" />
     <Compile Include="Helpers\LouverStructure\LabelID.cs" />
     <Compile Include="Helpers\LouverStructure\Louver.cs" />
     <Compile Include="Helpers\LouverStructure\LouverListView.cs" />
@@ -229,6 +230,9 @@
     <Compile Include="Helpers\ZebraPrinterHelper.cs" />
     <Compile Include="Views\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PopUps\CalibratePopUp.xaml.cs">
+      <DependentUpon>CalibratePopUp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PopUps\LouverCount.xaml.cs">
       <DependentUpon>LouverCount.xaml</DependentUpon>
@@ -269,6 +273,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PopUps\CalibratePopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

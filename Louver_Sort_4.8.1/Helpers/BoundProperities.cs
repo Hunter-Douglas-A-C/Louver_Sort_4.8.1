@@ -20,6 +20,8 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using Zebra.Sdk.Printer;
 using Microsoft.Win32;
+using Org.BouncyCastle.Asn1.X509;
+using System.Windows.Markup;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -64,6 +66,7 @@ namespace Louver_Sort_4._8._1.Helpers
         private DataQHelper _dataQ;
         private ZebraPrinterHelper _zebra = new ZebraPrinterHelper();
         public OrderManager _allOrders = new OrderManager();
+        public Calibration _cal = new Calibration();
 
         //Global
         private string _adminPassword = "55555";
@@ -96,11 +99,17 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _rejectionSpec;
             set { SetProperty(ref _rejectionSpec, value); }
         }
-        private bool _isCheckedUseFakeValues;
+        private bool _isCheckedUseFakeValues = true;
         public bool IsCheckedUseFakeValues
         {
             get => _isCheckedUseFakeValues;
             set { SetProperty(ref _isCheckedUseFakeValues, value); }
+        }
+        private double _dataRetentionPeriod = 90;
+        public double DataRetentionPeriod
+        {
+            get => _dataRetentionPeriod;
+            set { SetProperty(ref _dataRetentionPeriod, value); }
         }
 
         //User Control Views
@@ -196,6 +205,19 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _isEnabledCheckBottom;
             set { SetProperty(ref _isEnabledCheckBottom, value); }
         }
+        private bool _isEnabledCancel = false;
+        public bool IsEnabledCancel
+        {
+            get => _isEnabledCancel;
+            set { SetProperty(ref _isEnabledCancel, value); }
+        }
+
+
+
+
+
+
+
 
 
         //Visibility
@@ -249,6 +271,16 @@ namespace Louver_Sort_4._8._1.Helpers
                 SetProperty(ref _visibilityReporting, value);
             }
         }
+        private Visibility _visibilityCalibRecord = Visibility.Collapsed;
+        public Visibility VisibilityCalibRecord
+        {
+            get => _visibilityCalibRecord;
+            set { SetProperty(ref _visibilityCalibRecord, value); }
+        }
+
+
+
+
 
         //Focus
         private bool _focusBarcode1;
@@ -446,6 +478,22 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _activeDeviation;
             set { SetProperty(ref _activeDeviation, value); }
         }
+
+
+        //Calib
+        private string _calibTxtBoxHint;
+        public string CalibTxtBoxHint
+        {
+            get => _calibTxtBoxHint;
+            set { SetProperty(ref _calibTxtBoxHint, value); }
+        }
+        private string _calibTxt;
+        public string CalibTxt
+        {
+            get => _calibTxt;
+            set { SetProperty(ref _calibTxt, value); }
+        }
+        private int _calibStep = 1;
 
         //Scan
         private LouverListView _listViewSelectedLouver;
@@ -666,6 +714,8 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand ChangeLanguage { get; set; }
         public ICommand BrowseForJSONSaveLocation { get; set; }
         public ICommand Barcode1KeyDown { get; set; }
+        public ICommand Calibrate { get; set; }
+        public ICommand CalibRecord { get; set; }
         public ICommand ScanLoaded { get; set; }
         public ICommand ReconnectToDataQ { get; set; }
         public ICommand EnterBarcodes { get; set; }
@@ -771,6 +821,9 @@ namespace Louver_Sort_4._8._1.Helpers
                     case "SortedLabelsPopUp":
                         SelectedPopUp = new Views.PopUps.SortedLabelsPopUp();
                         break;
+                    case "Calibrate":
+                        SelectedPopUp = new Views.PopUps.CalibratePopUp();
+                        break;
                     case "Close":
                         SelectedPopUp = null;
                         VisibilityPopUp = Visibility.Hidden;
@@ -833,6 +886,82 @@ namespace Louver_Sort_4._8._1.Helpers
                 FocusBarcode2 = true;
             });
 
+            Calibrate = new BaseCommand(obj =>
+            {
+                switch (_calibStep)
+                {
+                    case 1:
+                        UpdatePopUp.Execute("Calibrate");
+                        CalibTxt = "Place flat calibration plate on slide";
+                        CalibTxtBoxHint = "";
+                        VisibilityCalibRecord = Visibility.Collapsed;
+                        _calibStep += 1;
+                        break;
+                    case 2:
+                        CalibTxt = "Set Laser Point 1";
+                        CalibTxtBoxHint = "";
+                        VisibilityCalibRecord = Visibility.Collapsed;
+                        _calibStep += 1;
+                        break;
+                    case 3:
+                        CalibTxt = "Set Laser Point 2";
+                        CalibTxtBoxHint = "";
+                        VisibilityCalibRecord = Visibility.Collapsed;
+                        _calibStep += 1;
+                        break;
+                    case 4:
+                        CalibTxt = "Place flat calibration plate on slide";
+                        CalibTxtBoxHint = "";
+                        VisibilityCalibRecord = Visibility.Collapsed;
+                        _calibStep += 1;
+                        break;
+                    case 5:
+                        CalibTxt = "Record flat plate";
+                        CalibTxtBoxHint = "Flat plate reading";
+                        VisibilityCalibRecord = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 6:
+                        CalibTxt = "Place stepped calibration plate on slide";
+                        CalibTxtBoxHint = "";
+                        VisibilityCalibRecord = Visibility.Collapsed;
+                        _calibStep += 1;
+                        break;
+                    case 7:
+                        CalibTxt = "Record Stepped plate";
+                        CalibTxtBoxHint = "Stepped plate reading";
+                        VisibilityCalibRecord = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 8:
+                        UpdatePopUp.Execute("Close");
+                        _calibStep = 1;
+                        break;
+                    default:
+                        break;
+                }
+
+
+            });
+
+            CalibRecord = new BaseCommand(obj =>
+            {
+                if (_dataQ == null)
+                {
+                    ConnectToDataQ();
+                }
+                if (_calibStep == 5)
+                {
+                    _cal.FlatReading = _dataQ.GetDistance();
+                }
+                else if (_calibStep == 7)
+                {
+                    _cal.StepReading = _dataQ.GetDistance();
+                }
+
+            });
+
+
             ScanLoaded = new BaseCommand(obj =>
             {
                 FocusBarcode1 = true;
@@ -860,6 +989,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     {
                         IsReadOnlyBarcode = true;
                         IsEnabledBarcode = false;
+                        IsEnabledCancel = true;
                         UpdatePopUp.Execute("LouverCount");
                     }
                 }
@@ -1034,6 +1164,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     _allOrders.OrdersWithBarcodes.Remove(orderToRemove);
                 }
                 NextLouverSet.Execute("");
+                IsEnabledCancel = false;
             });
 
             RejectSelected = new BaseCommand(obj =>
@@ -1442,6 +1573,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public void SaveToJson()
         {
+            DeleteDataOlderThan90Days();
             //// Serialize to JSON
             JsonSerializer serializer = new JsonSerializer();
             using (StreamWriter sw = new StreamWriter(JSONSaveLocation + "\\LouverSortData.ini"))
@@ -1451,7 +1583,38 @@ namespace Louver_Sort_4._8._1.Helpers
                 serializer.Serialize(writer, AdminPassword);
                 serializer.Serialize(writer, JSONSaveLocation);
                 serializer.Serialize(writer, RejectionSpec);
+            }
+        }
 
+        /// <summary>
+        /// Delete data older than 90 days.
+        /// </summary>
+        public void DeleteDataOlderThan90Days()
+        {
+            DateTime cutoffDate = DateTime.Now.AddDays(-90);
+            List<OrderWithBarcode> OrderstoRemove = new List<OrderWithBarcode>();
+            foreach (var order in _allOrders.OrdersWithBarcodes)
+            {
+                foreach (var openings in order.Order.Openings)
+                {
+                    foreach (var panels in openings.Panels)
+                    {
+                        foreach (var sets in panels.Sets)
+                        {
+                            if (sets.DateSortFinished < cutoffDate)
+                            {
+                                if (!OrderstoRemove.Contains(order))
+                                {
+                                    OrderstoRemove.Add(order);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            foreach (var orderToRemove in OrderstoRemove)
+            {
+                _allOrders.OrdersWithBarcodes.Remove(orderToRemove);
             }
         }
 

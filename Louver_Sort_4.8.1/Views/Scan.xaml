@@ -353,6 +353,7 @@
                     Height="100"
                     FontSize="30"
                     Margin="5,5,5,5"
+                    IsEnabled="{Binding IsEnabledCancel}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     materialDesign:ButtonAssist.CornerRadius="10"
                     ToolTip="Delete all stored data for current order" />

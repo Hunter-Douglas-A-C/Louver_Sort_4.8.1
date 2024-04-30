@@ -25,6 +25,30 @@
 
     <!--Topmost="True"-->
     <Grid>
+            <Border BorderBrush="Transparent"
+            BorderThickness="5"
+            CornerRadius="5"
+            Panel.ZIndex="1"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            Width="1000"
+            Height="900"
+            Visibility="{Binding VisibilityPopUp}">
+        <ContentControl x:Name="CTCPopup"
+                        Content="{Binding SelectedPopUp}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        HorizontalContentAlignment="Center" />
+    </Border>
+    <Border Panel.ZIndex="0">
+        <Border.Effect>
+            <BlurEffect Radius="{Binding MainContentBlurRadius}" />
+        </Border.Effect>
+        <Grid>
+
+        
+        
         <materialDesign:Card>
             <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryMid"
                         materialDesign:NavigationRailAssist.SelectionCornerRadius="50 10 10 10"
@@ -44,6 +68,41 @@
                             <materialDesign:PackIcon Width="24"
                                                      Height="24"
                                                      HorizontalAlignment="Center"
+                                                     Kind="RulerSquare" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Calibrate" />
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <!--Calibartion Tab Content-->
+                    <Grid>
+                        <materialDesign:ColorZone VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Padding="16"
+                                                  materialDesign:ElevationAssist.Elevation="Dp4"
+                                                  ClipToBounds="False"
+                                                  CornerRadius="10"
+                                                  Mode="PrimaryDark">
+                            <Button Grid.Row="0"
+                                    Content="Start Calibration"
+                                    Command="{Binding Calibrate}"
+                                    Width="400"
+                                    Height="100"
+                                    FontSize="30"
+                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                    materialDesign:ButtonAssist.CornerRadius="10"
+                                    ToolTip="Start Calibartion" />
+                        </materialDesign:ColorZone>
+                    </Grid>
+
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Width="auto"
+                                    Height="auto">
+                            <materialDesign:PackIcon Width="24"
+                                                     Height="24"
+                                                     HorizontalAlignment="Center"
                                                      Kind="ViewSequentialOutline" />
                             <TextBlock HorizontalAlignment="Center"
                                        Text="Sort" />
@@ -53,34 +112,13 @@
                     <!--Sorting Tab Content-->
                     <Grid>
                         <Grid>
-                            <Border BorderBrush="Transparent"
-                                    BorderThickness="5"
-                                    CornerRadius="5"
-                                    Panel.ZIndex="1"
-                                    VerticalAlignment="Stretch"
-                                    HorizontalAlignment="Stretch"
-                                    Width="1000"
-                                    Height="900"
-                                    Visibility="{Binding VisibilityPopUp}">
-                                <ContentControl x:Name="CTCPopup"
-                                                Content="{Binding SelectedPopUp}"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                HorizontalContentAlignment="Center" />
-                            </Border>
 
 
-                            <Border Panel.ZIndex="0"
-                                    VerticalAlignment="Stretch"
-                                    HorizontalAlignment="Stretch">
-                                <Border.Effect>
-                                    <BlurEffect Radius="{Binding MainContentBlurRadius}" />
-                                </Border.Effect>
-                                <ContentControl x:Name="CTCMain"
-                                                Content="{Binding SelectedView}"
-                                                IsEnabled="{Binding IsEnabledMain}" />
-                            </Border>
+
+
+                            <ContentControl x:Name="CTCMain"
+                                            Content="{Binding SelectedView}"
+                                            IsEnabled="{Binding IsEnabledMain}" />
                         </Grid>
 
 
@@ -150,44 +188,60 @@
                     <Grid>
                         <Grid Visibility="{Binding VisibilitySettings}">
                             <Viewbox Margin="500,0,500,0">
-                                                            <StackPanel VerticalAlignment="Center"
-                                        HorizontalAlignment="Center">
-                                <TextBox MaxWidth="400"
-                                         VerticalAlignment="Top"
-                                         materialDesign:HintAssist.Hint="Admin Password"
-                                         AcceptsReturn="True"
-                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                         Style="{StaticResource MaterialDesignFilledTextBox}"
-                                         TextWrapping="Wrap"
-                                         Text="{Binding AdminPassword, Mode=TwoWay}" />
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
                                     <TextBox MaxWidth="400"
                                              VerticalAlignment="Top"
-                                             materialDesign:HintAssist.Hint="Louver Data Save Location"
+                                             materialDesign:HintAssist.Hint="Admin Password"
                                              AcceptsReturn="True"
                                              IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                              Style="{StaticResource MaterialDesignFilledTextBox}"
                                              TextWrapping="Wrap"
-                                             Text="{Binding JSONSaveLocation, Mode=TwoWay}" />
-                                    <Button VerticalAlignment="Center"
-                                            HorizontalAlignment="Center"
-                                            Command="{Binding BrowseForJSONSaveLocation}">
-                                        <Button.Content>
-                                            <materialDesign:PackIcon Kind="FolderSearch" />
-                                        </Button.Content>
-                                    </Button>
+                                             Text="{Binding AdminPassword, Mode=TwoWay}" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox MaxWidth="400"
+                                                 VerticalAlignment="Top"
+                                                 materialDesign:HintAssist.Hint="Louver Data Save Location"
+                                                 AcceptsReturn="True"
+                                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                 Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                 TextWrapping="Wrap"
+                                                 Text="{Binding JSONSaveLocation, Mode=TwoWay}" />
+                                        <Button VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"
+                                                Command="{Binding BrowseForJSONSaveLocation}">
+                                            <Button.Content>
+                                                <materialDesign:PackIcon Kind="FolderSearch" />
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+
+
+                                    <TextBox MaxWidth="400"
+                                             VerticalAlignment="Top"
+                                             materialDesign:HintAssist.Hint="Louver Rejection Value"
+                                             AcceptsReturn="True"
+                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                             TextWrapping="Wrap"
+                                             Text="{Binding RejectionSpec, Mode=TwoWay}" />
+
+                                    <TextBox MaxWidth="400"
+                                             VerticalAlignment="Top"
+                                             materialDesign:HintAssist.Hint="Data Retintion Period"
+                                             AcceptsReturn="True"
+                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                             TextWrapping="Wrap"
+                                             Text="{Binding DataRetentionPeriod, Mode=TwoWay}" />
+
+                                    <StackPanel Orientation="Horizontal"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center">
+                                        <TextBlock Text="Use fake Data?" />
+                                        <RadioButton IsChecked="{Binding IsCheckedUseFakeValues}" />
+                                    </StackPanel>
                                 </StackPanel>
-
-
-                                <TextBox MaxWidth="400"
-                                         VerticalAlignment="Top"
-                                         materialDesign:HintAssist.Hint="Louver Rejection Value"
-                                         AcceptsReturn="True"
-                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                         Style="{StaticResource MaterialDesignFilledTextBox}"
-                                         TextWrapping="Wrap"
-                                         Text="{Binding RejectionSpec, Mode=TwoWay}" />
-                            </StackPanel>
                             </Viewbox>
 
                         </Grid>
@@ -265,6 +319,9 @@
         </StackPanel>
 
     </Grid>
+    </Border>
+    </Grid>
+
 </Window>
 
 

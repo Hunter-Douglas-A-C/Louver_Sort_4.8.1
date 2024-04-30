@@ -19,9 +19,10 @@ using Louver_Sort_4._8._1.Views;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using Zebra.Sdk.Printer;
-using Microsoft.Win32;
-using Org.BouncyCastle.Asn1.X509;
+using OfficeOpenXml;
 using System.Windows.Markup;
+using System.Xml.Linq;
+using System.Windows.Media;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -99,7 +100,7 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _rejectionSpec;
             set { SetProperty(ref _rejectionSpec, value); }
         }
-        private bool _isCheckedUseFakeValues = false;
+        private bool _isCheckedUseFakeValues = true;
         public bool IsCheckedUseFakeValues
         {
             get => _isCheckedUseFakeValues;
@@ -890,50 +891,50 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 switch (_calibStep)
                 {
+                    //case 1:
+                    //    UpdatePopUp.Execute("Calibrate");
+                    //    CalibTxt = "Place flat calibration plate on slide";
+                    //    CalibTxtBoxHint = "";
+                    //    VisibilityCalibRecord = Visibility.Collapsed;
+                    //    _calibStep += 1;
+                    //    break;
+                    //case 2:
+                    //    CalibTxt = "Set Laser Point 1";
+                    //    CalibTxtBoxHint = "";
+                    //    VisibilityCalibRecord = Visibility.Collapsed;
+                    //    _calibStep += 1;
+                    //    break;
+                    //case 3:
+                    //    CalibTxt = "Set Laser Point 2";
+                    //    CalibTxtBoxHint = "";
+                    //    VisibilityCalibRecord = Visibility.Collapsed;
+                    //    _calibStep += 1;
+                    //    break;
                     case 1:
-                        UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Place flat calibration plate on slide";
                         CalibTxtBoxHint = "";
                         VisibilityCalibRecord = Visibility.Collapsed;
                         _calibStep += 1;
                         break;
                     case 2:
-                        CalibTxt = "Set Laser Point 1";
-                        CalibTxtBoxHint = "";
-                        VisibilityCalibRecord = Visibility.Collapsed;
-                        _calibStep += 1;
-                        break;
-                    case 3:
-                        CalibTxt = "Set Laser Point 2";
-                        CalibTxtBoxHint = "";
-                        VisibilityCalibRecord = Visibility.Collapsed;
-                        _calibStep += 1;
-                        break;
-                    case 4:
-                        CalibTxt = "Place flat calibration plate on slide";
-                        CalibTxtBoxHint = "";
-                        VisibilityCalibRecord = Visibility.Collapsed;
-                        _calibStep += 1;
-                        break;
-                    case 5:
                         CalibTxt = "Record flat plate";
                         CalibTxtBoxHint = "Flat plate reading";
                         VisibilityCalibRecord = Visibility.Visible;
                         _calibStep += 1;
                         break;
-                    case 6:
+                    case 3:
                         CalibTxt = "Place stepped calibration plate on slide";
                         CalibTxtBoxHint = "";
                         VisibilityCalibRecord = Visibility.Collapsed;
                         _calibStep += 1;
                         break;
-                    case 7:
+                    case 4:
                         CalibTxt = "Record Stepped plate";
                         CalibTxtBoxHint = "Stepped plate reading";
                         VisibilityCalibRecord = Visibility.Visible;
                         _calibStep += 1;
                         break;
-                    case 8:
+                    case 5:
                         UpdatePopUp.Execute("Close");
                         _calibStep = 1;
                         var value = _dataQ.GetDistance();
@@ -950,17 +951,15 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     ConnectToDataQ();
                 }
-                if (_calibStep == 6)
+                if (_calibStep == 3)
                 {
                     _cal.FlatReading = _dataQ.GetDistance();
                 }
-                else if (_calibStep == 8)
+                else if (_calibStep == 5)
                 {
                     _cal.StepReading = _dataQ.GetDistance();
                 }
-
             });
-
 
             ScanLoaded = new BaseCommand(obj =>
             {
@@ -971,7 +970,6 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 ConnectToDataQ();
             });
-
 
             EnterBarcodes = new BaseCommand(obj =>
             {
@@ -1083,7 +1081,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 Random random = new Random();
 
                 // Generate a random integer between -1000 and 1000
-                int randomInt = random.Next(-1000, 1001);
+                int randomInt = random.Next(-50, 1001);
 
                 double value;
                 if (IsCheckedUseFakeValues)
@@ -1108,7 +1106,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 Random random = new Random();
 
                 // Generate a random integer between -1000 and 1000
-                int randomInt = random.Next(-1000, 1001);
+                int randomInt = random.Next(-50, 1001);
                 double value;
                 if (IsCheckedUseFakeValues)
                 {
@@ -1410,7 +1408,7 @@ namespace Louver_Sort_4._8._1.Helpers
             ShutDown = new BaseCommand(obj =>
             {
                 //SaveToJson();
-
+                ExportToExcel("C:\\Users\\jallen\\Documents\\ExcelExport.xlsx");
 
                 Console.WriteLine("JSON exported and saved to file.");
 
@@ -1615,6 +1613,85 @@ namespace Louver_Sort_4._8._1.Helpers
             foreach (var orderToRemove in OrderstoRemove)
             {
                 _allOrders.OrdersWithBarcodes.Remove(orderToRemove);
+            }
+        }
+
+        public void ExportToExcel(string filename)
+        {
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            using (var package = new ExcelPackage())
+            {
+                var l = 1;
+                foreach (var order in _allOrders.OrdersWithBarcodes)
+                {
+                    var sheet = package.Workbook.Worksheets.Add(l.ToString());
+                    l += 1;
+                    sheet.Cells[1, 1].Value = "Barcode 1:";
+                    sheet.Cells[2, 1].Value = order.BarcodeSet.Barcode1.ToString();
+                    sheet.Cells[1, 2].Value = "Barcode2:";
+                    sheet.Cells[2, 2].Value = order.BarcodeSet.Barcode2.ToString();
+                    foreach (var openings in order.Order.Openings)
+                    {
+
+
+
+                        sheet.Cells[1, 3].Value = "Line:";
+                        sheet.Cells[2, 3].Value = openings.Line.ToString();
+                        sheet.Cells[1, 4].Value = "Model:";
+                        sheet.Cells[2, 4].Value = openings.ModelNum.ToString();
+                        sheet.Cells[1, 5].Value = "Style:";
+                        sheet.Cells[2, 5].Value = openings.Style.ToString();
+                        sheet.Cells[1, 6].Value = "Length:";
+                        sheet.Cells[2, 6].Value = openings.Length.ToString();
+                        sheet.Cells[1, 7].Value = "Width:";
+                        sheet.Cells[2, 7].Value = openings.Width.ToString();
+                        foreach (var panels in openings.Panels)
+                        {
+                            sheet.Cells[1, 8].Value = "ID:";
+                            sheet.Cells[2, 8].Value = panels.ID.ToString();
+                            foreach (var sets in panels.Sets)
+                            {
+                                sheet.Cells[1, 9].Value = "Louver Count:";
+                                sheet.Cells[2, 9].Value = sets.LouverCount.ToString();
+                                sheet.Cells[1, 10].Value = "Date Sort Started:";
+                                sheet.Cells[2, 10].Value = sets.DateSortStarted.ToString();
+                                sheet.Cells[1, 11].Value = "Date Sort Finsihed:";
+                                sheet.Cells[2, 11].Value = sets.DateSortFinished.ToString();
+
+                                var i = 2;
+                                foreach (var louver in sets.Louvers)
+                                {
+                                    if (i==2)
+                                    {
+                                        sheet.Cells[4, 1].Value = "ID";
+                                        sheet.Cells[5, 1].Value = "Sorted ID";
+                                        sheet.Cells[6, 1].Value = "Orientation";
+                                        sheet.Cells[7, 1].Value = "Processed";
+                                        sheet.Cells[8, 1].Value = "Reading Top";
+                                        sheet.Cells[9, 1].Value = "Reading Bottom";
+                                        sheet.Cells[10, 1].Value = "Deviation";
+                                        sheet.Cells[11, 1].Value = "Abs Deviation";
+                                        sheet.Cells[12, 1].Value = "Rejected";
+                                        sheet.Cells[13, 1].Value = "Cause of Rejection";
+                                    }
+                                    sheet.Cells[3, i].Value = "Louver";
+                                    sheet.Cells[4, i].Value = louver.ID.ToString();
+                                    sheet.Cells[5, i].Value = louver.SortedID.ToString();
+                                    sheet.Cells[6, i].Value = louver.Orientation.ToString();
+                                    sheet.Cells[7, i].Value = louver.Processed.ToString();
+                                    sheet.Cells[8, i].Value = louver.Reading1.ToString();
+                                    sheet.Cells[9, i].Value = louver.Reading2.ToString();
+                                    sheet.Cells[10, i].Value =louver.Deviation.ToString();
+                                    sheet.Cells[11, i].Value = louver.AbsDeviation.ToString();
+                                    sheet.Cells[12, i].Value = louver.Rejected.ToString();
+                                    sheet.Cells[13, i].Value = louver.CauseOfRejection.ToString();
+                                    i++;
+                                }
+                            }
+                        }
+                    }
+                }
+                package.SaveAs(new FileInfo(filename));
             }
         }
 

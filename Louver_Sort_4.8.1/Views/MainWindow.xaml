@@ -187,7 +187,12 @@
                                          Style="{StaticResource MaterialDesignFilledTextBox}"
                                          TextWrapping="Wrap"
                                          Text="{Binding RejectionSpec, Mode=TwoWay}" />
-                            </StackPanel>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <TextBlock Text="Use Fake Values"/>
+                                        <RadioButton IsChecked="{Binding IsCheckedUseFakeValues}"/>
+                                    </StackPanel>
+
+                                </StackPanel>
                             </Viewbox>
 
                         </Grid>

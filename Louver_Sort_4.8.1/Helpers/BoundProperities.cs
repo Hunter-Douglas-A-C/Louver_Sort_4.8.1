@@ -96,6 +96,12 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _rejectionSpec;
             set { SetProperty(ref _rejectionSpec, value); }
         }
+        private bool _isCheckedUseFakeValues;
+        public bool IsCheckedUseFakeValues
+        {
+            get => _isCheckedUseFakeValues;
+            set { SetProperty(ref _isCheckedUseFakeValues, value); }
+        }
 
         //User Control Views
         private UserControl _selectedPopUp;
@@ -919,17 +925,18 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 ActiveSet.StartSort(DateTime.Now);
 
+                if (!IsCheckedUseFakeValues)
+                {
+                    ZebraPrinter _Printer = _zebra.Connect();
+                    List<Louver> ToPrint = new List<Louver>();
+                    foreach (var sets in ActivePanel.GetAllSets())
+                    {
+                        ToPrint.AddRange(sets.GetLouverSet());
+                    }
+                    _zebra.PrintLouverIDs(_Printer, ToPrint);
+                    _zebra.Disconnect(_Printer);
+                }
 
-                //ZebraPrinter _Printer = _zebra.Connect();
-                //List<Louver> ToPrint = new List<Louver>();
-                //foreach (var sets in ActivePanel.GetAllSets())
-                //{
-                //    ToPrint.AddRange(sets.GetLouverSet());
-                //}
-                //_zebra.PrintLouverIDs(_Printer, ToPrint);
-                //_zebra.Disconnect(_Printer);
-
-                //Debug.WriteLine("Printed first set of labels");
 
 
                 IsEnabledPrintUnsortedLabels = false;
@@ -946,9 +953,15 @@ namespace Louver_Sort_4._8._1.Helpers
                 // Generate a random integer between -1000 and 1000
                 int randomInt = random.Next(-1000, 1001);
 
-                // Divide the random integer by 1000 to get increments of 0.001
-                double value = randomInt / 1000.0;
-                //double value = _dataQ.RecordAndAverageReadings();
+                double value;
+                if (IsCheckedUseFakeValues)
+                {
+                    value = randomInt / 1000.0;
+                }
+                else
+                {
+                    value = _dataQ.RecordAndAverageReadings();
+                }
                 ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
                 ActiveTopReading = value;
 
@@ -964,10 +977,15 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 // Generate a random integer between -1000 and 1000
                 int randomInt = random.Next(-1000, 1001);
-
-                // Divide the random integer by 1000 to get increments of 0.001
-                double value = randomInt / 1000.0;
-                //double value = _dataQ.RecordAndAverageReadings();
+                double value;
+                if (IsCheckedUseFakeValues)
+                {
+                    value = randomInt / 1000.0;
+                }
+                else
+                {
+                    value = _dataQ.RecordAndAverageReadings();
+                }
                 ActiveSet.Louvers[ActiveLouverID].SetReading2(value);
                 ActiveBottomReading = value;
 
@@ -1077,16 +1095,17 @@ namespace Louver_Sort_4._8._1.Helpers
 
             PrintSortedLabels = new BaseCommand(obj =>
             {
-                //ZebraPrinter _Printer = _zebra.Connect();
-                //List<Louver> ToPrint = new List<Louver>();
-                //foreach (var sets in ActivePanel.GetAllSets())
-                //{
-                //    ToPrint.AddRange(sets.GetLouverSet());
-                //}
-                //_zebra.PrintSortedLouverIDs(_Printer, ToPrint);
-                //_zebra.Disconnect(_Printer);
-
-                //Debug.WriteLine("Printed sorted set of labels");
+                if (!IsCheckedUseFakeValues)
+                {
+                    ZebraPrinter _Printer = _zebra.Connect();
+                    List<Louver> ToPrint = new List<Louver>();
+                    foreach (var sets in ActivePanel.GetAllSets())
+                    {
+                        ToPrint.AddRange(sets.GetLouverSet());
+                    }
+                    _zebra.PrintSortedLouverIDs(_Printer, ToPrint);
+                    _zebra.Disconnect(_Printer);
+                }
 
                 IsEnabledPrintUnsortedLabels = false;
                 IsEnabledNextLouverSet = true;
@@ -1273,7 +1292,10 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         public void ScanInitialize()
         {
-            //ConnectToDataQ();
+            if (!IsCheckedUseFakeValues)
+            {
+                ConnectToDataQ();
+            }
             IsEnabledPrintUnsortedLabels = false;
             IsEnabledAcquareTop = false;
             IsEnabledAcquireBottom = false;
@@ -1316,15 +1338,18 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             Thread test = new Thread(() =>
             {
-                _dataQ = new DataQHelper();
-                _dataQ.Connect();
-                _dataQ.Start();
+                if (_dataQ == null)
+                {
+                    _dataQ = new DataQHelper();
+                    _dataQ.Connect();
+                    _dataQ.Start();
 
-                VisibilityDisconnected = Visibility.Collapsed;
-                _stopwatch.Start();
+                    VisibilityDisconnected = Visibility.Collapsed;
+                    _stopwatch.Start();
 
-                _dataQ.AnalogUpdated += new EventHandler(DataQNewData);
-                _dataQ.LostConnection += new EventHandler(DataQLostConnection);
+                    _dataQ.AnalogUpdated += new EventHandler(DataQNewData);
+                    _dataQ.LostConnection += new EventHandler(DataQLostConnection);
+                }
             });
             test.Start();
         }
@@ -1423,10 +1448,14 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             try
             {
-                //_dataQ.Stop();
-                //_dataQ.Disconnect();
-                //_stopwatch.Stop();
-                //_stopwatch.Reset();
+                if (!IsCheckedUseFakeValues)
+                {
+                    _dataQ.Stop();
+                    _dataQ.Disconnect();
+                    _stopwatch.Stop();
+                    _stopwatch.Reset();
+                }
+
                 VisibilityDisconnected = Visibility.Visible;
             }
             catch (Exception)

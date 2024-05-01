@@ -220,7 +220,7 @@
                                                             materialDesign:HintAssist.Hint="Pick End Date"
                                                             Style="{StaticResource MaterialDesignOutlinedDatePicker}"
                                                             SelectedDate="{Binding DateRangeEnd}"
-                                                            DisplayDate="{Binding DateTimeToday, Mode=TwoWay}" />
+                                                            DisplayDate="{Binding DateTimeToday, Mode=TwoWay, TargetNullValue=''}" />
                                             </StackPanel>
                                             <Button Grid.Row="0"
                                                     Content="Export Excel Report"

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Louver_Sort_4._8._1.Views.PopUps
 {
     /// <summary>
-    /// Interaction logic for UnsortedLabels.xaml
+    /// Interaction logic for UserMessagePopUp.xaml
     /// </summary>
-    public partial class UnsortedLabels : UserControl
+    public partial class UserMessagePopUp : UserControl
     {
-        public UnsortedLabels()
+        public UserMessagePopUp()
         {
             InitializeComponent();
         }

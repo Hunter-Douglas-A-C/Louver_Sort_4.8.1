@@ -257,8 +257,8 @@
     <Compile Include="Views\PopUps\SortedLabelsPopUp.xaml.cs">
       <DependentUpon>SortedLabelsPopUp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PopUps\UnsortedLabels.xaml.cs">
-      <DependentUpon>UnsortedLabels.xaml</DependentUpon>
+    <Compile Include="Views\PopUps\UserMessagePopUp.xaml.cs">
+      <DependentUpon>UserMessagePopUp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReCut.xaml.cs">
       <DependentUpon>ReCut.xaml</DependentUpon>
@@ -305,7 +305,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PopUps\UnsortedLabels.xaml">
+    <Page Include="Views\PopUps\UserMessagePopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

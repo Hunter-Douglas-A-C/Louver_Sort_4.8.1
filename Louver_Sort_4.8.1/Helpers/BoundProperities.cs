@@ -302,7 +302,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
         //Active Order
-        private string _barcode1 = "1018652406000001L1";
+        //private string _barcode1 = "1018652406000001L1";
+        private string _barcode1;
         public string Barcode1
         {
             get => _barcode1;
@@ -327,7 +328,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
             }
         }
-        private string _barcode2 = "PNL1/LXL/L4.5/L30.5188/LT";
+        //private string _barcode2 = "PNL1/LXL/L4.5/L30.5188/LT";
+        private string _barcode2;
         public string Barcode2
         {
             get => _barcode2;
@@ -348,11 +350,8 @@ namespace Louver_Sort_4._8._1.Helpers
                         SetProperty(ref _barcode2, value);
                     }
                 }
-
             }
         }
-        //private string _barcode1;
-        //private string _barcode2;
         private int _activeLouverId;
         public int ActiveLouverID
         {
@@ -446,7 +445,7 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _curBarcode2;
             set { SetProperty(ref _curBarcode2, value); }
         }
-        private int? _txtLouverCount = 5;
+        private int? _txtLouverCount;
         public int? TxtLouverCount
         {
             get => _txtLouverCount;
@@ -477,14 +476,14 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _passwordToolTip;
             set { SetProperty(ref _passwordToolTip, value); }
         }
-        private DateTime _dateRangeStart;
-        public DateTime DateRangeStart
+        private DateTime? _dateRangeStart;
+        public DateTime? DateRangeStart
         {
             get => _dateRangeStart;
             set { SetProperty(ref _dateRangeStart, value); }
         }
-        private DateTime _dateRangeEnd;
-        public DateTime DateRangeEnd
+        private DateTime? _dateRangeEnd;
+        public DateTime? DateRangeEnd
         {
             get => _dateRangeEnd;
             set { SetProperty(ref _dateRangeEnd, value); }
@@ -502,9 +501,13 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
-
-
-
+        //UserMessagePopUp
+        private string _txtUserMessage;
+        public string TxtUserMessage
+        {
+            get => _txtUserMessage;
+            set { SetProperty(ref _txtUserMessage, value); }
+        }
 
 
         //Calib
@@ -707,11 +710,13 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand ChangeLanguage { get; set; }
         public ICommand BrowseForJSONSaveLocation { get; set; }
         public ICommand Barcode1KeyDown { get; set; }
+        public ICommand Barcode2KeyDown { get; set; }
         public ICommand Calibrate { get; set; }
         public ICommand CalibRecord { get; set; }
         public ICommand ScanLoaded { get; set; }
         public ICommand ReconnectToDataQ { get; set; }
         public ICommand EnterBarcodes { get; set; }
+        public ICommand LouverCountPopUpLoaded { get; set; }
         public ICommand LouverCountOk { get; set; }
         public ICommand ClosePopUp { get; set; }
         public ICommand PrintUnsortedLabels { get; set; }
@@ -796,16 +801,15 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     case "LouverCount":
                         SelectedPopUp = new Views.PopUps.LouverCount();
-                        FocusLouverCount = true;
-                        break;
-                    case "Unsorted Labels":
-                        SelectedPopUp = new Views.PopUps.UnsortedLabels();
                         break;
                     case "SortedLabelsPopUp":
                         SelectedPopUp = new Views.PopUps.SortedLabelsPopUp();
                         break;
                     case "Calibrate":
                         SelectedPopUp = new Views.PopUps.CalibratePopUp();
+                        break;
+                    case "Message":
+                        SelectedPopUp = new Views.PopUps.UserMessagePopUp();
                         break;
                     case "Close":
                         SelectedPopUp = null;
@@ -867,6 +871,11 @@ namespace Louver_Sort_4._8._1.Helpers
             Barcode1KeyDown = new BaseCommand(obj =>
             {
                 FocusBarcode2 = true;
+            });
+
+            Barcode2KeyDown = new BaseCommand(obj =>
+            {
+                EnterBarcodes.Execute("");
             });
 
             Calibrate = new BaseCommand(obj =>
@@ -955,14 +964,15 @@ namespace Louver_Sort_4._8._1.Helpers
 
             EnterBarcodes = new BaseCommand(obj =>
             {
-                if (Barcode1 != "" && Barcode2 != "")
+                if (Barcode1 != null && Barcode2 != null)
                 {
                     var o = _allOrders.CheckIfOrderExists(new BarcodeSet(Barcode1, Barcode2));
                     if (o != null)
                     {
-                        MessageBox.Show("Already Sorted Order");
-                        //Barcode1 = "";
-                        //Barcode2 = "";
+                        TxtUserMessage = "Order Already Sorted";
+                        UpdatePopUp.Execute("Message");
+                        Barcode1 = "";
+                        Barcode2 = "";
                         return;
                     }
                     else
@@ -975,12 +985,17 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else
                 {
-                    //CHANGE
-                    //Add warning to user that they need barcode values
+                    TxtUserMessage = "Incorrect Barcode";
+                    UpdatePopUp.Execute("Message");
+                    FocusBarcode1 = true;
                 }
 
             });
 
+            LouverCountPopUpLoaded = new BaseCommand(obj =>
+            {
+                FocusLouverCount = true;
+            });
 
             LouverCountOk = new BaseCommand(obj =>
             {
@@ -1055,7 +1070,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 IsEnabledAcquareTop = true;
                 IsEnabledAcquireBottom = false;
 
-                UpdatePopUp.Execute("Unsorted Labels");
+                TxtUserMessage = "Place Unsorted Labels on Louvers";
+                UpdatePopUp.Execute("Message");
             });
 
             AcqReadingTop = new BaseCommand(obj =>
@@ -1275,6 +1291,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
                 FocusBarcode1 = true;
+                IsEnabledCancel = false;
             });
 
 
@@ -1420,13 +1437,6 @@ namespace Louver_Sort_4._8._1.Helpers
         {
 
         }
-        public void LouverCountPopUpLoaded()
-        {
-            FocusLouverCount = true;
-        }
-
-
-
 
         //DataQ
         public void ConnectToDataQ()

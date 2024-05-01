@@ -1258,7 +1258,11 @@ namespace Louver_Sort_4._8._1.Helpers
 
             NextLouverSet = new BaseCommand(obj =>
             {
-                ActiveSet.StopSort(DateTime.Now);
+                if (ActiveSet != null)
+                {
+                    ActiveSet.StopSort(DateTime.Now);
+                }
+
 
 
                 ActiveLouverID = 0;

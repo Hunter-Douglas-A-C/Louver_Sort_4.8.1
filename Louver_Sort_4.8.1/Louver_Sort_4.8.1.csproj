@@ -251,6 +251,9 @@
     <Compile Include="Views\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PopUps\AwaitResult.xaml.cs">
+      <DependentUpon>AwaitResult.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PopUps\CalibratePopUp.xaml.cs">
       <DependentUpon>CalibratePopUp.xaml</DependentUpon>
     </Compile>
@@ -293,6 +296,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PopUps\AwaitResult.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

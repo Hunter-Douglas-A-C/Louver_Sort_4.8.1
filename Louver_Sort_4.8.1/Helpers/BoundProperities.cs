@@ -24,6 +24,8 @@ using System.Windows.Markup;
 using System.Xml.Linq;
 using System.Windows.Media;
 using Louver_Sort_4._8._1.Views.PopUps;
+using System.Security.Cryptography.X509Certificates;
+using System.Windows.Threading;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -316,8 +318,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
         //Active Order
-        //private string _barcode1 = "1018652406000001L1";
-        private string _barcode1;
+        private string _barcode1 = "1018652406000001L1";
+        //private string _barcode1;
         public string Barcode1
         {
             get => _barcode1;
@@ -342,8 +344,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
             }
         }
-        //private string _barcode2 = "PNL1/LXL/L4.5/L30.5188/LT";
-        private string _barcode2;
+        private string _barcode2 = "PNL1/LXL/L4.5/L30.5188/LT";
+        //private string _barcode2;
         public string Barcode2
         {
             get => _barcode2;
@@ -846,6 +848,9 @@ namespace Louver_Sort_4._8._1.Helpers
                     case "Message":
                         SelectedPopUp = new Views.PopUps.UserMessagePopUp();
                         break;
+                    case "Await":
+                        SelectedPopUp = new Views.PopUps.AwaitResult();
+                        break;
                     case "Close":
                         SelectedPopUp = null;
                         VisibilityPopUp = Visibility.Hidden;
@@ -1151,16 +1156,31 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else
                 {
-                    value = _dataQ.RecordAndAverageReadings().Result;
+                    Thread RecordThread = new Thread(() =>
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            UpdatePopUp.Execute("Await");
+                        });
+                        value = _dataQ.RecordAndAverageReadings().Result;
+                        ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
+                        ActiveTopReading = value;
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                            IsEnabledAcquareTop = false;
+                            IsEnabledAcquireBottom = true;
+                            ListViewSelectedLouver = ListViewContent[(ListViewContent.IndexOf(ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID)) + 1)];
+                            UpdatePopUp.Execute("Close");
+                        });
+                    });
+                    RecordThread.Start();
                 }
-                ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
-                ActiveTopReading = value;
 
-                ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                IsEnabledAcquareTop = false;
-                IsEnabledAcquireBottom = true;
-                ListViewSelectedLouver = ListViewContent[(ListViewContent.IndexOf(ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID)) + 1)];
+
+
             });
+
 
             AcqReadingBottom = new BaseCommand(obj =>
             {
@@ -1173,18 +1193,25 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     value = randomInt / 1000.0;
                 }
-                else
+                Thread RecordThread = new Thread(() =>
                 {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        UpdatePopUp.Execute("Await");
+                    });
                     value = _dataQ.RecordAndAverageReadings().Result;
-                }
-                ActiveSet.Louvers[ActiveLouverID].SetReading2(value);
-                ActiveBottomReading = value;
-
-
-
-                ActiveSet.Louvers[ActiveLouverID].CalcValues(RejectionSpec);
-                ActiveDeviation = ActiveSet.Louvers[ActiveLouverID].Deviation;
-                ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                    ActiveSet.Louvers[ActiveLouverID].SetReading2(value);
+                    ActiveTopReading = value;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                        IsEnabledAcquareTop = false;
+                        IsEnabledAcquireBottom = true;
+                        ListViewSelectedLouver = ListViewContent[(ListViewContent.IndexOf(ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID)) + 1)];
+                        UpdatePopUp.Execute("Close");
+                    });
+                });
+                RecordThread.Start();
 
 
 

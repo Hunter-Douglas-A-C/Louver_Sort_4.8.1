@@ -387,7 +387,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 try
                 {
                     double reading = await GetLatestDataAsync(); // Get the recorded reading asynchronously
-                    await Task.Delay(1000); // Asynchronously delay for 1000 milliseconds
+                    await Task.Delay(1000).ConfigureAwait(false); // Asynchronously delay for 1000 milliseconds
 
                     //Check if the reading is within threshold of the others
                     if (validReadings.Count > 0)
@@ -420,6 +420,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
             return averageReading;
         }
+
 
 
         #endregion

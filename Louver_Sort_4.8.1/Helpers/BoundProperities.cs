@@ -1151,7 +1151,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else
                 {
-                    value = _dataQ.RecordAndAverageReadings();
+                    value = _dataQ.RecordAndAverageReadings().Result;
                 }
                 ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
                 ActiveTopReading = value;
@@ -1175,7 +1175,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else
                 {
-                    value = _dataQ.RecordAndAverageReadings();
+                    value = _dataQ.RecordAndAverageReadings().Result;
                 }
                 ActiveSet.Louvers[ActiveLouverID].SetReading2(value);
                 ActiveBottomReading = value;

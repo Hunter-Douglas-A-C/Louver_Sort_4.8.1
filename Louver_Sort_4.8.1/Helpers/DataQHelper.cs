@@ -6,6 +6,7 @@ using System.Threading;
 using System.Globalization;
 using System.Text;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -360,16 +361,21 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
-
-
-
         public double GetLatestData()
         {
             return Convert.ToDouble(_outputString);
         }
 
+        public async Task<double> GetLatestDataAsync()
+        {
+            // Simulate asynchronous operation by delaying for 0 milliseconds
+            await Task.Delay(0);
 
-        public double RecordAndAverageReadings()
+            // Convert the output string to double and return it
+            return Convert.ToDouble(_outputString);
+        }
+
+        public async Task<double> RecordAndAverageReadings()
         {
             const int numberOfReadings = 5;
             const double threshold = 0.2; // Adjust this threshold as needed
@@ -380,8 +386,8 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 try
                 {
-                    double reading = GetLatestData(); // Get the recorded reading
-                    Thread.Sleep(1000);
+                    double reading = await GetLatestDataAsync(); // Get the recorded reading asynchronously
+                    await Task.Delay(1000); // Asynchronously delay for 1000 milliseconds
 
                     //Check if the reading is within threshold of the others
                     if (validReadings.Count > 0)

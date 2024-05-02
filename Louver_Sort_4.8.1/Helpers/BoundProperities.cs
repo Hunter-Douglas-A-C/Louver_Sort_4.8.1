@@ -1176,9 +1176,6 @@ namespace Louver_Sort_4._8._1.Helpers
                     });
                     RecordThread.Start();
                 }
-
-
-
             });
 
 
@@ -1205,32 +1202,30 @@ namespace Louver_Sort_4._8._1.Helpers
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                        IsEnabledAcquareTop = false;
-                        IsEnabledAcquireBottom = true;
-                        ListViewSelectedLouver = ListViewContent[(ListViewContent.IndexOf(ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID)) + 1)];
+                        ActiveSet.Louvers[ActiveLouverID].CalcValues(RejectionSpec);
+                        ActiveDeviation = ActiveSet.Louvers[ActiveLouverID].Deviation;
+                        ListViewContent = ActiveSet.GenerateRecordedLouvers();
                         UpdatePopUp.Execute("Close");
+
+                        foreach (var louver in ActiveSet.Louvers)
+                        {
+                            if (louver.Reading1 == 0 && louver.Reading2 == 0)
+                            {
+                                ActiveLouverID = louver.ID;
+                                IsEnabledAcquareTop = true;
+                                IsEnabledAcquireBottom = false;
+                                ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
+                                return;
+                            }
+                        }
+                        IsEnabledAcquareTop = false;
+                        IsEnabledAcquireBottom = false;
+                        IsEnabledReviewReport = true;
+                        ListViewSelectedLouver = null;
                     });
                 });
                 RecordThread.Start();
 
-
-
-
-                foreach (var louver in ActiveSet.Louvers)
-                {
-                    if (louver.Reading1 == 0 && louver.Reading2 == 0)
-                    {
-                        ActiveLouverID = louver.ID;
-                        IsEnabledAcquareTop = true;
-                        IsEnabledAcquireBottom = false;
-                        ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
-                        return;
-                    }
-                }
-                IsEnabledAcquareTop = false;
-                IsEnabledAcquireBottom = false;
-                IsEnabledReviewReport = true;
-                ListViewSelectedLouver = null;
             });
 
             ReviewLouverReport = new BaseCommand(obj =>

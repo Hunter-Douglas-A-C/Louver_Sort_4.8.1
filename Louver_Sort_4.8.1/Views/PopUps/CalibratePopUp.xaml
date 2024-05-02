@@ -86,6 +86,8 @@
                             CommandParameter="Close" />-->
                     <Button x:Name="OkButton"
                             Content="Step Completed"
+                            Width="150"
+                            Height="75"
                             Command="{Binding Calibrate}" />
                 </StackPanel>
             </StackPanel>

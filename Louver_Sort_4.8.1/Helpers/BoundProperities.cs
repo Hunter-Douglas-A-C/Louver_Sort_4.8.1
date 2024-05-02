@@ -23,6 +23,7 @@ using OfficeOpenXml;
 using System.Windows.Markup;
 using System.Xml.Linq;
 using System.Windows.Media;
+using Louver_Sort_4._8._1.Views.PopUps;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -100,7 +101,7 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _rejectionSpec;
             set { SetProperty(ref _rejectionSpec, value); }
         }
-        private bool _isCheckedUseFakeValues = true;
+        private bool _isCheckedUseFakeValues = false;
         public bool IsCheckedUseFakeValues
         {
             get => _isCheckedUseFakeValues;
@@ -188,6 +189,12 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _isEnabledBarcode;
             set { SetProperty(ref _isEnabledBarcode, value); }
         }
+        private bool _isEnabledEnterBarcode = true;
+        public bool IsEnabledEnterBarcode
+        {
+            get => _isEnabledEnterBarcode;
+            set { SetProperty(ref _isEnabledEnterBarcode, value); }
+        }
         private bool _isEnabledExitReport = false;
         public bool IsEnabledExitReport
         {
@@ -213,6 +220,12 @@ namespace Louver_Sort_4._8._1.Helpers
             set { SetProperty(ref _isEnabledCancel, value); }
         }
 
+        private bool _isEnabledLouverCountOk = false;
+        public bool IsEnabledLouverCountOk
+        {
+            get => _isEnabledLouverCountOk;
+            set { SetProperty(ref _isEnabledLouverCountOk, value); }
+        }
 
 
 
@@ -287,6 +300,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
+
         //IsReadOnly
         private bool _isReadOnlyBarcode;
         public bool IsReadOnlyBarcode
@@ -344,6 +358,16 @@ namespace Louver_Sort_4._8._1.Helpers
                     if (Regex.IsMatch(value, @"^(PNL[1-9])\/(LXL)\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$"))
                     {
                         SetProperty(ref _barcode2, value);
+
+
+
+
+
+
+                        if (Regex.IsMatch(Barcode1, @"^\d{16}L\d$"))
+                        {
+                            IsEnabledEnterBarcode = true;
+                        }
                     }
                     else if (Regex.IsMatch(value, @"^$"))
                     {
@@ -451,8 +475,19 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _txtLouverCount;
             set
             {
-                SetProperty(ref _txtLouverCount, value);
+                Regex regex = new Regex("[0-9]");
+                if (regex.IsMatch(value.ToString()))
+                {
+                    IsEnabledLouverCountOk = true;
+                    SetProperty(ref _txtLouverCount, value);
+                }
             }
+        }
+        private string _hintLouverCount = "Louver Count";
+        public string HintLouverCount
+        {
+            get => _hintLouverCount;
+            set { SetProperty(ref _hintLouverCount, value); }
         }
         private double _activeDeviation;
         public double ActiveDeviation
@@ -875,6 +910,12 @@ namespace Louver_Sort_4._8._1.Helpers
 
             Barcode2KeyDown = new BaseCommand(obj =>
             {
+                var focusedElement = Keyboard.FocusedElement as FrameworkElement;
+                if (focusedElement is TextBox)
+                {
+                    BindingExpression be = focusedElement.GetBindingExpression(TextBox.TextProperty);
+                    be.UpdateSource();
+                }
                 EnterBarcodes.Execute("");
             });
 
@@ -964,23 +1005,33 @@ namespace Louver_Sort_4._8._1.Helpers
 
             EnterBarcodes = new BaseCommand(obj =>
             {
-                if (Barcode1 != null && Barcode2 != null)
+                if ((Barcode1 != null && Barcode2 != null))
                 {
-                    var o = _allOrders.CheckIfOrderExists(new BarcodeSet(Barcode1, Barcode2));
-                    if (o != null)
+                    if ((Barcode1 != "" && Barcode2 != ""))
                     {
-                        TxtUserMessage = "Order Already Sorted";
-                        UpdatePopUp.Execute("Message");
-                        Barcode1 = "";
-                        Barcode2 = "";
-                        return;
+                        var o = _allOrders.CheckIfOrderExists(new BarcodeSet(Barcode1, Barcode2));
+                        if (o != null)
+                        {
+                            TxtUserMessage = "Order Already Sorted";
+                            UpdatePopUp.Execute("Message");
+                            Barcode1 = "";
+                            Barcode2 = "";
+                            return;
+                        }
+                        else
+                        {
+                            IsReadOnlyBarcode = true;
+                            IsEnabledBarcode = false;
+                            IsEnabledEnterBarcode = false;
+                            IsEnabledCancel = true;
+                            UpdatePopUp.Execute("LouverCount");
+                        }
                     }
                     else
                     {
-                        IsReadOnlyBarcode = true;
-                        IsEnabledBarcode = false;
-                        IsEnabledCancel = true;
-                        UpdatePopUp.Execute("LouverCount");
+                        TxtUserMessage = "Incorrect Barcode";
+                        UpdatePopUp.Execute("Message");
+                        FocusBarcode1 = true;
                     }
                 }
                 else
@@ -999,6 +1050,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
             LouverCountOk = new BaseCommand(obj =>
             {
+
                 var focusedElement = Keyboard.FocusedElement as FrameworkElement;
 
                 if (focusedElement is TextBox)
@@ -1006,6 +1058,17 @@ namespace Louver_Sort_4._8._1.Helpers
                     BindingExpression be = focusedElement.GetBindingExpression(TextBox.TextProperty);
                     be.UpdateSource();
                 }
+
+
+                //if (TxtLouverCount == null || TxtLouverCount.ToString() == "")
+                //{
+                //    HintLouverCount = "Invalid";
+                //    return;
+                //}
+                //else
+                //{
+                //    HintLouverCount = "Louver Count";
+                //}
 
 
                 //PopUpVisible = Visibility.Hidden;
@@ -1279,11 +1342,11 @@ namespace Louver_Sort_4._8._1.Helpers
                 ListViewContent.Clear();
                 CurBarcode1 = "";
                 CurBarcode2 = "";
-                //CHANGE
-                //Barcode1 = "";
-                //Barcode2 = "";
+                Barcode1 = "";
+                Barcode2 = "";
                 IsReadOnlyBarcode = false;
                 IsEnabledBarcode = true;
+                IsEnabledEnterBarcode = false;
 
                 IsEnabledPrintUnsortedLabels = false;
                 IsEnabledAcquareTop = false;
@@ -1311,23 +1374,53 @@ namespace Louver_Sort_4._8._1.Helpers
 
             SearchOrder = new BaseCommand(obj =>
             {
-                var order = _allOrders.GetOrder(new BarcodeSet(Barcode1, Barcode2));
-                ActivePanel = order.GetOpeningByLine(order.BarcodeHelper.Line).GetPanel(order.BarcodeHelper.PanelID);
-                ActiveSet = ActivePanel.GetSet(order.BarcodeHelper.Set);
+                if ((Barcode1 != null && Barcode2 != null))
+                {
+                    if ((Barcode1 != "" && Barcode2 != ""))
+                    {
+                        var order = _allOrders.GetOrder(new BarcodeSet(Barcode1, Barcode2));
+                        if (order != null)
+                        {
+                            ActivePanel = order.GetOpeningByLine(order.BarcodeHelper.Line).GetPanel(order.BarcodeHelper.PanelID);
+                            ActiveSet = ActivePanel.GetSet(order.BarcodeHelper.Set);
 
-                ReCutBarcode1 = order.BarcodeHelper.BarcodeSet.Barcode1.ToString();
-                ReCutBarcode2 = order.BarcodeHelper.BarcodeSet.Barcode2.ToString();
-                ReCutOrder = order.BarcodeHelper.Order.ToString();
-                ReCutLine = order.BarcodeHelper.Line.ToString();
-                ReCutUnit = order.BarcodeHelper.Unit.ToString();
-                ReCutPanelID = order.BarcodeHelper.PanelID.ToString();
-                ReCutLouverSet = order.BarcodeHelper.Set.ToString();
-                ReCutXL = order.BarcodeHelper.Style == LouverStructure.LouverStyle.LouverStyles.XL;
-                ReCutWidth = order.BarcodeHelper.Width.ToString();
-                ReCutLength = order.BarcodeHelper.Length.ToString();
+                            ReCutBarcode1 = order.BarcodeHelper.BarcodeSet.Barcode1.ToString();
+                            ReCutBarcode2 = order.BarcodeHelper.BarcodeSet.Barcode2.ToString();
+                            ReCutOrder = order.BarcodeHelper.Order.ToString();
+                            ReCutLine = order.BarcodeHelper.Line.ToString();
+                            ReCutUnit = order.BarcodeHelper.Unit.ToString();
+                            ReCutPanelID = order.BarcodeHelper.PanelID.ToString();
+                            ReCutLouverSet = order.BarcodeHelper.Set.ToString();
+                            ReCutXL = order.BarcodeHelper.Style == LouverStructure.LouverStyle.LouverStyles.XL;
+                            ReCutWidth = order.BarcodeHelper.Width.ToString();
+                            ReCutLength = order.BarcodeHelper.Length.ToString();
 
-                var report = ActiveSet.GenerateReport();
-                ReCutContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
+                            var report = ActiveSet.GenerateReport();
+                            ReCutContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
+                        }
+                        else
+                        {
+                            TxtUserMessage = "Order not found";
+                            UpdatePopUp.Execute("Message");
+                            Barcode1 = "";
+                            Barcode2 = "";
+                        }
+                    }
+                    else
+                    {
+                        TxtUserMessage = "Incorrect Barcode";
+                        UpdatePopUp.Execute("Message");
+                        FocusBarcode1 = true;
+                    }
+                }
+                else
+                {
+                    TxtUserMessage = "Incorrect Barcode";
+                    UpdatePopUp.Execute("Message");
+                    FocusBarcode1 = true;
+                }
+
+
             });
 
             CheckTop = new BaseCommand(obj =>

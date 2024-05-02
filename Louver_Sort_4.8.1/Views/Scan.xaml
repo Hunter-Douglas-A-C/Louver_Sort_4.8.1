@@ -95,7 +95,7 @@
                             Content="Enter Barcodes"
                             HorizontalAlignment="Center"
                             Command="{Binding EnterBarcodes}"
-                            IsEnabled="{Binding IsEnabledBarcode}"
+                            IsEnabled="{Binding IsEnabledEnterBarcode}"
                             Width="400"
                             Height="100"
                             FontSize="30"

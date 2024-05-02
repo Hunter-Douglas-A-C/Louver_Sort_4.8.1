@@ -42,7 +42,7 @@
                 </materialDesign:ColorZone>
 
                 <TextBox x:Name="barcode1TextBox"
-                         materialDesign:HintAssist.Hint="Louver Count"
+                         materialDesign:HintAssist.Hint="{Binding HintLouverCount}"
                          materialDesign:HintAssist.HelperTextFontSize="16"
                          Margin="0,0,0,0"
                          FontSize="24"
@@ -75,7 +75,10 @@
                             Margin="0,20,0,0">
                     <Button x:Name="OkButton"
                             Content="OK"
-                            Command="{Binding LouverCountOk}" />
+                            Width="75"
+                            Height="75"
+                            Command="{Binding LouverCountOk}"
+                            IsEnabled="{Binding IsEnabledLouverCountOk}"/>
                 </StackPanel>
             </StackPanel>
         </materialDesign:ColorZone>

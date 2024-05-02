@@ -93,7 +93,7 @@
                             Grid.Row="0"
                             Content="Search Order"
                             HorizontalAlignment="Center"
-                            Command="{Binding SearchBarcodes}"
+                            Command="{Binding SearchOrder}"
                             Width="400"
                             Height="100"
                             FontSize="30"
@@ -121,7 +121,7 @@
                           HorizontalContentAlignment="Center"
                           HorizontalScrollBarVisibility="Auto"
                           helpers:ScrollViewerExtensions.AlwaysScrollToEnd="True">
-                <ListView ItemsSource="{Binding ReportContent}"
+                <ListView ItemsSource="{Binding ReCutContent}"
                           SelectedItem="{Binding ReCutSelectedLouver}"
                           FontSize="20">
                     <Style TargetType="ListViewItem">

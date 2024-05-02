@@ -79,6 +79,8 @@
                             Margin="0,20,0,0">
                     <Button x:Name="OkButton"
                             Content="Completed"
+                            Width="150"
+                            Height="75"
                             Command="{Binding SortedLabelsComplete}" />
                 </StackPanel>
             </StackPanel>

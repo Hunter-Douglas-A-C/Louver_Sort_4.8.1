@@ -34,6 +34,7 @@
                     Content="OK"
                     Width="75"
                     Height="75"
+                    Margin="-50,20,0,0"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
                     Command="{Binding UpdatePopUp}" 

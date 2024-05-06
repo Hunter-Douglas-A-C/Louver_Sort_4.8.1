@@ -136,20 +136,19 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Grid Grid.Column="0">
-                                        <Viewbox Margin="200,100,200,100">
-                                            <StackPanel VerticalAlignment="Center"
-                                                        HorizontalAlignment="Center">
-                                                <TextBox MaxWidth="400"
-                                                         FontSize="40"
-                                                         VerticalAlignment="Center"
-                                                         materialDesign:HintAssist.Hint="Admin Password"
-                                                         AcceptsReturn="True"
-                                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                         Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                         TextWrapping="Wrap"
-                                                         Text="{Binding AdminPassword, Mode=TwoWay}" />
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBox MaxWidth="600"
+                                        <StackPanel VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center">
+                                            <TextBox MaxWidth="400"
+                                                     FontSize="30"
+                                                     VerticalAlignment="Center"
+                                                     materialDesign:HintAssist.Hint="Admin Password"
+                                                     AcceptsReturn="True"
+                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                     TextWrapping="Wrap"
+                                                     Text="{Binding AdminPassword, Mode=TwoWay}" />
+                                            <!--<StackPanel Orientation="Horizontal">-->
+                                            <!--<TextBox MaxWidth="600"
                                                              VerticalAlignment="Top"
                                                              FontSize="40"
                                                              materialDesign:HintAssist.Hint="Louver Data Save Location"
@@ -165,44 +164,45 @@
                                                             <materialDesign:PackIcon Kind="FolderSearch" />
                                                         </Button.Content>
                                                     </Button>
-                                                </StackPanel>
+                                                </StackPanel>-->
 
 
-                                                <TextBox MaxWidth="400"
-                                                         VerticalAlignment="Top"
-                                                         materialDesign:HintAssist.Hint="Louver Rejection Value"
-                                                         AcceptsReturn="True"
-                                                         FontSize="40"
-                                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                         Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                         TextWrapping="Wrap"
-                                                         Text="{Binding RejectionSpec, Mode=TwoWay}" />
+                                            <TextBox MaxWidth="400"
+                                                     VerticalAlignment="Top"
+                                                     Margin="0,50,0,0"
+                                                     materialDesign:HintAssist.Hint="Louver Rejection Value"
+                                                     AcceptsReturn="True"
+                                                     FontSize="30"
+                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                     TextWrapping="Wrap"
+                                                     Text="{Binding RejectionSpec, Mode=TwoWay}" />
 
-                                                <TextBox MaxWidth="400"
-                                                         VerticalAlignment="Top"
-                                                         FontSize="40"
-                                                         materialDesign:HintAssist.Hint="Data Retintion Period"
-                                                         AcceptsReturn="True"
-                                                         IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                         Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                         TextWrapping="Wrap"
-                                                         Text="{Binding DataRetentionPeriod, Mode=TwoWay}" />
+                                            <TextBox MaxWidth="400"
+                                                     VerticalAlignment="Top"
+                                                     Margin="0,50,0,0"
+                                                     FontSize="30"
+                                                     materialDesign:HintAssist.Hint="Data Retintion Period"
+                                                     AcceptsReturn="True"
+                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                     TextWrapping="Wrap"
+                                                     Text="{Binding DataRetentionPeriod, Mode=TwoWay}" />
 
-                                                <StackPanel Orientation="Horizontal"
+                                            <!--<StackPanel Orientation="Horizontal"
                                                             VerticalAlignment="Center"
                                                             HorizontalAlignment="Center">
                                                     <TextBlock Text="Use fake Data?" />
                                                     <RadioButton IsChecked="{Binding IsCheckedUseFakeValues}" />
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </Viewbox>
+                                                </StackPanel>-->
+                                        </StackPanel>
                                     </Grid>
 
                                     <Grid Grid.Column="1">
                                         <Viewbox Margin="200,100,200,100">
-                                                                                    <StackPanel VerticalAlignment="Center"
-                                                    HorizontalAlignment="Center">
-                                            <!--<Calendar   materialDesign:CalendarAssist.SelectionColor="DarkOrange"
+                                            <StackPanel VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center">
+                                                <!--<Calendar   materialDesign:CalendarAssist.SelectionColor="DarkOrange"
                                                         materialDesign:CalendarAssist.HeaderBackground="{DynamicResource MaterialDesign.Brush.Secondary.Dark}"
                                                         materialDesign:CalendarAssist.HeaderForeground="{DynamicResource MaterialDesign.Brush.Secondary.Dark.Foreground}"
                                                         Background="{DynamicResource  MaterialDesign.Brush.Primary.Dark}"
@@ -211,35 +211,55 @@
                                                         materialDesign:ElevationAssist.Elevation="Dp8"
                                                         SelectionMode="SingleRange"
                                                         SelectedDate="{Binding DateRange}" />-->
-                                            <StackPanel Orientation="Horizontal"
-                                                        VerticalAlignment="Center"
-                                                        HorizontalAlignment="Center">
-                                                <DatePicker Width="140"
-                                                            materialDesign:TextFieldAssist.OutlinedBorderActiveThickness="3"
-                                                            BorderThickness="3"
-                                                            materialDesign:HintAssist.Hint="Pick Start Date"
-                                                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
-                                                            SelectedDate="{Binding DateRangeStart}"
-                                                            DisplayDate="{Binding DateTimeToday, Mode=TwoWay}"/>
-                                                <DatePicker Width="140"
-                                                            materialDesign:TextFieldAssist.OutlinedBorderActiveThickness="3"
-                                                            BorderThickness="3"
-                                                            materialDesign:HintAssist.Hint="Pick End Date"
-                                                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
-                                                            SelectedDate="{Binding DateRangeEnd}"
-                                                            DisplayDate="{Binding DateTimeToday, Mode=TwoWay, TargetNullValue=''}" />
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,50">
+                                                <TextBox MaxWidth="400"
+                                                             VerticalAlignment="Top"
+                                                             FontSize="25"
+                                                             materialDesign:HintAssist.Hint="Excel Export Location"
+                                                             AcceptsReturn="True"
+                                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                             TextWrapping="Wrap"
+                                                             Text="{Binding ExcelExportLocation, Mode=TwoWay}" />
+                                                    <Button VerticalAlignment="Center"
+                                                            HorizontalAlignment="Center"
+                                                            
+                                                            Command="{Binding BrowseForJSONSaveLocation}">
+                                                        <Button.Content>
+                                                            <materialDesign:PackIcon Kind="FolderSearch" />
+                                                        </Button.Content>
+                                                    </Button>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Center">
+                                                    <DatePicker Width="140"
+                                                                materialDesign:TextFieldAssist.OutlinedBorderActiveThickness="3"
+                                                                BorderThickness="3"
+                                                                materialDesign:HintAssist.Hint="Pick Start Date"
+                                                                Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                                                                SelectedDate="{Binding DateRangeStart}"
+                                                                DisplayDate="{Binding DateTimeToday, Mode=TwoWay}" />
+                                                    <DatePicker Width="140"
+                                                                materialDesign:TextFieldAssist.OutlinedBorderActiveThickness="3"
+                                                                BorderThickness="3"
+                                                                materialDesign:HintAssist.Hint="Pick End Date"
+                                                                Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                                                                SelectedDate="{Binding DateRangeEnd}"
+                                                                DisplayDate="{Binding DateTimeToday, Mode=TwoWay, TargetNullValue=''}" />
+                                                </StackPanel>
+                                                <Button Grid.Row="0"
+                                                        Content="Export Excel Report"
+                                                        Command="{Binding ExportExcel}"
+                                                        Margin="0,40,0,40"
+                                                        Width="300"
+                                                        Height="100"
+                                                        FontSize="30"
+                                                        IsEnabled="{Binding IsEnabledExcelExport}"
+                                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                                        materialDesign:ButtonAssist.CornerRadius="10"
+                                                        ToolTip="Select Folder Location and Export Excel Report for Selected Dates" />
                                             </StackPanel>
-                                            <Button Grid.Row="0"
-                                                    Content="Export Excel Report"
-                                                    Command="{Binding ExportExcel}"
-                                                    Margin="0,40,0,40"
-                                                    Width="300"
-                                                    Height="100"
-                                                    FontSize="30"
-                                                    Style="{StaticResource MaterialDesignRaisedButton}"
-                                                    materialDesign:ButtonAssist.CornerRadius="10"
-                                                    ToolTip="Select Folder Location and Export Excel Report for Selected Dates" />
-                                        </StackPanel>
                                         </Viewbox>
 
 

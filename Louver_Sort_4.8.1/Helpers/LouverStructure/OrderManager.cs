@@ -217,7 +217,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
                 var open = order.AddOpening(new Opening(order.BarcodeHelper.Line, order.BarcodeHelper.Style, order.BarcodeHelper.Width, order.BarcodeHelper.Length));
                 var pan = open.AddPanel(new Panel(order.BarcodeHelper.PanelID));
                 var set = pan.AddSet(new Set(order.BarcodeHelper.Set, louverCount));
-                for (int i = 0; i < louverCount; i++)
+                for (int i = 1; i < louverCount + 1; i++)
                 {
                     var l = set.AddLouver(new Louver(i));
                     //l.SetReading1(i);

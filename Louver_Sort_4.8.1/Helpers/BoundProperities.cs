@@ -20,12 +20,8 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using Zebra.Sdk.Printer;
 using OfficeOpenXml;
-using System.Windows.Markup;
-using System.Xml.Linq;
 using System.Windows.Media;
-using Louver_Sort_4._8._1.Views.PopUps;
-using System.Security.Cryptography.X509Certificates;
-using System.Windows.Threading;
+
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -71,14 +67,47 @@ namespace Louver_Sort_4._8._1.Helpers
         private ZebraPrinterHelper _zebra = new ZebraPrinterHelper();
         public OrderManager _allOrders = new OrderManager();
         public Calibration _cal = new Calibration();
+        public Globals _globals = new Globals();
 
         //Global
-        private string _adminPassword = "55555";
+
         public string AdminPassword
         {
-            get => _adminPassword;
-            set { SetProperty(ref _adminPassword, value); }
+            get => _globals.AdminPassword;
+            set
+            {
+                SetProperty(ref _globals.AdminPassword, value);
+            }
         }
+        public double RejectionSpec
+        {
+            get => _globals.RejectionSpec;
+            set
+            {
+                SetProperty(ref _globals.RejectionSpec, value);
+            }
+        }
+
+        private string _excelExportLocation;
+        public string ExcelExportLocation
+        {
+            get => _excelExportLocation;
+            set
+            {
+                SetProperty(ref _excelExportLocation, value);
+                if (DateRangeStart != null && DateRangeEnd != null && ExcelExportLocation != null)
+                {
+                    IsEnabledExcelExport = true;
+                }
+            }
+        }
+
+
+
+        string Barcode1Regex = @"^\d{16}P\d$";
+        string Barcode2Regex = @"^(PNL[1-9])\/(LXL)\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$";
+        string EmptyRegex = @"^$";
+
         private bool _en_USEnabled;
         public bool en_USEnabled
         {
@@ -91,29 +120,18 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _es_ESEnabled;
             set { SetProperty(ref _es_ESEnabled, value); }
         }
-        private string _jSONSaveLocation = "C:\\Users\\Public\\Desktop";
-        public string JSONSaveLocation
-        {
-            get => _jSONSaveLocation;
-            set { SetProperty(ref _jSONSaveLocation, value); }
-        }
-        private double _rejectionSpec = 1;
-        public double RejectionSpec
-        {
-            get => _rejectionSpec;
-            set { SetProperty(ref _rejectionSpec, value); }
-        }
-        private bool _isCheckedUseFakeValues = false;
+        private string _jSONSaveLocation = AppDomain.CurrentDomain.BaseDirectory;
+
+        private bool _isCheckedUseFakeValues = true;
         public bool IsCheckedUseFakeValues
         {
             get => _isCheckedUseFakeValues;
             set { SetProperty(ref _isCheckedUseFakeValues, value); }
         }
-        private double _dataRetentionPeriod = 90;
-        public double DataRetentionPeriod
+        public int DataRetentionPeriod
         {
-            get => _dataRetentionPeriod;
-            set { SetProperty(ref _dataRetentionPeriod, value); }
+            get => _globals.DataRetentionPeriod;
+            set { SetProperty(ref _globals.DataRetentionPeriod, value); }
         }
 
         //User Control Views
@@ -228,8 +246,19 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _isEnabledLouverCountOk;
             set { SetProperty(ref _isEnabledLouverCountOk, value); }
         }
+        private bool _isEnabledReCutBarcode = true;
+        public bool IsEnabledReCutBarcode
+        {
+            get => _isEnabledReCutBarcode;
+            set { SetProperty(ref _isEnabledReCutBarcode, value); }
+        }
 
-
+        private bool _isEnabledExcelExport = false;
+        public bool IsEnabledExcelExport
+        {
+            get => _isEnabledExcelExport;
+            set { SetProperty(ref _isEnabledExcelExport, value); }
+        }
 
 
 
@@ -318,8 +347,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
         //Active Order
-        private string _barcode1 = "1018652406000001L1";
-        //private string _barcode1;
+        //private string _barcode1 = "1018652406000001L1";
+        private string _barcode1;
         public string Barcode1
         {
             get => _barcode1;
@@ -331,21 +360,23 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else
                 {
-                    if (Regex.IsMatch(value, @"^\d{16}L\d$"))
+                    if (Regex.IsMatch(value, Barcode1Regex))
                     {
                         SetProperty(ref _barcode1, value);
                     }
-                    else if (Regex.IsMatch(value, @"^$"))
+                    else if (Regex.IsMatch(value, EmptyRegex))
                     {
-                        SetProperty(ref _barcode1, value);
+                        SetProperty(ref _barcode1, "");
+                    }
+                    else
+                    {
+                        SetProperty(ref _barcode1, "");
                     }
                 }
-
-
             }
         }
-        private string _barcode2 = "PNL1/LXL/L4.5/L30.5188/LT";
-        //private string _barcode2;
+        //private string _barcode2 = "PNL1/LXL/L4.5/L30.5188/LT";
+        private string _barcode2;
         public string Barcode2
         {
             get => _barcode2;
@@ -357,23 +388,22 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else
                 {
-                    if (Regex.IsMatch(value, @"^(PNL[1-9])\/(LXL)\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$"))
+                    if (Regex.IsMatch(value, Barcode2Regex))
                     {
                         SetProperty(ref _barcode2, value);
 
-
-
-
-
-
-                        if (Regex.IsMatch(Barcode1, @"^\d{16}L\d$"))
+                        if (Regex.IsMatch(Barcode1, Barcode1Regex))
                         {
                             IsEnabledEnterBarcode = true;
                         }
                     }
-                    else if (Regex.IsMatch(value, @"^$"))
+                    else if (Regex.IsMatch(value, EmptyRegex))
                     {
-                        SetProperty(ref _barcode2, value);
+                        SetProperty(ref _barcode2, "");
+                    }
+                    else
+                    {
+                        SetProperty(ref _barcode2, "");
                     }
                 }
             }
@@ -483,6 +513,10 @@ namespace Louver_Sort_4._8._1.Helpers
                     IsEnabledLouverCountOk = true;
                     SetProperty(ref _txtLouverCount, value);
                 }
+                else if (value == null)
+                {
+                    SetProperty(ref _txtLouverCount, value);
+                }
             }
         }
         private string _hintLouverCount = "Louver Count";
@@ -517,13 +551,30 @@ namespace Louver_Sort_4._8._1.Helpers
         public DateTime? DateRangeStart
         {
             get => _dateRangeStart;
-            set { SetProperty(ref _dateRangeStart, value); }
+
+            set
+            {
+                SetProperty(ref _dateRangeStart, value);
+
+                if (DateRangeStart != null && DateRangeEnd != null && ExcelExportLocation != null)
+                {
+                    IsEnabledExcelExport = true;
+                }
+            }
         }
         private DateTime? _dateRangeEnd;
         public DateTime? DateRangeEnd
         {
             get => _dateRangeEnd;
-            set { SetProperty(ref _dateRangeEnd, value); }
+            set
+            {
+                SetProperty(ref _dateRangeEnd, value);
+
+                if (DateRangeStart != null && DateRangeEnd != null && ExcelExportLocation != null)
+                {
+                    IsEnabledExcelExport = true;
+                }
+            }
         }
         private DateTime _dateTimeToday = DateTime.Now;
         public DateTime DateTimeToday
@@ -623,11 +674,68 @@ namespace Louver_Sort_4._8._1.Helpers
                 // If the Louver with the same ID is found, remove it from the collection.
                 if (index != -1)
                 {
-                    RecutReading1 = ActiveSet.Louvers[index].Reading1.ToString();
-                    RecutReading2 = ActiveSet.Louvers[index].Reading2.ToString();
+                    IsEnabledCheckTop = true;
+                    TopMinimumValue = (ActiveSet.Louvers[index].Reading1 - RejectionSpec).ToString();
+                    TopMaximumValue = (ActiveSet.Louvers[index].Reading1 + RejectionSpec).ToString();
+                    BottomMinimumValue = (ActiveSet.Louvers[index].Reading2 - RejectionSpec).ToString();
+                    BottomMaximumValue = (ActiveSet.Louvers[index].Reading2 + RejectionSpec).ToString();
+                    TopColor = Brushes.Red;
+                    BottomColor = Brushes.Red;
                 }
             }
         }
+        private string _topMinimumValue;
+        public string TopMinimumValue
+        {
+            get => _topMinimumValue;
+            set { SetProperty(ref _topMinimumValue, value); }
+        }
+
+        private string _topMaximumValue;
+        public string TopMaximumValue
+        {
+            get => _topMaximumValue;
+            set { SetProperty(ref _topMaximumValue, value); }
+        }
+
+        private string _bottomMinimumValue;
+        public string BottomMinimumValue
+        {
+            get => _bottomMinimumValue;
+            set { SetProperty(ref _bottomMinimumValue, value); }
+        }
+
+        private string _bottomMaximumValue;
+        public string BottomMaximumValue
+        {
+            get => _bottomMaximumValue;
+            set { SetProperty(ref _bottomMaximumValue, value); }
+        }
+
+
+        private Brush _topColor;
+        public Brush TopColor
+        {
+            get => _topColor;
+            set { SetProperty(ref _topColor, value); }
+        }
+
+        private Brush _bottomColor;
+        public Brush BottomColor
+        {
+            get => _bottomColor;
+            set { SetProperty(ref _bottomColor, value); }
+        }
+
+
+
+
+
+
+
+
+
+
         private string _reCutOrder;
         public string ReCutOrder
         {
@@ -748,9 +856,11 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand BrowseForJSONSaveLocation { get; set; }
         public ICommand Barcode1KeyDown { get; set; }
         public ICommand Barcode2KeyDown { get; set; }
+        public ICommand ReCutBarcode2KeyDown { get; set; }
         public ICommand Calibrate { get; set; }
         public ICommand CalibRecord { get; set; }
         public ICommand ScanLoaded { get; set; }
+        public ICommand ReCutLoaded { get; set; }
         public ICommand ReconnectToDataQ { get; set; }
         public ICommand EnterBarcodes { get; set; }
         public ICommand LouverCountPopUpLoaded { get; set; }
@@ -775,12 +885,66 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand ExportExcel { get; set; }
         public ICommand ShutDown { get; set; }
 
+
+
+
+
+        public ICommand TEMP { get; set; }
+
         #endregion
 
         #region CommandImplementation
         public BoundProperities()
         {
-            //LoadFromJson();
+
+
+            TEMP = new BaseCommand(obj =>
+            {
+                foreach (var orderWithBarcode in _allOrders.OrdersWithBarcodes)
+                {
+                    Order order = orderWithBarcode.Order;
+                    Debug.WriteLine($"Order Details: Barcode Set = {orderWithBarcode.BarcodeSet.ToString()}");
+
+                    // Write additional details about each order
+                    Debug.WriteLine($"Unit: {order.Unit}");
+                    Debug.WriteLine($"Number of Openings: {order.Openings.Count}");
+                    foreach (var opening in order.Openings)
+                    {
+                        Debug.WriteLine($"  Model Number: {opening.ModelNum}, Style: {opening.Style}");
+                        Debug.WriteLine($"  Opening Line: {opening.Line}, Width: {opening.Width}, Length: {opening.Length}");
+                        foreach (var panel in opening.Panels)
+                        {
+                            Debug.WriteLine($"    Panel ID: {panel.ID}, Sets: {panel.Sets.Count}");
+                            foreach (var set in panel.Sets)
+                            {
+                                Debug.WriteLine($"      DateSortStarted: {set.DateSortStarted}, DateSortFinished: {set.DateSortFinished}");
+                                Debug.WriteLine($"      Set ID: {set.ID}, Louver Count: {set.LouverCount}");
+                                foreach (var louver in set.Louvers)
+                                {
+                                    Debug.WriteLine($"      ID: {louver.ID}, Reading1: {louver.Reading1}");
+                                    Debug.WriteLine($"      Reading2: {louver.Reading2}, Deviation: {louver.Deviation}");
+                                    Debug.WriteLine($"      AbsDeviation: {louver.AbsDeviation}, orienation: {louver.Orientation}");
+                                    Debug.WriteLine($"      rejected: {louver.Rejected}, causeofrejection: {louver.CauseOfRejection}");
+                                    Debug.WriteLine($"      sortedID: {louver.SortedID}");
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
+
+
+
+
+
+
+            if (CheckFile(_jSONSaveLocation + "\\LouverSortData.ini") && CheckFile(_jSONSaveLocation + "\\Globals.ini"))
+            {
+                LoadFromJson();
+            }
+
 
             var Mapper = Mappers.Xy<MeasureModel>()
             .X(x => x.ElapsedMilliseconds)
@@ -814,7 +978,7 @@ namespace Louver_Sort_4._8._1.Helpers
                          SelectedView = null;
                          break;
                      case "Reporting":
-                         if (Password == _adminPassword)
+                         if (Password == AdminPassword)
                          {
                              VisilityPassword = Visibility.Collapsed;
                              VisibilityAdmin = Visibility.Visible;
@@ -900,17 +1064,32 @@ namespace Louver_Sort_4._8._1.Helpers
                 if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     // User selected a folder and pressed OK
-                    JSONSaveLocation = folderBrowserDialog.SelectedPath; // Get the selected folder path
+                    ExcelExportLocation = folderBrowserDialog.SelectedPath; // Get the selected folder path
                 }
                 else
                 {
-                    JSONSaveLocation = null; // User canceled the operation
+                    ExcelExportLocation = null; // User canceled the operation
                 }
             });
 
             Barcode1KeyDown = new BaseCommand(obj =>
             {
-                FocusBarcode2 = true;
+                var focusedElement = Keyboard.FocusedElement as FrameworkElement;
+
+                if (focusedElement is TextBox)
+                {
+                    BindingExpression be = focusedElement.GetBindingExpression(TextBox.TextProperty);
+                    be.UpdateSource();
+                }
+                if (Barcode1Correct())
+                {
+                    FocusBarcode2 = true;
+                }
+                else
+                {
+                    Barcode1 = "";
+                    FocusBarcode1 = true;
+                }
             });
 
             Barcode2KeyDown = new BaseCommand(obj =>
@@ -922,6 +1101,17 @@ namespace Louver_Sort_4._8._1.Helpers
                     be.UpdateSource();
                 }
                 EnterBarcodes.Execute("");
+            });
+
+            ReCutBarcode2KeyDown = new BaseCommand(obj =>
+            {
+                var focusedElement = Keyboard.FocusedElement as FrameworkElement;
+                if (focusedElement is TextBox)
+                {
+                    BindingExpression be = focusedElement.GetBindingExpression(TextBox.TextProperty);
+                    be.UpdateSource();
+                }
+                SearchOrder.Execute("");
             });
 
             Calibrate = new BaseCommand(obj =>
@@ -999,6 +1189,11 @@ namespace Louver_Sort_4._8._1.Helpers
             });
 
             ScanLoaded = new BaseCommand(obj =>
+            {
+                FocusBarcode1 = true;
+            });
+
+            ReCutLoaded = new BaseCommand(obj =>
             {
                 FocusBarcode1 = true;
             });
@@ -1083,7 +1278,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 //SelectedView = new Scan();
                 ClosePopUp.Execute("");
                 var order = _allOrders.CreateOrderAfterScanAndFillAllVariables(new BarcodeSet(Barcode1, Barcode2), Convert.ToInt32(TxtLouverCount));
-                ActiveLouverID = 0;
+                ActiveLouverID = 1;
                 ActivePanel = order.GetOpeningByLine(order.BarcodeHelper.Line).GetPanel(order.BarcodeHelper.PanelID);
                 ActiveSet = ActivePanel.GetSet(order.BarcodeHelper.Set);
 
@@ -1113,8 +1308,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 SelectedPopUp = null;
                 MainContentBlurRadius = 0;
             });
-
-
 
             PrintUnsortedLabels = new BaseCommand(obj =>
             {
@@ -1153,6 +1346,13 @@ namespace Louver_Sort_4._8._1.Helpers
                 if (IsCheckedUseFakeValues)
                 {
                     value = randomInt / 1000.0;
+                    ActiveSet.Louvers[ActiveLouverID - 1].SetReading1(value);
+                    ActiveTopReading = value;
+                    ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                    IsEnabledAcquareTop = false;
+                    IsEnabledAcquireBottom = true;
+                    ListViewSelectedLouver = ListViewContent[(ListViewContent.IndexOf(ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID)) + 1)];
+                    UpdatePopUp.Execute("Close");
                 }
                 else
                 {
@@ -1163,7 +1363,7 @@ namespace Louver_Sort_4._8._1.Helpers
                             UpdatePopUp.Execute("Await");
                         });
                         value = _dataQ.RecordAndAverageReadings().Result;
-                        ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
+                        ActiveSet.Louvers[ActiveLouverID - 1].SetReading1(value);
                         ActiveTopReading = value;
                         Application.Current.Dispatcher.Invoke(() =>
                         {
@@ -1178,7 +1378,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             });
 
-
             AcqReadingBottom = new BaseCommand(obj =>
             {
                 Random random = new Random();
@@ -1189,42 +1388,72 @@ namespace Louver_Sort_4._8._1.Helpers
                 if (IsCheckedUseFakeValues)
                 {
                     value = randomInt / 1000.0;
-                }
-                Thread RecordThread = new Thread(() =>
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        UpdatePopUp.Execute("Await");
-                    });
-                    value = _dataQ.RecordAndAverageReadings().Result;
-                    ActiveSet.Louvers[ActiveLouverID].SetReading2(value);
-                    ActiveTopReading = value;
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                        ActiveSet.Louvers[ActiveLouverID].CalcValues(RejectionSpec);
-                        ActiveDeviation = ActiveSet.Louvers[ActiveLouverID].Deviation;
-                        ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                        UpdatePopUp.Execute("Close");
+                    ActiveSet.Louvers[ActiveLouverID - 1].SetReading2(value);
+                    ActiveBottomReading = value;
 
-                        foreach (var louver in ActiveSet.Louvers)
+                    ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                    ActiveSet.Louvers[ActiveLouverID - 1].CalcValues(RejectionSpec);
+                    ActiveDeviation = ActiveSet.Louvers[ActiveLouverID - 1].Deviation;
+                    ListViewContent = ActiveSet.GenerateRecordedLouvers();
+
+
+
+
+                    foreach (var louver in ActiveSet.Louvers)
+                    {
+                        if (louver.Reading1 == 0 && louver.Reading2 == 0)
                         {
-                            if (louver.Reading1 == 0 && louver.Reading2 == 0)
-                            {
-                                ActiveLouverID = louver.ID;
-                                IsEnabledAcquareTop = true;
-                                IsEnabledAcquireBottom = false;
-                                ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
-                                return;
-                            }
+                            ActiveLouverID = louver.ID;
+                            IsEnabledAcquareTop = true;
+                            IsEnabledAcquireBottom = false;
+                            ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
+                            return;
                         }
-                        IsEnabledAcquareTop = false;
-                        IsEnabledAcquireBottom = false;
-                        IsEnabledReviewReport = true;
-                        ListViewSelectedLouver = null;
+                    }
+                    IsEnabledAcquareTop = false;
+                    IsEnabledAcquireBottom = false;
+                    IsEnabledReviewReport = true;
+                    ListViewSelectedLouver = null;
+                }
+                else
+                {
+                    Thread RecordThread = new Thread(() =>
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            UpdatePopUp.Execute("Await");
+                        });
+                        value = _dataQ.RecordAndAverageReadings().Result;
+                        ActiveSet.Louvers[ActiveLouverID - 1].SetReading2(value);
+                        ActiveBottomReading = value;
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                            ActiveSet.Louvers[ActiveLouverID - 1].CalcValues(RejectionSpec);
+                            ActiveDeviation = ActiveSet.Louvers[ActiveLouverID - 1].Deviation;
+                            ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                            UpdatePopUp.Execute("Close");
+
+                            foreach (var louver in ActiveSet.Louvers)
+                            {
+                                if (louver.Reading1 == 0 && louver.Reading2 == 0)
+                                {
+                                    ActiveLouverID = louver.ID;
+                                    IsEnabledAcquareTop = true;
+                                    IsEnabledAcquireBottom = false;
+                                    ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
+                                    return;
+                                }
+                            }
+                            IsEnabledAcquareTop = false;
+                            IsEnabledAcquireBottom = false;
+                            IsEnabledReviewReport = true;
+                            ListViewSelectedLouver = null;
+                        });
                     });
-                });
-                RecordThread.Start();
+                    RecordThread.Start();
+                }
+
 
             });
 
@@ -1302,7 +1531,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             });
 
-
             ReportApproved = new BaseCommand(obj =>
             {
                 //UpdateView.Execute("Scan");
@@ -1349,8 +1577,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
 
 
-
-                ActiveLouverID = 0;
+                TxtLouverCount = null;
+                ActiveLouverID = 1;
                 CurOrder = "";
                 CurLine = "";
                 CurUnit = "";
@@ -1383,17 +1611,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 IsEnabledCancel = false;
             });
 
-
-
-
-
-
-
-
-
-
-
-
             SearchOrder = new BaseCommand(obj =>
             {
                 if ((Barcode1 != null && Barcode2 != null))
@@ -1418,7 +1635,9 @@ namespace Louver_Sort_4._8._1.Helpers
                             ReCutLength = order.BarcodeHelper.Length.ToString();
 
                             var report = ActiveSet.GenerateReport();
+                            ReCutContent = null;
                             ReCutContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
+                            IsEnabledReCutBarcode = false;
                         }
                         else
                         {
@@ -1453,19 +1672,25 @@ namespace Louver_Sort_4._8._1.Helpers
                     int randomInt = random.Next(-1000, 1001);
 
                     // Divide the random integer by 1000 to get increments of 0.001
-                    //double value = randomInt / 1000.0;
-                    double value = RecordWhenStable(0.001);
+                    double value = randomInt / 1000.0;
+                    //double value = RecordWhenStable(0.001);
+                    TxtTopAcceptableReplacement = value.ToString();
                     //ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
                     //Reading1 = value;
 
-                    if (Math.Abs(value - Convert.ToDouble(RecutReading1)) <= 0.1)
+                    if (Math.Abs(value - Convert.ToDouble(RecutReading1)) <= RejectionSpec)
                     {
-                        TxtTopAcceptableReplacement = "Yes";
+                        TopColor = Brushes.Green;
                     }
                     else
                     {
-                        TxtTopAcceptableReplacement = "no";
+                        TopColor = Brushes.Red;
                     }
+
+
+
+                    IsEnabledCheckTop = false;
+                    IsEnabledCheckBottom = true;
                 });
 
             CheckBottom = new BaseCommand(obj =>
@@ -1476,29 +1701,64 @@ namespace Louver_Sort_4._8._1.Helpers
                 int randomInt = random.Next(-1000, 1001);
 
                 // Divide the random integer by 1000 to get increments of 0.001
-                //double value = randomInt / 1000.0;
-                double value = RecordWhenStable(0.001);
+                double value = randomInt / 1000.0;
+                //double value = RecordWhenStable(0.001);
+                TxtBottomAcceptableReplacement = value.ToString();
                 //ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
                 //Reading1 = value;
 
-                if (Math.Abs(value - Convert.ToDouble(RecutReading2)) <= 0.1)
+                if (Math.Abs(value - Convert.ToDouble(RecutReading2)) <= RejectionSpec)
                 {
-                    TxtBottomAcceptableReplacement = "Yes";
+                    BottomColor = Brushes.Green;
+                    TxtUserMessage = "Louver is a good replacement";
+                    UpdatePopUp.Execute("Message");
                 }
                 else
                 {
-                    TxtBottomAcceptableReplacement = "no";
+                    BottomColor = Brushes.Red;
+                    TxtUserMessage = "Louver is NOT a replacement";
+                    UpdatePopUp.Execute("Message");
+
+
+
+
                 }
+
+                ReCutContent = null;
+                TopMinimumValue = null;
+                TopMaximumValue = null;
+                BottomMinimumValue = null;
+                BottomMaximumValue = null;
+                IsEnabledCheckTop = false;
+                IsEnabledCheckBottom = false;
+                TopColor = Brushes.Gray;
+                BottomColor = Brushes.Gray;
+                TxtTopAcceptableReplacement = null;
+                TxtBottomAcceptableReplacement = null;
+                IsEnabledReCutBarcode = true;
+                FocusBarcode1 = true;
+                Barcode1 = null;
+                Barcode2 = null;
             });
 
             ExportExcel = new BaseCommand(obj =>
             {
-                ExportToExcel("C:\\Users\\jallen\\Documents\\ExcelExport.xlsx");
+                string dateTimeFormat = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+                string filename = $"LouverSortExport_{dateTimeFormat}.xlsx";
+                string fullPath = Path.Combine(_excelExportLocation, filename);
+                ExportToExcel(fullPath);
+
+                TxtUserMessage = "Report Generated";
+                UpdatePopUp.Execute("Message");
+                DateRangeStart = null;
+                DateRangeEnd = null;
+                IsEnabledExcelExport = false;
+                ExcelExportLocation = null;
             });
 
             ShutDown = new BaseCommand(obj =>
             {
-                //SaveToJson();
+                SaveToJson();
 
                 Console.WriteLine("JSON exported and saved to file.");
 
@@ -1637,9 +1897,36 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
         //JSON
+
+        public static bool CheckFile(string filePath)
+        {
+            // Check if the file exists
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("File does not exist.");
+                return false;
+            }
+
+            // Try to open the file
+            try
+            {
+                using (FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    Console.WriteLine("File is available and can be opened.");
+                    return true;
+                }
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("Error opening file: " + ex.Message);
+                return false;
+            }
+        }
+
+
         public void LoadFromJson()
         {
-            string json = File.ReadAllText(JSONSaveLocation + "\\LouverSortData.ini");
+            string json = File.ReadAllText(_jSONSaveLocation + "\\LouverSortData.ini");
 
             var settings = new JsonSerializerSettings
             {
@@ -1647,9 +1934,18 @@ namespace Louver_Sort_4._8._1.Helpers
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
             _allOrders = JsonConvert.DeserializeObject<OrderManager>(json, settings);
-            AdminPassword = JsonConvert.DeserializeObject<string>(json, settings);
-            JSONSaveLocation = JsonConvert.DeserializeObject<string>(json, settings);
-            RejectionSpec = JsonConvert.DeserializeObject<double>(json, settings);
+
+            json = File.ReadAllText(_jSONSaveLocation + "\\Globals.ini");
+
+            settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+            _globals = JsonConvert.DeserializeObject<Globals>(json, settings);
+            //AdminPassword = JsonConvert.DeserializeObject<string>(json, settings);
+            //JSONSaveLocation = JsonConvert.DeserializeObject<string>(json, settings);
+            //RejectionSpec = JsonConvert.DeserializeObject<double>(json, settings);
         }
 
         public void SaveToJson()
@@ -1657,13 +1953,21 @@ namespace Louver_Sort_4._8._1.Helpers
             DeleteDataOlderThan90Days();
             //// Serialize to JSON
             JsonSerializer serializer = new JsonSerializer();
-            using (StreamWriter sw = new StreamWriter(JSONSaveLocation + "\\LouverSortData.ini"))
+            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "\\LouverSortData.ini"))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
                 serializer.Serialize(writer, _allOrders);
-                serializer.Serialize(writer, AdminPassword);
-                serializer.Serialize(writer, JSONSaveLocation);
-                serializer.Serialize(writer, RejectionSpec);
+                //serializer.Serialize(writer, AdminPassword);
+                //serializer.Serialize(writer, JSONSaveLocation);
+                //serializer.Serialize(writer, RejectionSpec);
+            }
+            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "\\Globals.ini"))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, _globals);
+                //serializer.Serialize(writer, AdminPassword);
+                //serializer.Serialize(writer, JSONSaveLocation);
+                //serializer.Serialize(writer, RejectionSpec);
             }
         }
 
@@ -1827,7 +2131,58 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
+        //Other
+        public bool Barcode1Correct()
+        {
+            if (Barcode1 != null)
+            {
+                if (Barcode1 != "")
+                {
+                    if (Regex.IsMatch(Barcode1, Barcode1Regex))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
+        public bool Barcode2Correct()
+        {
+            if (Barcode2 != null)
+            {
+                if (Barcode2 != "")
+                {
+                    if (Regex.IsMatch(Barcode2, Barcode2Regex))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
 
@@ -1837,4 +2192,18 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+

@@ -8,6 +8,7 @@
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:helpers="clr-namespace:Louver_Sort_4._8._1.Helpers"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:inter="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="1080"
@@ -20,6 +21,9 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding ScanLoaded}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="GotFocus">
             <i:InvokeCommandAction Command="{Binding ScanLoaded}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
@@ -479,8 +483,7 @@
                     <ScrollViewer Grid.Column="1"
                                   Grid.RowSpan="5"
                                   HorizontalContentAlignment="Center"
-                                  HorizontalScrollBarVisibility="Auto"
-                                  helpers:ScrollViewerExtensions.AlwaysScrollToEnd="True">
+                                  HorizontalScrollBarVisibility="Auto">
 
                         <ListView ItemsSource="{Binding ListViewContent}"
                                   FontSize="20"
@@ -494,6 +497,9 @@
                                             Value="Center" />
                                 </Style>
                             </ListView.ItemContainerStyle>-->
+                            <inter:Interaction.Behaviors>
+                                <helpers:CenterSelectedItemBehavior />
+                            </inter:Interaction.Behaviors>
                             <ListView.View>
                                 <GridView AllowsColumnReorder="true"
                                           ColumnHeaderToolTip="Louver Data">

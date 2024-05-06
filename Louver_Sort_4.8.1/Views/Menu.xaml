@@ -51,7 +51,7 @@
                 </materialDesign:ColorZone>-->
                 <Button Grid.Row="0"
                         Content="Calibrate"
-                        Command="{Binding Calibrate}"
+                        Command="{Binding TEMP}"
                         Margin="0,0,0,40"
                         Width="300"
                         Height="100"

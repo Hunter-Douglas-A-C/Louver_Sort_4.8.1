@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:Louver_Sort_4._8._1.Helpers"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:local="clr-namespace:Louver_Sort_4._8._1.Views"
              mc:Ignorable="d"
@@ -16,6 +17,11 @@
              TextElement.FontSize="14"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding ReCutLoaded}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Grid>
 
@@ -57,16 +63,14 @@
                                  FontSize="24"
                                  Focusable="True"
                                  helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode1}"
-                                 materialDesign:TextFieldAssist.HasClearButton="True">
+                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                 IsEnabled="{Binding IsEnabledReCutBarcode}"
+                                 Text="{Binding Barcode1}">
                             <TextBox.InputBindings>
                                 <KeyBinding Key="Enter"
                                             Command="{Binding Barcode1KeyDown}" />
                             </TextBox.InputBindings>
-                            <TextBox.Text>
-                                <Binding Path="Barcode1"
-                                         UpdateSourceTrigger="PropertyChanged">
-                                </Binding>
-                            </TextBox.Text>
+
                         </TextBox>
                         <TextBox x:Name="Barcode2TextBox"
                                  materialDesign:HintAssist.HelperText="Enter Barcode 2"
@@ -75,16 +79,13 @@
                                  FontSize="24"
                                  Focusable="True"
                                  helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode2}"
-                                 materialDesign:TextFieldAssist.HasClearButton="True">
+                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                 IsEnabled="{Binding IsEnabledReCutBarcode}"
+                                 Text="{Binding Barcode2}">
                             <TextBox.InputBindings>
                                 <KeyBinding Key="Enter"
-                                            Command="{Binding Barcode2KeyDown}" />
+                                            Command="{Binding ReCutBarcode2KeyDown}" />
                             </TextBox.InputBindings>
-                            <TextBox.Text>
-                                <Binding Path="Barcode2"
-                                         UpdateSourceTrigger="PropertyChanged">
-                                </Binding>
-                            </TextBox.Text>
                         </TextBox>
 
                     </StackPanel>
@@ -98,6 +99,7 @@
                             Height="100"
                             FontSize="30"
                             Style="{StaticResource MaterialDesignRaisedButton}"
+                            IsEnabled="{Binding IsEnabledReCutBarcode}"
                             materialDesign:ButtonAssist.CornerRadius="10"
                             ToolTip="Clear all values and start a new set" />
                 </StackPanel>
@@ -119,17 +121,11 @@
                           VerticalAlignment="Stretch"
                           HorizontalAlignment="Stretch"
                           HorizontalContentAlignment="Center"
-                          HorizontalScrollBarVisibility="Auto"
-                          helpers:ScrollViewerExtensions.AlwaysScrollToEnd="True">
+                          HorizontalScrollBarVisibility="Auto">
                 <ListView ItemsSource="{Binding ReCutContent}"
                           SelectedItem="{Binding ReCutSelectedLouver}"
                           FontSize="20">
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment"
-                                Value="Center" />
-                    </Style>
                     <ListView.View>
-
                         <GridView AllowsColumnReorder="true"
                                   ColumnHeaderToolTip="Louver Data">
                             <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
@@ -163,7 +159,8 @@
             <TextBlock Text="Click a louver from the list"
                        Foreground="Gray" />
         </StackPanel>
-        
+
+
         <Grid Grid.Row="1"
               Grid.Column="1"
               Grid.ColumnSpan="2">
@@ -177,7 +174,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0"
+            <!--<StackPanel Grid.Row="0"
                         Grid.Column="0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
@@ -244,16 +241,94 @@
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:ButtonAssist.CornerRadius="10"
                         ToolTip="Print the first set of labels" />
-            </StackPanel>
+            </StackPanel>-->
 
             <StackPanel Grid.Row="0"
-                        Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Is louver an acceptable replacement"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Grid.RowSpan="1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                <StackPanel>
+                    <Button Grid.Row="0"
+                            Content="Measure Top"
+                            Command="{Binding CheckTop}"
+                            IsEnabled="{Binding IsEnabledCheckTop}"
+                            Width="300"
+                            Height="100"
+                            FontSize="30"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            ToolTip="Print the first set of labels" />
+                    <Button Grid.Row="0"
+                            Content="Measure Bottom"
+                            Command="{Binding CheckBottom}"
+                            IsEnabled="{Binding IsEnabledCheckBottom}"
+                            Width="300"
+                            Height="100"
+                            FontSize="30"
+                            Margin="5,5,5,5"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            ToolTip="Print the first set of labels" />
+                </StackPanel>
+
+                <StackPanel Margin="100,0,0,0">
+                    <TextBlock Text="Top Side Reading"
+                               FontSize="30"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding TopMinimumValue}"
+                                   FontSize="30" />
+                        <TextBlock Text="  &lt;  "
+                                   FontSize="30" />
+                        <materialDesign:ColorZone Mode="Custom"
+                                                  Background="{Binding TopColor}"
+                                                  CornerRadius="15">
+                            <TextBox Text="{Binding TxtTopAcceptableReplacement, Mode=TwoWay}"
+                                     Foreground="Black"
+                                     IsReadOnly="True"
+                                     HorizontalContentAlignment="Center"
+                                       Width="100"
+                                       FontSize="30" />
+                        </materialDesign:ColorZone>
+                        <TextBlock Text="  &gt;  "
+                                   FontSize="30" />
+                        <TextBlock Text="{Binding TopMaximumValue}"
+                                   FontSize="30" />
+                    </StackPanel>
+                    <TextBlock Margin="0,50,0,0" Text="Bottom Side Reading"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
-                               Margin="5,5,5,5" />
-                <TextBox Text="{Binding TxtTopAcceptableReplacement}"
-                         IsReadOnly="True" />
+                               FontSize="30" />
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding BottomMinimumValue}"
+                                   FontSize="30" />
+                        <TextBlock Text="  &lt;  "
+                                   FontSize="30" />
+                        <materialDesign:ColorZone Mode="Custom"
+                                                  Background="{Binding BottomColor}"
+                                                  CornerRadius="15">
+                            <TextBox Text="{Binding TxtBottomAcceptableReplacement, Mode=TwoWay}"
+                                     HorizontalContentAlignment="Center"
+                                     Foreground="Black"
+                                     IsReadOnly="True"
+                                       Width="100"
+                                       FontSize="30" />
+                        </materialDesign:ColorZone>
+                        <TextBlock Text="  &gt;  "
+                                   FontSize="30" />
+                        <TextBlock Text="{Binding BottomMaximumValue}"
+                                   FontSize="30" />
+                    </StackPanel>
+                </StackPanel>
+
             </StackPanel>
 
 
@@ -284,8 +359,8 @@
                             Command="{Binding ReconnectToDataQ}" />
                 </Grid>
             </materialDesign:ColorZone>
-            
+
         </Grid>
-        
+
     </Grid>
 </UserControl>

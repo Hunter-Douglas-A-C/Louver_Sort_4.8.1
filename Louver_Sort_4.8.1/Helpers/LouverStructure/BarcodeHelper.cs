@@ -61,18 +61,6 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
         /// Constructor to initialize the BarcodeHelper with a BarcodeSet.
         /// </summary>
@@ -107,7 +95,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         /// <param name="barcode1">The Barcode1 data string.</param>
         private void ParseBarcode1(string barcode1)
         {
-            string pattern = @"(?<Order>\d{8})(?<Line>\d{3})(?<Unit>\d{5})(?<L1>L\d)";
+            string pattern = @"(?<Order>\d{8})(?<Line>\d{3})(?<Unit>\d{5})(?<Panel>P\d{1})";
             Match match = Regex.Match(barcode1, pattern);
             if (!match.Success)
             {
@@ -118,6 +106,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             _order = int.Parse(match.Groups["Order"].Value);
             _line = int.Parse(match.Groups["Line"].Value);
             _unit = int.Parse(match.Groups["Unit"].Value);
+            _panelID = int.Parse(match.Groups["Panel"].Value.Replace("P", ""));
         }
 
         /// <summary>

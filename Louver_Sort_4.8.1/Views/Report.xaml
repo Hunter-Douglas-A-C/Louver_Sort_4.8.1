@@ -236,8 +236,7 @@
                               VerticalAlignment="Stretch"
                               HorizontalAlignment="Stretch"
                               HorizontalContentAlignment="Center"
-                              HorizontalScrollBarVisibility="Auto"
-                              helpers:ScrollViewerExtensions.AlwaysScrollToEnd="True">
+                              HorizontalScrollBarVisibility="Auto">
                     <ListView ItemsSource="{Binding ReportContent}"
                               SelectedItem="{Binding ReportSelectedLouver}"
                               FontSize="20">

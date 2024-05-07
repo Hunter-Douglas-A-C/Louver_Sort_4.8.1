@@ -129,6 +129,7 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _isCheckedUseFakeValues;
             set { SetProperty(ref _isCheckedUseFakeValues, value); }
         }
+
         public int DataRetentionPeriod
         {
             get => _globals.DataRetentionPeriod;

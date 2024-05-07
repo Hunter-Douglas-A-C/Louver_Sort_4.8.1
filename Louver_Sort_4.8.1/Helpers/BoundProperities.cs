@@ -23,6 +23,7 @@ using OfficeOpenXml;
 using System.Windows.Media;
 
 
+
 namespace Louver_Sort_4._8._1.Helpers
 {
     internal class BoundProperities : INotifyPropertyChanged
@@ -1138,6 +1139,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     //    _calibStep += 1;
                     //    break;
                     case 1:
+                        UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Place flat calibration plate on slide";
                         CalibTxtBoxHint = "";
                         VisibilityCalibRecord = Visibility.Collapsed;

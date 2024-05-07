@@ -615,6 +615,31 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         private int _calibStep = 1;
 
+
+
+        private string _calibImage;
+        public string CalibImage
+        {
+            get => _calibImage;
+            set { SetProperty(ref _calibImage, value); }
+        }
+
+        private Visibility _visibilityCalibImage = Visibility.Collapsed;
+        public Visibility VisibilityCalibImage
+        {
+            get => _visibilityCalibImage;
+            set { SetProperty(ref _visibilityCalibImage, value); }
+        }
+
+
+
+
+
+
+
+
+
+
         //Scan
         private LouverListView _listViewSelectedLouver;
         public LouverListView ListViewSelectedLouver
@@ -1141,34 +1166,129 @@ namespace Louver_Sort_4._8._1.Helpers
                     //    break;
                     case 1:
                         UpdatePopUp.Execute("Calibrate");
+                        CalibTxt = "Place laser centering plate on slide and adjust sensor until red dot is in the cross hair";
+                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\1.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 2:
+                        UpdatePopUp.Execute("Calibrate");
+                        CalibTxt = "Turn laser to teach mode";
+                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\2.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 3:
+                        UpdatePopUp.Execute("Calibrate");
+                        CalibTxt = "Set calibration plate on top of slide";
+                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\3.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 4:
+                        UpdatePopUp.Execute("Calibrate");
+                        CalibTxt = "Press plus on the laser";
+                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\2.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 5:
+                        UpdatePopUp.Execute("Calibrate");
+                        CalibTxt = "Set calibration plate on bottom of slide";
+                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\4.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 6:
+                        UpdatePopUp.Execute("Calibrate");
+                        CalibTxt = "Press minus on laser";
+                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\2.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 7:
+                        UpdatePopUp.Execute("Calibrate");
+                        CalibTxt = "Turn dial on laser back to run";
+                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\5.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 8:
+                        VisibilityCalibImage = Visibility.Collapsed;
                         CalibTxt = "Place flat calibration plate on slide";
                         CalibTxtBoxHint = "";
                         VisibilityCalibRecord = Visibility.Collapsed;
                         _calibStep += 1;
                         break;
-                    case 2:
-                        CalibTxt = "Record flat plate";
-                        CalibTxtBoxHint = "Flat plate reading";
-                        VisibilityCalibRecord = Visibility.Visible;
-                        _calibStep += 1;
+                    case 9:
+                        Thread RecordThread = new Thread(() =>
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            UpdatePopUp.Execute("Close");
+                            UpdatePopUp.Execute("Await");
+                        });
+
+
+                            if (_dataQ == null)
+                            {
+                                ConnectToDataQ();
+                            }
+
+                            _cal.FlatReading = _dataQ.RecordAndAverageReadings().Result;
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                UpdatePopUp.Execute("Close");
+                            });
+
+
+                            
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                CalibTxt = "Place stepped calibration plate on slide";
+                                CalibTxtBoxHint = "";
+                                VisibilityCalibRecord = Visibility.Collapsed;
+                                UpdatePopUp.Execute("Calibrate");
+                                _calibStep += 1;
+
+                            });
+
+
+
+                        });
+                        RecordThread.Start();
                         break;
-                    case 3:
-                        CalibTxt = "Place stepped calibration plate on slide";
-                        CalibTxtBoxHint = "";
-                        VisibilityCalibRecord = Visibility.Collapsed;
-                        _calibStep += 1;
+                    case 10:
+                        Thread RecordThread1 = new Thread(() =>
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            UpdatePopUp.Execute("Close");
+                            UpdatePopUp.Execute("Await");
+                        });
+                            if (_dataQ == null)
+                            {
+                                ConnectToDataQ();
+                            }
+                            _cal.StepReading = _dataQ.RecordAndAverageReadings().Result;
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                UpdatePopUp.Execute("Close");
+                                CalibTxt = "Calibartion value is:   " + _cal.Slope;
+                                VisibilityCalibRecord = Visibility.Collapsed;
+                                UpdatePopUp.Execute("Calibrate");
+                                _calibStep++;
+                            });
+                        });
+                        RecordThread1.Start();
+
                         break;
-                    case 4:
-                        CalibTxt = "Record Stepped plate";
-                        CalibTxtBoxHint = "Stepped plate reading";
-                        VisibilityCalibRecord = Visibility.Visible;
-                        _calibStep += 1;
-                        break;
-                    case 5:
-                        UpdatePopUp.Execute("Close");
-                        _calibStep = 1;
-                        var value = _dataQ.GetDistance();
-                        var test = _cal.ConvertVoltageToDistance(value);
+                    case 11:
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            UpdatePopUp.Execute("Close");
+                            _calibStep = 1;
+                        });
                         break;
                     default:
                         break;
@@ -1882,7 +2002,7 @@ namespace Louver_Sort_4._8._1.Helpers
             VoltageValues.Add(new MeasureModel
             {
                 ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
-                Value = _dataQ.GetDistance()
+                Value = _cal.ConvertVoltageToDistance(_dataQ.GetDistance())
             });
             //Debug.WriteLine(_DataQ.GetDistance());
             if (VoltageValues.Count > 25)

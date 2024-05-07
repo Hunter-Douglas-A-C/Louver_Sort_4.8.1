@@ -123,7 +123,7 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         private string _jSONSaveLocation = AppDomain.CurrentDomain.BaseDirectory;
 
-        private bool _isCheckedUseFakeValues = true;
+        private bool _isCheckedUseFakeValues = false;
         public bool IsCheckedUseFakeValues
         {
             get => _isCheckedUseFakeValues;

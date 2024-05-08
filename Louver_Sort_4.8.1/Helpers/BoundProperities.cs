@@ -1166,49 +1166,49 @@ namespace Louver_Sort_4._8._1.Helpers
                     case 1:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Place laser centering plate on slide and adjust sensor until red dot is in the cross hair";
-                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\1.png";
+                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\1.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 2:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Turn laser to teach mode";
-                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\2.png";
+                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\2.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 3:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Set calibration plate on top of slide";
-                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\3.png";
+                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\3.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 4:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Press plus on the laser";
-                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\2.png";
+                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\2.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 5:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Set calibration plate on bottom of slide";
-                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\4.png";
+                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\4.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 6:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Press minus on laser";
-                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\2.png";
+                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\2.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 7:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Turn dial on laser back to run";
-                        CalibImage = "B:\\Repos\\Louver_Sort_4.8.1\\Louver_Sort_4.8.1\\Images\\5.png";
+                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\5.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;

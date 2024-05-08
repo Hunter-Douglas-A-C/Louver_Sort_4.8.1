@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Text;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Lextm.SharpSnmpLib;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -18,6 +19,7 @@ namespace Louver_Sort_4._8._1.Helpers
         private DataqDevice[] DataqDeviceArray; // Array of all connected Dataq devices
         private string _outputString; // Stores the latest data received from the device
         private readonly string[] ChannelConfig = new string[12]; // Configuration for each channel
+        private Calibration _cal = new Calibration();
 
         public event EventHandler AnalogUpdated; // Event triggered when new analog data is received
         public event EventHandler LostConnection; // Event triggered when connection is lost
@@ -27,6 +29,24 @@ namespace Louver_Sort_4._8._1.Helpers
         public string SerialNumber { get; private set; } = "";
 
         public DataqDevice DI_155 { get; private set; } // The DI-155 device instance
+
+
+        public void SetCalibrationFlat(double reading)
+        {
+            _cal.FlatReading = reading;
+        }
+
+        public void SetCalibrationStep(double reading)
+        {
+            _cal.StepReading = reading;
+        }
+        public double GetSlope()
+        {
+            return _cal.Slope;
+        }
+
+
+
 
         /// <summary>
         /// Attempts to connect to a single Dataq DI-155 device and configures it for use. Throws a DataQException if the connection fails, no device is found, or multiple devices are connected.
@@ -166,7 +186,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 //}
                 //// Consider whether returning 0 is appropriate for all scenarios.
                 //// It might be better to throw an exception if _outputString is null or empty.
-                return Convert.ToDouble(_outputString);
+                return Math.Round(Convert.ToDouble(_outputString), 3);
             }
             catch (FormatException ex)
             {
@@ -180,6 +200,38 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             // Other specific exceptions can be caught and handled here if necessary.
         }
+
+
+        public double GetDistanceWCal()
+        {
+            try
+            {
+                //if (!string.IsNullOrEmpty(_outputString))
+                //{
+                //    string pattern = ",";
+                //    string replacement = "";
+                //    // Using InvariantCulture to ensure consistent parsing regardless of system settings.
+                //    return Convert.ToDouble(Regex.Replace(_outputString, pattern, replacement), CultureInfo.InvariantCulture);
+                //}
+                //// Consider whether returning 0 is appropriate for all scenarios.
+                //// It might be better to throw an exception if _outputString is null or empty.
+                return Math.Round(_cal.ConvertVoltageToDistance(Convert.ToDouble(_outputString)), 3);
+            }
+            catch (FormatException ex)
+            {
+                // Handle the format exception if the string is not in a valid format.
+                throw new DataQException("Failed to parse distance from the output string.", ex);
+            }
+            catch (OverflowException ex)
+            {
+                // Handle cases where the number is too large or too small for a double.
+                throw new DataQException("The number in the output string is too large or too small to fit in a double.", ex);
+            }
+            // Other specific exceptions can be caught and handled here if necessary.
+        }
+
+
+
 
         #region Private Methods
         /// <summary>
@@ -363,7 +415,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public double GetLatestData()
         {
-            return Convert.ToDouble(_outputString);
+            return Math.Round(Convert.ToDouble(_outputString), 3);
         }
 
         public async Task<double> GetLatestDataAsync()
@@ -372,13 +424,13 @@ namespace Louver_Sort_4._8._1.Helpers
             await Task.Delay(0);
 
             // Convert the output string to double and return it
-            return Convert.ToDouble(_outputString);
+            return Math.Round(Convert.ToDouble(_outputString), 3);
         }
 
         public async Task<double> RecordAndAverageReadings()
         {
             const int numberOfReadings = 5;
-            const double threshold = 0.2; // Adjust this threshold as needed
+            const double threshold = 0.002; // Adjust this threshold as needed
 
             List<double> validReadings = new List<double>();
 
@@ -386,7 +438,7 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 try
                 {
-                    double reading = await GetLatestDataAsync(); // Get the recorded reading asynchronously
+                    double reading = Math.Round(await GetLatestDataAsync(), 3); // Get the recorded reading asynchronously
                     await Task.Delay(1000).ConfigureAwait(false); // Asynchronously delay for 1000 milliseconds
 
                     //Check if the reading is within threshold of the others
@@ -489,7 +541,7 @@ namespace Louver_Sort_4._8._1.Helpers
             IsConnectedChanged?.Invoke(this, EventArgs.Empty);
         }
 
-       
+
     }
 
     /// <summary>
@@ -523,8 +575,62 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
-      
+
 
 
     }
+
+    internal class Calibration
+    {
+        private double _flatReading = 1;
+        private double _stepReading = 1.1;
+        private double _stepValue = 0.0393701;  // This is the distance difference related to the step reading, set appropriately.
+        private double _slope = double.NaN; // Initialize slope to NaN.
+
+        public double FlatReading
+        {
+            get => _flatReading;
+            set
+            {
+                _flatReading = value;
+                CalculateSlope(); // Recalculate slope on change.
+            }
+        }
+
+        public double StepReading
+        {
+            get => _stepReading;
+            set
+            {
+                _stepReading = value;
+                CalculateSlope(); // Recalculate slope on change.
+            }
+        }
+
+        public double StepValue
+        {
+            get => _stepValue;
+            set
+            {
+                _stepValue = value;
+                CalculateSlope(); // Recalculate slope on change.
+            }
+        }
+
+        private void CalculateSlope()
+        {
+            // Calculate the slope considering the change in voltage over change in distance.
+            _slope = Math.Round((_stepValue) / (StepReading - FlatReading), 3);
+        }
+
+        public double Slope => _slope;
+
+        public double ConvertVoltageToDistance(double voltage)
+        {
+            // Assuming the FlatReading is at some specific middle distance, adjust the formula to calculate the distance.
+            return (_flatReading - voltage) / Slope;
+        }
+    }
+
 }
+

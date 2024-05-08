@@ -235,7 +235,6 @@
     <Compile Include="Helpers\BaseCommand.cs" />
     <Compile Include="Helpers\DataQHelper.cs" />
     <Compile Include="Helpers\LouverStructure\BarcodeSet.cs" />
-    <Compile Include="Helpers\LouverStructure\Calibration.cs" />
     <Compile Include="Helpers\LouverStructure\LabelID.cs" />
     <Compile Include="Helpers\LouverStructure\Louver.cs" />
     <Compile Include="Helpers\LouverStructure\LouverListView.cs" />

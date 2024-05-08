@@ -67,7 +67,6 @@ namespace Louver_Sort_4._8._1.Helpers
         private DataQHelper _dataQ;
         private ZebraPrinterHelper _zebra = new ZebraPrinterHelper();
         public OrderManager _allOrders = new OrderManager();
-        public Calibration _cal = new Calibration();
         public Globals _globals = new Globals();
 
         //Global
@@ -1235,7 +1234,7 @@ namespace Louver_Sort_4._8._1.Helpers
                                 ConnectToDataQ();
                             }
 
-                            _cal.FlatReading = _dataQ.RecordAndAverageReadings().Result;
+                            _dataQ.SetCalibrationFlat(_dataQ.RecordAndAverageReadings().Result);
                             Application.Current.Dispatcher.Invoke(() =>
                             {
                                 UpdatePopUp.Execute("Close");
@@ -1270,11 +1269,11 @@ namespace Louver_Sort_4._8._1.Helpers
                             {
                                 ConnectToDataQ();
                             }
-                            _cal.StepReading = _dataQ.RecordAndAverageReadings().Result;
+                           _dataQ.SetCalibrationStep(_dataQ.RecordAndAverageReadings().Result);
                             Application.Current.Dispatcher.Invoke(() =>
                             {
                                 UpdatePopUp.Execute("Close");
-                                CalibTxt = "Calibartion value is:   " + _cal.Slope;
+                                CalibTxt = "Calibartion value is:   " + _dataQ.GetSlope();
                                 VisibilityCalibRecord = Visibility.Collapsed;
                                 UpdatePopUp.Execute("Calibrate");
                                 _calibStep++;
@@ -1292,22 +1291,6 @@ namespace Louver_Sort_4._8._1.Helpers
                         break;
                     default:
                         break;
-                }
-            });
-
-            CalibRecord = new BaseCommand(obj =>
-            {
-                if (_dataQ == null)
-                {
-                    ConnectToDataQ();
-                }
-                if (_calibStep == 3)
-                {
-                    _cal.FlatReading = _dataQ.GetDistance();
-                }
-                else if (_calibStep == 5)
-                {
-                    _cal.StepReading = _dataQ.GetDistance();
                 }
             });
 
@@ -1917,9 +1900,6 @@ namespace Louver_Sort_4._8._1.Helpers
             IsEnabledPrintSortedLabels = false;
             IsEnabledNextLouverSet = false;
         }
-        public void MenuInitialize()
-        {
-        }
         public void ReportInitialize()
         {
             var report = ActiveSet.GenerateReport();
@@ -1961,48 +1941,12 @@ namespace Louver_Sort_4._8._1.Helpers
             test.Start();
         }
 
-        public double RecordWhenStable(double variationallowed)
-        {
-            double currentValue = 0; // Variable to record the stabilized value
-
-            // Create an array to store the readings
-            List<double> readings = new List<double>();
-
-            // Simulate readings (replace with actual reading logic)
-            do
-            {
-                // Store the reading in the array
-                readings.Add(_dataQ.GetDistance());
-                readings.Add(_dataQ.GetDistance());
-
-
-                // Compare with previous reading (if available)
-                int count = readings.Count;
-                if (count > 1)
-                {
-                    double difference = Math.Abs(readings[count - 1] - readings[count - 2]);
-                    if (difference <= variationallowed)
-                    {
-                        // Value is stabilized within acceptable range
-                        currentValue = readings[count - 1];
-                    }
-                }
-
-            }
-            while (currentValue == 0);
-            return currentValue;
-        }
-
-
-
-
-
         public void DataQNewData(object sender, EventArgs e)
         {
             VoltageValues.Add(new MeasureModel
             {
                 ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
-                Value = _cal.ConvertVoltageToDistance(_dataQ.GetDistance())
+                Value = Math.Round(_dataQ.GetDistanceWCal(), 3)
             });
             //Debug.WriteLine(_DataQ.GetDistance());
             if (VoltageValues.Count > 25)

@@ -1144,71 +1144,52 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 switch (_calibStep)
                 {
-                    //case 1:
-                    //    UpdatePopUp.Execute("Calibrate");
-                    //    CalibTxt = "Place flat calibration plate on slide";
-                    //    CalibTxtBoxHint = "";
-                    //    VisibilityCalibRecord = Visibility.Collapsed;
-                    //    _calibStep += 1;
-                    //    break;
-                    //case 2:
-                    //    CalibTxt = "Set Laser Point 1";
-                    //    CalibTxtBoxHint = "";
-                    //    VisibilityCalibRecord = Visibility.Collapsed;
-                    //    _calibStep += 1;
-                    //    break;
-                    //case 3:
-                    //    CalibTxt = "Set Laser Point 2";
-                    //    CalibTxtBoxHint = "";
-                    //    VisibilityCalibRecord = Visibility.Collapsed;
-                    //    _calibStep += 1;
-                    //    break;
                     case 1:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Place laser centering plate on slide and adjust sensor until red dot is in the cross hair";
-                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\1.png";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\1.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 2:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Turn laser to teach mode";
-                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\2.png";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 3:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Set calibration plate on top of slide";
-                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\3.png";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\3.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 4:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Press plus on the laser";
-                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\2.png";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 5:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Set calibration plate on bottom of slide";
-                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\4.png";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\4.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 6:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Press minus on laser";
-                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\2.png";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
                     case 7:
                         UpdatePopUp.Execute("Calibrate");
                         CalibTxt = "Turn dial on laser back to run";
-                        CalibImage = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\Images\\5.png";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\5.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1365,23 +1346,6 @@ namespace Louver_Sort_4._8._1.Helpers
                     be.UpdateSource();
                 }
 
-
-                //if (TxtLouverCount == null || TxtLouverCount.ToString() == "")
-                //{
-                //    HintLouverCount = "Invalid";
-                //    return;
-                //}
-                //else
-                //{
-                //    HintLouverCount = "Louver Count";
-                //}
-
-
-                //PopUpVisible = Visibility.Hidden;
-                //MainEnabled = true;
-                //SelectedPopUp = null;
-                //MainContentBlurRadius = 0;
-                //SelectedView = new Scan();
                 ClosePopUp.Execute("");
                 var order = _allOrders.CreateOrderAfterScanAndFillAllVariables(new BarcodeSet(Barcode1, Barcode2), Convert.ToInt32(TxtLouverCount));
                 ActiveLouverID = 1;

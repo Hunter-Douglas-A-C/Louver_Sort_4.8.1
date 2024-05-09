@@ -40,7 +40,7 @@
                  Grid.ColumnSpan="3">
             <materialDesign:ColorZone Grid.Row="0"
                                       Grid.ColumnSpan="3"
-                                      Margin="30,15,30,0"
+                                      Margin="30,15, 20,0"
                                       Padding="16"
                                       materialDesign:ElevationAssist.Elevation="Dp4"
                                       ClipToBounds="False"

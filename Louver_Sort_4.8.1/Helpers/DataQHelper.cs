@@ -8,6 +8,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lextm.SharpSnmpLib;
+using System.Diagnostics;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -19,31 +20,80 @@ namespace Louver_Sort_4._8._1.Helpers
         private DataqDevice[] DataqDeviceArray; // Array of all connected Dataq devices
         private string _outputString; // Stores the latest data received from the device
         private readonly string[] ChannelConfig = new string[12]; // Configuration for each channel
-        private Calibration _cal = new Calibration();
+        public Calibration _cal = new Calibration();
 
         public event EventHandler AnalogUpdated; // Event triggered when new analog data is received
         public event EventHandler LostConnection; // Event triggered when connection is lost
         List<double> validReadings = new List<double>();
         double AverageReading;
 
+
+        public event EventHandler LatestReadingChanged;
+
+        private double _latestReading;
+        public double LatestReading
+        {
+            get
+            {
+                return _latestReading;
+            }
+            set
+            {
+                _latestReading = value;
+                OnLatestReadingChanged();
+            }
+        }
+
+        protected virtual void OnLatestReadingChanged()
+        {
+            // Check if there are subscribers to the event
+            LatestReadingChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         public string SerialNumber { get; private set; } = "";
 
         public DataqDevice DI_155 { get; private set; } // The DI-155 device instance
 
-
-        public void SetCalibrationFlat(double reading)
+        public void SetCalibrationFlat()
         {
-            _cal.FlatReading = reading;
+            List<double> CalAverages = new List<double>();
+            //for (int i = 0; i < 2; i++)
+            //{
+                CalAverages.Add(WaitForDataCollection(false).Result);
+            //}
+
+            _cal.FlatReading = CalAverages.Average();
         }
 
-        public void SetCalibrationStep(double reading)
+        public void SetCalibrationStep()
         {
-            _cal.StepReading = reading;
+            List<double> CalAverages = new List<double>();
+            //for (int i = 0; i < 2; i++)
+            //{
+                CalAverages.Add(WaitForDataCollection(false).Result);
+            //}
+
+            _cal.StepReading = CalAverages.Average();
+
+
+
+            _cal.CalculateLineEquation(Tuple.Create(_cal.FlatReading, 0.0), Tuple.Create(_cal.StepReading, _cal.StepValue));
         }
+
         public double GetSlope()
         {
-            return _cal.Slope;
+            if (_cal != null)
+            {
+                return _cal.Slope;
+            }
+            return 0.0;
         }
+
+        public void SetSlope(double Slope)
+        {
+            _cal.Slope = Slope;
+        }
+
 
 
 
@@ -72,7 +122,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 SerialNumber = DI_155.SerialNumber;
                 ConfigureDefaultChannelSettings();
-                DI_155.NewData += GetDI155Data;
+                //DI_155.NewData += GetDI155Data;
             }
             catch (Exception ex)
             {
@@ -186,7 +236,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 //}
                 //// Consider whether returning 0 is appropriate for all scenarios.
                 //// It might be better to throw an exception if _outputString is null or empty.
-                return Math.Round(Convert.ToDouble(_outputString), 3);
+                return Math.Round(Convert.ToDouble(_outputString), 2);
             }
             catch (FormatException ex)
             {
@@ -200,37 +250,6 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             // Other specific exceptions can be caught and handled here if necessary.
         }
-
-
-        public double GetDistanceWCal()
-        {
-            try
-            {
-                //if (!string.IsNullOrEmpty(_outputString))
-                //{
-                //    string pattern = ",";
-                //    string replacement = "";
-                //    // Using InvariantCulture to ensure consistent parsing regardless of system settings.
-                //    return Convert.ToDouble(Regex.Replace(_outputString, pattern, replacement), CultureInfo.InvariantCulture);
-                //}
-                //// Consider whether returning 0 is appropriate for all scenarios.
-                //// It might be better to throw an exception if _outputString is null or empty.
-                return Math.Round(_cal.ConvertVoltageToDistance(Convert.ToDouble(_outputString)), 3);
-            }
-            catch (FormatException ex)
-            {
-                // Handle the format exception if the string is not in a valid format.
-                throw new DataQException("Failed to parse distance from the output string.", ex);
-            }
-            catch (OverflowException ex)
-            {
-                // Handle cases where the number is too large or too small for a double.
-                throw new DataQException("The number in the output string is too large or too small to fit in a double.", ex);
-            }
-            // Other specific exceptions can be caught and handled here if necessary.
-        }
-
-
 
 
         #region Private Methods
@@ -363,116 +382,146 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
-        /// <summary>
-        /// Handles the NewData event of the DI-155 device, processing received data. It converts the interleaved
-        /// data from the device into a formatted string representation. Each piece of data is formatted to four
-        /// decimal places and comma-separated. After processing all available scans, it updates a class-level
-        /// string with the formatted data and triggers an update event to notify subscribers.
-        /// If an error occurs during data retrieval or processing, a DataQException is thrown.
-        /// </summary>
-        /// <param name="sender">The source of the event, typically the DI-155 device.</param>
-        /// <param name="e">The event arguments, not used in this context.</param>
-        /// <exception cref="DataQException">Thrown if an error occurs during data retrieval or processing.</exception>
-        private void GetDI155Data(object sender, EventArgs e)
+
+
+
+
+
+
+
+
+
+        private readonly List<double> _recordedData = new List<double>();
+        private bool _dataReceived = false;
+
+        public double ReadNewData()
         {
-            try
+            int Scans = DI_155.NumberOfScansAvailable;
+            short Channels = (short)DI_155.NumberOfChannelsEnabled;
+            var DI_155_Data = new double[(Scans * Channels)]; // will hold all data for the scan
+            string ResponseString = "";
+
+            // Attempt to retrieve and process the data
+            DI_155.GetInterleavedScaledData(DI_155_Data, 0, Scans);
+
+            for (int Row = 0; Row < Scans; Row++)
             {
-                int Scans = DI_155.NumberOfScansAvailable;
-                short Channels = (short)DI_155.NumberOfChannelsEnabled;
-                var DI_155_Data = new double[(Scans * Channels)]; // will hold all data for the scan
-                string ResponseString = "";
 
-                // Attempt to retrieve and process the data
-                DI_155.GetInterleavedScaledData(DI_155_Data, 0, Scans);
+                ResponseString += DI_155_Data[Row * Channels + 0].ToString("F4");
 
-                for (int Row = 0; Row < Scans; Row++)
-                {
-
-                    ResponseString += DI_155_Data[Row * Channels + 0].ToString("F4");
-
-                    _outputString = ResponseString;
-                    validReadings.Add(Convert.ToDouble(_outputString));
-                    OnAnalogUpdated();
-                    ResponseString = ""; // reset ResponseString for next iteration
+                _outputString = ResponseString;
+                OnAnalogUpdated();
+                ResponseString = ""; // reset ResponseString for next iteration
 
 
-                    if (validReadings.Count() == 5)
-                    {
-                        AverageReading = validReadings.Average();
-                        validReadings.Clear();
-                    }
-                }
             }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as necessary
-                // Consider logging, cleaning up, or notifying the user here
+            return Math.Round(Convert.ToDouble(_outputString), 2);
+        }
 
-                // Throw a custom exception to indicate a problem with data retrieval
-                throw new DataQException("An error occurred while retrieving data from the DI-155 device.", ex);
+        public async Task<double> WaitForDataCollection(bool UseCalibration = false)
+        {
+            _dataReceived = false;
+            validReadings.Clear();
+
+
+
+            //DI_155.NewData -= GetDI155Data;
+            // Subscribe to the event
+            DI_155.NewData += GetDataHandler;
+
+
+
+            // Wait for the task to complete (i.e., for GetData to be called 5 times)
+
+            await Task.Run(async () =>
+            {
+                int timeoutMilliseconds = 700000000; // Adjust timeout as needed
+                int intervalMilliseconds = 100; // Adjust interval as needed
+                int elapsedMilliseconds = 0;
+
+                while (!_dataReceived && elapsedMilliseconds < timeoutMilliseconds)
+                {
+                    await Task.Delay(intervalMilliseconds);
+                    elapsedMilliseconds += intervalMilliseconds;
+                }
+            });
+
+            // Unsubscribe from the event
+            DI_155.NewData -= GetDataHandler;
+            //DI_155.NewData += GetDI155Data;
+
+            // Return the recorded data
+            if (UseCalibration)
+            {
+                Debug.WriteLine("AVERAGE    " + _cal.ConvertToInches(validReadings.Average()) + "   ");
+                double value = Math.Round(_cal.ConvertToInches(validReadings.Average()), 2);
+                return value;
+            }
+            else
+            {
+                Debug.WriteLine("AVERAGE    " + validReadings.Average() + "   ");
+                return Math.Round(validReadings.Average(), 2);
             }
         }
 
-        public double GetLatestData()
+        private void GetDataHandler(object sender, EventArgs e)
         {
-            return Math.Round(Convert.ToDouble(_outputString), 3);
-        }
+            //const double threshold = 0.002; // Adjust this threshold as needed
+            double reading = Math.Round(ReadNewData(), 2);
 
-        public async Task<double> GetLatestDataAsync()
-        {
-            // Simulate asynchronous operation by delaying for 0 milliseconds
-            await Task.Delay(0);
-
-            // Convert the output string to double and return it
-            return Math.Round(Convert.ToDouble(_outputString), 3);
-        }
-
-        public async Task<double> RecordAndAverageReadings()
-        {
-            const int numberOfReadings = 5;
-            const double threshold = 0.002; // Adjust this threshold as needed
-
-            List<double> validReadings = new List<double>();
-
-            for (int i = 0; i < numberOfReadings; i++)
-            {
-                try
-                {
-                    double reading = Math.Round(await GetLatestDataAsync(), 3); // Get the recorded reading asynchronously
-                    await Task.Delay(1000).ConfigureAwait(false); // Asynchronously delay for 1000 milliseconds
-
-                    //Check if the reading is within threshold of the others
-                    if (validReadings.Count > 0)
-                    {
-                        double average = validReadings.Average();
-                        double difference = Math.Abs(reading - average);
-                        if (difference > threshold * average)
-                        {
-                            //Reading is vastly different, discard it
-                            continue;
-                        }
-                    }
-
-                    //Reading is valid, add it to the list
-                    validReadings.Add(reading);
-                }
-                catch (DataQException ex)
-                {
-                    //Handle the exception, log or notify as needed
-                    Console.WriteLine("Error recording reading: " + ex.Message);
-                }
-            }
-
-            //Calculate the average of valid readings
-            double averageReading = 0.0;
             if (validReadings.Count > 0)
             {
-                averageReading = validReadings.Average();
+                //if (threshold <= validReadings.Average() - reading)
+                //{
+                validReadings.Add(reading);
+                Debug.WriteLine("    " + reading + "   ");
+                //}
+            }
+            else
+            {
+                validReadings.Add(reading);
+                Debug.WriteLine("    " + reading + "   ");
             }
 
-            return averageReading;
+            if (validReadings.Count >= 20)
+            {
+                _dataReceived = true;
+            }
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public bool _KeepMonitoring = true;
+        public async void StartActiveMonitoring()
+        {
+            DI_155.NewData += PassToMain;
+
+            await Task.Run(async () =>
+            {
+                while (_KeepMonitoring)
+                {
+                    await Task.Delay(100);
+                }
+            });
+
+            DI_155.NewData -= PassToMain;
+        }
+
+        private void PassToMain(object sender, EventArgs e)
+        {
+            LatestReading = Math.Round(_cal.ConvertToInches(ReadNewData()), 2);
+        }
 
 
         #endregion
@@ -572,20 +621,20 @@ namespace Louver_Sort_4._8._1.Helpers
         /// if no inner exception is specified.</param>
         public DataQException(string message, Exception inner)
             : base(message, inner) { }
-
-
-
-
-
-
     }
 
-    internal class Calibration
+    public class Calibration
     {
-        private double _flatReading = 1;
-        private double _stepReading = 1.1;
-        private double _stepValue = 0.0393701;  // This is the distance difference related to the step reading, set appropriately.
-        private double _slope = double.NaN; // Initialize slope to NaN.
+        private double _flatReading;
+        private double _stepReading;
+        //private double _stepValue = 0.0393701;  // This is the distance difference related to the step reading, set appropriately.
+        private double _stepValue = 0.75;
+
+
+        //private double _slope = double.NaN; // Initialize slope to NaN.
+        private double _slope; // Initialize slope to NaN.
+
+
 
         public double FlatReading
         {
@@ -593,7 +642,6 @@ namespace Louver_Sort_4._8._1.Helpers
             set
             {
                 _flatReading = value;
-                CalculateSlope(); // Recalculate slope on change.
             }
         }
 
@@ -603,7 +651,6 @@ namespace Louver_Sort_4._8._1.Helpers
             set
             {
                 _stepReading = value;
-                CalculateSlope(); // Recalculate slope on change.
             }
         }
 
@@ -613,23 +660,42 @@ namespace Louver_Sort_4._8._1.Helpers
             set
             {
                 _stepValue = value;
-                CalculateSlope(); // Recalculate slope on change.
             }
         }
 
-        private void CalculateSlope()
+        public double Slope
         {
-            // Calculate the slope considering the change in voltage over change in distance.
-            _slope = Math.Round((_stepValue) / (StepReading - FlatReading), 3);
+            get => _slope;
+            set
+            {
+                _slope = value;
+            }
         }
 
-        public double Slope => _slope;
+        public double intercept; // Intercept of the linear equation
 
-        public double ConvertVoltageToDistance(double voltage)
+        public void CalculateLineEquation(Tuple<double, double> point1, Tuple<double, double> point2)
         {
-            // Assuming the FlatReading is at some specific middle distance, adjust the formula to calculate the distance.
-            return (_flatReading - voltage) / Slope;
+            // Extract coordinates of the points
+            double x1 = point1.Item1;
+            double y1 = point1.Item2;
+            double x2 = point2.Item1;
+            double y2 = point2.Item2;
+
+            // Calculate slope and intercept of the line
+            Slope = (y2 - y1) / (x2 - x1);
+            intercept = y1 - Slope * x1;
         }
+
+        public double ConvertToInches(double voltage)
+        {
+            return (voltage * Slope) + intercept;
+        }
+
+
+
+
+
     }
 
 }

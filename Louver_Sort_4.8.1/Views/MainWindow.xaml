@@ -4,6 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:helpers="clr-namespace:Louver_Sort_4._8._1.Helpers"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:inter="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:Louver_Sort_4._8._1"
         mc:Ignorable="d"
@@ -68,9 +71,87 @@
                                     <materialDesign:PackIcon Width="24"
                                                              Height="24"
                                                              HorizontalAlignment="Center"
-                                                             Kind="ViewSequentialOutline" />
+                                                             Kind="AlignHorizontalDistribute" />
+                                    <TextBlock HorizontalAlignment="Center"
+                                               Text="Calibrate" />
+                                </StackPanel>
+                            </TabItem.Header>
+
+                            <!--Calibrate Tab Content-->
+                            <Grid>
+
+                                <Button Grid.Row="0"
+                                        Content="Calibrate"
+                                        Command="{Binding Calibrate}"
+                                        Margin="0,0,0,40"
+                                        Width="300"
+                                        Height="100"
+                                        FontSize="30"
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                        IsEnabled="{Binding IsEnabledCalibrate}"
+                                        materialDesign:ButtonAssist.CornerRadius="10"
+                                        ToolTip="Start Calibartion" />
+
+                            </Grid>
+
+                        </TabItem>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Width="auto"
+                                            Height="auto">
+                                    <materialDesign:PackIcon Width="24"
+                                                             Height="24"
+                                                             HorizontalAlignment="Center"
+                                                             Kind="ViewSequentialOutline"/>
                                     <TextBlock HorizontalAlignment="Center"
                                                Text="Sort" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding ScanLoaded}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                 </StackPanel>
                             </TabItem.Header>
 
@@ -84,6 +165,367 @@
                                     <ContentControl x:Name="CTCMain"
                                                     Content="{Binding SelectedView}"
                                                     IsEnabled="{Binding IsEnabledMain}" />
+
+
+
+
+
+                                    <Grid IsEnabled="{Binding IsEnabledScan}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="205" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="430" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <materialDesign:ColorZone Grid.Row="0"
+                                                                  Grid.ColumnSpan="2"
+                                                                  Margin="30,15, 20,0"
+                                                                  Padding="16"
+                                                                  materialDesign:ElevationAssist.Elevation="Dp4"
+                                                                  ClipToBounds="False"
+                                                                  CornerRadius="10"
+                                                                  Height="175"
+                                                                  Mode="SecondaryDark">
+                                            <Viewbox VerticalAlignment="Stretch">
+                                                <StackPanel VerticalAlignment="Stretch">
+                                                    <StackPanel Orientation="Horizontal"
+                                                                VerticalAlignment="Top"
+                                                                HorizontalAlignment="Center">
+                                                        <StackPanel Margin="40,0,40,20"
+                                                                    Width="1300"
+                                                                    HorizontalAlignment="Left">
+                                                            <TextBox x:Name="barcode1TextBox"
+                                                                     materialDesign:HintAssist.HelperText="Enter Barcode 1"
+                                                                     materialDesign:HintAssist.Hint="Barcode 1"
+                                                                     materialDesign:HintAssist.HelperTextFontSize="16"
+                                                                     Margin="0,0,0,40"
+                                                                     FontSize="24"
+                                                                     Focusable="True"
+                                                                     IsReadOnly="{Binding IsReadOnlyBarcode}"
+                                                                     helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode1}"
+                                                                     Text="{Binding Barcode1}"
+                                                                     IsEnabled="{Binding IsEnabledBarcode}">
+                                                                <TextBox.InputBindings>
+                                                                    <KeyBinding Key="Enter"
+                                                                                Command="{Binding Barcode1KeyDown}" />
+                                                                </TextBox.InputBindings>
+                                                            </TextBox>
+                                                            <TextBox x:Name="Barcode2TextBox"
+                                                                     materialDesign:HintAssist.HelperText="Enter Barcode 2"
+                                                                     materialDesign:HintAssist.Hint="Barcode 2"
+                                                                     materialDesign:HintAssist.HelperTextFontSize="16"
+                                                                     FontSize="24"
+                                                                     Focusable="True"
+                                                                     IsReadOnly="{Binding IsReadOnlyBarcode}"
+                                                                     helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode2}"
+                                                                     Text="{Binding Barcode2}"
+                                                                     IsEnabled="{Binding IsEnabledBarcode}">
+                                                                <TextBox.InputBindings>
+                                                                    <KeyBinding Key="Enter"
+                                                                                Command="{Binding Barcode2KeyDown}" />
+                                                                </TextBox.InputBindings>
+                                                            </TextBox>
+
+                                                        </StackPanel>
+
+                                                        <Button Grid.Column="1"
+                                                                Grid.Row="0"
+                                                                Content="Enter Barcodes"
+                                                                HorizontalAlignment="Center"
+                                                                Command="{Binding EnterBarcodes}"
+                                                                IsEnabled="{Binding IsEnabledEnterBarcode}"
+                                                                Width="400"
+                                                                Height="100"
+                                                                FontSize="30"
+                                                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                                                materialDesign:ButtonAssist.CornerRadius="10"
+                                                                ToolTip="Clear all values and start a new set" />
+                                                    </StackPanel>
+
+                                                </StackPanel>
+                                            </Viewbox>
+
+
+
+
+
+
+
+
+
+
+                                        </materialDesign:ColorZone>
+
+
+                                        <Grid Grid.Row="1"
+                                              Grid.Column="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Button Grid.Row="0"
+                                                    Content="Print First Labels"
+                                                    Command="{Binding PrintUnsortedLabels}"
+                                                    IsEnabled="{Binding IsEnabledPrintUnsortedLabels}"
+                                                    Width="400"
+                                                    Height="100"
+                                                    FontSize="30"
+                                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    materialDesign:ButtonAssist.CornerRadius="10"
+                                                    ToolTip="Print the first set of labels" />
+                                            <Button Grid.Row="1"
+                                                    Content="Measure Top Side"
+                                                    Command="{Binding AcqReadingTop}"
+                                                    IsEnabled="{Binding IsEnabledAcquareTop}"
+                                                    Width="400"
+                                                    Height="100"
+                                                    FontSize="30"
+                                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    materialDesign:ButtonAssist.CornerRadius="10"
+                                                    ToolTip="Record the top side warp measurement" />
+                                            <Button Grid.Row="2"
+                                                    Content="Measure Bottom Side"
+                                                    Command="{Binding AcqReadingBottom}"
+                                                    IsEnabled="{Binding IsEnabledAcquireBottom}"
+                                                    Width="400"
+                                                    Height="100"
+                                                    FontSize="30"
+                                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    materialDesign:ButtonAssist.CornerRadius="10"
+                                                    ToolTip="Record the bottom side warp measurment" />
+                                            <Button Grid.Row="3"
+                                                    Content="Review Sorted Report"
+                                                    Command="{Binding ReviewLouverReport}"
+                                                    IsEnabled="{Binding IsEnabledReviewReport}"
+                                                    Width="400"
+                                                    Height="100"
+                                                    FontSize="30"
+                                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    materialDesign:ButtonAssist.CornerRadius="10"
+                                                    ToolTip="Review the results of the sorted set" />
+                                            <!--<Button Grid.Row="5"
+                    Content="Next Louver Set"
+                    Command="{Binding NextLouverSet}"
+                    IsEnabled="{Binding NextLouverSetEnabled}"
+                    Width="400"
+                    Height="100"
+                    FontSize="30"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    ToolTip="Clear all values and start a new set" />-->
+                                            <Button Grid.Row="6"
+                                                    Content="Cancel"
+                                                    Command="{Binding CancelOrder}"
+                                                    Width="400"
+                                                    Height="100"
+                                                    FontSize="30"
+                                                    Margin="5,5,5,5"
+                                                    IsEnabled="{Binding IsEnabledCancel}"
+                                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    materialDesign:ButtonAssist.CornerRadius="10"
+                                                    ToolTip="Delete all stored data for current order" />
+                                        </Grid>
+
+                                        <Grid Grid.Row="1">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="4*" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+
+                                            <Grid>
+                                                <StackPanel>
+
+                                                    <!--Current Readings here-->
+                                                    <StackPanel  Orientation="Horizontal"
+                                                                 VerticalAlignment="Center"
+                                                                 HorizontalAlignment="Center"
+                                                                 Margin="0, 15, 0, 15">
+
+                                                        <StackPanel Grid.Column="0"
+                                                                    Grid.Row="1"
+                                                                    VerticalAlignment="Center">
+                                                            <TextBlock Text="Active ID"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       Margin="0,0,0,15" />
+                                                            <TextBox MaxWidth="400"
+                                                                     Margin="5,0,5,0"
+                                                                     VerticalAlignment="Top"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     IsReadOnly="True"
+                                                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                                     Width="100"
+                                                                     TextWrapping="Wrap"
+                                                                     HorizontalContentAlignment="Center"
+                                                                     Text="{Binding ActiveLouverID}" />
+                                                        </StackPanel>
+                                                        <StackPanel VerticalAlignment="Center"
+                                                                    Margin="0, 5, 0, 5">
+                                                            <TextBlock Text="Top Reading"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       Margin="0,0,0,15" />
+                                                            <TextBox MaxWidth="400"
+                                                                     Margin="5,0,5,0"
+                                                                     VerticalAlignment="Top"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     IsReadOnly="True"
+                                                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                                     Width="100"
+                                                                     TextWrapping="Wrap"
+                                                                     HorizontalContentAlignment="Center"
+                                                                     Text="{Binding ActiveTopReading}" />
+                                                        </StackPanel>
+
+                                                        <StackPanel Grid.Column="1"
+                                                                    Grid.Row="1"
+                                                                    VerticalAlignment="Center"
+                                                                    Margin="0, 5, 0, 5">
+                                                            <TextBlock Text="Bottom Reading"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       Margin="0,0,0,15" />
+                                                            <TextBox MaxWidth="400"
+                                                                     Margin="5,0,5,0"
+                                                                     VerticalAlignment="Top"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     IsReadOnly="True"
+                                                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                                     Width="100"
+                                                                     TextWrapping="Wrap"
+                                                                     HorizontalContentAlignment="Center"
+                                                                     Text="{Binding ActiveBottomReading}" />
+                                                        </StackPanel>
+
+                                                        <StackPanel Grid.Column="1"
+                                                                    Grid.Row="2"
+                                                                    VerticalAlignment="Center"
+                                                                    Margin="0, 5, 0, 5">
+                                                            <TextBlock Text="Deviation"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       Margin="0,0,0,15" />
+                                                            <TextBox MaxWidth="400"
+                                                                     Margin="5,0,5,0"
+                                                                     VerticalAlignment="Top"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     IsReadOnly="True"
+                                                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                                     Width="100"
+                                                                     TextWrapping="Wrap"
+                                                                     HorizontalContentAlignment="Center"
+                                                                     Text="{Binding ActiveDeviation}" />
+                                                        </StackPanel>
+                                                    </StackPanel>
+
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <Grid Grid.Column="1"
+                                                  Grid.RowSpan="2">
+
+                                                <!--Listview here-->
+
+                                                <materialDesign:ColorZone VerticalAlignment="Stretch"
+                                                                          HorizontalAlignment="Stretch"
+                                                                          Margin="15,15,15,15"
+                                                                          Padding="16"
+                                                                          materialDesign:ElevationAssist.Elevation="Dp4"
+                                                                          ClipToBounds="False"
+                                                                          CornerRadius="10"
+                                                                          Mode="PrimaryDark">
+                                                    <ScrollViewer Grid.Column="1"
+                                                                  Grid.RowSpan="5"
+                                                                  HorizontalContentAlignment="Center"
+                                                                  HorizontalScrollBarVisibility="Auto">
+
+                                                        <ListView ItemsSource="{Binding ListViewContent}"
+                                                                  FontSize="20"
+                                                                  HorizontalContentAlignment="Center"
+                                                                  PreviewMouseDown="ListView_PreviewMouseDown"
+                                                                  SelectedIndex="{Binding ListViewSelectedIndex}"
+                                                                  SelectedItem="{Binding ListViewSelectedLouver}">
+                                                            <!--<ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment"
+                                            Value="Center" />
+                                </Style>
+                            </ListView.ItemContainerStyle>-->
+                                                            <inter:Interaction.Behaviors>
+                                                                <helpers:CenterSelectedItemBehavior />
+                                                            </inter:Interaction.Behaviors>
+                                                            <ListView.View>
+                                                                <GridView AllowsColumnReorder="true"
+                                                                          ColumnHeaderToolTip="Louver Data">
+                                                                    <GridViewColumn Header="LouverID"
+                                                                                    Width="150"
+                                                                                    DisplayMemberBinding="{Binding LouverID}" />
+                                                                    <GridViewColumn Header="Side"
+                                                                                    Width="125"
+                                                                                    DisplayMemberBinding="{Binding Side}" />
+                                                                    <GridViewColumn Header="Distance"
+                                                                                    Width="150"
+                                                                                    DisplayMemberBinding="{Binding Distance}" />
+                                                                </GridView>
+                                                            </ListView.View>
+                                                        </ListView>
+                                                    </ScrollViewer>
+                                                </materialDesign:ColorZone>
+
+
+                                            </Grid>
+
+                                            <Grid Grid.Column="0"
+                                                  Grid.Row="1">
+
+
+                                                <!--Live chart here-->
+                                                <materialDesign:ColorZone VerticalAlignment="Stretch"
+                                                                          HorizontalAlignment="Stretch"
+                                                                          Margin="15,15,15,15"
+                                                                          Padding="16"
+                                                                          materialDesign:ElevationAssist.Elevation="Dp4"
+                                                                          ClipToBounds="False"
+                                                                          CornerRadius="10"
+                                                                          Mode="PrimaryDark">
+                                                    <Grid Margin="15,15,15,15">
+                                                        <lvc:CartesianChart x:Name="Chart">
+                                                            <lvc:CartesianChart.Series>
+                                                                <lvc:LineSeries Values="{Binding VoltageValues}" />
+                                                            </lvc:CartesianChart.Series>
+                                                        </lvc:CartesianChart>
+                                                        <Button Content="Reconnect"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Center"
+                                                                FontSize="30"
+                                                                FontWeight="ExtraBold"
+                                                                Foreground="#521919"
+                                                                Background="Transparent"
+                                                                Visibility="{Binding VisibilityDisconnected}"
+                                                                Command="{Binding ReconnectToDataQ}" />
+                                                    </Grid>
+                                                </materialDesign:ColorZone>
+                                            </Grid>
+                                        </Grid>
+
+                                    </Grid>
                                 </Grid>
 
 
@@ -92,6 +534,409 @@
                             </Grid>
 
                         </TabItem>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Width="auto"
+                                            Height="auto">
+                                    <materialDesign:PackIcon Width="24"
+                                                             Height="24"
+                                                             HorizontalAlignment="Center"
+                                                             Kind="AlignVerticalCenter" />
+                                    <TextBlock HorizontalAlignment="Center"
+                                               Text="ReCut" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding ReCutLoaded}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </StackPanel>
+                            </TabItem.Header>
+
+                            <!--ReCut Tab Content-->
+                            <Grid>
+                                <Grid>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="900" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="480" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="205" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+
+                                    <Viewbox Grid.Row="0"
+                                             Grid.ColumnSpan="3">
+                                        <materialDesign:ColorZone Grid.Row="0"
+                                                                  Grid.ColumnSpan="3"
+                                                                  Margin="30,15, 20,0"
+                                                                  Padding="16"
+                                                                  materialDesign:ElevationAssist.Elevation="Dp4"
+                                                                  ClipToBounds="False"
+                                                                  CornerRadius="10"
+                                                                  Height="175"
+                                                                  Mode="SecondaryDark">
+
+
+                                            <StackPanel Orientation="Horizontal"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center">
+                                                <StackPanel Margin="40,0,40,20"
+                                                            Width="1300"
+                                                            HorizontalAlignment="Left">
+                                                    <TextBox x:Name="barcode1TextBox2"
+                                                             materialDesign:HintAssist.HelperText="Enter Barcode 1"
+                                                             materialDesign:HintAssist.Hint="Barcode 1"
+                                                             materialDesign:HintAssist.HelperTextFontSize="16"
+                                                             Margin="0,0,0,40"
+                                                             FontSize="24"
+                                                             Focusable="True"
+                                                             helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode1}"
+                                                             materialDesign:TextFieldAssist.HasClearButton="True"
+                                                             IsEnabled="{Binding IsEnabledReCutBarcode}"
+                                                             Text="{Binding Barcode1}">
+                                                        <TextBox.InputBindings>
+                                                            <KeyBinding Key="Enter"
+                                                                        Command="{Binding Barcode1KeyDown}" />
+                                                        </TextBox.InputBindings>
+
+                                                    </TextBox>
+                                                    <TextBox x:Name="Barcode2TextBox2"
+                                                             materialDesign:HintAssist.HelperText="Enter Barcode 2"
+                                                             materialDesign:HintAssist.Hint="Barcode 2"
+                                                             materialDesign:HintAssist.HelperTextFontSize="16"
+                                                             FontSize="24"
+                                                             Focusable="True"
+                                                             helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode2}"
+                                                             materialDesign:TextFieldAssist.HasClearButton="True"
+                                                             IsEnabled="{Binding IsEnabledReCutBarcode}"
+                                                             Text="{Binding Barcode2}">
+                                                        <TextBox.InputBindings>
+                                                            <KeyBinding Key="Enter"
+                                                                        Command="{Binding ReCutBarcode2KeyDown}" />
+                                                        </TextBox.InputBindings>
+                                                    </TextBox>
+
+                                                </StackPanel>
+
+                                                <Button Grid.Column="2"
+                                                        Grid.Row="0"
+                                                        Content="Search Order"
+                                                        HorizontalAlignment="Center"
+                                                        Command="{Binding SearchOrder}"
+                                                        Width="400"
+                                                        Height="100"
+                                                        FontSize="30"
+                                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                                        IsEnabled="{Binding IsEnabledReCutBarcode}"
+                                                        materialDesign:ButtonAssist.CornerRadius="10"
+                                                        ToolTip="Clear all values and start a new set" />
+                                            </StackPanel>
+                                        </materialDesign:ColorZone>
+                                    </Viewbox>
+
+
+                                    <materialDesign:ColorZone Grid.Row="1"
+                                                              VerticalAlignment="Stretch"
+                                                              HorizontalAlignment="Stretch"
+                                                              Margin="15,15,15,15"
+                                                              Padding="16"
+                                                              materialDesign:ElevationAssist.Elevation="Dp4"
+                                                              ClipToBounds="False"
+                                                              CornerRadius="10"
+                                                              Mode="PrimaryDark">
+                                        <ScrollViewer Grid.Column="0"
+                                                      Margin="15,15,15,15"
+                                                      VerticalAlignment="Stretch"
+                                                      HorizontalAlignment="Stretch"
+                                                      HorizontalContentAlignment="Center"
+                                                      HorizontalScrollBarVisibility="Auto">
+                                            <ListView ItemsSource="{Binding ReCutContent}"
+                                                      SelectedItem="{Binding ReCutSelectedLouver}"
+                                                      FontSize="20">
+                                                <ListView.View>
+                                                    <GridView AllowsColumnReorder="true"
+                                                              ColumnHeaderToolTip="Louver Data">
+                                                        <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
+                                                                        Header="LouverID"
+                                                                        Width="225" />
+                                                        <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
+                                                                        Header="LouverOrder"
+                                                                        Width="225" />
+                                                        <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
+                                                                        Header="CurrWarp"
+                                                                        Width="225" />
+                                                        <GridViewColumn DisplayMemberBinding="{Binding Status}"
+                                                                        Header="Status"
+                                                                        Width="225" />
+                                                    </GridView>
+                                                </ListView.View>
+                                            </ListView>
+                                        </ScrollViewer>
+                                    </materialDesign:ColorZone>
+
+                                    <StackPanel Grid.Column="1"
+                                                Grid.Row="1"
+                                                Orientation="Horizontal"
+                                                Margin="0,25,0,0"
+                                                IsEnabled="False">
+                                        <materialDesign:PackIcon Width="24"
+                                                                 Height="24"
+                                                                 HorizontalAlignment="Center"
+                                                                 Kind="ArrowBottomLeftThick"
+                                                                 Foreground="Gray" />
+                                        <TextBlock Text="Click a louver from the list"
+                                                   Foreground="Gray" />
+                                    </StackPanel>
+
+
+                                    <Grid Grid.Row="1"
+                                          Grid.Column="1"
+                                          Grid.ColumnSpan="2">
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+
+                                        <StackPanel Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Grid.ColumnSpan="2"
+                                                    Grid.RowSpan="1"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    Orientation="Horizontal">
+                                            <StackPanel>
+                                                <Button Grid.Row="0"
+                                                        Content="Measure Top"
+                                                        Command="{Binding CheckTop}"
+                                                        IsEnabled="{Binding IsEnabledCheckTop}"
+                                                        Width="300"
+                                                        Height="100"
+                                                        FontSize="30"
+                                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                                        materialDesign:ButtonAssist.CornerRadius="10"
+                                                        ToolTip="Print the first set of labels" />
+                                                <Button Grid.Row="0"
+                                                        Content="Measure Bottom"
+                                                        Command="{Binding CheckBottom}"
+                                                        IsEnabled="{Binding IsEnabledCheckBottom}"
+                                                        Width="300"
+                                                        Height="100"
+                                                        FontSize="30"
+                                                        Margin="5,5,5,5"
+                                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                                        materialDesign:ButtonAssist.CornerRadius="10"
+                                                        ToolTip="Print the first set of labels" />
+                                            </StackPanel>
+
+                                            <StackPanel Margin="100,0,0,0">
+                                                <TextBlock Text="Top Side Reading"
+                                                           FontSize="30"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center" />
+                                                <StackPanel Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Center">
+                                                    <TextBlock Text="{Binding TopMinimumValue}"
+                                                               FontSize="30" />
+                                                    <TextBlock Text="  &lt;  "
+                                                               FontSize="30" />
+                                                    <materialDesign:ColorZone Mode="Custom"
+                                                                              Background="{Binding TopColor}"
+                                                                              CornerRadius="15">
+                                                        <TextBox Text="{Binding TxtTopAcceptableReplacement, Mode=TwoWay}"
+                                                                 Foreground="Black"
+                                                                 IsReadOnly="True"
+                                                                 HorizontalContentAlignment="Center"
+                                                                 Width="100"
+                                                                 FontSize="30" />
+                                                    </materialDesign:ColorZone>
+                                                    <TextBlock Text="  &gt;  "
+                                                               FontSize="30" />
+                                                    <TextBlock Text="{Binding TopMaximumValue}"
+                                                               FontSize="30" />
+                                                </StackPanel>
+                                                <TextBlock Margin="0,50,0,0"
+                                                           Text="Bottom Side Reading"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"
+                                                           FontSize="30" />
+                                                <StackPanel Orientation="Horizontal"
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Center">
+                                                    <TextBlock Text="{Binding BottomMinimumValue}"
+                                                               FontSize="30" />
+                                                    <TextBlock Text="  &lt;  "
+                                                               FontSize="30" />
+                                                    <materialDesign:ColorZone Mode="Custom"
+                                                                              Background="{Binding BottomColor}"
+                                                                              CornerRadius="15">
+                                                        <TextBox Text="{Binding TxtBottomAcceptableReplacement, Mode=TwoWay}"
+                                                                 HorizontalContentAlignment="Center"
+                                                                 Foreground="Black"
+                                                                 IsReadOnly="True"
+                                                                 Width="100"
+                                                                 FontSize="30" />
+                                                    </materialDesign:ColorZone>
+                                                    <TextBlock Text="  &gt;  "
+                                                               FontSize="30" />
+                                                    <TextBlock Text="{Binding BottomMaximumValue}"
+                                                               FontSize="30" />
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                        </StackPanel>
+
+
+                                        <materialDesign:ColorZone Grid.Row="2"
+                                                                  Grid.ColumnSpan="2"
+                                                                  VerticalAlignment="Stretch"
+                                                                  HorizontalAlignment="Stretch"
+                                                                  Margin="15,15,15,15"
+                                                                  Padding="16"
+                                                                  materialDesign:ElevationAssist.Elevation="Dp4"
+                                                                  ClipToBounds="False"
+                                                                  CornerRadius="10"
+                                                                  Mode="PrimaryDark">
+                                            <Grid>
+                                                <lvc:CartesianChart>
+                                                    <lvc:CartesianChart.Series>
+                                                        <lvc:LineSeries Values="{Binding VoltageValues}" />
+                                                    </lvc:CartesianChart.Series>
+                                                </lvc:CartesianChart>
+                                                <Button Content="Reconnect"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
+                                                        FontSize="30"
+                                                        FontWeight="ExtraBold"
+                                                        Foreground="#521919"
+                                                        Background="Transparent"
+                                                        Visibility="{Binding VisibilityDisconnected}"
+                                                        Command="{Binding ReconnectToDataQ}" />
+                                            </Grid>
+                                        </materialDesign:ColorZone>
+
+                                    </Grid>
+
+                                </Grid>
+
+
+
+                            </Grid>
+
+                        </TabItem>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Width="auto"
@@ -326,6 +1171,55 @@
                             </Grid>
 
                         </TabItem>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                     </TabControl>
                 </materialDesign:Card>
 

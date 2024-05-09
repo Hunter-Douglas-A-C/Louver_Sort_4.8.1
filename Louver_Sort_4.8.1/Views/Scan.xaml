@@ -23,9 +23,6 @@
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding ScanLoaded}" />
         </i:EventTrigger>
-        <i:EventTrigger EventName="GotFocus">
-            <i:InvokeCommandAction Command="{Binding ScanLoaded}" />
-        </i:EventTrigger>
     </i:Interaction.Triggers>
 
     <!--<UserControl.InputBindings>
@@ -45,7 +42,7 @@
 
         <materialDesign:ColorZone Grid.Row="0"
                                   Grid.ColumnSpan="2"
-                                  Margin="30,15,30,0"
+                                  Margin="30,15, 20,0"
                                   Padding="16"
                                   materialDesign:ElevationAssist.Elevation="Dp4"
                                   ClipToBounds="False"
@@ -60,7 +57,7 @@
                     <StackPanel Margin="40,0,40,20"
                                 Width="1300"
                                 HorizontalAlignment="Left">
-                        <TextBox x:Name="barcode1TextBox"
+                        <TextBox x:Name="barcode1TextBox1"
                                  materialDesign:HintAssist.HelperText="Enter Barcode 1"
                                  materialDesign:HintAssist.Hint="Barcode 1"
                                  materialDesign:HintAssist.HelperTextFontSize="16"
@@ -76,7 +73,7 @@
                                             Command="{Binding Barcode1KeyDown}" />
                             </TextBox.InputBindings>
                         </TextBox>
-                        <TextBox x:Name="Barcode2TextBox"
+                        <TextBox x:Name="Barcode2TextBox1"
                                  materialDesign:HintAssist.HelperText="Enter Barcode 2"
                                  materialDesign:HintAssist.Hint="Barcode 2"
                                  materialDesign:HintAssist.HelperTextFontSize="16"
@@ -535,7 +532,7 @@
                                           CornerRadius="10"
                                           Mode="PrimaryDark">
                     <Grid Margin="15,15,15,15">
-                        <lvc:CartesianChart x:Name="Chart">
+                        <lvc:CartesianChart x:Name="Chart1">
                             <lvc:CartesianChart.Series>
                                 <lvc:LineSeries Values="{Binding VoltageValues}" />
                             </lvc:CartesianChart.Series>

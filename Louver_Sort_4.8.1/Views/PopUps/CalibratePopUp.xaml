@@ -32,9 +32,33 @@
                         <TextBlock Text="{Binding CalibTxt}"
                                    FontSize="24"
                                    FontWeight="ExtraBold" />
-                    </Viewbox>
 
+
+                    </Viewbox>
                 </materialDesign:ColorZone>
+
+
+
+                <StackPanel Orientation="Horizontal" Visibility="{Binding VisibilityAdjustCalib}">
+                    <TextBlock Text="{Binding ActiveReading}"
+                               Width="100"
+                               FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <StackPanel>
+                        <Button Command="{Binding CalibUp}" Visibility="Collapsed">
+                            <materialDesign:PackIcon Width="24"
+                                                     Height="24"
+                                                     HorizontalAlignment="Center"
+                                                     Kind="ArrowUp" />
+                        </Button>
+                        <Button Command="{Binding CalibDown}" Visibility="Collapsed">
+                            <materialDesign:PackIcon Width="24"
+                                                     Height="24"
+                                                     HorizontalAlignment="Center"
+                                                     Kind="ArrowDown" />
+                        </Button>
+                    </StackPanel>
+
+                </StackPanel>
 
 
                 <Image Source="{Binding CalibImage}"

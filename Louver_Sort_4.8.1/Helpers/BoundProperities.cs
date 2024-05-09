@@ -22,8 +22,6 @@ using Zebra.Sdk.Printer;
 using OfficeOpenXml;
 using System.Windows.Media;
 
-
-
 namespace Louver_Sort_4._8._1.Helpers
 {
     internal class BoundProperities : INotifyPropertyChanged
@@ -81,7 +79,15 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         public double RejectionSpec
         {
-            get => _globals.RejectionSpec;
+            get
+            {
+                if (CurLength != null || CurLength == "")
+                {
+                    double value = _globals.RejectionSpec * (Convert.ToDouble(CurLength) / 12);
+                    return (value);
+                }
+                return _globals.RejectionSpec;
+            }
             set
             {
                 SetProperty(ref _globals.RejectionSpec, value);
@@ -262,6 +268,49 @@ namespace Louver_Sort_4._8._1.Helpers
         }
 
 
+        private bool _isEnabledCalibrate = false;
+        public bool IsEnabledCalibrate
+        {
+            get => _isEnabledCalibrate;
+            set { SetProperty(ref _isEnabledCalibrate, value); }
+        }
+
+        private bool _isEnabledSortSet = false;
+        public bool IsEnabledSortSet
+        {
+            get => _isEnabledSortSet;
+            set { SetProperty(ref _isEnabledSortSet, value); }
+        }
+
+
+        private bool _isEnabledReCut = false;
+        public bool IsEnabledReCut
+        {
+            get => _isEnabledReCut;
+            set { SetProperty(ref _isEnabledReCut, value); }
+        }
+
+
+
+        private bool _isEnabledScan;
+        public bool IsEnabledScan
+        {
+            get => _isEnabledScan;
+            set { SetProperty(ref _isEnabledScan, value); }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -305,6 +354,21 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _visibilityCalibRecord;
             set { SetProperty(ref _visibilityCalibRecord, value); }
         }
+
+        private Visibility _visibilityAdjustCalib = Visibility.Collapsed;
+        public Visibility VisibilityAdjustCalib
+        {
+            get => _visibilityAdjustCalib;
+            set { SetProperty(ref _visibilityAdjustCalib, value); }
+        }
+
+
+
+
+
+
+
+
 
 
 
@@ -634,7 +698,12 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
-
+        private double _activeReading;
+        public double ActiveReading
+        {
+            get => _activeReading;
+            set { SetProperty(ref _activeReading, value); }
+        }
 
 
 
@@ -884,6 +953,10 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand Barcode2KeyDown { get; set; }
         public ICommand ReCutBarcode2KeyDown { get; set; }
         public ICommand Calibrate { get; set; }
+
+        public ICommand CalibUp { get; set; }
+
+        public ICommand CalibDown { get; set; }
         public ICommand CalibRecord { get; set; }
         public ICommand ScanLoaded { get; set; }
         public ICommand ReCutLoaded { get; set; }
@@ -922,8 +995,7 @@ namespace Louver_Sort_4._8._1.Helpers
         #region CommandImplementation
         public BoundProperities()
         {
-
-
+            ConnectToDataQ();
             TEMP = new BaseCommand(obj =>
             {
                 foreach (var orderWithBarcode in _allOrders.OrdersWithBarcodes)
@@ -966,7 +1038,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
-            if (CheckFile(_jSONSaveLocation + "\\LouverSortData.ini") && CheckFile(_jSONSaveLocation + "\\Globals.ini"))
+            if (CheckFile(_jSONSaveLocation + "\\LouverSortData.ini") && CheckFile(_jSONSaveLocation + "\\Globals.ini") && CheckFile(_jSONSaveLocation + "\\DataQ.ini"))
             {
                 LoadFromJson();
             }
@@ -981,6 +1053,7 @@ namespace Louver_Sort_4._8._1.Helpers
              {
                  VisibilityPopUp = Visibility.Hidden;
                  IsEnabledMain = true;
+                 IsEnabledScan = false;
                  SelectedPopUp = null;
                  MainContentBlurRadius = 0;
                  switch (obj)
@@ -1022,6 +1095,7 @@ namespace Louver_Sort_4._8._1.Helpers
             UpdatePopUp = new BaseCommand(obj =>
             {
                 IsEnabledMain = false;
+                IsEnabledScan = true;
                 VisibilityPopUp = Visibility.Visible;
                 MainContentBlurRadius = 50;
                 switch (obj)
@@ -1045,6 +1119,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         SelectedPopUp = null;
                         VisibilityPopUp = Visibility.Hidden;
                         IsEnabledMain = true;
+                        IsEnabledScan = false;
                         SelectedPopUp = null;
                         MainContentBlurRadius = 0;
                         break;
@@ -1215,14 +1290,14 @@ namespace Louver_Sort_4._8._1.Helpers
                                 ConnectToDataQ();
                             }
 
-                            _dataQ.SetCalibrationFlat(_dataQ.RecordAndAverageReadings().Result);
+                            _dataQ.SetCalibrationFlat();
                             Application.Current.Dispatcher.Invoke(() =>
                             {
                                 UpdatePopUp.Execute("Close");
                             });
 
 
-                            
+
                             Application.Current.Dispatcher.Invoke(() =>
                             {
                                 CalibTxt = "Place stepped calibration plate on slide";
@@ -1250,12 +1325,19 @@ namespace Louver_Sort_4._8._1.Helpers
                             {
                                 ConnectToDataQ();
                             }
-                           _dataQ.SetCalibrationStep(_dataQ.RecordAndAverageReadings().Result);
+                            _dataQ.SetCalibrationStep();
                             Application.Current.Dispatcher.Invoke(() =>
                             {
                                 UpdatePopUp.Execute("Close");
-                                CalibTxt = "Calibartion value is:   " + _dataQ.GetSlope();
+                                //CalibTxt = "Calibartion value is:   " + _dataQ.GetSlope();
                                 VisibilityCalibRecord = Visibility.Collapsed;
+                                VisibilityAdjustCalib = Visibility.Visible;
+                                Thread r = new Thread(() =>
+                                {
+                                    _dataQ.StartActiveMonitoring();
+                                });
+                                r.Start();
+                                _dataQ.LatestReadingChanged += DataQLatestValueChangedHandler;
                                 UpdatePopUp.Execute("Calibrate");
                                 _calibStep++;
                             });
@@ -1268,11 +1350,31 @@ namespace Louver_Sort_4._8._1.Helpers
                         {
                             UpdatePopUp.Execute("Close");
                             _calibStep = 1;
+                            if (_dataQ.GetSlope() == double.NaN)
+                            {
+                                IsEnabledCalibrate = true;
+                            }
+                            else
+                            {
+                                IsEnabledCalibrate = true;
+                                IsEnabledSortSet = true;
+                                IsEnabledReCut = true;
+                            }
                         });
                         break;
                     default:
                         break;
                 }
+            });
+
+            CalibUp = new BaseCommand(obj =>
+            {
+                _dataQ.SetSlope(_dataQ.GetSlope() + 10);
+            });
+
+            CalibDown = new BaseCommand(obj =>
+            {
+                _dataQ.SetSlope(_dataQ.GetSlope() - 0.1);
             });
 
             ScanLoaded = new BaseCommand(obj =>
@@ -1375,6 +1477,7 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 VisibilityPopUp = Visibility.Hidden;
                 IsEnabledMain = true;
+                IsEnabledScan = false;
                 SelectedPopUp = null;
                 MainContentBlurRadius = 0;
             });
@@ -1413,39 +1516,39 @@ namespace Louver_Sort_4._8._1.Helpers
                 int randomInt = random.Next(-50, 1001);
 
                 double value;
-                if (IsCheckedUseFakeValues)
+                //if (IsCheckedUseFakeValues)
+                //{
+                //    value = randomInt / 1000.0;
+                //    ActiveSet.Louvers[ActiveLouverID - 1].SetReading1(value);
+                //    ActiveTopReading = value;
+                //    ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                //    IsEnabledAcquareTop = false;
+                //    IsEnabledAcquireBottom = true;
+                //    ListViewSelectedLouver = ListViewContent[(ListViewContent.IndexOf(ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID)) + 1)];
+                //    UpdatePopUp.Execute("Close");
+                //}
+                //else
+                //{
+                Thread RecordThread = new Thread(() =>
                 {
-                    value = randomInt / 1000.0;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        UpdatePopUp.Execute("Await");
+                    });
+                    value = Math.Round(_dataQ.WaitForDataCollection(true).Result, 2);
                     ActiveSet.Louvers[ActiveLouverID - 1].SetReading1(value);
                     ActiveTopReading = value;
-                    ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                    IsEnabledAcquareTop = false;
-                    IsEnabledAcquireBottom = true;
-                    ListViewSelectedLouver = ListViewContent[(ListViewContent.IndexOf(ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID)) + 1)];
-                    UpdatePopUp.Execute("Close");
-                }
-                else
-                {
-                    Thread RecordThread = new Thread(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            UpdatePopUp.Execute("Await");
-                        });
-                        value = _dataQ.RecordAndAverageReadings().Result;
-                        ActiveSet.Louvers[ActiveLouverID - 1].SetReading1(value);
-                        ActiveTopReading = value;
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                            IsEnabledAcquareTop = false;
-                            IsEnabledAcquireBottom = true;
-                            ListViewSelectedLouver = ListViewContent[(ListViewContent.IndexOf(ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID)) + 1)];
-                            UpdatePopUp.Execute("Close");
-                        });
+                        ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                        IsEnabledAcquareTop = false;
+                        IsEnabledAcquireBottom = true;
+                        ListViewSelectedLouver = ListViewContent[(ListViewContent.IndexOf(ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID)) + 1)];
+                        UpdatePopUp.Execute("Close");
                     });
-                    RecordThread.Start();
-                }
+                });
+                RecordThread.Start();
+                //}
             });
 
             AcqReadingBottom = new BaseCommand(obj =>
@@ -1455,74 +1558,74 @@ namespace Louver_Sort_4._8._1.Helpers
                 // Generate a random integer between -1000 and 1000
                 int randomInt = random.Next(-50, 1001);
                 double value;
-                if (IsCheckedUseFakeValues)
+                //if (IsCheckedUseFakeValues)
+                //{
+                //    value = randomInt / 1000.0;
+                //    ActiveSet.Louvers[ActiveLouverID - 1].SetReading2(value);
+                //    ActiveBottomReading = value;
+
+                //    ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                //    ActiveSet.Louvers[ActiveLouverID - 1].CalcValues(RejectionSpec);
+                //    ActiveDeviation = ActiveSet.Louvers[ActiveLouverID - 1].Deviation;
+                //    ListViewContent = ActiveSet.GenerateRecordedLouvers();
+
+
+
+
+                //    foreach (var louver in ActiveSet.Louvers)
+                //    {
+                //        if (louver.Reading1 == 0 && louver.Reading2 == 0)
+                //        {
+                //            ActiveLouverID = louver.ID;
+                //            IsEnabledAcquareTop = true;
+                //            IsEnabledAcquireBottom = false;
+                //            ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
+                //            return;
+                //        }
+                //    }
+                //    IsEnabledAcquareTop = false;
+                //    IsEnabledAcquireBottom = false;
+                //    IsEnabledReviewReport = true;
+                //    ListViewSelectedLouver = null;
+                //}
+                //else
+                //{
+                Thread RecordThread = new Thread(() =>
                 {
-                    value = randomInt / 1000.0;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        UpdatePopUp.Execute("Await");
+                    });
+                    value = Math.Round(_dataQ.WaitForDataCollection(true).Result, 2);
                     ActiveSet.Louvers[ActiveLouverID - 1].SetReading2(value);
                     ActiveBottomReading = value;
-
-                    ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                    ActiveSet.Louvers[ActiveLouverID - 1].CalcValues(RejectionSpec);
-                    ActiveDeviation = ActiveSet.Louvers[ActiveLouverID - 1].Deviation;
-                    ListViewContent = ActiveSet.GenerateRecordedLouvers();
-
-
-
-
-                    foreach (var louver in ActiveSet.Louvers)
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        if (louver.Reading1 == 0 && louver.Reading2 == 0)
-                        {
-                            ActiveLouverID = louver.ID;
-                            IsEnabledAcquareTop = true;
-                            IsEnabledAcquireBottom = false;
-                            ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
-                            return;
-                        }
-                    }
-                    IsEnabledAcquareTop = false;
-                    IsEnabledAcquireBottom = false;
-                    IsEnabledReviewReport = true;
-                    ListViewSelectedLouver = null;
-                }
-                else
-                {
-                    Thread RecordThread = new Thread(() =>
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            UpdatePopUp.Execute("Await");
-                        });
-                        value = _dataQ.RecordAndAverageReadings().Result;
-                        ActiveSet.Louvers[ActiveLouverID - 1].SetReading2(value);
-                        ActiveBottomReading = value;
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                            ActiveSet.Louvers[ActiveLouverID - 1].CalcValues(RejectionSpec);
-                            ActiveDeviation = ActiveSet.Louvers[ActiveLouverID - 1].Deviation;
-                            ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                            UpdatePopUp.Execute("Close");
+                        ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                        ActiveSet.Louvers[ActiveLouverID - 1].CalcValues(RejectionSpec);
+                        ActiveDeviation = ActiveSet.Louvers[ActiveLouverID - 1].Deviation;
+                        ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                        UpdatePopUp.Execute("Close");
 
-                            foreach (var louver in ActiveSet.Louvers)
+                        foreach (var louver in ActiveSet.Louvers)
+                        {
+                            if (louver.Reading1 == 0 && louver.Reading2 == 0)
                             {
-                                if (louver.Reading1 == 0 && louver.Reading2 == 0)
-                                {
-                                    ActiveLouverID = louver.ID;
-                                    IsEnabledAcquareTop = true;
-                                    IsEnabledAcquireBottom = false;
-                                    ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
-                                    return;
-                                }
+                                ActiveLouverID = louver.ID;
+                                IsEnabledAcquareTop = true;
+                                IsEnabledAcquireBottom = false;
+                                ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
+                                return;
                             }
-                            IsEnabledAcquareTop = false;
-                            IsEnabledAcquireBottom = false;
-                            IsEnabledReviewReport = true;
-                            ListViewSelectedLouver = null;
-                        });
+                        }
+                        IsEnabledAcquareTop = false;
+                        IsEnabledAcquireBottom = false;
+                        IsEnabledReviewReport = true;
+                        ListViewSelectedLouver = null;
                     });
-                    RecordThread.Start();
-                }
+                });
+                RecordThread.Start();
+                //}
 
 
             });
@@ -1730,23 +1833,12 @@ namespace Louver_Sort_4._8._1.Helpers
                     UpdatePopUp.Execute("Message");
                     FocusBarcode1 = true;
                 }
-
-
             });
 
             CheckTop = new BaseCommand(obj =>
                 {
-                    Random random = new Random();
-
-                    // Generate a random integer between -1000 and 1000
-                    int randomInt = random.Next(-1000, 1001);
-
-                    // Divide the random integer by 1000 to get increments of 0.001
-                    double value = randomInt / 1000.0;
-                    //double value = RecordWhenStable(0.001);
+                    double value = _dataQ.WaitForDataCollection(true).Result;
                     TxtTopAcceptableReplacement = value.ToString();
-                    //ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
-                    //Reading1 = value;
 
                     if (Math.Abs(value - Convert.ToDouble(RecutReading1)) <= RejectionSpec)
                     {
@@ -1757,25 +1849,14 @@ namespace Louver_Sort_4._8._1.Helpers
                         TopColor = Brushes.Red;
                     }
 
-
-
                     IsEnabledCheckTop = false;
                     IsEnabledCheckBottom = true;
                 });
 
             CheckBottom = new BaseCommand(obj =>
             {
-                Random random = new Random();
-
-                // Generate a random integer between -1000 and 1000
-                int randomInt = random.Next(-1000, 1001);
-
-                // Divide the random integer by 1000 to get increments of 0.001
-                double value = randomInt / 1000.0;
-                //double value = RecordWhenStable(0.001);
+                double value = _dataQ.WaitForDataCollection(true).Result;
                 TxtBottomAcceptableReplacement = value.ToString();
-                //ActiveSet.Louvers[ActiveLouverID].SetReading1(value);
-                //Reading1 = value;
 
                 if (Math.Abs(value - Convert.ToDouble(RecutReading2)) <= RejectionSpec)
                 {
@@ -1836,7 +1917,21 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
             });
+
+
+
+
+
+
         }
+
+        // Event handler for the LatestValueChanged event
+        private void DataQLatestValueChangedHandler(object sender, EventArgs e)
+        {
+            // Update the ActiveReading when LatestValue changes
+            ActiveReading = _dataQ.LatestReading;
+        }
+
         #endregion
 
         #region Code Behind
@@ -1851,6 +1946,21 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             LabelIDContent = lables;
         }
+
+        public void MenuInitialize()
+        {
+            if (double.IsNaN(_dataQ.GetSlope()))
+            {
+                IsEnabledCalibrate = true;
+            }
+            else
+            {
+                IsEnabledCalibrate = true;
+                IsEnabledSortSet = true;
+                IsEnabledReCut = true;
+            }
+        }
+
         public void ScanInitialize()
         {
             if (!IsCheckedUseFakeValues)
@@ -1887,22 +1997,31 @@ namespace Louver_Sort_4._8._1.Helpers
         //DataQ
         public void ConnectToDataQ()
         {
-            Thread test = new Thread(() =>
+            try
             {
-                if (_dataQ == null)
+                Thread test = new Thread(() =>
                 {
-                    _dataQ = new DataQHelper();
-                    _dataQ.Connect();
-                    _dataQ.Start();
+                    if (_dataQ == null)
+                    {
+                        _dataQ = new DataQHelper();
+                        _dataQ.Connect();
+                        _dataQ.Start();
 
-                    VisibilityDisconnected = Visibility.Collapsed;
-                    _stopwatch.Start();
+                        VisibilityDisconnected = Visibility.Collapsed;
+                        _stopwatch.Start();
 
-                    _dataQ.AnalogUpdated += new EventHandler(DataQNewData);
-                    _dataQ.LostConnection += new EventHandler(DataQLostConnection);
-                }
-            });
-            test.Start();
+                        _dataQ.AnalogUpdated += new EventHandler(DataQNewData);
+                        _dataQ.LostConnection += new EventHandler(DataQLostConnection);
+                    }
+                });
+                test.Start();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         public void DataQNewData(object sender, EventArgs e)
@@ -1910,7 +2029,7 @@ namespace Louver_Sort_4._8._1.Helpers
             VoltageValues.Add(new MeasureModel
             {
                 ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
-                Value = Math.Round(_dataQ.GetDistanceWCal(), 3)
+                Value = Math.Round(_dataQ.GetDistance(), 2)
             });
             //Debug.WriteLine(_DataQ.GetDistance());
             if (VoltageValues.Count > 25)
@@ -1974,6 +2093,17 @@ namespace Louver_Sort_4._8._1.Helpers
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
             _globals = JsonConvert.DeserializeObject<Globals>(json, settings);
+
+            json = File.ReadAllText(_jSONSaveLocation + "\\DataQ.ini");
+
+            settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+           _dataQ._cal = JsonConvert.DeserializeObject<Calibration>(json, settings);
+            //_dataQ = JsonConvert.DeserializeObject<DataQHelper>(json, settings);
             //AdminPassword = JsonConvert.DeserializeObject<string>(json, settings);
             //JSONSaveLocation = JsonConvert.DeserializeObject<string>(json, settings);
             //RejectionSpec = JsonConvert.DeserializeObject<double>(json, settings);
@@ -1996,6 +2126,14 @@ namespace Louver_Sort_4._8._1.Helpers
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
                 serializer.Serialize(writer, _globals);
+                //serializer.Serialize(writer, AdminPassword);
+                //serializer.Serialize(writer, JSONSaveLocation);
+                //serializer.Serialize(writer, RejectionSpec);
+            }
+            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "\\DataQ.ini"))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, _dataQ._cal);
                 //serializer.Serialize(writer, AdminPassword);
                 //serializer.Serialize(writer, JSONSaveLocation);
                 //serializer.Serialize(writer, RejectionSpec);

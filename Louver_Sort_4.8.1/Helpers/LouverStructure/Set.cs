@@ -165,30 +165,34 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             List<Louver> sortedLouvers = Louvers.OrderBy(x => x.AbsDeviation).ToList();
 
             // Add the first Louver to the sortedLouvers list
-            _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = 0;
+            _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = 1;
             sortedLouvers.RemoveAt(0);
-            var bottom = sortedLouvers[0];
-            sortedLouvers.RemoveAt(0);
-
-            int i = 1;
-            while (sortedLouvers.Count > 0)
+            if (sortedLouvers.Count > 0)
             {
-                if (sortedLouvers.Count != 0)
+                var bottom = sortedLouvers[0];
+                sortedLouvers.RemoveAt(0);
+
+                int i = 2;
+                while (sortedLouvers.Count > 0)
                 {
-                    _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = i;
-                    sortedLouvers.RemoveAt(0);
+                    if (sortedLouvers.Count != 0)
+                    {
+                        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = i;
+                        sortedLouvers.RemoveAt(0);
+                    }
+
+                    if (sortedLouvers.Count != 0)
+                    {
+                        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = _louvers.Count - i;
+                        sortedLouvers.RemoveAt(0);
+                    }
+
+                    i++;
                 }
 
-                if (sortedLouvers.Count != 0)
-                {
-                    _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = _louvers.Count - i;
-                    sortedLouvers.RemoveAt(0);
-                }
-
-                i++;
+                _louvers[Louvers.FindIndex(x => x.ID == bottom.ID)].SortedID = _louvers.Count;
             }
 
-            _louvers[Louvers.FindIndex(x => x.ID == bottom.ID)].SortedID = _louvers.Count;
 
             // Update the collection
             _recordedLouvers = GenerateRecordedLouvers();

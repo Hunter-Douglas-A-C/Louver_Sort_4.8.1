@@ -26,7 +26,7 @@
 
         <materialDesign:ColorZone Grid.Row="0"
                                   Padding="16"
-                                  Margin="30,15,30,0"
+                                  Margin="30,15, 20,0"
                                   Height="75"
                                   materialDesign:ElevationAssist.Elevation="Dp4"
                                   ClipToBounds="False"
@@ -251,16 +251,16 @@
                                       ColumnHeaderToolTip="Louver Data">
                                 <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
                                                 Header="LouverID"
-                                                Width="225" />
+                                                Width="150" />
                                 <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
                                                 Header="LouverOrder"
                                                 Width="225" />
                                 <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
                                                 Header="Deviation"
-                                                Width="225" />
+                                                Width="150" />
                                 <GridViewColumn DisplayMemberBinding="{Binding Status}"
                                                 Header="Status"
-                                                Width="225" />
+                                                Width="150" />
                             </GridView>
                         </ListView.View>
                     </ListView>

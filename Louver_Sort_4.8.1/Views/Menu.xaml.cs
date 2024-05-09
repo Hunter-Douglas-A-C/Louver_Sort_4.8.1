@@ -32,6 +32,9 @@ namespace Louver_Sort_4._8._1.Views
 
             boundProperities = (BoundProperities)Application.Current.MainWindow.DataContext;
             this.DataContext = boundProperities;
+
+
+            boundProperities.MenuInitialize();
         }
         
     }

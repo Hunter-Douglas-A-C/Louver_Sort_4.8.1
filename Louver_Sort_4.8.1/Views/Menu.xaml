@@ -6,6 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Louver_Sort_4._8._1.Views"
              mc:Ignorable="d"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
              Background="{DynamicResource MaterialDesign.Brush.Background}"
              TextElement.FontWeight="Medium"
@@ -13,6 +14,7 @@
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              d:DesignHeight="1080"
              d:DesignWidth="1920">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -57,6 +59,7 @@
                         Height="100"
                         FontSize="30"
                         Style="{StaticResource MaterialDesignRaisedButton}"
+                        IsEnabled="{Binding IsEnabledCalibrate}"
                         materialDesign:ButtonAssist.CornerRadius="10"
                         ToolTip="Start Calibartion" />
                 <Button Content="{DynamicResource BtnLouver}"
@@ -66,7 +69,7 @@
                         Width="300"
                         Height="100"
                         FontSize="30"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        IsEnabled="{Binding IsEnabledSortSet}"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:ButtonAssist.CornerRadius="10"
                         ToolTip="Scan a new order and sort" />
@@ -78,7 +81,7 @@
                         Width="300"
                         Height="100"
                         FontSize="30"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        IsEnabled="{Binding IsEnabledReCut}"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:ButtonAssist.CornerRadius="10"
                         ToolTip="Re-Cut a louver from an existing order" />

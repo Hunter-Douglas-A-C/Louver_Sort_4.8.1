@@ -216,6 +216,12 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _isEnabledBarcode;
             set { SetProperty(ref _isEnabledBarcode, value); }
         }
+
+
+
+
+
+
         private bool _isEnabledEnterBarcode = true;
         public bool IsEnabledEnterBarcode
         {
@@ -387,6 +393,18 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _focusBarcode2;
             set { SetProperty(ref _focusBarcode2, value); }
         }
+        private bool _reCutFocusBarcode1;
+        public bool ReCutFocusBarcode1
+        {
+            get => _reCutFocusBarcode1;
+            set { SetProperty(ref _reCutFocusBarcode1, value); }
+        }
+        private bool _reCutFocusBarcode2;
+        public bool ReCutFocusBarcode2
+        {
+            get => _reCutFocusBarcode2;
+            set { SetProperty(ref _reCutFocusBarcode2, value); }
+        }
         private bool _focusLouverCount;
         public bool FocusLouverCount
         {
@@ -473,6 +491,80 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             }
         }
+
+
+
+
+
+        private string _reCutbarcode1;
+        public string ReCutBarcode1
+        {
+            get => _reCutbarcode1;
+            set
+            {
+                if (value == null)
+                {
+                    SetProperty(ref _reCutbarcode1, "");
+                }
+                else
+                {
+                    if (Regex.IsMatch(value, Barcode1Regex))
+                    {
+                        SetProperty(ref _reCutbarcode1, value);
+                    }
+                    else if (Regex.IsMatch(value, EmptyRegex))
+                    {
+                        SetProperty(ref _reCutbarcode1, "");
+                    }
+                    else
+                    {
+                        SetProperty(ref _reCutbarcode1, "");
+                    }
+                }
+            }
+        }
+        //private string _barcode2 = "PNL1/LXL/L4.5/L30.5188/LT";
+        private string _reCutBarcode2;
+        public string ReCutBarcode2
+        {
+            get => _reCutBarcode2;
+            set
+            {
+                if (value == null)
+                {
+                    SetProperty(ref _reCutBarcode2, "");
+                }
+                else
+                {
+                    if (Regex.IsMatch(value, Barcode2Regex))
+                    {
+                        SetProperty(ref _barcode2, value);
+
+                        if (Regex.IsMatch(ReCutBarcode1, Barcode1Regex))
+                        {
+                            IsEnabledEnterBarcode = true;
+                        }
+                    }
+                    else if (Regex.IsMatch(value, EmptyRegex))
+                    {
+                        SetProperty(ref _reCutBarcode2, "");
+                    }
+                    else
+                    {
+                        SetProperty(ref _reCutBarcode2, "");
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
         private int _activeLouverId;
         public int ActiveLouverID
         {
@@ -879,18 +971,18 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _reCutLength;
             set { SetProperty(ref _reCutLength, value); }
         }
-        private string _reCutBarcode1;
-        public string ReCutBarcode1
-        {
-            get => _reCutBarcode1;
-            set { SetProperty(ref _reCutBarcode1, value); }
-        }
-        private string _reCutBarcode2;
-        public string ReCutBarcode2
-        {
-            get => _reCutBarcode2;
-            set { SetProperty(ref _reCutBarcode2, value); }
-        }
+        //private string _reCutBarcode1;
+        //public string ReCutBarcode1
+        //{
+        //    get => _reCutBarcode1;
+        //    set { SetProperty(ref _reCutBarcode1, value); }
+        //}
+        //private string _reCutBarcode2;
+        //public string ReCutBarcode2
+        //{
+        //    get => _reCutBarcode2;
+        //    set { SetProperty(ref _reCutBarcode2, value); }
+        //}
         private string _recutReading1;
         public string RecutReading1
         {
@@ -951,7 +1043,10 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand BrowseForJSONSaveLocation { get; set; }
         public ICommand Barcode1KeyDown { get; set; }
         public ICommand Barcode2KeyDown { get; set; }
+
+        public ICommand ReCutBarcode1KeyDown { get; set; }
         public ICommand ReCutBarcode2KeyDown { get; set; }
+
         public ICommand Calibrate { get; set; }
 
         public ICommand CalibUp { get; set; }
@@ -1202,6 +1297,19 @@ namespace Louver_Sort_4._8._1.Helpers
                     be.UpdateSource();
                 }
                 EnterBarcodes.Execute("");
+            });
+
+
+
+            ReCutBarcode1KeyDown = new BaseCommand(obj =>
+            {
+                var focusedElement = Keyboard.FocusedElement as FrameworkElement;
+                if (focusedElement is TextBox)
+                {
+                    BindingExpression be = focusedElement.GetBindingExpression(TextBox.TextProperty);
+                    be.UpdateSource();
+                }
+                ReCutFocusBarcode1 = true;
             });
 
             ReCutBarcode2KeyDown = new BaseCommand(obj =>

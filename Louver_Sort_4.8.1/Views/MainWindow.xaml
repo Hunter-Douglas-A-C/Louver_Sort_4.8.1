@@ -71,7 +71,7 @@
                                     <materialDesign:PackIcon Width="24"
                                                              Height="24"
                                                              HorizontalAlignment="Center"
-                                                             Kind="AlignHorizontalDistribute" />
+                                                             Kind="Target" />
                                     <TextBlock HorizontalAlignment="Center"
                                                Text="Calibrate" />
                                 </StackPanel>
@@ -592,7 +592,7 @@
                                     <materialDesign:PackIcon Width="24"
                                                              Height="24"
                                                              HorizontalAlignment="Center"
-                                                             Kind="AlignVerticalCenter" />
+                                                             Kind="Replay" />
                                     <TextBlock HorizontalAlignment="Center"
                                                Text="ReCut" />
                                     <i:Interaction.Triggers>
@@ -609,7 +609,7 @@
 
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="900" />
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="550" />
                                         <ColumnDefinition Width="480" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
@@ -644,13 +644,13 @@
                                                              Margin="0,0,0,40"
                                                              FontSize="24"
                                                              Focusable="True"
-                                                             helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode1}"
+                                                             helpers:FocusExtension.IsFocused="{Binding Path=ReCutFocusBarcode1}"
                                                              materialDesign:TextFieldAssist.HasClearButton="True"
                                                              IsEnabled="{Binding IsEnabledReCutBarcode}"
-                                                             Text="{Binding Barcode1}">
+                                                             Text="{Binding ReCutBarcode1}">
                                                         <TextBox.InputBindings>
                                                             <KeyBinding Key="Enter"
-                                                                        Command="{Binding Barcode1KeyDown}" />
+                                                                        Command="{Binding ReCutBarcode1KeyDown}" />
                                                         </TextBox.InputBindings>
 
                                                     </TextBox>
@@ -660,10 +660,10 @@
                                                              materialDesign:HintAssist.HelperTextFontSize="16"
                                                              FontSize="24"
                                                              Focusable="True"
-                                                             helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode2}"
+                                                             helpers:FocusExtension.IsFocused="{Binding Path=ReCutFocusBarcode2}"
                                                              materialDesign:TextFieldAssist.HasClearButton="True"
                                                              IsEnabled="{Binding IsEnabledReCutBarcode}"
-                                                             Text="{Binding Barcode2}">
+                                                             Text="{Binding ReCutBarcode2}">
                                                         <TextBox.InputBindings>
                                                             <KeyBinding Key="Enter"
                                                                         Command="{Binding ReCutBarcode2KeyDown}" />

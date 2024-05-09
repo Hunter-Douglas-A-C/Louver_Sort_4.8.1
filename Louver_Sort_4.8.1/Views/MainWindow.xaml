@@ -1060,6 +1060,17 @@
                                                              TextWrapping="Wrap"
                                                              Text="{Binding DataRetentionPeriod, Mode=TwoWay}" />
 
+                                                    <TextBox MaxWidth="400"
+                                                             VerticalAlignment="Top"
+                                                             Margin="0,50,0,0"
+                                                             FontSize="30"
+                                                             materialDesign:HintAssist.Hint="ReCalibartion Period"
+                                                             AcceptsReturn="True"
+                                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                             TextWrapping="Wrap"
+                                                             Text="{Binding RecalibrationPeriod, Mode=TwoWay}" />
+
                                                     <!--<StackPanel Orientation="Horizontal"
                                                             VerticalAlignment="Center"
                                                             HorizontalAlignment="Center">

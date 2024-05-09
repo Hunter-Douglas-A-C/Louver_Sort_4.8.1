@@ -109,6 +109,19 @@ namespace Louver_Sort_4._8._1.Helpers
         }
 
 
+        public int RecalibrationPeriod
+        {
+            get
+            {
+                return _globals.RecalibrationPeriod;
+            }
+            set
+            {
+                SetProperty(ref _globals.RecalibrationPeriod, value);
+            }
+        }
+
+
 
         string Barcode1Regex = @"^\d{16}P\d$";
         string Barcode2Regex = @"^(PNL[1-9])\/(LXL)\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$";

@@ -148,7 +148,7 @@
                                     <TextBlock HorizontalAlignment="Center"
                                                Text="Sort" />
                                     <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                        <i:EventTrigger EventName="MouseLeftButtonDown">
                                             <i:InvokeCommandAction Command="{Binding ScanLoaded}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
@@ -596,7 +596,7 @@
                                     <TextBlock HorizontalAlignment="Center"
                                                Text="ReCut" />
                                     <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                        <i:EventTrigger EventName="MouseLeftButtonDown">
                                             <i:InvokeCommandAction Command="{Binding ReCutLoaded}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
@@ -1227,22 +1227,22 @@
                             VerticalAlignment="Top"
                             HorizontalAlignment="Right"
                             Margin="0,10,15,0">
-                    <Button Margin="8"
+                    <!--<Button Margin="8"
                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
                             Command="{Binding UpdateView}"
                             CommandParameter="Menu"
                             ToolTip="Return to main menu">
 
-                        <StackPanel Width="auto"
+                        --><!--<StackPanel Width="auto"
                                     Height="auto">
                             <materialDesign:PackIcon HorizontalAlignment="Center"
                                                      Width="24"
                                                      Height="24"
                                                      Kind="Home" />
-                        </StackPanel>
+                        </StackPanel>--><!--
 
 
-                    </Button>
+                    </Button>-->
                     <Button Margin="8"
                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
                             Command="{Binding ChangeLanguage}"

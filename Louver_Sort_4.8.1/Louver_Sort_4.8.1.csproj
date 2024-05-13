@@ -248,9 +248,6 @@
     <Compile Include="Helpers\LouverStructure\Set.cs" />
     <Compile Include="Helpers\LouverStructure\SetID.cs" />
     <Compile Include="Helpers\ZebraPrinterHelper.cs" />
-    <Compile Include="Views\Menu.xaml.cs">
-      <DependentUpon>Menu.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\PopUps\AwaitResult.xaml.cs">
       <DependentUpon>AwaitResult.xaml</DependentUpon>
     </Compile>
@@ -266,14 +263,8 @@
     <Compile Include="Views\PopUps\UserMessagePopUp.xaml.cs">
       <DependentUpon>UserMessagePopUp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ReCut.xaml.cs">
-      <DependentUpon>ReCut.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Report.xaml.cs">
+    <Compile Include="Views\PopUps\Report.xaml.cs">
       <DependentUpon>Report.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Scan.xaml.cs">
-      <DependentUpon>Scan.xaml</DependentUpon>
     </Compile>
     <Page Include="Dictionary-en-US.xaml">
       <SubType>Designer</SubType>
@@ -295,10 +286,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Menu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\PopUps\AwaitResult.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -319,15 +306,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ReCut.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Report.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Scan.xaml">
+    <Page Include="Views\PopUps\Report.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

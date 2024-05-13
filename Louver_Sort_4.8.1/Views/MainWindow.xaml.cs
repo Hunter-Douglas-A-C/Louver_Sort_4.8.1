@@ -19,7 +19,6 @@ using ClipperLib;
 using Louver_Sort_4._8._1.Helpers;
 using Louver_Sort_4._8._1.Views;
 using Microsoft.Win32;
-using Menu = Louver_Sort_4._8._1.Views.Menu;
 
 namespace Louver_Sort_4._8._1.Views
 {
@@ -32,12 +31,8 @@ namespace Louver_Sort_4._8._1.Views
         public MainWindow()
         {
             InitializeComponent();
-
-
             this.DataContext = boundProperities;
 
-
-            boundProperities.SelectedView = new Menu();
             boundProperities.en_USEnabled = false;
             boundProperities.es_ESEnabled = true;
             boundProperities.VisibilityPopUp = Visibility.Hidden;

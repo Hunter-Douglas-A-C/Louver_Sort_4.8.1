@@ -20,10 +20,10 @@
         WindowState="Maximized"
         ResizeMode="NoResize">
 
-    <!--<Window.InputBindings>
+    <Window.InputBindings>
         <KeyBinding Key="Enter"
                     Command="{Binding FilterEnter}" />
-    </Window.InputBindings>-->
+    </Window.InputBindings>
 
 
     <!--Topmost="True"-->
@@ -57,13 +57,47 @@
                                 materialDesign:NavigationRailAssist.SelectionCornerRadius="50 10 10 10"
                                 materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
                                 Style="{StaticResource MaterialDesignNavigationRailTabControl}"
-                                TabStripPlacement="Top">
+                                TabStripPlacement="Top"
+                                SelectedIndex="{Binding SelectedTabIndex}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
                                 <!--<cmd:EventToCommand Command="{Binding TabSelectionChangedCommand}"
                                             PassEventArgsToCommand="True" />-->
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Width="auto"
@@ -102,56 +136,23 @@
                             </Grid>
 
                         </TabItem>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <TabItem>
+
+
+
+
+
+
+
+
+
+                        <TabItem Visibility="{Binding IsEnabledSortSet}">
                             <TabItem.Header>
                                 <StackPanel Width="auto"
                                             Height="auto">
                                     <materialDesign:PackIcon Width="24"
                                                              Height="24"
                                                              HorizontalAlignment="Center"
-                                                             Kind="ViewSequentialOutline"/>
+                                                             Kind="ViewSequentialOutline" />
                                     <TextBlock HorizontalAlignment="Center"
                                                Text="Sort" />
                                     <i:Interaction.Triggers>
@@ -177,7 +178,7 @@
 
 
 
-                                    <Grid IsEnabled="{Binding IsEnabledScan}">
+                                    <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="205" />
                                             <RowDefinition Height="*" />
@@ -208,11 +209,10 @@
                                                                      materialDesign:HintAssist.HelperText="Enter Barcode 1"
                                                                      materialDesign:HintAssist.Hint="Barcode 1"
                                                                      materialDesign:HintAssist.HelperTextFontSize="16"
-                                                                     Margin="0,0,0,40"
                                                                      FontSize="24"
                                                                      Focusable="True"
                                                                      IsReadOnly="{Binding IsReadOnlyBarcode}"
-                                                                     helpers:FocusExtension.IsFocused="{Binding Path=FocusBarcode1}"
+                                                                     helpers:FocusExtension.IsFocused="{Binding FocusBarcode1}"
                                                                      Text="{Binding Barcode1}"
                                                                      IsEnabled="{Binding IsEnabledBarcode}">
                                                                 <TextBox.InputBindings>
@@ -221,6 +221,7 @@
                                                                 </TextBox.InputBindings>
                                                             </TextBox>
                                                             <TextBox x:Name="Barcode2TextBox"
+                                                                     Margin="0,40,0,0"
                                                                      materialDesign:HintAssist.HelperText="Enter Barcode 2"
                                                                      materialDesign:HintAssist.Hint="Barcode 2"
                                                                      materialDesign:HintAssist.HelperTextFontSize="16"
@@ -238,7 +239,7 @@
 
                                                         </StackPanel>
 
-                                                        <Button Grid.Column="1"
+                                                        <!--<Button Grid.Column="1"
                                                                 Grid.Row="0"
                                                                 Content="Enter Barcodes"
                                                                 HorizontalAlignment="Center"
@@ -249,7 +250,7 @@
                                                                 FontSize="30"
                                                                 Style="{StaticResource MaterialDesignRaisedButton}"
                                                                 materialDesign:ButtonAssist.CornerRadius="10"
-                                                                ToolTip="Clear all values and start a new set" />
+                                                                ToolTip="Clear all values and start a new set" />-->
                                                     </StackPanel>
 
                                                 </StackPanel>
@@ -541,58 +542,58 @@
                             </Grid>
 
                         </TabItem>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <TabItem>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <TabItem Visibility="{Binding IsEnabledReCut}">
                             <TabItem.Header>
                                 <StackPanel Width="auto"
                                             Height="auto">
@@ -615,9 +616,9 @@
                                 <Grid>
 
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="900" />
-                                        <ColumnDefinition Width="550" />
-                                        <ColumnDefinition Width="480" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="205" />
@@ -626,7 +627,8 @@
 
 
                                     <Viewbox Grid.Row="0"
-                                             Grid.ColumnSpan="3">
+                                             Grid.ColumnSpan="3"
+                                             VerticalAlignment="Stretch">
                                         <materialDesign:ColorZone Grid.Row="0"
                                                                   Grid.ColumnSpan="3"
                                                                   Margin="30,15, 20,0"
@@ -635,11 +637,12 @@
                                                                   ClipToBounds="False"
                                                                   CornerRadius="10"
                                                                   Height="175"
-                                                                  Mode="SecondaryDark">
+                                                                  Mode="SecondaryDark"
+                                                                  Width="1870">
 
 
                                             <StackPanel Orientation="Horizontal"
-                                                        VerticalAlignment="Center"
+                                                        VerticalAlignment="Stretch"
                                                         HorizontalAlignment="Center">
                                                 <StackPanel Margin="40,0,40,20"
                                                             Width="1300"
@@ -679,7 +682,7 @@
 
                                                 </StackPanel>
 
-                                                <Button Grid.Column="2"
+                                                <!--<Button Grid.Column="2"
                                                         Grid.Row="0"
                                                         Content="Search Order"
                                                         HorizontalAlignment="Center"
@@ -690,7 +693,7 @@
                                                         Style="{StaticResource MaterialDesignRaisedButton}"
                                                         IsEnabled="{Binding IsEnabledReCutBarcode}"
                                                         materialDesign:ButtonAssist.CornerRadius="10"
-                                                        ToolTip="Clear all values and start a new set" />
+                                                        ToolTip="Clear all values and start a new set" />-->
                                             </StackPanel>
                                         </materialDesign:ColorZone>
                                     </Viewbox>
@@ -890,60 +893,60 @@
                             </Grid>
 
                         </TabItem>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Width="auto"
@@ -978,8 +981,7 @@
                                             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
                                             ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
-                                            Command="{Binding UpdateView}"
-                                            CommandParameter="Reporting" />
+                                            Command="{Binding AdminLogin}" />
                                 </StackPanel>
                                 <Grid Visibility="{Binding VisibilityAdmin}">
                                     <Grid.ColumnDefinitions>
@@ -992,19 +994,20 @@
                                                 Margin="50,50,50,50"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Center">
-                                        <materialDesign:ColorZone Grid.Row="0"
-                                                                  Grid.ColumnSpan="3"
-                                                                  Padding="16"
-                                                                  Margin="0,0,50,0"
-                                                                  materialDesign:ElevationAssist.Elevation="Dp4"
-                                                                  ClipToBounds="False"
-                                                                  CornerRadius="10"
-                                                                  Mode="SecondaryDark"
-                                                                  HorizontalAlignment="Left">
-                                            <TextBlock Text="Settings"
-                                                       FontSize="24"
-                                                       FontWeight="ExtraBold" />
-                                        </materialDesign:ColorZone>
+
+                                                                                            <materialDesign:ColorZone Grid.Row="0"
+                                                                      Grid.ColumnSpan="3"
+                                                                      Padding="16"
+                                                                      Margin="0,0,50,0"
+                                                                      materialDesign:ElevationAssist.Elevation="Dp4"
+                                                                      ClipToBounds="False"
+                                                                      CornerRadius="10"
+                                                                      Mode="SecondaryDark"
+                                                                      HorizontalAlignment="Left">
+                                                <TextBlock Text="Settings"
+                                                           FontSize="24"
+                                                           FontWeight="ExtraBold" />
+                                            </materialDesign:ColorZone>
                                         <materialDesign:ColorZone Grid.Column="0"
                                                                   VerticalAlignment="Stretch"
                                                                   HorizontalAlignment="Stretch"
@@ -1076,7 +1079,8 @@
                                                              IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                              Style="{StaticResource MaterialDesignFilledTextBox}"
                                                              TextWrapping="Wrap"
-                                                             Text="{Binding RecalibrationPeriod, Mode=TwoWay}" />
+                                                             Text="{Binding CalibratePeriod, Mode=TwoWay}" />
+
 
                                                     <!--<StackPanel Orientation="Horizontal"
                                                             VerticalAlignment="Center"
@@ -1087,13 +1091,15 @@
                                                 </StackPanel>
                                             </Grid>
                                         </materialDesign:ColorZone>
+
+
                                     </StackPanel>
 
-                                    
-                                    
-                                    
-                                    
-                                    
+
+
+
+
+
                                     <StackPanel Grid.Column="1"
                                                 Margin="50,50,50,50"
                                                 VerticalAlignment="Center"
@@ -1189,55 +1195,55 @@
                             </Grid>
 
                         </TabItem>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     </TabControl>
                 </materialDesign:Card>
 
@@ -1251,13 +1257,15 @@
                             CommandParameter="Menu"
                             ToolTip="Return to main menu">
 
-                        --><!--<StackPanel Width="auto"
+                        -->
+                    <!--<StackPanel Width="auto"
                                     Height="auto">
                             <materialDesign:PackIcon HorizontalAlignment="Center"
                                                      Width="24"
                                                      Height="24"
                                                      Kind="Home" />
-                        </StackPanel>--><!--
+                        </StackPanel>-->
+                    <!--
 
 
                     </Button>-->

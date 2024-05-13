@@ -142,6 +142,7 @@ namespace Louver_Sort_4._8._1.Helpers
         /// <exception cref="DataQException">Thrown when starting the data acquisition process fails.</exception>
         public void Start()
         {
+            int timeoutMilliseconds = 1000;
             try
             {
                 ConfigureScanList();
@@ -153,7 +154,20 @@ namespace Louver_Sort_4._8._1.Helpers
                     throw new DataQException("DI-155 device is not initialized or connected.");
                 }
 
-                DI_155.Start();
+                // Create a CancellationTokenSource with the specified timeout
+                using (var cancellationTokenSource = new CancellationTokenSource(timeoutMilliseconds))
+                {
+                    // Create a Task to execute the Start method
+                    var startTask = Task.Run(() => DI_155.Start(), cancellationTokenSource.Token);
+
+                    // Wait for the task to complete or the timeout to occur
+                    if (!startTask.Wait(timeoutMilliseconds))
+                    {
+                        // If the task didn't complete within the timeout, cancel it and throw a DataQException
+                        cancellationTokenSource.Cancel();
+                        throw new DataQException("Start operation timed out.");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -418,6 +432,13 @@ namespace Louver_Sort_4._8._1.Helpers
             return Math.Round(Convert.ToDouble(_outputString), 2);
         }
 
+
+
+
+
+
+
+
         public async Task<double> WaitForDataCollection(bool UseCalibration = false)
         {
             _dataReceived = false;
@@ -483,7 +504,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 Debug.WriteLine("    " + reading + "   ");
             }
 
-            if (validReadings.Count >= 20)
+            if (validReadings.Count >= 5)
             {
                 _dataReceived = true;
             }

@@ -19,6 +19,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         private DateTime _dateSortFinished;
         private double _louverCount;
         private List<Louver> _louvers = new List<Louver>();
+        private List<Louver> _rejectedlouvers = new List<Louver>();
         private ObservableCollection<LouverListView> _recordedLouvers = new ObservableCollection<LouverListView>();
         private ObservableCollection<ReportListView> _reportData = new ObservableCollection<ReportListView>();
 
@@ -54,12 +55,12 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             set => _louvers = value;
         }
 
-
-
-
-
-
-
+        [JsonProperty("rejectedlouvers")]
+        public List<Louver> RejectedLouvers
+        {
+            get => _rejectedlouvers;
+            set => _rejectedlouvers = value;
+        }
 
 
 
@@ -161,6 +162,11 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         /// </summary>
         public void Sort()
         {
+            foreach (var item in Louvers)
+            {
+                item.Processed = true;
+            }
+
             // Sort Louvers by AbsWarp
             List<Louver> sortedLouvers = Louvers.OrderBy(x => x.AbsDeviation).ToList();
 
@@ -205,13 +211,23 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         public ObservableCollection<LouverListView> GenerateRecordedLouvers()
         {
             _recordedLouvers.Clear();
+            _louvers = _louvers.OrderBy(x => x.ID).ToList();
             foreach (var item in _louvers)
             {
+                //if (!item.Processed)
+                //{
+                //    _recordedLouvers.Add(new LouverListView(item.ID, "Top", item.Reading1));
+                //    _recordedLouvers.Add(new LouverListView(item.ID, "Bottom", item.Reading2));
+                //}
+
                 _recordedLouvers.Add(new LouverListView(item.ID, "Top", item.Reading1));
                 _recordedLouvers.Add(new LouverListView(item.ID, "Bottom", item.Reading2));
+
             }
             return _recordedLouvers;
         }
+
+
 
         /// <summary>
         /// Generates the report data of the set.

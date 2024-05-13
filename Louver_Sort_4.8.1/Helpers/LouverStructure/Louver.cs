@@ -11,14 +11,27 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
     {
         private readonly int _ID;
         private bool _processed;
-        private double _reading1;
-        private double _reading2;
-        private double _devation;
+        private double? _reading1;
+        private double? _reading2;
+        private double? _devation;
         private double _absDevation;
         private bool _orientation;
+
+        private int _sortedId;
+
+
         private bool _rejected;
         private string _causeOfRejection;
-        private int _sortedId;
+
+
+
+        [JsonProperty("rejected")]
+        public bool Rejected { get => _rejected; set => _rejected = value; }
+
+        [JsonProperty("causeOfRejection")]
+        public string CauseOfRejection { get => _causeOfRejection; set => _causeOfRejection = value; }
+
+
 
         [JsonProperty("id")]
         public int ID => _ID;
@@ -27,13 +40,13 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         public bool Processed { get => _processed; set => _processed = value; }
 
         [JsonProperty("reading1")]
-        public double Reading1 { get => _reading1; set => _reading1 = value; }
+        public double? Reading1 { get => _reading1; set => _reading1 = value; }
 
         [JsonProperty("reading2")]
-        public double Reading2 { get => _reading2; set => _reading2 = value; }
+        public double? Reading2 { get => _reading2; set => _reading2 = value; }
 
         [JsonProperty("deviation")]
-        public double Deviation { get => _devation; set => _devation = value; }
+        public double? Deviation { get => _devation; set => _devation = value; }
 
         [JsonProperty("absDeviation")]
         public double AbsDeviation { get => _absDevation; set => _absDevation = value; }
@@ -41,32 +54,13 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         [JsonProperty("orientation")]
         public bool Orientation { get => _orientation; set => _orientation = value; }
 
-        [JsonProperty("rejected")]
-        public bool Rejected { get => _rejected; set => _rejected = value; }
-
-        [JsonProperty("causeOfRejection")]
-        public string CauseOfRejection { get => _causeOfRejection; set => _causeOfRejection = value; }
-
         [JsonProperty("sortedId")]
         public int SortedID { get => _sortedId; set => _sortedId = value; }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Constructor for deserialization
         [JsonConstructor]
-        public Louver(int id, bool processed, double reading1, double reading2, double deviation, double absDeviation, bool orientation, bool rejected, string causeOfRejection)
+        public Louver(int id, bool processed, double reading1, double reading2, double deviation, double absDeviation, bool orientation)
         {
             _ID = id;
             _processed = processed;
@@ -75,8 +69,6 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             _devation = deviation;
             _absDevation = absDeviation;
             _orientation = orientation;
-            _rejected = rejected;
-            _causeOfRejection = causeOfRejection;
         }
 
         // Constructor
@@ -95,13 +87,13 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         /// Sets the first reading of the louver.
         /// </summary>
         /// <param name="r1">The first reading value.</param>
-        public void SetReading1(double r1) => _reading1 = r1;
+        public void SetReading1(double? r1) => _reading1 = r1;
 
         /// <summary>
         /// Sets the second reading of the louver.
         /// </summary>
         /// <param name="r2">The second reading value.</param>
-        public void SetReading2(double r2) => _reading2 = r2;
+        public void SetReading2(double? r2) => _reading2 = r2;
 
         /// <summary>
         /// Calculates the deviation and orientation values of the louver.
@@ -109,16 +101,12 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         public void CalcValues(double rejectionValue)
         {
 
-
-
             //_processed = true;
             //_devation = Math.Abs(Reading1) > Math.Abs(Reading2) ? Reading1 : Reading2;
             //_orientation = _devation > 0;
             //_absDevation = Math.Abs(_devation);
-
-            _processed = true;
             _devation = Reading1 - Reading2;
-            if (_devation > 0)
+            if (_devation < 0)
             {
                 _orientation = true;
             }
@@ -126,7 +114,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             {
                 _orientation = false;
             }
-            _absDevation = Math.Abs(_devation);
+            _absDevation = Math.Abs(Convert.ToDouble( _devation));
             if (_absDevation > rejectionValue)
             {
                 _rejected = true;
@@ -136,6 +124,8 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
                 _rejected = false;
             }
         }
+
+
 
         /// <summary>
         /// Sets the warp value of the louver.
@@ -147,11 +137,11 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         /// Rejects the louver with the specified cause.
         /// </summary>
         /// <param name="cause">The cause of rejection.</param>
-        public void Reject(string cause)
-        {
-            _rejected = true;
-            _causeOfRejection = cause;
-        }
+        //public void Reject(string cause)
+        //{
+        //    _rejected = true;
+        //    _causeOfRejection = cause;
+        //}
 
         /// <summary>
         /// Resets the louver to its initial state.
@@ -159,13 +149,22 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         public void Reset()
         {
             _processed = false;
-            _reading1 = 0;
-            _reading2 = 0;
+            _reading1 = null;
+            _reading2 = null;
             _absDevation = 0;
             _orientation = true;
-            _rejected = false;
-            _causeOfRejection = "";
             _sortedId = 0;
+        }
+
+
+
+
+
+
+        public void Reject(string cause)
+        {
+            _rejected = true;
+            _causeOfRejection = cause;
         }
     }
 }

@@ -14,7 +14,7 @@
                                   materialDesign:ElevationAssist.Elevation="Dp4"
                                   ClipToBounds="False"
                                   CornerRadius="10"
-                                  Mode="PrimaryDark"
+                                  Mode="Dark"
                                   MaxHeight="800">
             <StackPanel Margin="10"
                         VerticalAlignment="Center"

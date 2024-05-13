@@ -14,15 +14,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Louver_Sort_4._8._1.Views
+namespace Louver_Sort_4._8._1.Views.PopUps
 {
     /// <summary>
-    /// Interaction logic for ReCut.xaml
+    /// Interaction logic for Report.xaml
     /// </summary>
-    public partial class ReCut : UserControl
+    public partial class Report : UserControl
     {
         BoundProperities boundProperities;
-        public ReCut()
+        public Report()
         {
             InitializeComponent();
 
@@ -32,7 +32,7 @@ namespace Louver_Sort_4._8._1.Views
             boundProperities = (BoundProperities)Application.Current.MainWindow.DataContext;
             this.DataContext = boundProperities;
 
-            boundProperities.ReCutInitialize();
+            boundProperities.ReportInitialize();
         }
     }
 }

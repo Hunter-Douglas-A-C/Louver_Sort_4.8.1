@@ -12,7 +12,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 
         private int _louverID;
         private string _side;
-        private double _distance;
+        private double? _distance;
 
         [JsonProperty("louver_id")]
         public int LouverID { get => _louverID; set => _louverID = value; }
@@ -21,7 +21,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         public string Side { get => _side; set => _side = value; }
 
         [JsonProperty("distance")]
-        public double Distance { get => _distance; set => _distance = value; }
+        public double? Distance { get => _distance; set => _distance = value; }
 
 
 
@@ -34,7 +34,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         /// <param name="id">The ID of the louver.</param>
         /// <param name="side">The side of the louver.</param>
         /// <param name="distance">The distance of the louver.</param>
-        public LouverListView(int id, string side, double distance)
+        public LouverListView(int id, string side, double? distance)
         {
             _louverID = id;
             _side = side;

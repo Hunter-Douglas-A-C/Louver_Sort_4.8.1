@@ -541,7 +541,11 @@ namespace Louver_Sort_4._8._1.Helpers
 
         private void PassToMain(object sender, EventArgs e)
         {
+            if (_cal != null)
+            {
             LatestReading = Math.Round(_cal.ConvertToInches(ReadNewData()), 2);
+
+            }
         }
 
 

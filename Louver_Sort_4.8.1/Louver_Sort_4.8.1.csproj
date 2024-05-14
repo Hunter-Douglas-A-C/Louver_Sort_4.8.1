@@ -257,6 +257,9 @@
     <Compile Include="Views\PopUps\LouverCount.xaml.cs">
       <DependentUpon>LouverCount.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PopUps\ReCutPopUp.xaml.cs">
+      <DependentUpon>ReCutPopUp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PopUps\SortedLabelsPopUp.xaml.cs">
       <DependentUpon>SortedLabelsPopUp.xaml</DependentUpon>
     </Compile>
@@ -295,6 +298,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PopUps\LouverCount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PopUps\ReCutPopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

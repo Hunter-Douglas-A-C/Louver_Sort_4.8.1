@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:Louver_Sort_4._8._1.Views"
              mc:Ignorable="d"
              d:DesignHeight="900"
-             d:DesignWidth="1000">
+             d:DesignWidth="1500">
 
     <Border CornerRadius="30">
         <materialDesign:ColorZone Grid.Row="0"
@@ -241,7 +241,7 @@
                                       VerticalAlignment="Stretch"
                                       HorizontalAlignment="Stretch"
                                       HorizontalContentAlignment="Center"
-                                      HorizontalScrollBarVisibility="Auto">
+                                      HorizontalScrollBarVisibility="Visible">
                             <ListView ItemsSource="{Binding ReportContent}"
                                       SelectedItem="{Binding ReportSelectedLouver}"
                                       FontSize="20">
@@ -255,11 +255,11 @@
                                     <GridView AllowsColumnReorder="true"
                                               ColumnHeaderToolTip="Louver Data">
                                         <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
-                                                        Header="LouverID"
-                                                        Width="150" />
+                                                        Header="Unsorted ID"
+                                                        Width="175" />
                                         <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
-                                                        Header="LouverOrder"
-                                                        Width="225" />
+                                                        Header="Sorted ID"
+                                                        Width="175" />
                                         <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
                                                         Header="Deviation"
                                                         Width="150" />

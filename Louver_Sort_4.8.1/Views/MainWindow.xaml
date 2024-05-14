@@ -34,7 +34,7 @@
                 Panel.ZIndex="1"
                 VerticalAlignment="Stretch"
                 HorizontalAlignment="Stretch"
-                Width="1000"
+                Width="1500"
                 Height="900"
                 Visibility="{Binding VisibilityPopUp}">
             <ContentControl x:Name="CTCPopup"
@@ -107,7 +107,7 @@
                                                              HorizontalAlignment="Center"
                                                              Kind="Target" />
                                     <TextBlock HorizontalAlignment="Center"
-                                               Text="Calibrate" />
+                                               Text="{DynamicResource CalibrateTab}" />
                                 </StackPanel>
                             </TabItem.Header>
 
@@ -154,7 +154,7 @@
                                                              HorizontalAlignment="Center"
                                                              Kind="ViewSequentialOutline" />
                                     <TextBlock HorizontalAlignment="Center"
-                                               Text="Sort" />
+                                               Text="{DynamicResource SortTab}" />
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseLeftButtonDown">
                                             <i:InvokeCommandAction Command="{Binding ScanLoaded}" />
@@ -206,8 +206,8 @@
                                                                     Width="1300"
                                                                     HorizontalAlignment="Left">
                                                             <TextBox x:Name="barcode1TextBox"
-                                                                     materialDesign:HintAssist.HelperText="Enter Barcode 1"
-                                                                     materialDesign:HintAssist.Hint="Barcode 1"
+                                                                     materialDesign:HintAssist.HelperText="Enter short Barcode"
+                                                                     materialDesign:HintAssist.Hint="Short Barcode"
                                                                      materialDesign:HintAssist.HelperTextFontSize="16"
                                                                      FontSize="24"
                                                                      Focusable="True"
@@ -222,8 +222,8 @@
                                                             </TextBox>
                                                             <TextBox x:Name="Barcode2TextBox"
                                                                      Margin="0,40,0,0"
-                                                                     materialDesign:HintAssist.HelperText="Enter Barcode 2"
-                                                                     materialDesign:HintAssist.Hint="Barcode 2"
+                                                                     materialDesign:HintAssist.HelperText="Enter long Barcode"
+                                                                     materialDesign:HintAssist.Hint="Long Barcode"
                                                                      materialDesign:HintAssist.HelperTextFontSize="16"
                                                                      FontSize="24"
                                                                      Focusable="True"
@@ -290,7 +290,7 @@
                                                     materialDesign:ButtonAssist.CornerRadius="10"
                                                     ToolTip="Print the first set of labels" />
                                             <Button Grid.Row="1"
-                                                    Content="Measure Top Side"
+                                                    Content="Measure Label Side"
                                                     Command="{Binding AcqReadingTop}"
                                                     IsEnabled="{Binding IsEnabledAcquareTop}"
                                                     Width="400"
@@ -300,7 +300,7 @@
                                                     materialDesign:ButtonAssist.CornerRadius="10"
                                                     ToolTip="Record the top side warp measurement" />
                                             <Button Grid.Row="2"
-                                                    Content="Measure Bottom Side"
+                                                    Content="Measure Blank Side"
                                                     Command="{Binding AcqReadingBottom}"
                                                     IsEnabled="{Binding IsEnabledAcquireBottom}"
                                                     Width="400"
@@ -602,7 +602,7 @@
                                                              HorizontalAlignment="Center"
                                                              Kind="Replay" />
                                     <TextBlock HorizontalAlignment="Center"
-                                               Text="ReCut" />
+                                               Text="{DynamicResource ReCutTab}" />
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseLeftButtonDown">
                                             <i:InvokeCommandAction Command="{Binding ReCutLoaded}" />
@@ -682,18 +682,18 @@
 
                                                 </StackPanel>
 
-                                                <!--<Button Grid.Column="2"
+                                                <Button Grid.Column="2"
                                                         Grid.Row="0"
-                                                        Content="Search Order"
+                                                        Content="Cancel"
                                                         HorizontalAlignment="Center"
-                                                        Command="{Binding SearchOrder}"
-                                                        Width="400"
+                                                        Command="{Binding CancelRecut}"
+                                                        Width="200"
                                                         Height="100"
                                                         FontSize="30"
                                                         Style="{StaticResource MaterialDesignRaisedButton}"
-                                                        IsEnabled="{Binding IsEnabledReCutBarcode}"
+                                                        IsEnabled="{Binding IsEnabledReCutCancel}"
                                                         materialDesign:ButtonAssist.CornerRadius="10"
-                                                        ToolTip="Clear all values and start a new set" />-->
+                                                        ToolTip="Clear all values and start a new set" />
                                             </StackPanel>
                                         </materialDesign:ColorZone>
                                     </Viewbox>
@@ -720,18 +720,15 @@
                                                 <ListView.View>
                                                     <GridView AllowsColumnReorder="true"
                                                               ColumnHeaderToolTip="Louver Data">
-                                                        <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
-                                                                        Header="LouverID"
-                                                                        Width="225" />
                                                         <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
-                                                                        Header="LouverOrder"
-                                                                        Width="225" />
+                                                                        Header="Sorted ID"
+                                                                        Width="200" />
                                                         <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
-                                                                        Header="CurrWarp"
-                                                                        Width="225" />
+                                                                        Header="Deviation"
+                                                                        Width="150" />
                                                         <GridViewColumn DisplayMemberBinding="{Binding Status}"
                                                                         Header="Status"
-                                                                        Width="225" />
+                                                                        Width="150" />
                                                     </GridView>
                                                 </ListView.View>
                                             </ListView>
@@ -797,61 +794,7 @@
                                                         ToolTip="Print the first set of labels" />
                                             </StackPanel>
 
-                                            <StackPanel Margin="100,0,0,0">
-                                                <TextBlock Text="Top Side Reading"
-                                                           FontSize="30"
-                                                           VerticalAlignment="Center"
-                                                           HorizontalAlignment="Center" />
-                                                <StackPanel Orientation="Horizontal"
-                                                            VerticalAlignment="Center"
-                                                            HorizontalAlignment="Center">
-                                                    <TextBlock Text="{Binding TopMinimumValue}"
-                                                               FontSize="30" />
-                                                    <TextBlock Text="  &lt;  "
-                                                               FontSize="30" />
-                                                    <materialDesign:ColorZone Mode="Custom"
-                                                                              Background="{Binding TopColor}"
-                                                                              CornerRadius="15">
-                                                        <TextBox Text="{Binding TxtTopAcceptableReplacement, Mode=TwoWay}"
-                                                                 Foreground="Black"
-                                                                 IsReadOnly="True"
-                                                                 HorizontalContentAlignment="Center"
-                                                                 Width="100"
-                                                                 FontSize="30" />
-                                                    </materialDesign:ColorZone>
-                                                    <TextBlock Text="  &gt;  "
-                                                               FontSize="30" />
-                                                    <TextBlock Text="{Binding TopMaximumValue}"
-                                                               FontSize="30" />
-                                                </StackPanel>
-                                                <TextBlock Margin="0,50,0,0"
-                                                           Text="Bottom Side Reading"
-                                                           VerticalAlignment="Center"
-                                                           HorizontalAlignment="Center"
-                                                           FontSize="30" />
-                                                <StackPanel Orientation="Horizontal"
-                                                            VerticalAlignment="Center"
-                                                            HorizontalAlignment="Center">
-                                                    <TextBlock Text="{Binding BottomMinimumValue}"
-                                                               FontSize="30" />
-                                                    <TextBlock Text="  &lt;  "
-                                                               FontSize="30" />
-                                                    <materialDesign:ColorZone Mode="Custom"
-                                                                              Background="{Binding BottomColor}"
-                                                                              CornerRadius="15">
-                                                        <TextBox Text="{Binding TxtBottomAcceptableReplacement, Mode=TwoWay}"
-                                                                 HorizontalContentAlignment="Center"
-                                                                 Foreground="Black"
-                                                                 IsReadOnly="True"
-                                                                 Width="100"
-                                                                 FontSize="30" />
-                                                    </materialDesign:ColorZone>
-                                                    <TextBlock Text="  &gt;  "
-                                                               FontSize="30" />
-                                                    <TextBlock Text="{Binding BottomMaximumValue}"
-                                                               FontSize="30" />
-                                                </StackPanel>
-                                            </StackPanel>
+
 
                                         </StackPanel>
 
@@ -956,7 +899,7 @@
                                                              HorizontalAlignment="Center"
                                                              Kind="Cog" />
                                     <TextBlock HorizontalAlignment="Center"
-                                               Text="Admin" />
+                                               Text="{DynamicResource AdminTab}" />
                                 </StackPanel>
 
                             </TabItem.Header>
@@ -1272,6 +1215,7 @@
                     <Button Margin="8"
                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
                             Command="{Binding ChangeLanguage}"
+                            CommandParameter="en-US"
                             ToolTip="Change language to english">
 
                         <StackPanel Width="auto"

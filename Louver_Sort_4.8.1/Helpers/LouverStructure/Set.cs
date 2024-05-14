@@ -178,23 +178,43 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
                 var bottom = sortedLouvers[0];
                 sortedLouvers.RemoveAt(0);
 
-                int i = 2;
+                int startIndex = 2;
+                int endIndex = _louvers.Count - 1; // Start from the end
+
                 while (sortedLouvers.Count > 0)
                 {
                     if (sortedLouvers.Count != 0)
                     {
-                        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = i;
+                        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = startIndex;
                         sortedLouvers.RemoveAt(0);
+                        startIndex++;
                     }
 
                     if (sortedLouvers.Count != 0)
                     {
-                        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = _louvers.Count - i;
+                        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = endIndex;
                         sortedLouvers.RemoveAt(0);
+                        endIndex--;
                     }
-
-                    i++;
                 }
+
+                //int i = 2;
+                //while (sortedLouvers.Count > 0)
+                //{
+                //    if (sortedLouvers.Count != 0)
+                //    {
+                //        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = i;
+                //        sortedLouvers.RemoveAt(0);
+                //    }
+
+                //    if (sortedLouvers.Count != 0)
+                //    {
+                //        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = _louvers.Count - i;
+                //        sortedLouvers.RemoveAt(0);
+                //    }
+
+                //    i++;
+                //}
 
                 _louvers[Louvers.FindIndex(x => x.ID == bottom.ID)].SortedID = _louvers.Count;
             }

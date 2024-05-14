@@ -2,8 +2,27 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:System="clr-namespace:System;assembly=mscorlib">
 
-    <System:String x:Key="MainMenuHeader">menú principal</System:String>
-    <System:String x:Key="BtnLouver">Posicionamiento de las rejillas</System:String>
-    <System:String x:Key="BtnRecut">Recortar la rejilla</System:String>
-    <System:String x:Key="BtnExit">Salida</System:String>
+    
+    
+    
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Grey.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Secondary/MaterialDesignColor.Orange.xaml">
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
+
+
+
+
+    <System:String x:Key="CalibrateTab">Calibrar</System:String>
+    <System:String x:Key="SortTab">Clasificar</System:String>
+    <System:String x:Key="ReCutTab">ReCut</System:String>
+    <System:String x:Key="AdminTab">Administrador</System:String>
 </ResourceDictionary>

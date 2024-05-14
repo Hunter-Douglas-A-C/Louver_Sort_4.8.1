@@ -1,9 +1,24 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:System="clr-namespace:System;assembly=mscorlib">
+                    xmlns:System="clr-namespace:System;assembly=mscorlib">
 
-    <System:String x:Key="MainMenuHeader">Main Menu</System:String>
-    <System:String x:Key="BtnLouver">Sort Set</System:String>
-    <System:String x:Key="BtnRecut">Re-Cut Louver</System:String>
-    <System:String x:Key="BtnExit">Exit</System:String>
-</ResourceDictionary>
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml">
+            </ResourceDictionary>
+            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml">
+            </ResourceDictionary>
+            <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Grey.xaml">
+            </ResourceDictionary>
+            <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Secondary/MaterialDesignColor.Orange.xaml">
+            </ResourceDictionary>
+        </ResourceDictionary.MergedDictionaries>
+    
+    
+    
+    
+    <System:String x:Key="CalibrateTab">Calibrate</System:String>
+    <System:String x:Key="SortTab">Sort</System:String>
+    <System:String x:Key="ReCutTab">ReCut</System:String>
+    <System:String x:Key="AdminTab">Admin</System:String>
+    </ResourceDictionary>

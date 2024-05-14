@@ -21,6 +21,8 @@ using Zebra.Sdk.Printer;
 using OfficeOpenXml;
 using System.Windows.Media;
 using Louver_Sort_4._8._1.Views.PopUps;
+using System.Reflection;
+using OfficeOpenXml.Packaging.Ionic.Zip;
 
 
 
@@ -296,11 +298,11 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _isEnabledLouverCountOk;
             set { SetProperty(ref _isEnabledLouverCountOk, value); }
         }
-        private bool _isEnabledReCutBarcode = true;
-        public bool IsEnabledReCutBarcode
+        private bool _isEnabledReCutCancel = false;
+        public bool IsEnabledReCutCancel
         {
-            get => _isEnabledReCutBarcode;
-            set { SetProperty(ref _isEnabledReCutBarcode, value); }
+            get => _isEnabledReCutCancel;
+            set { SetProperty(ref _isEnabledReCutCancel, value); }
         }
 
         private bool _isEnabledExcelExport = false;
@@ -420,6 +422,34 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
+        private Visibility _visibilityReCutData = Visibility.Collapsed;
+        public Visibility VisibilityReCutData
+        {
+            get => _visibilityReCutData;
+            set { SetProperty(ref _visibilityReCutData, value); }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //Focus
         private bool _focusBarcode1 = true;
         public bool FocusBarcode1
@@ -433,6 +463,8 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _focusBarcode2;
             set { SetProperty(ref _focusBarcode2, value); }
         }
+
+
         private bool _reCutFocusBarcode1;
         public bool ReCutFocusBarcode1
         {
@@ -596,6 +628,20 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -892,23 +938,11 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 if (value != null)
                 {
-                    SetProperty(ref _reCutSelectedLouver, value);
+                SetProperty(ref _reCutSelectedLouver, value);
+
                 }
 
-                // Find the index of the Louver object with the same ID as ReportSelectedLouver.
-                int index = ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID);
-
-                // If the Louver with the same ID is found, remove it from the collection.
-                if (index != -1)
-                {
-                    IsEnabledCheckTop = true;
-                    TopMinimumValue = (ActiveSet.Louvers[index].Reading1 - CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
-                    TopMaximumValue = (ActiveSet.Louvers[index].Reading1 + CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
-                    BottomMinimumValue = (ActiveSet.Louvers[index].Reading2 - CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
-                    BottomMaximumValue = (ActiveSet.Louvers[index].Reading2 + CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
-                    TopColor = Brushes.Red;
-                    BottomColor = Brushes.Red;
-                }
+                IsEnabledCheckTop = true;
             }
         }
         private string _topMinimumValue;
@@ -953,6 +987,24 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _bottomColor;
             set { SetProperty(ref _bottomColor, value); }
         }
+
+
+
+
+
+        private string _reCutOrientation = "";
+        public string ReCutOrientation
+        {
+            get => _reCutOrientation;
+            set { SetProperty(ref _reCutOrientation, value); }
+        }
+
+
+
+
+
+
+
 
 
 
@@ -1109,8 +1161,10 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand PrintSortedLabels { get; set; }
         public ICommand NextLouverSet { get; set; }
         public ICommand SearchOrder { get; set; }
+        public ICommand CancelRecut { get; set; }
         public ICommand CheckTop { get; set; }
         public ICommand CheckBottom { get; set; }
+        public ICommand CloseReCutPopUp { get; set; }
         public ICommand AdminLogin { get; set; }
         public ICommand LostFocusSettings { get; set; }
         public ICommand LostFocusReporting { get; set; }
@@ -1132,9 +1186,11 @@ namespace Louver_Sort_4._8._1.Helpers
 
             if (_dataQ != null)
             {
-                if (_dataQ.GetSlope() == double.NaN)
+                if (_dataQ.GetSlope() == 0)
                 {
                     IsEnabledCalibrate = true;
+                    IsEnabledSortSet = Visibility.Collapsed;
+                    IsEnabledReCut = Visibility.Collapsed;
                 }
                 else
                 {
@@ -1166,7 +1222,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
             FilterEnter = new BaseCommand(obj =>
             {
-                if (IsEnabledPrintUnsortedLabels == true)
+                if (IsEnabledPrintUnsortedLabels == true && SelectedTabIndex == 1)
                 {
                     PrintUnsortedLabels.Execute("");
                     return;
@@ -1180,17 +1236,17 @@ namespace Louver_Sort_4._8._1.Helpers
                     UpdatePopUp.Execute("Close");
                     return;
                 }
-                else if (IsEnabledAcquareTop == true)
+                else if (IsEnabledAcquareTop == true && SelectedTabIndex == 1)
                 {
                     AcqReadingTop.Execute("");
                     return;
                 }
-                else if (IsEnabledAcquireBottom == true && SelectedPopUp == null)
+                else if (IsEnabledAcquireBottom == true && SelectedPopUp == null && SelectedTabIndex == 1) 
                 {
                     AcqReadingBottom.Execute("");
                     return;
                 }
-                else if (IsEnabledReviewReport == true)
+                else if (IsEnabledReviewReport == true && SelectedTabIndex == 1)
                 {
                     ReviewLouverReport.Execute("");
                     return;
@@ -1218,6 +1274,11 @@ namespace Louver_Sort_4._8._1.Helpers
                 else if (SelectedPopUp is UserMessagePopUp)
                 {
                     UpdatePopUp.Execute("Close");
+                    return;
+                }
+                else if (SelectedPopUp is ReCutPopUp && SelectedTabIndex == 2)
+                {
+                    CloseReCutPopUp.Execute("");
                     return;
                 }
                 else if (SelectedTabIndex == 3)
@@ -1248,6 +1309,9 @@ namespace Louver_Sort_4._8._1.Helpers
                         break;
                     case "Await":
                         SelectedPopUp = new Views.PopUps.AwaitResult();
+                        break;
+                    case "ReCut":
+                        SelectedPopUp = new Views.PopUps.ReCutPopUp();
                         break;
                     case "Close":
                         SelectedPopUp = null;
@@ -1443,8 +1507,9 @@ namespace Louver_Sort_4._8._1.Helpers
                         _calibStep += 1;
                         break;
                     case 8:
-                        VisibilityCalibImage = Visibility.Collapsed;
-                        CalibTxt = "Place flat calibration plate on slide";
+                        VisibilityCalibImage = Visibility.Visible;
+                        CalibTxt = "Place calibration plate on top of rail";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
                         CalibTxtBoxHint = "";
                         VisibilityCalibRecord = Visibility.Collapsed;
                         _calibStep += 1;
@@ -1474,7 +1539,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
                             Application.Current.Dispatcher.Invoke(() =>
                             {
-                                CalibTxt = "Place stepped calibration plate on slide";
+                                CalibTxt = "Place calibration plate on bottom of slide";
+                                CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibBottom.jpg";
                                 CalibTxtBoxHint = "";
                                 VisibilityCalibRecord = Visibility.Collapsed;
                                 UpdatePopUp.Execute("Calibrate");
@@ -1492,6 +1558,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         {
                             Application.Current.Dispatcher.Invoke(() =>
                         {
+                            VisibilityCalibImage = Visibility.Collapsed;
                             UpdatePopUp.Execute("Close");
                             UpdatePopUp.Execute("Await");
                         });
@@ -1511,6 +1578,7 @@ namespace Louver_Sort_4._8._1.Helpers
                                     _dataQ.StartActiveMonitoring();
                                 });
                                 r.Start();
+                                CalibTxt = "Place plate on rail and verify the reading is 0";
                                 _dataQ.LatestReadingChanged += DataQLatestValueChangedHandler;
                                 UpdatePopUp.Execute("Calibrate");
                                 _calibStep++;
@@ -1945,10 +2013,11 @@ namespace Louver_Sort_4._8._1.Helpers
                             ReCutWidth = order.BarcodeHelper.Width.ToString();
                             ReCutLength = Convert.ToDouble(order.BarcodeHelper.Length.ToString());
 
+
                             var report = ActiveSet.GenerateReport();
                             ReCutContent = null;
                             ReCutContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
-                            IsEnabledReCutBarcode = false;
+                            IsEnabledReCutCancel = true;
                         }
                         else
                         {
@@ -1973,8 +2042,20 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             });
 
+            CancelRecut = new BaseCommand(obj =>
+            {
+
+                ReCutBarcode1 = null;
+                ReCutBarcode2 = null;
+                ReCutContent = null;
+                IsEnabledReCutCancel = true;
+
+            });
+
             CheckTop = new BaseCommand(obj =>
                 {
+                    TopColor = Brushes.Red;
+                    BottomColor = Brushes.Red;
                     double value;
                     Thread RecordThread = new Thread(() =>
                     {
@@ -1982,13 +2063,13 @@ namespace Louver_Sort_4._8._1.Helpers
                         {
                             UpdatePopUp.Execute("Await");
                         });
-                        value = Math.Round(_dataQ.WaitForDataCollection(true).Result, 2);
+                        RecutReading1 = Math.Round(_dataQ.WaitForDataCollection(true).Result, 2).ToString();
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            TxtTopAcceptableReplacement = value.ToString();
 
-                            if (Math.Abs(value - Convert.ToDouble(RecutReading1)) <= CalculateRejection(Convert.ToDouble(ReCutLength)))
+                            if (Math.Abs(Convert.ToDouble(RecutReading1)) <= CalculateRejection(Convert.ToDouble(ReCutLength)))
                             {
+                                TxtTopAcceptableReplacement = RecutReading1.ToString();
                                 TopColor = Brushes.Green;
                             }
                             else
@@ -2015,43 +2096,76 @@ namespace Louver_Sort_4._8._1.Helpers
                     {
                         UpdatePopUp.Execute("Await");
                     });
-                    value = Math.Round(_dataQ.WaitForDataCollection(true).Result, 2);
+                    RecutReading2 = Math.Round(_dataQ.WaitForDataCollection(true).Result, 2).ToString();
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         UpdatePopUp.Execute("Close");
-                        TxtBottomAcceptableReplacement = value.ToString();
+                        TxtBottomAcceptableReplacement = RecutReading2.ToString();
 
-                        if (Math.Abs(value - Convert.ToDouble(RecutReading2)) <= CalculateRejection(Convert.ToDouble(ReCutLength)))
+                        if (Math.Abs(Convert.ToDouble(RecutReading2)) <= CalculateRejection(Convert.ToDouble(ReCutLength)))
                         {
+                            VisibilityReCutData = Visibility.Visible;
+
+
                             BottomColor = Brushes.Green;
                             TxtUserMessage = "Louver is a good replacement";
-                            UpdatePopUp.Execute("Message");
+                            UpdatePopUp.Execute("ReCut");
+                            if (ActiveSet.Louvers.FirstOrDefault(l => l.ID == ReCutSelectedLouver.LouverOrder).Orientation == true)
+                            {
+                                ReCutOrientation = "flip";
+                            }
+                            else
+                            {
+                                ReCutOrientation = "Don't Flip";
+                            }
+
+                            // Find the index of the Louver object with the same ID as ReportSelectedLouver.
+                            int index = ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID);
+
+                            // If the Louver with the same ID is found, remove it from the collection.
+                            if (index != -1)
+                            {
+
+                                TopMinimumValue = (ActiveSet.Louvers[index].Reading1 - CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
+                                TopMaximumValue = (ActiveSet.Louvers[index].Reading1 + CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
+                                BottomMinimumValue = (ActiveSet.Louvers[index].Reading2 - CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
+                                BottomMaximumValue = (ActiveSet.Louvers[index].Reading2 + CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
+
+                            }
+
                         }
                         else
                         {
                             BottomColor = Brushes.Red;
                             TxtUserMessage = "Louver is NOT a replacement";
-                            UpdatePopUp.Execute("Message");
+                            UpdatePopUp.Execute("ReCut");
                         }
 
-                        ReCutContent = null;
-                        TopMinimumValue = null;
-                        TopMaximumValue = null;
-                        BottomMinimumValue = null;
-                        BottomMaximumValue = null;
-                        IsEnabledCheckTop = false;
-                        IsEnabledCheckBottom = false;
-                        TopColor = Brushes.Gray;
-                        BottomColor = Brushes.Gray;
-                        TxtTopAcceptableReplacement = null;
-                        TxtBottomAcceptableReplacement = null;
-                        IsEnabledReCutBarcode = true;
-                        FocusBarcode1 = true;
-                        ReCutBarcode1 = null;
-                        ReCutBarcode2 = null;
+
                     });
                 });
                 RecordThread.Start();
+
+            });
+
+            CloseReCutPopUp = new BaseCommand(obj =>
+            {
+                UpdatePopUp.Execute("Close");
+
+                ReCutContent = null;
+                TopMinimumValue = null;
+                TopMaximumValue = null;
+                BottomMinimumValue = null;
+                BottomMaximumValue = null;
+                IsEnabledCheckTop = false;
+                IsEnabledCheckBottom = false;
+                TopColor = Brushes.Gray;
+                BottomColor = Brushes.Gray;
+                TxtTopAcceptableReplacement = null;
+                TxtBottomAcceptableReplacement = null;
+                FocusBarcode1 = true;
+                ReCutBarcode1 = null;
+                ReCutBarcode2 = null;
 
             });
 
@@ -2117,12 +2231,19 @@ namespace Louver_Sort_4._8._1.Helpers
         //View Intialize
         public void SortedLabelsPopUpInitialize()
         {
-            ObservableCollection<LabelID> lables = new ObservableCollection<LabelID>();
+            List<LabelID> lables = new List<LabelID>();
+            ObservableCollection<LabelID> labels = new ObservableCollection<LabelID>();
             foreach (var louver in ReportContent)
             {
                 lables.Add(new LabelID(louver.LouverID, louver.LouverOrder, louver.Orientation));
             }
-            LabelIDContent = lables;
+            lables = lables.OrderBy(louver => louver.UnsortedID).ToList();
+            labels.Clear();
+            foreach (var item in lables)
+            {
+                labels.Add(item);
+            }
+            LabelIDContent = labels;
         }
 
         //public void MenuInitialize()
@@ -2201,7 +2322,6 @@ namespace Louver_Sort_4._8._1.Helpers
 
                             _dataQ.AnalogUpdated += new EventHandler(DataQNewData);
                             _dataQ.LostConnection += new EventHandler(DataQLostConnection);
-
 
                             _dataQ.StartActiveMonitoring();
                         }
@@ -2298,7 +2418,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public void LoadFromJson()
         {
-            string json = File.ReadAllText(_jSONSaveLocation + "\\LouverSortData.ini");
+            string json = File.ReadAllText(_jSONSaveLocation + "LouverSortData.ini");
 
             var settings = new JsonSerializerSettings
             {
@@ -2307,7 +2427,7 @@ namespace Louver_Sort_4._8._1.Helpers
             };
             _allOrders = JsonConvert.DeserializeObject<OrderManager>(json, settings);
 
-            json = File.ReadAllText(_jSONSaveLocation + "\\Globals.ini");
+            json = File.ReadAllText(_jSONSaveLocation + "Globals.ini");
 
             settings = new JsonSerializerSettings
             {
@@ -2316,14 +2436,22 @@ namespace Louver_Sort_4._8._1.Helpers
             };
             _globals = JsonConvert.DeserializeObject<Globals>(json, settings);
 
-            json = File.ReadAllText(_jSONSaveLocation + "\\DataQ.ini");
+            json = File.ReadAllText(_jSONSaveLocation + "DataQ.ini");
 
             settings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
-            _dataQ._cal = JsonConvert.DeserializeObject<Calibration>(json, settings);
+            //UNCOMMENT
+            if (json != "null")
+            {
+                _dataQ._cal = JsonConvert.DeserializeObject<Calibration>(json, settings);
+            }
+            else
+            {
+                _dataQ._cal = new Calibration();
+            }
 
         }
 
@@ -2332,7 +2460,7 @@ namespace Louver_Sort_4._8._1.Helpers
             DeleteDataOlderThan90Days();
             //// Serialize to JSONF
             JsonSerializer serializer = new JsonSerializer();
-            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "\\LouverSortData.ini"))
+            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "LouverSortData.ini"))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
                 if (_allOrders != null)
@@ -2340,7 +2468,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     serializer.Serialize(writer, _allOrders);
                 }
             }
-            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "\\Globals.ini"))
+            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "Globals.ini"))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
                 if (_globals != null)
@@ -2349,7 +2477,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     serializer.Serialize(writer, _globals);
                 }
             }
-            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "\\DataQ.ini"))
+            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "DataQ.ini"))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
                 if (_dataQ != null)

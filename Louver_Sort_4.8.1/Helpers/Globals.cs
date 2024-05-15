@@ -14,5 +14,6 @@ namespace Louver_Sort_4._8._1.Helpers
         public int RecalibrationPeriod = 10;
         public int OrderCount = 0;
         public int CalibratePeriod = 100;
+        public string ExcelExportLocation = "B:\\Documents";
     }
 }

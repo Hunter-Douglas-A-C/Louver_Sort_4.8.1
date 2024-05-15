@@ -120,13 +120,13 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
-        private string _excelExportLocation;
+        //private string _excelExportLocation;
         public string ExcelExportLocation
         {
-            get => _excelExportLocation;
+            get => _globals.ExcelExportLocation;
             set
             {
-                SetProperty(ref _excelExportLocation, value);
+                SetProperty(ref _globals.ExcelExportLocation, value);
                 if (DateRangeStart != null && DateRangeEnd != null && ExcelExportLocation != null)
                 {
                     IsEnabledExcelExport = true;
@@ -1283,7 +1283,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else if (SelectedTabIndex == 3)
                 {
-                    AdminLogin.Execute("");
+                    //AdminLogin.Execute("");
                 }
             });
 
@@ -2196,7 +2196,7 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 string dateTimeFormat = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
                 string filename = $"LouverSortExport_{dateTimeFormat}.xlsx";
-                string fullPath = Path.Combine(_excelExportLocation, filename);
+                string fullPath = Path.Combine(ExcelExportLocation, filename);
                 ExportToExcel(fullPath);
 
                 TxtUserMessage = "Report Generated";
@@ -2204,7 +2204,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 DateRangeStart = null;
                 DateRangeEnd = null;
                 IsEnabledExcelExport = false;
-                ExcelExportLocation = null;
+                //ExcelExportLocation = null;
             });
 
             ShutDown = new BaseCommand(obj =>

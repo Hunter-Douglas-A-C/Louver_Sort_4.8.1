@@ -244,12 +244,16 @@
     <Compile Include="Helpers\LouverStructure\OrderManager.cs" />
     <Compile Include="Helpers\LouverStructure\OrderWithBarcode.cs" />
     <Compile Include="Helpers\LouverStructure\Panel.cs" />
+    <Compile Include="Helpers\LouverStructure\Reading.cs" />
     <Compile Include="Helpers\LouverStructure\ReportListView.cs" />
     <Compile Include="Helpers\LouverStructure\Set.cs" />
     <Compile Include="Helpers\LouverStructure\SetID.cs" />
     <Compile Include="Helpers\ZebraPrinterHelper.cs" />
     <Compile Include="Views\PopUps\AwaitResult.xaml.cs">
       <DependentUpon>AwaitResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PopUps\CalibrateLaserPopUp.xaml.cs">
+      <DependentUpon>CalibrateLaserPopUp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PopUps\CalibratePopUp.xaml.cs">
       <DependentUpon>CalibratePopUp.xaml</DependentUpon>
@@ -292,6 +296,10 @@
     <Page Include="Views\PopUps\AwaitResult.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PopUps\CalibrateLaserPopUp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PopUps\CalibratePopUp.xaml">
       <SubType>Designer</SubType>

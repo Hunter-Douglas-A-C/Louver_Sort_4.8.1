@@ -49,7 +49,7 @@ namespace Louver_Sort_4._8._1.Views
 
         private void ListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            //e.Handled = true;
         }
 
 

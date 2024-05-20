@@ -78,6 +78,63 @@
                 </Setter>
             </Style>-->
 
+
+
+            <!--<Style TargetType="TextBox">
+                <Setter Property="Background"
+                        Value="White" />
+                <Setter Property="BorderBrush"
+                        Value="Gray" />
+                <Setter Property="BorderThickness"
+                        Value="1" />
+                <Setter Property="Padding"
+                        Value="2" />
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                        Value="Auto" />
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+                        Value="Auto" />
+                <Setter Property="VerticalContentAlignment"
+                        Value="Center" />
+                <Setter Property="HorizontalContentAlignment"
+                        Value="Left" />
+                <Setter Property="FocusVisualStyle"
+                        Value="{x:Null}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TextBox">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <ScrollViewer x:Name="PART_ContentHost" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>-->
+            <!--<Style TargetType="{x:Type TextBox}"
+                   BasedOn="{StaticResource {x:Type TextBox}}">
+                <Style.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                     Color="#80FFFFFF" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
+                                     Color="#80FFFFFF" />
+                </Style.Resources>
+            </Style>-->
+
+
+            <Style TargetType="TextBox"
+                   BasedOn="{StaticResource MaterialDesignTextBox}">
+                <Style.Triggers>
+                    <Trigger Property="IsKeyboardFocusWithin"
+                             Value="True">
+                        <!--<Setter Property="Foreground"
+                                Value="#80FFFFFF" />-->
+                        <Setter Property="Background"
+                                Value="#80FFFFFF" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
             <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">50</sys:Double>
             <sys:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarHeightKey}">50</sys:Double>
             <ResourceDictionary.MergedDictionaries>

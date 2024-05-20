@@ -23,6 +23,7 @@ using System.Windows.Media;
 using Louver_Sort_4._8._1.Views.PopUps;
 using System.Reflection;
 using OfficeOpenXml.Packaging.Ionic.Zip;
+using FluentFTP.Helpers;
 
 
 
@@ -120,6 +121,45 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
+
+        public double ReCutRailSpec
+        {
+            get
+            {
+                return _globals.ReCutRailSpec;
+            }
+            set
+            {
+                SetProperty(ref _globals.ReCutRailSpec, value);
+            }
+        }
+        public double ReCutLouverToLouverSpec
+        {
+            get
+            {
+                return _globals.ReCutLouverToLouverSpec;
+            }
+            set
+            {
+                SetProperty(ref _globals.ReCutLouverToLouverSpec, value);
+            }
+        }
+
+
+        public double GapSpec
+        {
+            get
+            {
+                return _globals.GapSpec;
+            }
+            set
+            {
+                SetProperty(ref _globals.GapSpec, value);
+            }
+        }
+
+
+
         //private string _excelExportLocation;
         public string ExcelExportLocation
         {
@@ -144,6 +184,19 @@ namespace Louver_Sort_4._8._1.Helpers
             set
             {
                 SetProperty(ref _globals.RecalibrationPeriod, value);
+            }
+        }
+
+
+        public double CalibrationRejectionSpec
+        {
+            get
+            {
+                return _globals.CalibrationRejectionSpec;
+            }
+            set
+            {
+                SetProperty(ref _globals.CalibrationRejectionSpec, value);
             }
         }
 
@@ -751,7 +804,7 @@ namespace Louver_Sort_4._8._1.Helpers
             set
             {
                 Regex regex = new Regex("[0-9]");
-                if (regex.IsMatch(value.ToString()))
+                if (regex.IsMatch(value.ToString()) && value > 0)
                 {
                     IsEnabledLouverCountOk = true;
                     SetProperty(ref _txtLouverCount, value);
@@ -938,10 +991,37 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 if (value != null)
                 {
-                SetProperty(ref _reCutSelectedLouver, value);
+                    SetProperty(ref _reCutSelectedLouver, value);
 
+                    // Find the index of the Louver object with the same ID as ReportSelectedLouver.
+                    int index = ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID);
+
+
+                    ZebraPrinter _Printer = _zebra.Connect();
+                    List<Louver> ToPrint = new List<Louver>();
+                    ToPrint.Add(ActiveSet.Louvers[index]);
+                    _zebra.PrintSortedLouverIDs(_Printer, ToPrint);
+                    _zebra.Disconnect(_Printer);
+
+                    // If the Louver with the same ID is found, remove it from the collection.
+                    if (index != -1)
+                    {
+                        if (ReCutSelectedLouver.LouverOrder == 1 || ReCutSelectedLouver.LouverOrder == ActiveSet.LouverCount)
+                        {
+                            TopMinimumValue = (ActiveSet.Louvers[index].Readings.Reading1 - ReCutRailSpec).ToString().Substring(0, 4);
+                            TopMaximumValue = (ActiveSet.Louvers[index].Readings.Reading1 + ReCutRailSpec).ToString().Substring(0, 4);
+                            BottomMinimumValue = (ActiveSet.Louvers[index].Readings.Reading2 - ReCutRailSpec).ToString().Substring(0, 4);
+                            BottomMaximumValue = (ActiveSet.Louvers[index].Readings.Reading2 + ReCutRailSpec).ToString().Substring(0, 4);
+                        }
+                        else
+                        {
+                            TopMinimumValue = (ActiveSet.Louvers[index].Readings.Reading1 - ReCutLouverToLouverSpec).ToString();
+                            TopMaximumValue = (ActiveSet.Louvers[index].Readings.Reading1 + ReCutLouverToLouverSpec).ToString();
+                            BottomMinimumValue = (ActiveSet.Louvers[index].Readings.Reading2 - ReCutLouverToLouverSpec).ToString();
+                            BottomMaximumValue = (ActiveSet.Louvers[index].Readings.Reading2 + ReCutLouverToLouverSpec).ToString();
+                        }
+                    }
                 }
-
                 IsEnabledCheckTop = true;
             }
         }
@@ -1139,6 +1219,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand ReCutBarcode1KeyDown { get; set; }
         public ICommand ReCutBarcode2KeyDown { get; set; }
         public ICommand Calibrate { get; set; }
+        public ICommand CalibrateLaser { get; set; }
         public ICommand CalibUp { get; set; }
         public ICommand CalibDown { get; set; }
         public ICommand CalibRecord { get; set; }
@@ -1164,6 +1245,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand CancelRecut { get; set; }
         public ICommand CheckTop { get; set; }
         public ICommand CheckBottom { get; set; }
+        public ICommand RejectRecut { get; set; }
         public ICommand CloseReCutPopUp { get; set; }
         public ICommand AdminLogin { get; set; }
         public ICommand LostFocusSettings { get; set; }
@@ -1207,7 +1289,10 @@ namespace Louver_Sort_4._8._1.Helpers
                 IsEnabledReCut = Visibility.Collapsed;
             }
 
-
+            IsEnabledCalibrate = true;
+            IsEnabledSortSet = Visibility.Visible;
+            IsEnabledReCut = Visibility.Visible;
+            SelectedTabIndex = 1;
 
             var Mapper = Mappers.Xy<MeasureModel>()
             .X(x => x.ElapsedMilliseconds)
@@ -1229,7 +1314,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else if (SelectedPopUp is LouverCount)
                 {
-
+                    LouverCountOk.Execute("");
                 }
                 else if (TxtUserMessage == "Place Unsorted Labels on Louvers" && SelectedPopUp is UserMessagePopUp)
                 {
@@ -1241,7 +1326,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     AcqReadingTop.Execute("");
                     return;
                 }
-                else if (IsEnabledAcquireBottom == true && SelectedPopUp == null && SelectedTabIndex == 1) 
+                else if (IsEnabledAcquireBottom == true && SelectedPopUp == null && SelectedTabIndex == 1)
                 {
                     AcqReadingBottom.Execute("");
                     return;
@@ -1304,6 +1389,9 @@ namespace Louver_Sort_4._8._1.Helpers
                     case "Calibrate":
                         SelectedPopUp = new Views.PopUps.CalibratePopUp();
                         break;
+                    case "CalibrateLaser":
+                        SelectedPopUp = new Views.PopUps.CalibrateLaserPopUp();
+                        break;
                     case "Message":
                         SelectedPopUp = new Views.PopUps.UserMessagePopUp();
                         break;
@@ -1314,6 +1402,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         SelectedPopUp = new Views.PopUps.ReCutPopUp();
                         break;
                     case "Close":
+                        TxtUserMessage = "";
                         SelectedPopUp = null;
                         VisibilityPopUp = Visibility.Hidden;
                         IsEnabledMain = true;
@@ -1459,54 +1548,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     case 1:
                         UpdatePopUp.Execute("Calibrate");
-                        CalibTxt = "Place laser centering plate on slide and adjust sensor until red dot is in the cross hair";
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\1.png";
-                        VisibilityCalibImage = Visibility.Visible;
-                        _calibStep += 1;
-                        break;
-                    case 2:
-                        UpdatePopUp.Execute("Calibrate");
-                        CalibTxt = "Turn laser to teach mode";
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
-                        VisibilityCalibImage = Visibility.Visible;
-                        _calibStep += 1;
-                        break;
-                    case 3:
-                        UpdatePopUp.Execute("Calibrate");
-                        CalibTxt = "Set calibration plate on top of slide";
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\3.png";
-                        VisibilityCalibImage = Visibility.Visible;
-                        _calibStep += 1;
-                        break;
-                    case 4:
-                        UpdatePopUp.Execute("Calibrate");
-                        CalibTxt = "Press plus on the laser";
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
-                        VisibilityCalibImage = Visibility.Visible;
-                        _calibStep += 1;
-                        break;
-                    case 5:
-                        UpdatePopUp.Execute("Calibrate");
-                        CalibTxt = "Set calibration plate on bottom of slide";
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\4.png";
-                        VisibilityCalibImage = Visibility.Visible;
-                        _calibStep += 1;
-                        break;
-                    case 6:
-                        UpdatePopUp.Execute("Calibrate");
-                        CalibTxt = "Press minus on laser";
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
-                        VisibilityCalibImage = Visibility.Visible;
-                        _calibStep += 1;
-                        break;
-                    case 7:
-                        UpdatePopUp.Execute("Calibrate");
-                        CalibTxt = "Turn dial on laser back to run";
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\5.png";
-                        VisibilityCalibImage = Visibility.Visible;
-                        _calibStep += 1;
-                        break;
-                    case 8:
                         VisibilityCalibImage = Visibility.Visible;
                         CalibTxt = "Place calibration plate on top of rail";
                         CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
@@ -1514,7 +1555,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         VisibilityCalibRecord = Visibility.Collapsed;
                         _calibStep += 1;
                         break;
-                    case 9:
+                    case 2:
                         Thread RecordThread = new Thread(() =>
                         {
                             Application.Current.Dispatcher.Invoke(() =>
@@ -1553,7 +1594,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         });
                         RecordThread.Start();
                         break;
-                    case 10:
+                    case 3:
                         Thread RecordThread1 = new Thread(() =>
                         {
                             Application.Current.Dispatcher.Invoke(() =>
@@ -1569,25 +1610,190 @@ namespace Louver_Sort_4._8._1.Helpers
                             _dataQ.SetCalibrationStep();
                             Application.Current.Dispatcher.Invoke(() =>
                             {
-                                UpdatePopUp.Execute("Close");
-                                //CalibTxt = "Calibartion value is:   " + _dataQ.GetSlope();
+                                CalibTxt = "Place highest step of Louver Sag Guage on top of rail";
+                                CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
+                                CalibTxtBoxHint = "";
                                 VisibilityCalibRecord = Visibility.Collapsed;
-                                VisibilityAdjustCalib = Visibility.Visible;
-                                Thread r = new Thread(() =>
-                                {
-                                    _dataQ.StartActiveMonitoring();
-                                });
-                                r.Start();
-                                CalibTxt = "Place plate on rail and verify the reading is 0";
-                                _dataQ.LatestReadingChanged += DataQLatestValueChangedHandler;
                                 UpdatePopUp.Execute("Calibrate");
-                                _calibStep++;
+                                _calibStep += 1;
+
                             });
                         });
                         RecordThread1.Start();
 
                         break;
-                    case 11:
+                    case 4:
+                        Thread RecordThread2 = new Thread(() =>
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                UpdatePopUp.Execute("Close");
+                                UpdatePopUp.Execute("Await");
+                            });
+
+
+                            if (_dataQ == null)
+                            {
+                                ConnectToDataQ();
+                            }
+
+                            _dataQ.CheckCalFlat();
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                UpdatePopUp.Execute("Close");
+                            });
+
+
+
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                CalibTxt = "Place lowest step of Louver Sag Guage on top of rail";
+                                CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
+                                CalibTxtBoxHint = "";
+                                VisibilityCalibRecord = Visibility.Collapsed;
+                                UpdatePopUp.Execute("Calibrate");
+                                _calibStep += 1;
+
+                            });
+
+
+
+                        });
+                        RecordThread2.Start();
+                        break;
+                    case 5:
+                        Thread RecordThread3 = new Thread(() =>
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                UpdatePopUp.Execute("Close");
+                                UpdatePopUp.Execute("Await");
+                            });
+
+
+                            if (_dataQ == null)
+                            {
+                                ConnectToDataQ();
+                            }
+
+                            _dataQ.CheckCalStep(CalibrationRejectionSpec);
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                UpdatePopUp.Execute("Close");
+                            });
+
+
+
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                if (_dataQ._cal.Successful)
+                                {
+                                    CalibTxt = "Calibration Passed";
+                                    VisibilityCalibImage = Visibility.Collapsed;
+                                    CalibTxtBoxHint = "";
+                                    VisibilityCalibRecord = Visibility.Collapsed;
+                                    UpdatePopUp.Execute("Calibrate");
+                                    _calibStep += 1;
+                                }
+                                else
+                                {
+                                    CalibTxt = "Calibration Failed. Repeat Calibration";
+                                    VisibilityCalibImage = Visibility.Collapsed;
+                                    CalibTxtBoxHint = "";
+                                    VisibilityCalibRecord = Visibility.Collapsed;
+                                    UpdatePopUp.Execute("Calibrate");
+                                    _calibStep += 1;
+                                }
+
+
+                            });
+                        });
+                        RecordThread3.Start();
+                        break;
+                    case 6:
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+
+
+
+                            UpdatePopUp.Execute("Close");
+                            _calibStep = 1;
+                            if (!_dataQ._cal.Successful)
+                            {
+                                UpdatePopUp.Execute("Close");
+                                IsEnabledSortSet = Visibility.Collapsed;
+                                IsEnabledReCut = Visibility.Collapsed;
+                                VisibilityAdjustCalib = Visibility.Collapsed;
+                                SelectedTabIndex = 0;
+                            }
+                            else
+                            {
+                                IsEnabledSortSet = Visibility.Visible;
+                                IsEnabledReCut = Visibility.Visible;
+                                VisibilityAdjustCalib = Visibility.Collapsed;
+                                SelectedTabIndex = 1;
+                            }
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            CalibrateLaser = new BaseCommand(obj =>
+            {
+                switch (_calibStep)
+                {
+                    case 1:
+                        UpdatePopUp.Execute("CalibrateLaser");
+                        CalibTxt = "Place laser centering plate on slide and adjust sensor until red dot is in the cross hair";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\1.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 2:
+                        UpdatePopUp.Execute("CalibrateLaser");
+                        CalibTxt = "Turn laser to teach mode";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 3:
+                        UpdatePopUp.Execute("CalibrateLaser");
+                        CalibTxt = "Set calibration plate on top of slide";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\3.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 4:
+                        UpdatePopUp.Execute("CalibrateLaser");
+                        CalibTxt = "Press plus on the laser";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 5:
+                        UpdatePopUp.Execute("CalibrateLaser");
+                        CalibTxt = "Set calibration plate on bottom of slide";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\4.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 6:
+                        UpdatePopUp.Execute("CalibrateLaser");
+                        CalibTxt = "Press minus on laser";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 7:
+                        UpdatePopUp.Execute("CalibrateLaser");
+                        CalibTxt = "Turn dial on laser back to run";
+                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\5.png";
+                        VisibilityCalibImage = Visibility.Visible;
+                        _calibStep += 1;
+                        break;
+                    case 8:
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             UpdatePopUp.Execute("Close");
@@ -1691,7 +1897,12 @@ namespace Louver_Sort_4._8._1.Helpers
                     be.UpdateSource();
                 }
 
-                ClosePopUp.Execute("");
+                if (TxtLouverCount == null || TxtLouverCount == 0)
+                {
+                    return;
+                }
+
+                UpdatePopUp.Execute("Close");
                 var order = _allOrders.CreateOrderAfterScanAndFillAllVariables(new BarcodeSet(Barcode1, Barcode2), Convert.ToInt32(TxtLouverCount));
                 _globals.OrderCount++;
 
@@ -1716,6 +1927,9 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 ListViewContent = ActiveSet.GenerateRecordedLouvers();
                 ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
+
+
+                PrintUnsortedLabels.Execute("");
             });
 
             ClosePopUp = new BaseCommand(obj =>
@@ -1762,8 +1976,8 @@ namespace Louver_Sort_4._8._1.Helpers
                     {
                         UpdatePopUp.Execute("Await");
                     });
-                    value = Math.Round(_dataQ.WaitForDataCollection(true).Result, 2);
-                    ActiveSet.Louvers[ActiveLouverID - 1].SetReading1(value);
+                    value = _dataQ.WaitForDataCollection(true).Result;
+                    ActiveSet.Louvers[ActiveLouverID - 1].Readings.SetReading1(value);
                     ActiveTopReading = value;
                     Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -1786,33 +2000,67 @@ namespace Louver_Sort_4._8._1.Helpers
                     {
                         UpdatePopUp.Execute("Await");
                     });
-                    value = Math.Round(_dataQ.WaitForDataCollection(true).Result, 2);
-                    ActiveSet.Louvers[ActiveLouverID - 1].SetReading2(value);
-                    ActiveBottomReading = value;
-                    Application.Current.Dispatcher.Invoke(() =>
+                    value = _dataQ.WaitForDataCollection(true).Result;
+                    TimeSpan difference = ActiveSet.Louvers[ActiveLouverID - 1].Readings.DateReading1 - DateTime.Now;
+                    if (Math.Abs(difference.TotalSeconds) >= 2)
                     {
-                        ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                        ActiveSet.Louvers[ActiveLouverID - 1].CalcValues(Convert.ToDouble(CurLength));
-                        ActiveDeviation = Convert.ToDouble(ActiveSet.Louvers[ActiveLouverID - 1].Deviation);
-                        ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                        UpdatePopUp.Execute("Close");
-
-                        foreach (var louver in ActiveSet.Louvers)
+                        if (Math.Abs(Convert.ToDouble((ActiveSet.Louvers[ActiveLouverID - 1].Readings.Reading1 - value))) >= 0.007)
                         {
-                            if (louver.Reading1 == null && louver.Reading2 == null)
+                            ActiveSet.Louvers[ActiveLouverID - 1].Readings.SetReading2(value);
+                            ActiveBottomReading = value;
+                            Application.Current.Dispatcher.Invoke(() =>
                             {
-                                ActiveLouverID = louver.ID;
-                                IsEnabledAcquareTop = true;
+                                ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                                ActiveSet.Louvers[ActiveLouverID - 1].CalcValues(CalculateRejection(Convert.ToDouble(CurLength)));
+                                ActiveDeviation = Convert.ToDouble(ActiveSet.Louvers[ActiveLouverID - 1].Deviation);
+                                ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                                UpdatePopUp.Execute("Close");
+
+                                foreach (var louver in ActiveSet.Louvers)
+                                {
+                                    if (louver.Readings.Reading1 == null && louver.Readings.Reading2 == null)
+                                    {
+                                        ActiveLouverID = louver.ID;
+                                        IsEnabledAcquareTop = true;
+                                        IsEnabledAcquireBottom = false;
+                                        ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
+                                        return;
+                                    }
+                                }
+                                IsEnabledAcquareTop = false;
                                 IsEnabledAcquireBottom = false;
-                                ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
-                                return;
-                            }
+                                IsEnabledReviewReport = true;
+                                ListViewSelectedLouver = null;
+                            });
                         }
-                        IsEnabledAcquareTop = false;
-                        IsEnabledAcquireBottom = false;
-                        IsEnabledReviewReport = true;
-                        ListViewSelectedLouver = null;
-                    });
+                        else
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                TxtUserMessage = "Readings are too close together";
+                                UpdatePopUp.Execute("Message");
+                            });
+
+
+                            return;
+                        }
+
+
+                    }
+                    else
+                    {
+
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            TxtUserMessage = "Ensure you record the correct louver side";
+                            UpdatePopUp.Execute("Message");
+                        });
+
+
+                        return;
+                    }
+
+
                 });
                 RecordThread.Start();
                 //}
@@ -1889,7 +2137,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 IsEnabledReworkSet = false;
                 foreach (var louver in ActiveSet.Louvers)
                 {
-                    if (louver.Reading1 == null && louver.Reading2 == null)
+                    if (louver.Readings.Reading1 == null && louver.Readings.Reading2 == null)
                     {
                         ActiveLouverID = louver.ID;
                         IsEnabledAcquareTop = true;
@@ -1996,11 +2244,26 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     if ((ReCutBarcode1 != "" && ReCutBarcode2 != ""))
                     {
+
+
+
+
+
+
+
                         var order = _allOrders.GetOrder(new BarcodeSet(ReCutBarcode1, ReCutBarcode2));
                         if (order != null)
                         {
                             ActivePanel = order.GetOpeningByLine(order.BarcodeHelper.Line).GetPanel(order.BarcodeHelper.PanelID);
                             ActiveSet = ActivePanel.GetSet(order.BarcodeHelper.Set);
+
+
+
+
+
+
+
+
 
                             ReCutBarcode1 = order.BarcodeHelper.BarcodeSet.Barcode1.ToString();
                             ReCutBarcode2 = order.BarcodeHelper.BarcodeSet.Barcode2.ToString();
@@ -2014,10 +2277,15 @@ namespace Louver_Sort_4._8._1.Helpers
                             ReCutLength = Convert.ToDouble(order.BarcodeHelper.Length.ToString());
 
 
-                            var report = ActiveSet.GenerateReport();
+
+                            var report = ActiveSet.GenerateReport(GapSpec);
                             ReCutContent = null;
                             ReCutContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
                             IsEnabledReCutCancel = true;
+
+
+
+
                         }
                         else
                         {
@@ -2049,6 +2317,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 ReCutBarcode2 = null;
                 ReCutContent = null;
                 IsEnabledReCutCancel = true;
+                IsEnabledReCutCancel = false;
 
             });
 
@@ -2063,13 +2332,13 @@ namespace Louver_Sort_4._8._1.Helpers
                         {
                             UpdatePopUp.Execute("Await");
                         });
-                        RecutReading1 = Math.Round(_dataQ.WaitForDataCollection(true).Result, 2).ToString();
+                        RecutReading1 = Math.Round(_dataQ.WaitForDataCollection(true).Result, 3).ToString();
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-
-                            if (Math.Abs(Convert.ToDouble(RecutReading1)) <= CalculateRejection(Convert.ToDouble(ReCutLength)))
+                            TxtTopAcceptableReplacement = RecutReading1.ToString();
+                            if (Math.Abs(Convert.ToDouble(RecutReading1)) <= Convert.ToDouble(TopMaximumValue) && Math.Abs(Convert.ToDouble(RecutReading1)) >= Convert.ToDouble(TopMinimumValue))
                             {
-                                TxtTopAcceptableReplacement = RecutReading1.ToString();
+
                                 TopColor = Brushes.Green;
                             }
                             else
@@ -2096,13 +2365,13 @@ namespace Louver_Sort_4._8._1.Helpers
                     {
                         UpdatePopUp.Execute("Await");
                     });
-                    RecutReading2 = Math.Round(_dataQ.WaitForDataCollection(true).Result, 2).ToString();
+                    RecutReading2 = Math.Round(_dataQ.WaitForDataCollection(true).Result, 3).ToString();
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         UpdatePopUp.Execute("Close");
                         TxtBottomAcceptableReplacement = RecutReading2.ToString();
 
-                        if (Math.Abs(Convert.ToDouble(RecutReading2)) <= CalculateRejection(Convert.ToDouble(ReCutLength)))
+                        if (Math.Abs(Convert.ToDouble(RecutReading2)) <= Convert.ToDouble(BottomMaximumValue) && Math.Abs(Convert.ToDouble(RecutReading2)) >= Convert.ToDouble(BottomMinimumValue))
                         {
                             VisibilityReCutData = Visibility.Visible;
 
@@ -2118,35 +2387,39 @@ namespace Louver_Sort_4._8._1.Helpers
                             {
                                 ReCutOrientation = "Don't Flip";
                             }
-
-                            // Find the index of the Louver object with the same ID as ReportSelectedLouver.
-                            int index = ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID);
-
-                            // If the Louver with the same ID is found, remove it from the collection.
-                            if (index != -1)
-                            {
-
-                                TopMinimumValue = (ActiveSet.Louvers[index].Reading1 - CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
-                                TopMaximumValue = (ActiveSet.Louvers[index].Reading1 + CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
-                                BottomMinimumValue = (ActiveSet.Louvers[index].Reading2 - CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
-                                BottomMaximumValue = (ActiveSet.Louvers[index].Reading2 + CalculateRejection(ReCutLength)).ToString().Substring(0, 4);
-
-                            }
-
                         }
                         else
                         {
                             BottomColor = Brushes.Red;
                             TxtUserMessage = "Louver is NOT a replacement";
+                            VisibilityReCutData = Visibility.Visible;
                             UpdatePopUp.Execute("ReCut");
                         }
 
 
+
+
+                        IsEnabledCheckTop = true;
+                        IsEnabledCheckBottom = false;
                     });
                 });
                 RecordThread.Start();
 
             });
+
+            RejectRecut = new BaseCommand(obj =>
+            {
+
+                ZebraPrinter _Printer = _zebra.Connect();
+                List<Louver> ToPrint = new List<Louver>();
+                ToPrint.Add(ActiveSet.Louvers[ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID)]);
+                _zebra.PrintSortedLouverIDs(_Printer, ToPrint);
+                _zebra.Disconnect(_Printer);
+
+                UpdatePopUp.Execute("Close");
+
+            });
+
 
             CloseReCutPopUp = new BaseCommand(obj =>
             {
@@ -2284,7 +2557,7 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         public void ReportInitialize()
         {
-            var report = ActiveSet.GenerateReport();
+            var report = ActiveSet.GenerateReport(GapSpec);
             ReportContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
             IsEnabledApproveSet = true;
             foreach (var item in report)
@@ -2371,7 +2644,7 @@ namespace Louver_Sort_4._8._1.Helpers
             VoltageValues.Add(new MeasureModel
             {
                 ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
-                Value = Math.Round(_dataQ.LatestReading, 2)
+                Value = Math.Round(_dataQ.LatestReading, 3)
             });
             //Debug.WriteLine(_DataQ.GetDistance());
             if (VoltageValues.Count > 25)
@@ -2446,7 +2719,10 @@ namespace Louver_Sort_4._8._1.Helpers
             //UNCOMMENT
             if (json != "null")
             {
-                _dataQ._cal = JsonConvert.DeserializeObject<Calibration>(json, settings);
+                if (_dataQ != null)
+                {
+                    _dataQ._cal = JsonConvert.DeserializeObject<Calibration>(json, settings);
+                }
             }
             else
             {
@@ -2601,8 +2877,8 @@ namespace Louver_Sort_4._8._1.Helpers
                                         sheet.Cells[5, i].Value = louver.SortedID.ToString();
                                         sheet.Cells[6, i].Value = louver.Orientation.ToString();
                                         sheet.Cells[7, i].Value = louver.Processed.ToString();
-                                        sheet.Cells[8, i].Value = louver.Reading1.ToString();
-                                        sheet.Cells[9, i].Value = louver.Reading2.ToString();
+                                        sheet.Cells[8, i].Value = louver.Readings.Reading1.ToString();
+                                        sheet.Cells[9, i].Value = louver.Readings.Reading2.ToString();
                                         sheet.Cells[10, i].Value = louver.Deviation.ToString();
                                         sheet.Cells[11, i].Value = louver.AbsDeviation.ToString();
 
@@ -2615,8 +2891,8 @@ namespace Louver_Sort_4._8._1.Helpers
                                         sheet.Cells[5, i].Value = louver.SortedID.ToString();
                                         sheet.Cells[6, i].Value = louver.Orientation.ToString();
                                         sheet.Cells[7, i].Value = louver.Processed.ToString();
-                                        sheet.Cells[8, i].Value = louver.Reading1.ToString();
-                                        sheet.Cells[9, i].Value = louver.Reading2.ToString();
+                                        sheet.Cells[8, i].Value = louver.Readings.Reading1.ToString();
+                                        sheet.Cells[9, i].Value = louver.Readings.Reading2.ToString();
                                         sheet.Cells[10, i].Value = louver.Deviation.ToString();
                                         sheet.Cells[11, i].Value = louver.AbsDeviation.ToString();
                                         sheet.Cells[12, i].Value = louver.Rejected.ToString();

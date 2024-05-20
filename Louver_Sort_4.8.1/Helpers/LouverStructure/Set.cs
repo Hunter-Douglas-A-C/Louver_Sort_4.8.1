@@ -240,8 +240,8 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
                 //    _recordedLouvers.Add(new LouverListView(item.ID, "Bottom", item.Reading2));
                 //}
 
-                _recordedLouvers.Add(new LouverListView(item.ID, "Top", item.Reading1));
-                _recordedLouvers.Add(new LouverListView(item.ID, "Bottom", item.Reading2));
+                _recordedLouvers.Add(new LouverListView(item.ID, "Top", item.Readings.Reading1));
+                _recordedLouvers.Add(new LouverListView(item.ID, "Bottom", item.Readings.Reading2));
 
             }
             return _recordedLouvers;
@@ -253,12 +253,28 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         /// Generates the report data of the set.
         /// </summary>
         /// <returns>The report data.</returns>
-        public ObservableCollection<ReportListView> GenerateReport()
+        public ObservableCollection<ReportListView> GenerateReport(double GapSpec)
         {
             _reportData.Clear();
+            double LastDev = 0;
+            string s = "";
+            _louvers = _louvers.OrderBy(louver => louver.SortedID).ToList();
             foreach (var item in _louvers)
             {
-                _reportData.Add(new ReportListView(item.ID, item.SortedID, item.AbsDeviation, item.Rejected, item.Orientation));
+
+                if (item.ID != 1)
+                {
+                    if ((LastDev + item.AbsDeviation) > GapSpec)
+                    {
+                        s = "Gap Warning";
+                    }
+                    else
+                    {
+                        s = "";
+                    }
+                }
+                _reportData.Add(new ReportListView(item.ID, item.SortedID, item.AbsDeviation, item.Rejected, item.Orientation, s));
+                LastDev = item.AbsDeviation;
             }
             return _reportData;
         }

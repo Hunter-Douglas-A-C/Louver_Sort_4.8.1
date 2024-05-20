@@ -21,7 +21,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         public string Side { get => _side; set => _side = value; }
 
         [JsonProperty("distance")]
-        public double? Distance { get => _distance; set => _distance = value; }
+        public double? Distance { get => Math.Round(Convert.ToDouble(_distance), 3); set => _distance = Math.Round(Convert.ToDouble( value), 3); }
 
 
 

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lextm.SharpSnmpLib;
 using System.Diagnostics;
+using Dataq.Channels;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -59,7 +60,7 @@ namespace Louver_Sort_4._8._1.Helpers
             List<double> CalAverages = new List<double>();
             //for (int i = 0; i < 2; i++)
             //{
-                CalAverages.Add(WaitForDataCollection(false).Result);
+            CalAverages.Add(WaitForDataCollection(false).Result);
             //}
 
             _cal.FlatReading = CalAverages.Average();
@@ -70,7 +71,7 @@ namespace Louver_Sort_4._8._1.Helpers
             List<double> CalAverages = new List<double>();
             //for (int i = 0; i < 2; i++)
             //{
-                CalAverages.Add(WaitForDataCollection(false).Result);
+            CalAverages.Add(WaitForDataCollection(false).Result);
             //}
 
             _cal.StepReading = CalAverages.Average();
@@ -79,6 +80,27 @@ namespace Louver_Sort_4._8._1.Helpers
 
             _cal.CalculateLineEquation(Tuple.Create(_cal.FlatReading, 0.0), Tuple.Create(_cal.StepReading, _cal.StepValue));
         }
+
+        public void CheckCalFlat()
+        {
+            List<double> CalAverages = new List<double>();
+            CalAverages.Add(WaitForDataCollection(true).Result);
+
+            _cal.CheckFlat = CalAverages.Average();
+        }
+
+        public void CheckCalStep(double range)
+        {
+            List<double> CalAverages = new List<double>();
+            CalAverages.Add(WaitForDataCollection(true).Result);
+
+            _cal.CheckStep = CalAverages.Average();
+
+            _cal.CheckCalibration(range);
+        }
+
+
+
 
         public double GetSlope()
         {
@@ -250,7 +272,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 //}
                 //// Consider whether returning 0 is appropriate for all scenarios.
                 //// It might be better to throw an exception if _outputString is null or empty.
-                return Math.Round(Convert.ToDouble(_outputString), 2);
+                return Convert.ToDouble(_outputString);
             }
             catch (FormatException ex)
             {
@@ -429,7 +451,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
             }
-            return Math.Round(Convert.ToDouble(_outputString), 2);
+            return Convert.ToDouble(_outputString);
         }
 
 
@@ -474,37 +496,40 @@ namespace Louver_Sort_4._8._1.Helpers
             // Return the recorded data
             if (UseCalibration)
             {
+
                 Debug.WriteLine("AVERAGE    " + _cal.ConvertToInches(validReadings.Average()) + "   ");
-                double value = Math.Round(_cal.ConvertToInches(validReadings.Average()), 2);
+                double value = _cal.ConvertToInches(validReadings.Average());
                 return value;
             }
             else
             {
                 Debug.WriteLine("AVERAGE    " + validReadings.Average() + "   ");
-                return Math.Round(validReadings.Average(), 2);
+                return validReadings.Average();
             }
         }
 
         private void GetDataHandler(object sender, EventArgs e)
         {
             //const double threshold = 0.002; // Adjust this threshold as needed
-            double reading = Math.Round(ReadNewData(), 2);
+            double reading =ReadNewData();
 
             if (validReadings.Count > 0)
             {
                 //if (threshold <= validReadings.Average() - reading)
                 //{
                 validReadings.Add(reading);
-                Debug.WriteLine("    " + reading + "   ");
+                Debug.WriteLine("Voltage    " + reading + "   ");
+                Debug.WriteLine("Inches    " + _cal.ConvertToInches(reading) + "   ");
                 //}
             }
             else
             {
                 validReadings.Add(reading);
-                Debug.WriteLine("    " + reading + "   ");
+                Debug.WriteLine("Voltage    " + reading + "   ");
+                Debug.WriteLine("Inches    " + _cal.ConvertToInches(reading) + "   ");
             }
 
-            if (validReadings.Count >= 5)
+            if (validReadings.Count >= 2)
             {
                 _dataReceived = true;
             }
@@ -543,7 +568,9 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             if (_cal != null)
             {
-            LatestReading = Math.Round(_cal.ConvertToInches(ReadNewData()), 2);
+                LatestReading = _cal.ConvertToInches(ReadNewData());
+                Debug.WriteLine("Live Data In volts: " + ReadNewData());
+                Debug.WriteLine("Live Data In in: " + LatestReading);
 
             }
         }
@@ -654,6 +681,10 @@ namespace Louver_Sort_4._8._1.Helpers
         private double _stepReading;
         //private double _stepValue = 0.0393701;  // This is the distance difference related to the step reading, set appropriately.
         private double _stepValue = 0.75;
+        public double CheckFlat;
+        public double CheckStep;
+        public double CheckStepValue = 0.0393701;
+        public bool Successful = false;
 
 
         //private double _slope = double.NaN; // Initialize slope to NaN.
@@ -718,7 +749,17 @@ namespace Louver_Sort_4._8._1.Helpers
         }
 
 
-
+        public void CheckCalibration(double range)
+        {
+            if (Math.Abs(CheckFlat - CheckStep)  < CheckStepValue + range  && Math.Abs(CheckFlat - CheckStep) > CheckStepValue - range)
+            {
+                Successful = true;
+            }
+            else
+            {
+                Successful = false;
+            }
+        }
 
 
     }

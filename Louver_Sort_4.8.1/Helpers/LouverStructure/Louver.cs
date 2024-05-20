@@ -11,8 +11,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
     {
         private readonly int _ID;
         private bool _processed;
-        private double? _reading1;
-        private double? _reading2;
+        private Reading _readings = new Reading();
         private double? _devation;
         private double _absDevation;
         private bool _orientation;
@@ -39,11 +38,9 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         [JsonProperty("processed")]
         public bool Processed { get => _processed; set => _processed = value; }
 
-        [JsonProperty("reading1")]
-        public double? Reading1 { get => _reading1; set => _reading1 = value; }
+        [JsonProperty("readings")]
+        public Reading Readings { get => _readings; set => _readings = value; }
 
-        [JsonProperty("reading2")]
-        public double? Reading2 { get => _reading2; set => _reading2 = value; }
 
         [JsonProperty("deviation")]
         public double? Deviation { get => _devation; set => _devation = value; }
@@ -64,8 +61,8 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         {
             _ID = id;
             _processed = processed;
-            _reading1 = reading1;
-            _reading2 = reading2;
+            _readings.Reading1 = reading1;
+            _readings.Reading2 = reading2;
             _devation = deviation;
             _absDevation = absDeviation;
             _orientation = orientation;
@@ -82,18 +79,19 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             Reset();
         }
 
-        // Methods
-        /// <summary>
-        /// Sets the first reading of the louver.
-        /// </summary>
-        /// <param name="r1">The first reading value.</param>
-        public void SetReading1(double? r1) => _reading1 = r1;
+        //// Methods
+        ///// <summary>
+        ///// Sets the first reading of the louver.
+        ///// </summary>
+        ///// <param name="r1">The first reading value.</param>
+        //public void SetReading1(double? r1) => _readings.Reading1 = r1;
 
-        /// <summary>
-        /// Sets the second reading of the louver.
-        /// </summary>
-        /// <param name="r2">The second reading value.</param>
-        public void SetReading2(double? r2) => _reading2 = r2;
+        ///// <summary>
+        ///// Sets the second reading of the louver.
+        ///// </summary>
+        ///// <param name="r2">The second reading value.</param>
+        ///// 
+        //public void SetReading2(double? r2) => _readings.Reading1 = r2;
 
         /// <summary>
         /// Calculates the deviation and orientation values of the louver.
@@ -105,7 +103,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             //_devation = Math.Abs(Reading1) > Math.Abs(Reading2) ? Reading1 : Reading2;
             //_orientation = _devation > 0;
             //_absDevation = Math.Abs(_devation);
-            _devation = Reading1 - Reading2;
+            _devation = _readings.Reading1 - _readings.Reading2;
             if (_devation < 0)
             {
                 _orientation = true;
@@ -149,8 +147,8 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         public void Reset()
         {
             _processed = false;
-            _reading1 = null;
-            _reading2 = null;
+            _readings.Reading1 = null;
+            _readings.Reading2 = null;
             _absDevation = 0;
             _orientation = true;
             _sortedId = 0;

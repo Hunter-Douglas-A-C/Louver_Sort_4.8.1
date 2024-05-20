@@ -279,7 +279,7 @@
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Button Grid.Row="0"
+                                            <!--<Button Grid.Row="0"
                                                     Content="Print First Labels"
                                                     Command="{Binding PrintUnsortedLabels}"
                                                     IsEnabled="{Binding IsEnabledPrintUnsortedLabels}"
@@ -288,9 +288,9 @@
                                                     FontSize="30"
                                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                                     materialDesign:ButtonAssist.CornerRadius="10"
-                                                    ToolTip="Print the first set of labels" />
-                                            <Button Grid.Row="1"
-                                                    Content="Measure Label Side"
+                                                    ToolTip="Print the first set of labels" />-->
+                                            <Button Grid.Row="0"
+                                                    Content="Measure Blank Side"
                                                     Command="{Binding AcqReadingTop}"
                                                     IsEnabled="{Binding IsEnabledAcquareTop}"
                                                     Width="400"
@@ -299,8 +299,8 @@
                                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                                     materialDesign:ButtonAssist.CornerRadius="10"
                                                     ToolTip="Record the top side warp measurement" />
-                                            <Button Grid.Row="2"
-                                                    Content="Measure Blank Side"
+                                            <Button Grid.Row="1"
+                                                    Content="Measure Label Side"
                                                     Command="{Binding AcqReadingBottom}"
                                                     IsEnabled="{Binding IsEnabledAcquireBottom}"
                                                     Width="400"
@@ -772,7 +772,7 @@
                                                     Orientation="Horizontal">
                                             <StackPanel>
                                                 <Button Grid.Row="0"
-                                                        Content="Measure Top"
+                                                        Content="Measure Blank Side"
                                                         Command="{Binding CheckTop}"
                                                         IsEnabled="{Binding IsEnabledCheckTop}"
                                                         Width="300"
@@ -782,7 +782,7 @@
                                                         materialDesign:ButtonAssist.CornerRadius="10"
                                                         ToolTip="Print the first set of labels" />
                                                 <Button Grid.Row="0"
-                                                        Content="Measure Bottom"
+                                                        Content="Measure Label Side"
                                                         Command="{Binding CheckBottom}"
                                                         IsEnabled="{Binding IsEnabledCheckBottom}"
                                                         Width="300"
@@ -930,6 +930,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
 
@@ -938,19 +939,19 @@
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Center">
 
-                                                                                            <materialDesign:ColorZone Grid.Row="0"
-                                                                      Grid.ColumnSpan="3"
-                                                                      Padding="16"
-                                                                      Margin="0,0,50,0"
-                                                                      materialDesign:ElevationAssist.Elevation="Dp4"
-                                                                      ClipToBounds="False"
-                                                                      CornerRadius="10"
-                                                                      Mode="SecondaryDark"
-                                                                      HorizontalAlignment="Left">
-                                                <TextBlock Text="Settings"
-                                                           FontSize="24"
-                                                           FontWeight="ExtraBold" />
-                                            </materialDesign:ColorZone>
+                                        <materialDesign:ColorZone Grid.Row="0"
+                                                                  Grid.ColumnSpan="3"
+                                                                  Padding="16"
+                                                                  Margin="0,0,50,0"
+                                                                  materialDesign:ElevationAssist.Elevation="Dp4"
+                                                                  ClipToBounds="False"
+                                                                  CornerRadius="10"
+                                                                  Mode="SecondaryDark"
+                                                                  HorizontalAlignment="Left">
+                                            <TextBlock Text="Settings"
+                                                       FontSize="24"
+                                                       FontWeight="ExtraBold" />
+                                        </materialDesign:ColorZone>
                                         <materialDesign:ColorZone Grid.Column="0"
                                                                   VerticalAlignment="Stretch"
                                                                   HorizontalAlignment="Stretch"
@@ -963,7 +964,7 @@
                                                 <StackPanel VerticalAlignment="Center"
                                                             HorizontalAlignment="Center">
                                                     <TextBox MaxWidth="400"
-                                                             FontSize="30"
+                                                             FontSize="25"
                                                              VerticalAlignment="Center"
                                                              materialDesign:HintAssist.Hint="Admin Password"
                                                              AcceptsReturn="True"
@@ -991,21 +992,12 @@
                                                 </StackPanel>-->
 
 
-                                                    <TextBox MaxWidth="400"
-                                                             VerticalAlignment="Top"
-                                                             Margin="0,50,0,0"
-                                                             materialDesign:HintAssist.Hint="Louver Rejection Value"
-                                                             AcceptsReturn="True"
-                                                             FontSize="30"
-                                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                             Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                             TextWrapping="Wrap"
-                                                             Text="{Binding RejectionSpec, Mode=TwoWay}" />
+
 
                                                     <TextBox MaxWidth="400"
                                                              VerticalAlignment="Top"
-                                                             Margin="0,50,0,0"
-                                                             FontSize="30"
+                                                             Margin="0,30,0,0"
+                                                             FontSize="25"
                                                              materialDesign:HintAssist.Hint="Data Retintion Period"
                                                              AcceptsReturn="True"
                                                              IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
@@ -1015,14 +1007,71 @@
 
                                                     <TextBox MaxWidth="400"
                                                              VerticalAlignment="Top"
-                                                             Margin="0,50,0,0"
-                                                             FontSize="30"
+                                                             Margin="0,30,0,0"
+                                                             FontSize="25"
                                                              materialDesign:HintAssist.Hint="ReCalibartion Period"
                                                              AcceptsReturn="True"
                                                              IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                              Style="{StaticResource MaterialDesignFilledTextBox}"
                                                              TextWrapping="Wrap"
                                                              Text="{Binding CalibratePeriod, Mode=TwoWay}" />
+
+                                                    <TextBox MaxWidth="400"
+                                                             VerticalAlignment="Top"
+                                                             Margin="0,30,0,0"
+                                                             materialDesign:HintAssist.Hint="Louver Bow in/ft Spec"
+                                                             AcceptsReturn="True"
+                                                             FontSize="25"
+                                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                             TextWrapping="Wrap"
+                                                             Text="{Binding RejectionSpec, Mode=TwoWay}" />
+                                                    
+                                                    <TextBox MaxWidth="400"
+                                                             VerticalAlignment="Top"
+                                                             Margin="0,30,0,0"
+                                                             FontSize="25"
+                                                             materialDesign:HintAssist.Hint="Recut Louver to Rail Spec"
+                                                             AcceptsReturn="True"
+                                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                             TextWrapping="Wrap"
+                                                             Text="{Binding ReCutRailSpec, Mode=TwoWay}" />
+
+
+                                                    <TextBox MaxWidth="400"
+                                                             VerticalAlignment="Top"
+                                                             Margin="0,30,0,0"
+                                                             FontSize="25"
+                                                             materialDesign:HintAssist.Hint="ReCut Louver to Louver Spec"
+                                                             AcceptsReturn="True"
+                                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                             TextWrapping="Wrap"
+                                                             Text="{Binding ReCutLouverToLouverSpec, Mode=TwoWay}" />
+
+                                                    <TextBox MaxWidth="400"
+                                                             VerticalAlignment="Top"
+                                                             Margin="0,30,0,0"
+                                                             FontSize="25"
+                                                             materialDesign:HintAssist.Hint="Gap Spec"
+                                                             AcceptsReturn="True"
+                                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                             TextWrapping="Wrap"
+                                                             Text="{Binding GapSpec, Mode=TwoWay}" />
+
+
+                                                    <TextBox MaxWidth="400"
+                                                             VerticalAlignment="Top"
+                                                             Margin="0,30,0,0"
+                                                             FontSize="25"
+                                                             materialDesign:HintAssist.Hint="Calibration Rejection Spec"
+                                                             AcceptsReturn="True"
+                                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                             TextWrapping="Wrap"
+                                                             Text="{Binding CalibrationRejectionSpec, Mode=TwoWay}" />
 
 
                                                     <!--<StackPanel Orientation="Horizontal"
@@ -1133,6 +1182,52 @@
                                         </materialDesign:ColorZone>
 
                                     </StackPanel>
+
+
+
+
+
+
+                                    <StackPanel Grid.Column="2"
+                                                Margin="50,50,50,50"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center">
+                                        <materialDesign:ColorZone Grid.Row="0"
+                                                                  Grid.ColumnSpan="3"
+                                                                  Padding="16"
+                                                                  Margin="0,0,50,0"
+                                                                  materialDesign:ElevationAssist.Elevation="Dp4"
+                                                                  ClipToBounds="False"
+                                                                  CornerRadius="10"
+                                                                  Mode="SecondaryDark"
+                                                                  HorizontalAlignment="Left">
+                                            <TextBlock Text="Calibration"
+                                                       FontSize="24"
+                                                       FontWeight="ExtraBold" />
+                                        </materialDesign:ColorZone>
+                                        <materialDesign:ColorZone VerticalAlignment="Center"
+                                                                  HorizontalAlignment="Center"
+                                                                  Padding="16"
+                                                                  materialDesign:ElevationAssist.Elevation="Dp4"
+                                                                  ClipToBounds="False"
+                                                                  CornerRadius="10"
+                                                                  Mode="PrimaryDark"
+                                                                  Grid.Column="2">
+                                            <Button Grid.Row="0"
+                                                    Content="Calibrate Laser"
+                                                    Command="{Binding CalibrateLaser}"
+                                                    Margin="0,0,0,0"
+                                                    Width="300"
+                                                    Height="100"
+                                                    FontSize="30"
+                                                    Style="{StaticResource MaterialDesignRaisedButton}"
+                                                    IsEnabled="{Binding IsEnabledCalibrate}"
+                                                    materialDesign:ButtonAssist.CornerRadius="10"
+                                                    ToolTip="Start Calibartion" />
+                                        </materialDesign:ColorZone>
+                                    </StackPanel>
+
+
 
                                 </Grid>
                             </Grid>

@@ -36,14 +36,15 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Visibility="{Binding VisibilityReCutData}">
-                <TextBlock Text="Top Side Reading"
+                <TextBlock Text="Blank Side Reading"
                            FontSize="30"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center" />
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            >
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="Min "
+                               FontSize="30" />
                     <TextBlock Text="{Binding TopMinimumValue}"
                                FontSize="30" />
                     <TextBlock Text="  &lt;  "
@@ -62,15 +63,19 @@
                                FontSize="30" />
                     <TextBlock Text="{Binding TopMaximumValue}"
                                FontSize="30" />
+                    <TextBlock Text=" Max"
+                               FontSize="30" />
                 </StackPanel>
                 <TextBlock Margin="0,50,0,0"
-                           Text="Bottom Side Reading"
+                           Text="Label Side Reading"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            FontSize="30" />
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center">
+                    <TextBlock Text="Min "
+                               FontSize="30" />
                     <TextBlock Text="{Binding BottomMinimumValue}"
                                FontSize="30" />
                     <TextBlock Text="  &lt;  "
@@ -89,21 +94,36 @@
                                FontSize="30" />
                     <TextBlock Text="{Binding BottomMaximumValue}"
                                FontSize="30" />
+                    <TextBlock Text=" Max"
+                               FontSize="30" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="Orientation: " FontSize="24"/>
-                    <TextBox MinWidth="100" Text="{Binding ReCutOrientation}"/>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="Orientation: "
+                               FontSize="24" />
+                    <TextBox MinWidth="100"
+                             Text="{Binding ReCutOrientation}" />
                 </StackPanel>
             </StackPanel>
 
-            <Button x:Name="OkButton"
-                    Content="OK"
-                    Width="75"
-                    Height="75"
-                    Margin="-50,20,0,0"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Right"
-                    Command="{Binding CloseReCutPopUp}"/>
+            <StackPanel Orientation="Horizontal"
+                        Margin="-50,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <Button x:Name="OkButton"
+                        Content="Approve"
+                        Width="100"
+                        Height="75"
+
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Command="{Binding CloseReCutPopUp}" />
+                <Button Content="Reject"
+                        Width="100"
+                        Height="75"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Command="{Binding RejectRecut}"/>
+            </StackPanel>
+
         </StackPanel>
 
     </materialDesign:ColorZone>

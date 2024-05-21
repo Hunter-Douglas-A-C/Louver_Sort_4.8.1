@@ -33,8 +33,8 @@ namespace Louver_Sort_4._8._1.Views
             InitializeComponent();
             this.DataContext = boundProperities;
 
-            boundProperities.en_USEnabled = false;
-            boundProperities.es_ESEnabled = true;
+            boundProperities.EnUSEnabled = false;
+            boundProperities.EsESEnabled = true;
             boundProperities.VisibilityPopUp = Visibility.Hidden;
             boundProperities.IsEnabledMain = true;
             boundProperities.MainContentBlurRadius = 0;

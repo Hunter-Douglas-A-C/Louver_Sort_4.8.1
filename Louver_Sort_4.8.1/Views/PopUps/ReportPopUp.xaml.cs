@@ -19,10 +19,10 @@ namespace Louver_Sort_4._8._1.Views.PopUps
     /// <summary>
     /// Interaction logic for Report.xaml
     /// </summary>
-    public partial class Report : UserControl
+    public partial class ReportPopUp : UserControl
     {
         BoundProperities boundProperities;
-        public Report()
+        public ReportPopUp()
         {
             InitializeComponent();
 

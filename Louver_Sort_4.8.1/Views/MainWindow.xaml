@@ -1026,7 +1026,7 @@
                                                              Style="{StaticResource MaterialDesignFilledTextBox}"
                                                              TextWrapping="Wrap"
                                                              Text="{Binding RejectionSpec, Mode=TwoWay}" />
-                                                    
+
                                                     <TextBox MaxWidth="400"
                                                              VerticalAlignment="Top"
                                                              Margin="0,30,0,0"
@@ -1166,6 +1166,30 @@
                                                                     SelectedDate="{Binding DateRangeEnd}"
                                                                     DisplayDate="{Binding DateTimeToday, Mode=TwoWay, TargetNullValue=''}" />
                                                     </StackPanel>
+
+                                                    <TextBlock Text="-------- or --------"
+                                                               FontSize="24"
+                                                               VerticalAlignment="Center"
+                                                               HorizontalAlignment="Center" 
+                                                               Margin="0,50,0,0"/>
+
+                                                    <TextBox MaxWidth="400"
+                                                             Margin="50,50,50,0"
+                                                             VerticalAlignment="Top"
+                                                             FontSize="25"
+                                                             materialDesign:HintAssist.Hint="Sales Number"
+                                                             AcceptsReturn="True"
+                                                             IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                             TextWrapping="Wrap"
+                                                             Text="{Binding SalesNumber, Mode=TwoWay}" />
+
+                                                    <TextBlock Text="-------------------"
+                                                               FontSize="24"
+                                                               VerticalAlignment="Center"
+                                                               HorizontalAlignment="Center"
+                                                               Margin="0,50,0,0" />
+                                                    
                                                     <Button Grid.Row="0"
                                                             Content="Export Excel Report"
                                                             Command="{Binding ExportExcel}"
@@ -1180,7 +1204,6 @@
                                                 </StackPanel>
                                             </Grid>
                                         </materialDesign:ColorZone>
-
                                     </StackPanel>
 
 

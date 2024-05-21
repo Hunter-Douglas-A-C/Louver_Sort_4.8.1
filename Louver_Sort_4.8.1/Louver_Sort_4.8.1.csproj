@@ -249,8 +249,8 @@
     <Compile Include="Helpers\LouverStructure\Set.cs" />
     <Compile Include="Helpers\LouverStructure\SetID.cs" />
     <Compile Include="Helpers\ZebraPrinterHelper.cs" />
-    <Compile Include="Views\PopUps\AwaitResult.xaml.cs">
-      <DependentUpon>AwaitResult.xaml</DependentUpon>
+    <Compile Include="Views\PopUps\AwaitResultPopUp.xaml.cs">
+      <DependentUpon>AwaitResultPopUp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PopUps\CalibrateLaserPopUp.xaml.cs">
       <DependentUpon>CalibrateLaserPopUp.xaml</DependentUpon>
@@ -258,8 +258,8 @@
     <Compile Include="Views\PopUps\CalibratePopUp.xaml.cs">
       <DependentUpon>CalibratePopUp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PopUps\LouverCount.xaml.cs">
-      <DependentUpon>LouverCount.xaml</DependentUpon>
+    <Compile Include="Views\PopUps\LouverCountPopUp.xaml.cs">
+      <DependentUpon>LouverCountPopUp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PopUps\ReCutPopUp.xaml.cs">
       <DependentUpon>ReCutPopUp.xaml</DependentUpon>
@@ -270,8 +270,8 @@
     <Compile Include="Views\PopUps\UserMessagePopUp.xaml.cs">
       <DependentUpon>UserMessagePopUp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PopUps\Report.xaml.cs">
-      <DependentUpon>Report.xaml</DependentUpon>
+    <Compile Include="Views\PopUps\ReportPopUp.xaml.cs">
+      <DependentUpon>ReportPopUp.xaml</DependentUpon>
     </Compile>
     <Page Include="Dictionary-en-US.xaml">
       <SubType>Designer</SubType>
@@ -293,7 +293,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\PopUps\AwaitResult.xaml">
+    <Page Include="Views\PopUps\AwaitResultPopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -305,7 +305,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PopUps\LouverCount.xaml">
+    <Page Include="Views\PopUps\LouverCountPopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -321,7 +321,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PopUps\Report.xaml">
+    <Page Include="Views\PopUps\ReportPopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

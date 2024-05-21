@@ -19,10 +19,10 @@ namespace Louver_Sort_4._8._1.Views.PopUps
     /// <summary>
     /// Interaction logic for LouverCount.xaml
     /// </summary>
-    public partial class LouverCount : UserControl
+    public partial class LouverCountPopUp : UserControl
     {
         BoundProperities boundProperities;
-        public LouverCount()
+        public LouverCountPopUp()
         {
             InitializeComponent();
 

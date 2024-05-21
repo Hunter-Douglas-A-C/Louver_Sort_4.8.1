@@ -18,9 +18,9 @@ namespace Louver_Sort_4._8._1.Views.PopUps
     /// <summary>
     /// Interaction logic for AwaitResult.xaml
     /// </summary>
-    public partial class AwaitResult : UserControl
+    public partial class AwaitResultPopUp : UserControl
     {
-        public AwaitResult()
+        public AwaitResultPopUp()
         {
             InitializeComponent();
         }

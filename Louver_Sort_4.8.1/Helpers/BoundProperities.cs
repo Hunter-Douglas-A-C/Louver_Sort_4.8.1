@@ -2208,10 +2208,6 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
-
-
-
-
         public void PrintSortedLabels()
         {
             List<Louver> toPrint = new List<Louver>();
@@ -2242,7 +2238,7 @@ namespace Louver_Sort_4._8._1.Helpers
             ActiveSet.StartSort(DateTime.Now);
 
             // Connect to the Zebra printer
-            //ZebraPrinter _Printer = _zebra.Connect();
+            // ZebraPrinter _Printer = _zebra.Connect();
             List<Louver> toPrint = new List<Louver>();
 
             // Collect all louver sets from the active panel
@@ -2254,8 +2250,7 @@ namespace Louver_Sort_4._8._1.Helpers
             // Print the louver IDs
             _zebra.PrintLouverIDs(toPrint);
             // Disconnect from the Zebra printer
-            //_zebra.Disconnect(_Printer);
-
+            // _zebra.Disconnect(_Printer);
 
             // Update the state of various UI elements
             IsEnabledPrintUnsortedLabels = false;
@@ -2268,40 +2263,42 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public void MessageUser(string message)
         {
-
+            // Display a message to the user
             TxtUserMessage = message;
             UpdatePopUp.Execute("Message");
-
-
         }
 
         private void StartCalibrationThread(ThreadStart action)
         {
+            // Start a new thread for calibration
             Thread recordThread = new Thread(action);
             recordThread.Start();
         }
 
+
         private void UpdatePopUpAndAwait()
         {
+            // Close the current popup and then await further instructions
             UpdatePopUp.Execute("Close");
             UpdatePopUp.Execute("Await");
-
         }
 
         private void ConnectAndSetCalibrationFlat()
         {
+            // Connect to DataQ device if not already connected and set calibration to flat
             if (_dataQ == null)
             {
                 ConnectToDataQ();
             }
             _dataQ.SetCalibrationFlat();
 
+            // Close the current popup
             UpdatePopUp.Execute("Close");
-
         }
 
         private void UpdatePopupForBottomPlate()
         {
+            // Update popup for bottom plate calibration
             CalibTxt = "Place calibration plate on bottom of slide";
             CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibBottom.jpg";
             CalibTxtBoxHint = "";
@@ -2311,6 +2308,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
         private void ConnectAndSetCalibrationStep()
         {
+            // Connect to DataQ device if not already connected and set calibration to step
             if (_dataQ == null)
             {
                 ConnectToDataQ();
@@ -2320,39 +2318,40 @@ namespace Louver_Sort_4._8._1.Helpers
 
         private void UpdatePopupForHighestStep()
         {
-
-            CalibTxt = "Place highest step of Louver Sag Guage on top of rail";
+            // Update popup for highest step calibration
+            CalibTxt = "Place highest step of Louver Sag Gauge on top of rail";
             CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
-
         }
+
         private void ConnectAndCheckCalFlat()
         {
+            // Connect to DataQ device if not already connected and check calibration flat
             if (_dataQ == null)
             {
                 ConnectToDataQ();
             }
             _dataQ.CheckCalFlat();
 
+            // Close the current popup
             UpdatePopUp.Execute("Close");
-
         }
 
         private void UpdatePopupForLowestStep()
         {
-
-            CalibTxt = "Place lowest step of Louver Sag Guage on top of rail";
+            // Update popup for lowest step calibration
+            CalibTxt = "Place lowest step of Louver Sag Gauge on top of rail";
             CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
-
         }
 
         private void ConnectAndCheckCalStep()
         {
+            // Connect to DataQ device if not already connected and check calibration step with rejection specification
             if (_dataQ == null)
             {
                 ConnectToDataQ();
@@ -2362,7 +2361,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
         private void HandleCalibrationResult()
         {
-
+            // Handle the result of calibration and update the popup text accordingly
             if (_dataQ._cal.Successful)
             {
                 CalibTxt = "Calibration Passed";
@@ -2375,11 +2374,11 @@ namespace Louver_Sort_4._8._1.Helpers
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
-
         }
 
         private void HandleUnsuccessfulCalibration()
         {
+            // Handle the unsuccessful calibration case
             UpdatePopUp.Execute("Close");
             VisibilitySortSet = Visibility.Collapsed;
             IsEnabledReCut = Visibility.Collapsed;
@@ -2389,72 +2388,98 @@ namespace Louver_Sort_4._8._1.Helpers
 
         private void HandleSuccessfulCalibration()
         {
+            // Handle the successful calibration case
             VisibilitySortSet = Visibility.Visible;
             IsEnabledReCut = Visibility.Visible;
             VisibilityAdjustCalib = Visibility.Collapsed;
             SelectedTabIndex = 1;
         }
 
+
         public void UpdateValue()
         {
+            // Get the currently focused element as a FrameworkElement
             var focusedElement = Keyboard.FocusedElement as FrameworkElement;
 
             // If the focused element is a TextBox, update its binding source
             if (focusedElement is TextBox)
             {
+                // Get the binding expression for the Text property of the TextBox
                 BindingExpression bindingExpression = focusedElement.GetBindingExpression(TextBox.TextProperty);
+
+                // Update the binding source with the current value in the TextBox
                 bindingExpression.UpdateSource();
             }
         }
 
-        //View Intialize
+
+        // View Initialize
         public void SortedLabelsPopUpInitialize()
         {
+            // Create a list of LabelID objects
             List<LabelID> lables = new List<LabelID>();
             ObservableCollection<LabelID> labels = new ObservableCollection<LabelID>();
+
+            // Populate the list with LabelID objects based on ReportContent
             foreach (var louver in ReportContent)
             {
                 lables.Add(new LabelID(louver.LouverID, louver.LouverOrder, louver.Orientation));
             }
+
+            // Sort the list by UnsortedID
             lables = lables.OrderBy(louver => louver.UnsortedID).ToList();
+
+            // Clear the ObservableCollection and add the sorted items
             labels.Clear();
             foreach (var item in lables)
             {
                 labels.Add(item);
             }
+
+            // Set the LabelIDContent property to the populated ObservableCollection
             LabelIDContent = labels;
         }
 
         public void ReportInitialize()
         {
+            // Generate a report based on the active set and specified gap specification
             var report = ActiveSet.GenerateReport(GapSpec);
+
+            // Populate ReportContent with sorted report items
             ReportContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
             IsEnabledApproveSet = true;
+
+            // Check each item in the report for failure status
             foreach (var item in report)
             {
                 if (item.Status == "FAIL")
                 {
+                    // If any item has a status of "FAIL", disable approval and set the selected louver
                     ReportSelectedLouver = item;
                     IsEnabledApproveSet = false;
                 }
             }
         }
 
-        //DataQ
+
+        // DataQ Connection and Handling
         public void ConnectToDataQ()
         {
             try
             {
+                // Start a new thread to handle DataQ connection
                 Thread test = new Thread(async () =>
                 {
                     if (_dataQ == null)
                     {
                         try
                         {
+                            // Initialize and connect to DataQ
                             _dataQ = new DataQHelper();
                             await _dataQ.Connect();
                             _dataQ.Start();
 
+                            // Update UI elements and start monitoring
                             VisibilityDisconnected = Visibility.Collapsed;
                             _stopwatch.Start();
 
@@ -2465,70 +2490,68 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (DataQException ex)
                         {
-
+                            // Handle DataQ connection exception
                             MessageUser("Disconnect and Reconnect DataQ, restart application");
                             throw ex;
                         }
-
                     }
                     else
                     {
+                        // If DataQ is already connected, prompt user to reconnect and restart application
                         MessageUser("Disconnect and Reconnect DataQ, restart application");
                         return;
                     }
-
-
-
-
-
                 });
                 test.Start();
             }
             catch (Exception)
             {
-
+                // Handle general exceptions and prompt user to reconnect and restart application
                 MessageUser("Disconnect and Reconnect DataQ, restart application");
-
-
                 throw;
             }
-
         }
 
         public void DataQNewData(object sender, EventArgs e)
         {
+            // Add new voltage reading to VoltageValues list with the elapsed time
             VoltageValues.Add(new MeasureModel
             {
                 ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
                 Value = Math.Round(_dataQ.LatestReading, 3)
             });
-            //Debug.WriteLine(_DataQ.GetDistance());
+
+            // Maintain a maximum of 25 readings in the list
             if (VoltageValues.Count > 25)
             {
                 VoltageValues.RemoveAt(0);
             }
-            //CurrentReading = VoltageValues[VoltageValues.Count].Value.ToString();
+            // Debug.WriteLine(_DataQ.GetDistance());
+            // CurrentReading = VoltageValues[VoltageValues.Count].Value.ToString();
         }
 
         public void DataQLostConnection(object sender, EventArgs e)
         {
-            Debug.WriteLine("Lost Conenction");
+            // Handle the event of losing connection to DataQ
+            Debug.WriteLine("Lost Connection");
         }
 
 
 
-        //JSON
 
+        /// <summary>
+        /// Checks if a file exists and can be opened.
+        /// </summary>
+        /// <param name="filePath">The path to the file.</param>
+        /// <returns>True if the file exists and can be opened; otherwise, false.</returns>
         public static bool CheckFile(string filePath)
         {
-            // Check if the file exists
             if (!File.Exists(filePath))
             {
                 Console.WriteLine("File does not exist.");
                 return false;
             }
 
-            // Try to open the file
             try
             {
                 using (FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
@@ -2544,124 +2567,116 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
-
+        /// <summary>
+        /// Loads data from JSON files into respective objects.
+        /// </summary>
         public void LoadFromJson()
         {
-            string json = File.ReadAllText(_jSONSaveLocation + "LouverSortData.ini");
-
             var settings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
-            _allOrders = JsonConvert.DeserializeObject<OrderManager>(json, settings);
 
-            json = File.ReadAllText(_jSONSaveLocation + "Globals.ini");
+            // Load and deserialize LouverSortData.ini
+            _allOrders = LoadJsonFile<OrderManager>(_jSONSaveLocation + "LouverSortData.ini", settings);
 
-            settings = new JsonSerializerSettings
+            // Load and deserialize Globals.ini
+            _globals = LoadJsonFile<Globals>(_jSONSaveLocation + "Globals.ini", settings);
+
+            // Load and deserialize DataQ.ini if it exists and is not "null"
+            var dataQJson = File.ReadAllText(_jSONSaveLocation + "DataQ.ini");
+            if (dataQJson != "null" && _dataQ != null)
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-            _globals = JsonConvert.DeserializeObject<Globals>(json, settings);
-
-            json = File.ReadAllText(_jSONSaveLocation + "DataQ.ini");
-
-            settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-            //UNCOMMENT
-            if (json != "null")
-            {
-                if (_dataQ != null)
-                {
-                    _dataQ._cal = JsonConvert.DeserializeObject<Calibration>(json, settings);
-                }
+                _dataQ._cal = JsonConvert.DeserializeObject<Calibration>(dataQJson, settings);
             }
             else
             {
                 _dataQ._cal = new Calibration();
             }
-
         }
 
+        /// <summary>
+        /// Saves data to JSON files.
+        /// </summary>
         public void SaveToJson()
         {
             DeleteDataOlderThan90Days();
-            //// Serialize to JSONF
-            JsonSerializer serializer = new JsonSerializer();
-            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "LouverSortData.ini"))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                if (_allOrders != null)
-                {
-                    serializer.Serialize(writer, _allOrders);
-                }
-            }
-            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "Globals.ini"))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                if (_globals != null)
-                {
+            var serializer = new JsonSerializer();
 
-                    serializer.Serialize(writer, _globals);
-                }
-            }
-            using (StreamWriter sw = new StreamWriter(_jSONSaveLocation + "DataQ.ini"))
-            using (JsonWriter writer = new JsonTextWriter(sw))
+            // Serialize and save LouverSortData.ini
+            SaveJsonFile(_jSONSaveLocation + "LouverSortData.ini", _allOrders, serializer);
+
+            // Serialize and save Globals.ini
+            SaveJsonFile(_jSONSaveLocation + "Globals.ini", _globals, serializer);
+
+            // Serialize and save DataQ.ini
+            if (_dataQ != null)
             {
-                if (_dataQ != null)
-                {
-                    serializer.Serialize(writer, _dataQ._cal);
-                }
+                SaveJsonFile(_jSONSaveLocation + "DataQ.ini", _dataQ._cal, serializer);
             }
         }
 
         /// <summary>
-        /// Delete data older than 90 days.
+        /// Deletes data older than 90 days.
         /// </summary>
         public void DeleteDataOlderThan90Days()
         {
             DateTime cutoffDate = DateTime.Now.AddDays(-90);
-            List<OrderWithBarcode> OrderstoRemove = new List<OrderWithBarcode>();
+            var ordersToRemove = new List<OrderWithBarcode>();
+
             foreach (var order in _allOrders.OrdersWithBarcodes)
             {
-                foreach (var openings in order.Order.Openings)
+                if (order.Order.Openings.Exists(opening =>
+                    opening.Panels.Exists(panel =>
+                        panel.Sets.Exists(set => set.DateSortFinished < cutoffDate))))
                 {
-                    foreach (var panels in openings.Panels)
-                    {
-                        foreach (var sets in panels.Sets)
-                        {
-                            if (sets.DateSortFinished < cutoffDate)
-                            {
-                                if (!OrderstoRemove.Contains(order))
-                                {
-                                    OrderstoRemove.Add(order);
-                                }
-                            }
-                        }
-                    }
+                    ordersToRemove.Add(order);
                 }
             }
-            foreach (var orderToRemove in OrderstoRemove)
+
+            foreach (var orderToRemove in ordersToRemove)
             {
                 _allOrders.OrdersWithBarcodes.Remove(orderToRemove);
             }
         }
 
-        public bool IsInSelectedRange(Order o)
+        /// <summary>
+        /// Helper method to load JSON file and deserialize it into an object.
+        /// </summary>
+        private T LoadJsonFile<T>(string filePath, JsonSerializerSettings settings)
+        {
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<T>(json, settings);
+        }
+
+        /// <summary>
+        /// Helper method to serialize an object and save it to a JSON file.
+        /// </summary>
+        private void SaveJsonFile<T>(string filePath, T data, JsonSerializer serializer)
+        {
+            using (var sw = new StreamWriter(filePath))
+            using (var writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, data);
+            }
+        }
+
+        /// <summary>
+        /// Determines if an order's sets are within the selected date range.
+        /// </summary>
+        /// <param name="order">The order to check.</param>
+        /// <returns>True if any set's date is within the date range; otherwise, false.</returns>
+        public bool IsInSelectedRange(Order order)
         {
             DateTime cutoffDate = DateTime.Now.AddDays(-90);
-            List<OrderWithBarcode> OrderstoRemove = new List<OrderWithBarcode>();
-            foreach (var openings in o.Openings)
+            foreach (var opening in order.Openings)
             {
-                foreach (var panels in openings.Panels)
+                foreach (var panel in opening.Panels)
                 {
-                    foreach (var sets in panels.Sets)
+                    foreach (var set in panel.Sets)
                     {
-                        if (sets.DateSortFinished < DateRangeEnd || sets.DateSortFinished > DateRangeStart)
+                        if (set.DateSortFinished < DateRangeEnd || set.DateSortFinished > DateRangeStart)
                         {
                             return true;
                         }
@@ -2671,125 +2686,47 @@ namespace Louver_Sort_4._8._1.Helpers
             return false;
         }
 
-        public void ExportToExcel(string filename, bool ExportType)
+        /// <summary>
+        /// Exports orders to an Excel file based on the export type.
+        /// </summary>
+        /// <param name="filename">The name of the Excel file to export to.</param>
+        /// <param name="exportByDateRange">True to export by date range, false to export by sales number.</param>
+        public void ExportToExcel(string filename, bool exportByDateRange)
         {
-            List<OrderWithBarcode> OrdersToExport = new List<OrderWithBarcode>();
-            //Exporting with DateRange
-            if (ExportType)
+            var ordersToExport = new List<OrderWithBarcode>();
+
+            // Select orders based on the export type
+            if (exportByDateRange)
             {
-                foreach (var order in _allOrders.OrdersWithBarcodes)
-                {
-                    if (IsInSelectedRange(order.Order))
-                    {
-                        OrdersToExport.Add(order);
-                    }
-                }
+                ordersToExport.AddRange(_allOrders.OrdersWithBarcodes.FindAll(order => IsInSelectedRange(order.Order)));
             }
-            //Exporting with Sales Number
             else
             {
-                foreach (var order in _allOrders.OrdersWithBarcodes)
-                {
-                    if (order.Order.BarcodeHelper.Barcode1.Contains(Salesnumber))
-                    {
-                        OrdersToExport.Add(order);
-                    }
-                }
+                ordersToExport.AddRange(_allOrders.OrdersWithBarcodes.FindAll(order => order.Order.BarcodeHelper.Barcode1.Contains(Salesnumber)));
             }
 
+            // Set Excel package license context
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
             using (var package = new ExcelPackage())
             {
-                var l = 1;
-                foreach (var order in OrdersToExport)
+                int sheetIndex = 1;
+                foreach (var order in ordersToExport)
                 {
-                    var sheet = package.Workbook.Worksheets.Add(l.ToString());
-                    l += 1;
-                    sheet.Cells[1, 1].Value = "Barcode 1:";
-                    sheet.Cells[2, 1].Value = order.BarcodeSet.Barcode1.ToString();
-                    sheet.Cells[1, 2].Value = "Barcode2:";
-                    sheet.Cells[2, 2].Value = order.BarcodeSet.Barcode2.ToString();
-                    foreach (var openings in order.Order.Openings)
-                    {
-                        sheet.Cells[1, 3].Value = "Line:";
-                        sheet.Cells[2, 3].Value = openings.Line.ToString();
-                        sheet.Cells[1, 4].Value = "Model:";
-                        sheet.Cells[2, 4].Value = openings.ModelNum.ToString();
-                        sheet.Cells[1, 5].Value = "Style:";
-                        sheet.Cells[2, 5].Value = openings.Style.ToString();
-                        sheet.Cells[1, 6].Value = "Length:";
-                        sheet.Cells[2, 6].Value = openings.Length.ToString();
-                        sheet.Cells[1, 7].Value = "Width:";
-                        sheet.Cells[2, 7].Value = openings.Width.ToString();
-                        foreach (var panels in openings.Panels)
-                        {
-                            sheet.Cells[1, 8].Value = "ID:";
-                            sheet.Cells[2, 8].Value = panels.ID.ToString();
-                            foreach (var sets in panels.Sets)
-                            {
-                                sheet.Cells[1, 9].Value = "Louver Count:";
-                                sheet.Cells[2, 9].Value = sets.LouverCount.ToString();
-                                sheet.Cells[1, 10].Value = "Date Sort Started:";
-                                sheet.Cells[2, 10].Value = sets.DateSortStarted.ToString();
-                                sheet.Cells[1, 11].Value = "Date Sort Finsihed:";
-                                sheet.Cells[2, 11].Value = sets.DateSortFinished.ToString();
-
-                                var i = 2;
-                                foreach (var louver in sets.Louvers)
-                                {
-                                    if (i == 2)
-                                    {
-                                        sheet.Cells[4, 1].Value = "ID";
-                                        sheet.Cells[5, 1].Value = "Sorted ID";
-                                        sheet.Cells[6, 1].Value = "Orientation";
-                                        sheet.Cells[7, 1].Value = "Processed";
-                                        sheet.Cells[8, 1].Value = "Reading Top";
-                                        sheet.Cells[9, 1].Value = "Reading Bottom";
-                                        sheet.Cells[10, 1].Value = "Deviation";
-                                        sheet.Cells[11, 1].Value = "Abs Deviation";
-                                        sheet.Cells[12, 1].Value = "Rejected";
-                                        sheet.Cells[13, 1].Value = "Cause of Rejection";
-                                    }
-                                    sheet.Cells[3, i].Value = "Louver";
-                                    sheet.Cells[4, i].Value = louver.ID.ToString();
-                                    sheet.Cells[5, i].Value = louver.SortedID.ToString();
-                                    sheet.Cells[6, i].Value = louver.Orientation.ToString();
-                                    sheet.Cells[7, i].Value = louver.Processed.ToString();
-                                    sheet.Cells[8, i].Value = louver.Readings.Reading1.ToString();
-                                    sheet.Cells[9, i].Value = louver.Readings.Reading2.ToString();
-                                    sheet.Cells[10, i].Value = louver.Deviation.ToString();
-                                    sheet.Cells[11, i].Value = louver.AbsDeviation.ToString();
-
-                                    i++;
-                                }
-                                foreach (var louver in sets.RejectedLouvers)
-                                {
-                                    sheet.Cells[3, i].Value = "Rejected Louver";
-                                    sheet.Cells[4, i].Value = louver.ID.ToString();
-                                    sheet.Cells[5, i].Value = louver.SortedID.ToString();
-                                    sheet.Cells[6, i].Value = louver.Orientation.ToString();
-                                    sheet.Cells[7, i].Value = louver.Processed.ToString();
-                                    sheet.Cells[8, i].Value = louver.Readings.Reading1.ToString();
-                                    sheet.Cells[9, i].Value = louver.Readings.Reading2.ToString();
-                                    sheet.Cells[10, i].Value = louver.Deviation.ToString();
-                                    sheet.Cells[11, i].Value = louver.AbsDeviation.ToString();
-                                    sheet.Cells[12, i].Value = louver.Rejected.ToString();
-                                    sheet.Cells[13, i].Value = louver.CauseOfRejection.ToString();
-                                    i++;
-                                }
-                            }
-                        }
-                    }
-
+                    var sheet = package.Workbook.Worksheets.Add($"Sheet{sheetIndex++}");
+                    FillOrderSheet(sheet, order);
                 }
+
                 if (package.Workbook.Worksheets.Count > 0)
                 {
                     package.SaveAs(new FileInfo(filename));
                 }
             }
-
         }
 
+        /// <summary>
+        /// Closes the DataQ connection and stops the stopwatch.
+        /// </summary>
         public void Closing()
         {
             try
@@ -2799,72 +2736,182 @@ namespace Louver_Sort_4._8._1.Helpers
                 _stopwatch.Stop();
                 _stopwatch.Reset();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Console.WriteLine("Error during closing: " + ex.Message);
             }
         }
 
+        /// <summary>
+        /// Validates Barcode1 using a regular expression.
+        /// </summary>
+        /// <param name="barcode">The barcode to validate.</param>
+        /// <returns>True if the barcode is valid; otherwise, false.</returns>
         public bool Barcode1Correct(string barcode)
         {
-            if (barcode != null)
-            {
-                if (barcode != "")
-                {
-                    if (Regex.IsMatch(barcode, Barcode1Regex))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            return !string.IsNullOrEmpty(barcode) && Regex.IsMatch(barcode, Barcode1Regex);
         }
 
+        /// <summary>
+        /// Validates Barcode2 using a regular expression.
+        /// </summary>
+        /// <param name="barcode">The barcode to validate.</param>
+        /// <returns>True if the barcode is valid; otherwise, false.</returns>
         public bool Barcode2Correct(string barcode)
         {
-            if (barcode != null)
-            {
-                if (barcode != "")
-                {
-                    if (Regex.IsMatch(barcode, Barcode2Regex))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            return !string.IsNullOrEmpty(barcode) && Regex.IsMatch(barcode, Barcode2Regex);
         }
 
-        public double CalculateRejection(double Length)
+        /// <summary>
+        /// Calculates the rejection specification based on the length.
+        /// </summary>
+        /// <param name="length">The length to use for calculation.</param>
+        /// <returns>The calculated rejection specification.</returns>
+        public double CalculateRejection(double length)
         {
-            return RejectionSpec * (Convert.ToDouble(Length) / 12);
+            return RejectionSpec * (length / 12);
         }
 
+        /// <summary>
+        /// Converts a list to an observable collection.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list to convert.</param>
+        /// <returns>An observable collection containing the elements of the list.</returns>
         public ObservableCollection<T> ConvertListToObservableCollection<T>(List<T> list)
         {
             return new ObservableCollection<T>(list);
+        }
+
+        /// <summary>
+        /// Fills an Excel sheet with order details.
+        /// </summary>
+        /// <param name="sheet">The Excel sheet to fill.</param>
+        /// <param name="order">The order to export.</param>
+        private void FillOrderSheet(ExcelWorksheet sheet, OrderWithBarcode order)
+        {
+            sheet.Cells[1, 1].Value = "Barcode 1:";
+            sheet.Cells[2, 1].Value = order.BarcodeSet.Barcode1;
+            sheet.Cells[1, 2].Value = "Barcode 2:";
+            sheet.Cells[2, 2].Value = order.BarcodeSet.Barcode2;
+
+            int row = 3;
+
+            foreach (var opening in order.Order.Openings)
+            {
+                sheet.Cells[row, 1].Value = "Line:";
+                sheet.Cells[row + 1, 1].Value = opening.Line;
+                sheet.Cells[row, 2].Value = "Model:";
+                sheet.Cells[row + 1, 2].Value = opening.ModelNum;
+                sheet.Cells[row, 3].Value = "Style:";
+                sheet.Cells[row + 1, 3].Value = opening.Style;
+                sheet.Cells[row, 4].Value = "Length:";
+                sheet.Cells[row + 1, 4].Value = opening.Length;
+                sheet.Cells[row, 5].Value = "Width:";
+                sheet.Cells[row + 1, 5].Value = opening.Width;
+
+                row += 2;
+
+                foreach (var panel in opening.Panels)
+                {
+                    sheet.Cells[row, 1].Value = "ID:";
+                    sheet.Cells[row + 1, 1].Value = panel.ID;
+
+                    row += 2;
+
+                    foreach (var set in panel.Sets)
+                    {
+                        sheet.Cells[row, 1].Value = "Louver Count:";
+                        sheet.Cells[row + 1, 1].Value = set.LouverCount;
+                        sheet.Cells[row, 2].Value = "Date Sort Started:";
+                        sheet.Cells[row + 1, 2].Value = set.DateSortStarted;
+                        sheet.Cells[row, 3].Value = "Date Sort Finished:";
+                        sheet.Cells[row + 1, 3].Value = set.DateSortFinished;
+
+                        row += 2;
+
+                        // Fill louvers details
+                        FillLouversDetails(sheet, set.Louvers, ref row);
+                        FillRejectedLouversDetails(sheet, set.RejectedLouvers, ref row);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Fills an Excel sheet with louvers details.
+        /// </summary>
+        /// <param name="sheet">The Excel sheet to fill.</param>
+        /// <param name="louvers">The list of louvers to export.</param>
+        /// <param name="row">The current row to start filling data.</param>
+        private void FillLouversDetails(ExcelWorksheet sheet, List<Louver> louvers, ref int row)
+        {
+            if (louvers.Count == 0) return;
+
+            sheet.Cells[row, 1].Value = "Louver Details:";
+            row++;
+
+            foreach (var louver in louvers)
+            {
+                sheet.Cells[row, 1].Value = "ID";
+                sheet.Cells[row, 2].Value = louver.ID;
+                sheet.Cells[row + 1, 1].Value = "Sorted ID";
+                sheet.Cells[row + 1, 2].Value = louver.SortedID;
+                sheet.Cells[row + 2, 1].Value = "Orientation";
+                sheet.Cells[row + 2, 2].Value = louver.Orientation;
+                sheet.Cells[row + 3, 1].Value = "Processed";
+                sheet.Cells[row + 3, 2].Value = louver.Processed;
+                sheet.Cells[row + 4, 1].Value = "Reading Top";
+                sheet.Cells[row + 4, 2].Value = louver.Readings.Reading1;
+                sheet.Cells[row + 5, 1].Value = "Reading Bottom";
+                sheet.Cells[row + 5, 2].Value = louver.Readings.Reading2;
+                sheet.Cells[row + 6, 1].Value = "Deviation";
+                sheet.Cells[row + 6, 2].Value = louver.Deviation;
+                sheet.Cells[row + 7, 1].Value = "Abs Deviation";
+                sheet.Cells[row + 7, 2].Value = louver.AbsDeviation;
+
+                row += 8;
+            }
+        }
+
+        /// <summary>
+        /// Fills an Excel sheet with rejected louvers details.
+        /// </summary>
+        /// <param name="sheet">The Excel sheet to fill.</param>
+        /// <param name="rejectedLouvers">The list of rejected louvers to export.</param>
+        /// <param name="row">The current row to start filling data.</param>
+        private void FillRejectedLouversDetails(ExcelWorksheet sheet, List<Louver> rejectedLouvers, ref int row)
+        {
+            if (rejectedLouvers.Count == 0) return;
+
+            sheet.Cells[row, 1].Value = "Rejected Louvers:";
+            row++;
+
+            foreach (var louver in rejectedLouvers)
+            {
+                sheet.Cells[row, 1].Value = "ID";
+                sheet.Cells[row, 2].Value = louver.ID;
+                sheet.Cells[row + 1, 1].Value = "Sorted ID";
+                sheet.Cells[row + 1, 2].Value = louver.SortedID;
+                sheet.Cells[row + 2, 1].Value = "Orientation";
+                sheet.Cells[row + 2, 2].Value = louver.Orientation;
+                sheet.Cells[row + 3, 1].Value = "Processed";
+                sheet.Cells[row + 3, 2].Value = louver.Processed;
+                sheet.Cells[row + 4, 1].Value = "Reading Top";
+                sheet.Cells[row + 4, 2].Value = louver.Readings.Reading1;
+                sheet.Cells[row + 5, 1].Value = "Reading Bottom";
+                sheet.Cells[row + 5, 2].Value = louver.Readings.Reading2;
+                sheet.Cells[row + 6, 1].Value = "Deviation";
+                sheet.Cells[row + 6, 2].Value = louver.Deviation;
+                sheet.Cells[row + 7, 1].Value = "Abs Deviation";
+                sheet.Cells[row + 7, 2].Value = louver.AbsDeviation;
+                sheet.Cells[row + 8, 1].Value = "Rejected";
+                sheet.Cells[row + 8, 2].Value = louver.Rejected;
+                sheet.Cells[row + 9, 1].Value = "Cause of Rejection";
+                sheet.Cells[row + 9, 2].Value = louver.CauseOfRejection;
+
+                row += 10;
+            }
         }
         #endregion
     }

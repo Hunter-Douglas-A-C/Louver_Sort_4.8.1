@@ -17,13 +17,9 @@ using LiveCharts;
 using Louver_Sort_4._8._1.Helpers.LouverStructure;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using Zebra.Sdk.Printer;
 using OfficeOpenXml;
 using System.Windows.Media;
 using Louver_Sort_4._8._1.Views.PopUps;
-
-
-
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -63,18 +59,24 @@ namespace Louver_Sort_4._8._1.Helpers
         #endregion
 
         #region Properities
+
+        #region Class Instances
         //Class Instances
         private DataQHelper _dataQ;
         private ZebraPrinterHelper _zebra = new ZebraPrinterHelper();
         public OrderManager _allOrders = new OrderManager();
         public Globals _globals = new Globals();
+        #endregion
 
+        #region Generic
         //Generic
         string Barcode1Regex = @"^\d{16}P\d$";
         string Barcode2Regex = @"^(PNL[1-9])\/(LXL)\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$";
         string EmptyRegex = @"^$";
         private string _jSONSaveLocation = AppDomain.CurrentDomain.BaseDirectory;
+        #endregion
 
+        #region Globals
         // Globals
         public string AdminPassword
         {
@@ -140,6 +142,9 @@ namespace Louver_Sort_4._8._1.Helpers
             set => SetProperty(ref _es_ESEnabled, value);
         }
 
+        #endregion
+
+        #region User Control Views
         // User Control Views
         private UserControl _selectedPopUp;
         public UserControl SelectedPopUp
@@ -147,7 +152,9 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _selectedPopUp;
             set => SetProperty(ref _selectedPopUp, value);
         }
+        #endregion
 
+        #region IsEnabled
         // IsEnabled
         private bool _isEnabledAcquireBottom;
         public bool IsEnabledAcquireBottom
@@ -302,7 +309,9 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _isEnabledScan;
             set => SetProperty(ref _isEnabledScan, value);
         }
+        #endregion
 
+        #region Visibility
         // Visibility
         private Visibility _visibilityAdjustCalib = Visibility.Collapsed;
         public Visibility VisibilityAdjustCalib
@@ -366,9 +375,9 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _visilityPassword;
             set => SetProperty(ref _visilityPassword, value);
         }
+        #endregion
 
-
-
+        #region Focus
         // Focus
         private bool _focusBarcode1 = true;
         public bool FocusBarcode1
@@ -404,7 +413,9 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _reCutFocusBarcode2;
             set => SetProperty(ref _reCutFocusBarcode2, value);
         }
+        #endregion
 
+        #region IsReadOnly
         // IsReadOnly
         private bool _isReadOnlyBarcode;
         public bool IsReadOnlyBarcode
@@ -412,7 +423,9 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _isReadOnlyBarcode;
             set => SetProperty(ref _isReadOnlyBarcode, value);
         }
+        #endregion
 
+        #region Main
         // Main
         private int _mainContentBlurRadius;
         public int MainContentBlurRadius
@@ -427,7 +440,9 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _selectedTabIndex;
             set => SetProperty(ref _selectedTabIndex, value);
         }
+        #endregion
 
+        #region Variables for Calibration
         //Variables for Calibration
         private string _calibImage;
         public string CalibImage
@@ -458,13 +473,9 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _visibilityCalibImage;
             set => SetProperty(ref _visibilityCalibImage, value);
         }
+        #endregion
 
-
-
-
-
-
-
+        #region Variables for Scan
         //Variables for Scan
         private string _barcode1;
         public string Barcode1
@@ -631,7 +642,12 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else if (value == null)
                 {
+                    IsEnabledLouverCountOk = false;
                     SetProperty(ref _txtLouverCount, value);
+                }
+                else
+                {
+                    IsEnabledLouverCountOk = false;
                 }
             }
         }
@@ -664,19 +680,9 @@ namespace Louver_Sort_4._8._1.Helpers
             public double ElapsedMilliseconds { get; set; }
             public double Value { get; set; }
         }
+        #endregion
 
-
-
-
-
-
-
-
-
-
-
-
-
+        #region Variables for Recut
         //Variables for Recut
         private string _reCutbarcode1;
         public string ReCutBarcode1
@@ -847,10 +853,9 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _txtTopAcceptableReplacement;
             set => SetProperty(ref _txtTopAcceptableReplacement, value);
         }
+        #endregion
 
-
-
-
+        #region Variables for Admin
         //Variables for Admin
         private DateTime? _dateRangeEnd;
         public DateTime? DateRangeEnd
@@ -922,7 +927,9 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _passwordToolTip;
             set => SetProperty(ref _passwordToolTip, value);
         }
+        #endregion
 
+        #region Observable Collections
         // Observable Collections
         private ObservableCollection<LabelID> _labelIDContent;
         public ObservableCollection<LabelID> LabelIDContent
@@ -951,8 +958,9 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _reportContent;
             set => SetProperty(ref _reportContent, value);
         }
+        #endregion
 
-
+        #region UserMessagePopUp
         //UserMessagePopUp
         private string _txtUserMessage;
         public string TxtUserMessage
@@ -960,7 +968,9 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _txtUserMessage;
             set { SetProperty(ref _txtUserMessage, value); }
         }
+        #endregion
 
+        #region ReportPopUp
         // ReportPopUp
         private ReportListView _reportSelectedLouver;
         public ReportListView ReportSelectedLouver
@@ -975,7 +985,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             }
         }
-
+        #endregion
 
         #endregion
 
@@ -1019,44 +1029,12 @@ namespace Louver_Sort_4._8._1.Helpers
         #region CommandImplementation
         public BoundProperities()
         {
-            ConnectToDataQ();
-
-            //CHANGE - check each file path in the function individually
-            //Add messages  if any of the files didn't load in
-            if (CheckFile(_jSONSaveLocation + "\\LouverSortData.ini") && CheckFile(_jSONSaveLocation + "\\Globals.ini") && CheckFile(_jSONSaveLocation + "\\DataQ.ini"))
-            {
-                LoadFromJson();
-            }
-
-            //Make this a function
-            if (_dataQ != null)
-            {
-                if (_dataQ.GetSlope() == 0)
-                {
-                    IsEnabledCalibrate = true;
-                    VisibilitySortSet = Visibility.Collapsed;
-                    IsEnabledReCut = Visibility.Collapsed;
-                }
-                else
-                {
-                    IsEnabledCalibrate = true;
-                    VisibilitySortSet = Visibility.Visible;
-                    IsEnabledReCut = Visibility.Visible;
-                    SelectedTabIndex = 1;
-                }
-            }
-            else
-            {
-                IsEnabledCalibrate = true;
-                VisibilitySortSet = Visibility.Collapsed;
-                IsEnabledReCut = Visibility.Collapsed;
-            }
-
             var Mapper = Mappers.Xy<MeasureModel>()
             .X(x => x.ElapsedMilliseconds)
             .Y(x => x.Value);
             LiveCharts.Charting.For<MeasureModel>(Mapper);
 
+            StartUp();
 
             UpdatePopUp = new BaseCommand(obj =>
             {
@@ -1456,7 +1434,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             });
 
-
             ReconnectToDataQ = new BaseCommand(obj =>
             {
                 //CHANGE - make this function actually do something
@@ -1493,7 +1470,6 @@ namespace Louver_Sort_4._8._1.Helpers
                     }
                 }
             });
-
 
             LouverCountPopUpLoaded = new BaseCommand(obj =>
             {
@@ -1543,7 +1519,6 @@ namespace Louver_Sort_4._8._1.Helpers
 
             });
 
-
             CancelOrder = new BaseCommand(obj =>
             {
                 // Find the order to remove based on the current barcodes
@@ -1562,11 +1537,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 // Disable the cancel button
                 IsEnabledCancel = false;
             });
-
-
-
-
-
 
             AcqReadingTop = new BaseCommand(obj =>
             {
@@ -1601,8 +1571,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 });
                 recordThread.Start();
             });
-
-
 
             AcqReadingBottom = new BaseCommand(obj =>
             {
@@ -1669,9 +1637,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 recordThread.Start();
             });
 
-
-
-
             ReviewLouverReport = new BaseCommand(obj =>
             {
                 // Sort the active set of louvers
@@ -1686,7 +1651,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 // Disable the review report button
                 IsEnabledReviewReport = false;
             });
-
 
             RejectSelected = new BaseCommand(obj =>
             {
@@ -1730,7 +1694,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             });
 
-
             ReworkSet = new BaseCommand(obj =>
             {
                 // Update the ListView content with sorted recorded louvers
@@ -1762,9 +1725,9 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             });
 
-
             ReportApproved = new BaseCommand(obj =>
             {
+                PrintSortedLabels();
                 // Initialize the sorted labels popup
                 SortedLabelsPopUpInitialize();
             });
@@ -1778,15 +1741,11 @@ namespace Louver_Sort_4._8._1.Helpers
                 UpdatePopUp.Execute("Close");
             });
 
-
-
-
             ReCutLoaded = new BaseCommand(obj =>
             {
                 // Set focus to the Barcode1 input when the ReCut popup is loaded
                 ReCutFocusBarcode1 = true;
             });
-
 
             ReCutBarcode1KeyDown = new BaseCommand(obj =>
             {
@@ -1805,7 +1764,6 @@ namespace Louver_Sort_4._8._1.Helpers
                     ReCutFocusBarcode1 = true;
                 }
             });
-
 
             ReCutBarcode2KeyDown = new BaseCommand(obj =>
             {
@@ -2007,7 +1965,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 UpdatePopUp.Execute("Close");
             });
 
-
             CloseReCutPopUp = new BaseCommand(obj =>
             {
                 // Close the popup
@@ -2029,8 +1986,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 ReCutBarcode1 = null;
                 ReCutBarcode2 = null;
             });
-
-
 
             BrowseForJSONSaveLocation = new BaseCommand(obj =>
             {
@@ -2055,7 +2010,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             });
 
-
             AdminLogin = new BaseCommand(obj =>
             {
                 // Update the binding source if the focused element is a TextBox
@@ -2077,8 +2031,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             });
 
-
-
             ExportExcel = new BaseCommand(obj =>
             {
                 // Export data to Excel
@@ -2098,7 +2050,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 IsEnabledExcelExport = false;
             });
 
-
             ShutDown = new BaseCommand(obj =>
             {
                 // Save the current state to a JSON file
@@ -2107,56 +2058,45 @@ namespace Louver_Sort_4._8._1.Helpers
                 // Shut down the application
                 Application.Current.Shutdown();
             });
-
         }
 
         #region Code Behind
 
+        public void StartUp()
+        {
+            ConnectToDataQ();
 
+            //CHANGE - check each file path in the function individually
+            //Add messages  if any of the files didn't load in
+            if (CheckFile(_jSONSaveLocation + "\\LouverSortData.ini") && CheckFile(_jSONSaveLocation + "\\Globals.ini") && CheckFile(_jSONSaveLocation + "\\DataQ.ini"))
+            {
+                LoadFromJson();
+            }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            //Make this a function
+            if (_dataQ != null)
+            {
+                if (_dataQ.GetSlope() == 0)
+                {
+                    IsEnabledCalibrate = true;
+                    VisibilitySortSet = Visibility.Collapsed;
+                    IsEnabledReCut = Visibility.Collapsed;
+                }
+                else
+                {
+                    IsEnabledCalibrate = true;
+                    VisibilitySortSet = Visibility.Visible;
+                    IsEnabledReCut = Visibility.Visible;
+                    SelectedTabIndex = 1;
+                }
+            }
+            else
+            {
+                IsEnabledCalibrate = true;
+                VisibilitySortSet = Visibility.Collapsed;
+                IsEnabledReCut = Visibility.Collapsed;
+            }
+        }
         public void NextLouverSet()
         {
             // Stop sorting the current active set and record the stop time
@@ -2207,7 +2147,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 SelectedTabIndex = 0;
             }
         }
-
         public void PrintSortedLabels()
         {
             List<Louver> toPrint = new List<Louver>();
@@ -2231,7 +2170,6 @@ namespace Louver_Sort_4._8._1.Helpers
             UpdatePopUp.Execute("SortedLabelsPopUp");
             SortedLabelsPopUpInitialize();
         }
-
         public void PrintUnsortedLabels()
         {
             // Start sorting the active set with the current date and time
@@ -2260,29 +2198,24 @@ namespace Louver_Sort_4._8._1.Helpers
             // Show a message to place unsorted labels on louvers
             MessageUser("Place Unsorted Labels on Louvers");
         }
-
         public void MessageUser(string message)
         {
             // Display a message to the user
             TxtUserMessage = message;
             UpdatePopUp.Execute("Message");
         }
-
         private void StartCalibrationThread(ThreadStart action)
         {
             // Start a new thread for calibration
             Thread recordThread = new Thread(action);
             recordThread.Start();
         }
-
-
         private void UpdatePopUpAndAwait()
         {
             // Close the current popup and then await further instructions
             UpdatePopUp.Execute("Close");
             UpdatePopUp.Execute("Await");
         }
-
         private void ConnectAndSetCalibrationFlat()
         {
             // Connect to DataQ device if not already connected and set calibration to flat
@@ -2295,7 +2228,6 @@ namespace Louver_Sort_4._8._1.Helpers
             // Close the current popup
             UpdatePopUp.Execute("Close");
         }
-
         private void UpdatePopupForBottomPlate()
         {
             // Update popup for bottom plate calibration
@@ -2305,7 +2237,6 @@ namespace Louver_Sort_4._8._1.Helpers
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
         }
-
         private void ConnectAndSetCalibrationStep()
         {
             // Connect to DataQ device if not already connected and set calibration to step
@@ -2315,7 +2246,6 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             _dataQ.SetCalibrationStep();
         }
-
         private void UpdatePopupForHighestStep()
         {
             // Update popup for highest step calibration
@@ -2325,7 +2255,6 @@ namespace Louver_Sort_4._8._1.Helpers
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
         }
-
         private void ConnectAndCheckCalFlat()
         {
             // Connect to DataQ device if not already connected and check calibration flat
@@ -2338,7 +2267,6 @@ namespace Louver_Sort_4._8._1.Helpers
             // Close the current popup
             UpdatePopUp.Execute("Close");
         }
-
         private void UpdatePopupForLowestStep()
         {
             // Update popup for lowest step calibration
@@ -2348,7 +2276,6 @@ namespace Louver_Sort_4._8._1.Helpers
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
         }
-
         private void ConnectAndCheckCalStep()
         {
             // Connect to DataQ device if not already connected and check calibration step with rejection specification
@@ -2358,7 +2285,6 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             _dataQ.CheckCalStep(CalibrationRejectionSpec);
         }
-
         private void HandleCalibrationResult()
         {
             // Handle the result of calibration and update the popup text accordingly
@@ -2375,7 +2301,6 @@ namespace Louver_Sort_4._8._1.Helpers
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
         }
-
         private void HandleUnsuccessfulCalibration()
         {
             // Handle the unsuccessful calibration case
@@ -2385,7 +2310,6 @@ namespace Louver_Sort_4._8._1.Helpers
             VisibilityAdjustCalib = Visibility.Collapsed;
             SelectedTabIndex = 0;
         }
-
         private void HandleSuccessfulCalibration()
         {
             // Handle the successful calibration case
@@ -2394,8 +2318,6 @@ namespace Louver_Sort_4._8._1.Helpers
             VisibilityAdjustCalib = Visibility.Collapsed;
             SelectedTabIndex = 1;
         }
-
-
         public void UpdateValue()
         {
             // Get the currently focused element as a FrameworkElement
@@ -2411,9 +2333,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 bindingExpression.UpdateSource();
             }
         }
-
-
-        // View Initialize
         public void SortedLabelsPopUpInitialize()
         {
             // Create a list of LabelID objects
@@ -2439,7 +2358,6 @@ namespace Louver_Sort_4._8._1.Helpers
             // Set the LabelIDContent property to the populated ObservableCollection
             LabelIDContent = labels;
         }
-
         public void ReportInitialize()
         {
             // Generate a report based on the active set and specified gap specification
@@ -2460,9 +2378,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             }
         }
-
-
-        // DataQ Connection and Handling
         public void ConnectToDataQ()
         {
             try
@@ -2511,39 +2426,11 @@ namespace Louver_Sort_4._8._1.Helpers
                 throw;
             }
         }
-
-        public void DataQNewData(object sender, EventArgs e)
-        {
-            // Add new voltage reading to VoltageValues list with the elapsed time
-            VoltageValues.Add(new MeasureModel
-            {
-                ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
-                Value = Math.Round(_dataQ.LatestReading, 3)
-            });
-
-            // Maintain a maximum of 25 readings in the list
-            if (VoltageValues.Count > 25)
-            {
-                VoltageValues.RemoveAt(0);
-            }
-            // Debug.WriteLine(_DataQ.GetDistance());
-            // CurrentReading = VoltageValues[VoltageValues.Count].Value.ToString();
-        }
-
         public void DataQLostConnection(object sender, EventArgs e)
         {
             // Handle the event of losing connection to DataQ
             Debug.WriteLine("Lost Connection");
         }
-
-
-
-
-        /// <summary>
-        /// Checks if a file exists and can be opened.
-        /// </summary>
-        /// <param name="filePath">The path to the file.</param>
-        /// <returns>True if the file exists and can be opened; otherwise, false.</returns>
         public static bool CheckFile(string filePath)
         {
             if (!File.Exists(filePath))
@@ -2566,10 +2453,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 return false;
             }
         }
-
-        /// <summary>
-        /// Loads data from JSON files into respective objects.
-        /// </summary>
         public void LoadFromJson()
         {
             var settings = new JsonSerializerSettings
@@ -2595,10 +2478,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 _dataQ._cal = new Calibration();
             }
         }
-
-        /// <summary>
-        /// Saves data to JSON files.
-        /// </summary>
         public void SaveToJson()
         {
             DeleteDataOlderThan90Days();
@@ -2616,10 +2495,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 SaveJsonFile(_jSONSaveLocation + "DataQ.ini", _dataQ._cal, serializer);
             }
         }
-
-        /// <summary>
-        /// Deletes data older than 90 days.
-        /// </summary>
         public void DeleteDataOlderThan90Days()
         {
             DateTime cutoffDate = DateTime.Now.AddDays(-90);
@@ -2640,19 +2515,11 @@ namespace Louver_Sort_4._8._1.Helpers
                 _allOrders.OrdersWithBarcodes.Remove(orderToRemove);
             }
         }
-
-        /// <summary>
-        /// Helper method to load JSON file and deserialize it into an object.
-        /// </summary>
         private T LoadJsonFile<T>(string filePath, JsonSerializerSettings settings)
         {
             string json = File.ReadAllText(filePath);
             return JsonConvert.DeserializeObject<T>(json, settings);
         }
-
-        /// <summary>
-        /// Helper method to serialize an object and save it to a JSON file.
-        /// </summary>
         private void SaveJsonFile<T>(string filePath, T data, JsonSerializer serializer)
         {
             using (var sw = new StreamWriter(filePath))
@@ -2661,12 +2528,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 serializer.Serialize(writer, data);
             }
         }
-
-        /// <summary>
-        /// Determines if an order's sets are within the selected date range.
-        /// </summary>
-        /// <param name="order">The order to check.</param>
-        /// <returns>True if any set's date is within the date range; otherwise, false.</returns>
         public bool IsInSelectedRange(Order order)
         {
             DateTime cutoffDate = DateTime.Now.AddDays(-90);
@@ -2685,12 +2546,6 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             return false;
         }
-
-        /// <summary>
-        /// Exports orders to an Excel file based on the export type.
-        /// </summary>
-        /// <param name="filename">The name of the Excel file to export to.</param>
-        /// <param name="exportByDateRange">True to export by date range, false to export by sales number.</param>
         public void ExportToExcel(string filename, bool exportByDateRange)
         {
             var ordersToExport = new List<OrderWithBarcode>();
@@ -2723,10 +2578,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             }
         }
-
-        /// <summary>
-        /// Closes the DataQ connection and stops the stopwatch.
-        /// </summary>
         public void Closing()
         {
             try
@@ -2741,53 +2592,22 @@ namespace Louver_Sort_4._8._1.Helpers
                 Console.WriteLine("Error during closing: " + ex.Message);
             }
         }
-
-        /// <summary>
-        /// Validates Barcode1 using a regular expression.
-        /// </summary>
-        /// <param name="barcode">The barcode to validate.</param>
-        /// <returns>True if the barcode is valid; otherwise, false.</returns>
         public bool Barcode1Correct(string barcode)
         {
             return !string.IsNullOrEmpty(barcode) && Regex.IsMatch(barcode, Barcode1Regex);
         }
-
-        /// <summary>
-        /// Validates Barcode2 using a regular expression.
-        /// </summary>
-        /// <param name="barcode">The barcode to validate.</param>
-        /// <returns>True if the barcode is valid; otherwise, false.</returns>
         public bool Barcode2Correct(string barcode)
         {
             return !string.IsNullOrEmpty(barcode) && Regex.IsMatch(barcode, Barcode2Regex);
         }
-
-        /// <summary>
-        /// Calculates the rejection specification based on the length.
-        /// </summary>
-        /// <param name="length">The length to use for calculation.</param>
-        /// <returns>The calculated rejection specification.</returns>
         public double CalculateRejection(double length)
         {
             return RejectionSpec * (length / 12);
         }
-
-        /// <summary>
-        /// Converts a list to an observable collection.
-        /// </summary>
-        /// <typeparam name="T">The type of elements in the list.</typeparam>
-        /// <param name="list">The list to convert.</param>
-        /// <returns>An observable collection containing the elements of the list.</returns>
         public ObservableCollection<T> ConvertListToObservableCollection<T>(List<T> list)
         {
             return new ObservableCollection<T>(list);
         }
-
-        /// <summary>
-        /// Fills an Excel sheet with order details.
-        /// </summary>
-        /// <param name="sheet">The Excel sheet to fill.</param>
-        /// <param name="order">The order to export.</param>
         private void FillOrderSheet(ExcelWorksheet sheet, OrderWithBarcode order)
         {
             sheet.Cells[1, 1].Value = "Barcode 1:";
@@ -2837,13 +2657,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             }
         }
-
-        /// <summary>
-        /// Fills an Excel sheet with louvers details.
-        /// </summary>
-        /// <param name="sheet">The Excel sheet to fill.</param>
-        /// <param name="louvers">The list of louvers to export.</param>
-        /// <param name="row">The current row to start filling data.</param>
         private void FillLouversDetails(ExcelWorksheet sheet, List<Louver> louvers, ref int row)
         {
             if (louvers.Count == 0) return;
@@ -2873,13 +2686,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 row += 8;
             }
         }
-
-        /// <summary>
-        /// Fills an Excel sheet with rejected louvers details.
-        /// </summary>
-        /// <param name="sheet">The Excel sheet to fill.</param>
-        /// <param name="rejectedLouvers">The list of rejected louvers to export.</param>
-        /// <param name="row">The current row to start filling data.</param>
         private void FillRejectedLouversDetails(ExcelWorksheet sheet, List<Louver> rejectedLouvers, ref int row)
         {
             if (rejectedLouvers.Count == 0) return;

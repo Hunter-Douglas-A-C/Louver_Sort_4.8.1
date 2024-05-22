@@ -421,6 +421,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 return _cal.Slope;
             }
             return 0.0;
+        
         }
     }
 
@@ -519,17 +520,17 @@ namespace Louver_Sort_4._8._1.Helpers
     /// </summary>
     public class Calibration
     {
-        private double _flatReading;
-        private double _stepReading;
-        private double _stepValue = 0.75; // Default step value
+        public double _flatReading;
+        public double _stepReading;
+        public double _stepValue = 0.75; // Default step value
 
         // Properties
         public double CheckFlat { get; set; }
         public double CheckStep { get; set; }
         public double CheckStepValue { get; set; } = 0.0393701; // Default check step value
-        public bool Successful { get; private set; } = false;
-        public double Slope { get; private set; }
-        public double Intercept { get; private set; } // Intercept of the linear equation
+        public bool Successful { get; set; } = false;
+        public double Slope { get; set; }
+        public double Intercept { get; set; } // Intercept of the linear equation
 
         // Methods
 

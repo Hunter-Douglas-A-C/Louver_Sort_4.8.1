@@ -64,6 +64,8 @@ namespace Louver_Sort_4._8._1.Helpers
         /// <exception cref="PrinterException">Thrown if there is an error during the print operation.</exception>
         public void PrintLouverIDs(List<LouverStructure.Louver> louvers)
         {
+            Connect();
+
             if (!CheckStatus(_printer).IsReady)
                 return;
 
@@ -78,7 +80,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 if (i % 2 == 1 || i == louvers.Count - 1) zplBuilder.Append("^XZ");
             }
             Print(_printer, zplBuilder.ToString());
-            Thread.Sleep(500);
+            Disconnect();
         }
 
         /// <summary>
@@ -88,6 +90,7 @@ namespace Louver_Sort_4._8._1.Helpers
         /// <exception cref="PrinterException">Thrown if there is an error during the print operation.</exception>
         public void PrintSortedLouverIDs(List<LouverStructure.Louver> louvers)
         {
+            Connect();
             if (!CheckStatus(_printer).IsReady)
                 return;
 
@@ -102,7 +105,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 if (i % 2 == 1 || i == louvers.Count - 1) zplBuilder.Append("^XZ");
             }
             Print(_printer, zplBuilder.ToString());
-            Thread.Sleep(500);
+            Disconnect();
         }
 
         /// <summary>

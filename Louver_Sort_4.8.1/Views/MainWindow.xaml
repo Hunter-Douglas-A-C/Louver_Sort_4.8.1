@@ -145,7 +145,7 @@
 
 
 
-                        <TabItem Visibility="{Binding IsEnabledSortSet}">
+                        <TabItem Visibility="{Binding VisibilitySortSet}">
                             <TabItem.Header>
                                 <StackPanel Width="auto"
                                             Height="auto">

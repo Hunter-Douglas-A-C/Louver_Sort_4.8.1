@@ -299,8 +299,8 @@
                                 ToolTip="Print the first set of labels" />
                         <Button Grid.Row="4"
                                 Content="Approve Set"
-                                Command="{Binding PrintSortedLabels}"
-                                IsEnabled="{Binding IsEnabledApproveSet}"
+                                Command="{Binding ReportApproved}"
+                                IsEnabled="True"
                                 Margin="15,15,15,15"
                                 Width="400"
                                 Height="100"

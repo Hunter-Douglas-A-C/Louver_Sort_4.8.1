@@ -222,7 +222,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
@@ -264,7 +264,10 @@
                                                         Header="Deviation"
                                                         Width="150" />
                                         <GridViewColumn DisplayMemberBinding="{Binding Status}"
-                                                        Header="Status"
+                                                        Header="Bow"
+                                                        Width="150" />
+                                        <GridViewColumn DisplayMemberBinding="{Binding GapWarning}"
+                                                        Header="Gap"
                                                         Width="150" />
                                     </GridView>
                                 </ListView.View>
@@ -276,6 +279,7 @@
 
                     <StackPanel Grid.Column="1"
                                 VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
                                 Panel.ZIndex="1">
                         <Button Content="Reject Selected Louver"
                                 Command="{Binding RejectSelected}"

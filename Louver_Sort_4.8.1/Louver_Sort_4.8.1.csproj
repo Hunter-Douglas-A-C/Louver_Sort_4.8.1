@@ -258,6 +258,9 @@
     <Compile Include="Views\PopUps\CalibratePopUp.xaml.cs">
       <DependentUpon>CalibratePopUp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PopUps\UserBadgeInPopUp.xaml.cs">
+      <DependentUpon>UserBadgeInPopUp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PopUps\LouverCountPopUp.xaml.cs">
       <DependentUpon>LouverCountPopUp.xaml</DependentUpon>
     </Compile>
@@ -304,6 +307,10 @@
     <Page Include="Views\PopUps\CalibratePopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PopUps\UserBadgeInPopUp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PopUps\LouverCountPopUp.xaml">
       <SubType>Designer</SubType>

@@ -102,10 +102,16 @@ namespace Louver_Sort_4._8._1.Helpers
             set => SetProperty(ref _globals.ReCutLouverToLouverSpec, value);
         }
 
-        public double GapSpec
+        public double GapSpecRailToLouver
         {
-            get => _globals.GapSpec;
-            set => SetProperty(ref _globals.GapSpec, value);
+            get => _globals.GapSpecRailToLouver;
+            set => SetProperty(ref _globals.GapSpecRailToLouver, value);
+        }
+
+        public double GapSpecLouverToLouver
+        {
+            get => _globals.GapSpecLouverToLouver;
+            set => SetProperty(ref _globals.GapSpecLouverToLouver, value);
         }
 
         //CHANGE
@@ -142,6 +148,12 @@ namespace Louver_Sort_4._8._1.Helpers
             set => SetProperty(ref _es_ESEnabled, value);
         }
 
+        public List<string> UserIDs
+        {
+            get => _globals.UserIDs;
+            set => SetProperty(ref _globals.UserIDs, value);
+        }
+
         #endregion
 
         #region User Control Views
@@ -156,6 +168,13 @@ namespace Louver_Sort_4._8._1.Helpers
 
         #region IsEnabled
         // IsEnabled
+        private bool _isEnabledMain = true;
+        public bool IsEnabledMain
+        {
+            get => _isEnabledMain;
+            set => SetProperty(ref _isEnabledMain, value);
+        }
+
         private bool _isEnabledAcquireBottom;
         public bool IsEnabledAcquireBottom
         {
@@ -240,13 +259,6 @@ namespace Louver_Sort_4._8._1.Helpers
             set => SetProperty(ref _isEnabledLouverCountOk, value);
         }
 
-        private bool _isEnabledMain;
-        public bool IsEnabledMain
-        {
-            get => _isEnabledMain;
-            set => SetProperty(ref _isEnabledMain, value);
-        }
-
         private bool _isEnabledNextLouverSet;
         public bool IsEnabledNextLouverSet
         {
@@ -308,6 +320,20 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             get => _isEnabledScan;
             set => SetProperty(ref _isEnabledScan, value);
+        }
+
+        private bool _isEnabledUserID = false;
+        public bool IsEnabledUserID
+        {
+            get => _isEnabledUserID;
+            set => SetProperty(ref _isEnabledUserID, value);
+        }
+
+        private bool _isEnabledNewUser = false;
+        public bool IsEnabledNewUser
+        {
+            get => _isEnabledNewUser;
+            set => SetProperty(ref _isEnabledNewUser, value);
         }
         #endregion
 
@@ -412,6 +438,13 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             get => _reCutFocusBarcode2;
             set => SetProperty(ref _reCutFocusBarcode2, value);
+        }
+
+        private bool _focusUserBadgeIn;
+        public bool FocusUserBadgeIn
+        {
+            get => _focusUserBadgeIn;
+            set => SetProperty(ref _focusUserBadgeIn, value);
         }
         #endregion
 
@@ -540,22 +573,22 @@ namespace Louver_Sort_4._8._1.Helpers
         private double _activeBottomReading;
         public double ActiveBottomReading
         {
-            get => _activeBottomReading;
-            set => SetProperty(ref _activeBottomReading, value);
+            get => Math.Round(_activeBottomReading, 3);
+            set => SetProperty(ref _activeBottomReading, Math.Round(value, 3));
         }
 
         private double _activeDeviation;
         public double ActiveDeviation
         {
-            get => _activeDeviation;
-            set => SetProperty(ref _activeDeviation, value);
+            get => Math.Round(_activeDeviation, 3);
+            set => SetProperty(ref _activeDeviation, Math.Round(value, 3));
         }
 
         private double _activeTopReading;
         public double ActiveTopReading
         {
-            get => _activeTopReading;
-            set => SetProperty(ref _activeTopReading, value);
+            get => Math.Round(_activeTopReading, 3);
+            set => SetProperty(ref _activeTopReading, Math.Round(value, 3));
         }
 
         private string _curBarcode1;
@@ -758,7 +791,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
                     //ZebraPrinter _Printer = _zebra.Connect();
                     List<Louver> toPrint = new List<Louver> { ActiveSet.Louvers[index] };
-                    _zebra.PrintSortedLouverIDs(toPrint);
+                    _zebra.PrintLouverIDs(toPrint);
                     //_zebra.Disconnect(_Printer);
 
                     // If the Louver with the same ID is found, remove it from the collection.
@@ -927,6 +960,35 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _passwordToolTip;
             set => SetProperty(ref _passwordToolTip, value);
         }
+
+        private string _newUserID;
+        public string NewUserID
+        {
+            get => _newUserID;
+            set
+            {
+                if (value != null)
+                {
+                    if (Regex.IsMatch(value, @"^\d{1,7}$"))
+                    {
+                        SetProperty(ref _newUserID, value);
+                    }
+                    if (value.Length == 7)
+                    {
+                        IsEnabledNewUser = true;
+                    }
+                    else
+                    {
+                        IsEnabledNewUser = false;
+                    }
+                }
+                else
+                {
+                    _newUserID = value;
+                };
+            }
+        }
+
         #endregion
 
         #region Observable Collections
@@ -987,9 +1049,46 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         #endregion
 
+        #region UserBadgeInPopUp
+        // ReportPopUp
+        private string _employeeID;
+        public string EmployeeID
+        {
+            get => _employeeID;
+            set
+            {
+                if (value != null)
+                {
+                    if (Regex.IsMatch(value, @"^\d{1,7}$"))
+                    {
+                        SetProperty(ref _employeeID, value);
+                    }
+                    if (value.Length == 7)
+                    {
+                        IsEnabledUserID = true;
+                    }
+                    else
+                    {
+                        IsEnabledUserID = false;
+                    }
+                }
+                else
+                {
+                    _employeeID = value;
+                }
+
+
+
+
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Commands
+        public ICommand MainLoaded { get; set; }
+        public ICommand EnterUserID { get; set; }
         public ICommand UpdatePopUp { get; set; }
         public ICommand ChangeLanguage { get; set; }
         public ICommand FilterEnter { get; set; }
@@ -1020,6 +1119,8 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand RejectRecut { get; set; }
         public ICommand CloseReCutPopUp { get; set; }
         public ICommand AdminLogin { get; set; }
+        public ICommand AddNewUser { get; set; }
+        public ICommand ChangeUser { get; set; }
         public ICommand BrowseForJSONSaveLocation { get; set; }
         public ICommand ExportExcel { get; set; }
         public ICommand ShutDown { get; set; }
@@ -1035,6 +1136,35 @@ namespace Louver_Sort_4._8._1.Helpers
             LiveCharts.Charting.For<MeasureModel>(Mapper);
 
             StartUp();
+
+            MainLoaded = new BaseCommand(obj =>
+            {
+                UpdatePopUp.Execute("UserBadgeIn");
+            });
+
+
+            EnterUserID = new BaseCommand(obj =>
+            {
+                bool userfound = false;
+                if (EmployeeID != null)
+                {
+                    foreach (var IDs in UserIDs)
+                    {
+                        if (EmployeeID == IDs)
+                        {
+                            userfound = true;
+                        }
+                    }
+                }
+                if (userfound)
+                {
+                    UpdatePopUp.Execute("Close");
+                }
+                else
+                {
+                    EmployeeID = null;
+                }
+            });
 
             UpdatePopUp = new BaseCommand(obj =>
             {
@@ -1075,6 +1205,9 @@ namespace Louver_Sort_4._8._1.Helpers
                             break;
                         case "Report":
                             SelectedPopUp = new Views.PopUps.ReportPopUp();
+                            break;
+                        case "UserBadgeIn":
+                            SelectedPopUp = new Views.PopUps.UserBadgeInPopUp();
                             break;
                         case "Close":
                             // Reset the user message and hide the popup
@@ -1491,6 +1624,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     new BarcodeSet(Barcode1, Barcode2),
                     Convert.ToInt32(TxtLouverCount)
                 );
+                order.User = EmployeeID;
                 _globals.OrderCount++;
 
                 // Initialize active louver ID and active panel
@@ -1818,7 +1952,7 @@ namespace Louver_Sort_4._8._1.Helpers
                             ReCutLouverSet = order.BarcodeHelper.Set.ToString();
 
                             // Generate the report and update ReCut content
-                            var report = ActiveSet.GenerateReport(GapSpec);
+                            var report = ActiveSet.GenerateReport(GapSpecRailToLouver, GapSpecLouverToLouver);
                             ReCutContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
 
                             // Enable ReCut cancel button
@@ -1862,27 +1996,27 @@ namespace Louver_Sort_4._8._1.Helpers
                     // Collect data and round the value
                     RecutReading1 = Math.Round(_dataQ.WaitForDataCollection(true).Result, 3).ToString();
 
-                    // Update the UI with the collected data
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        TxtTopAcceptableReplacement = RecutReading1.ToString();
+                    //// Update the UI with the collected data
+                    //Application.Current.Dispatcher.Invoke(() =>
+                    //{
+                    TxtTopAcceptableReplacement = RecutReading1.ToString();
 
-                        // Check if the recorded value is within acceptable range
-                        double recutReadingValue = Convert.ToDouble(RecutReading1);
-                        if (Math.Abs(recutReadingValue) <= Convert.ToDouble(TopMaximumValue) && Math.Abs(recutReadingValue) >= Convert.ToDouble(TopMinimumValue))
-                        {
-                            TopColor = Brushes.Green;
-                        }
-                        else
-                        {
-                            TopColor = Brushes.Red;
-                        }
+                    //    // Check if the recorded value is within acceptable range
+                    //    double recutReadingValue = Convert.ToDouble(RecutReading1);
+                    //    if (Math.Abs(recutReadingValue) <= Convert.ToDouble(TopMaximumValue) && Math.Abs(recutReadingValue) >= Convert.ToDouble(TopMinimumValue))
+                    //    {
+                    //        TopColor = Brushes.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        TopColor = Brushes.Red;
+                    //    }
 
-                        // Update UI states
-                        IsEnabledCheckTop = false;
-                        IsEnabledCheckBottom = true;
+                    //    // Update UI states
+                    IsEnabledCheckTop = false;
+                    IsEnabledCheckBottom = true;
 
-                    });
+                    //});
                     // Close the awaiting popup
                     UpdatePopUp.Execute("Close");
                 });
@@ -1910,34 +2044,60 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
                     TxtBottomAcceptableReplacement = RecutReading2.ToString();
+                    TxtTopAcceptableReplacement = RecutReading1.ToString();
 
                     // Check if the recorded value is within acceptable range
                     double recutReadingValue = Convert.ToDouble(RecutReading2);
-                    if (Math.Abs(recutReadingValue) <= Convert.ToDouble(BottomMaximumValue) && Math.Abs(recutReadingValue) >= Convert.ToDouble(BottomMinimumValue))
-                    {
-                        VisibilityReCutData = Visibility.Visible;
-                        BottomColor = Brushes.Green;
-                        TxtUserMessage = "Louver is a good replacement";
-                        UpdatePopUp.Execute("ReCut");
+                    // bool IsReplacement = false;
 
-                        // Determine orientation message
-                        if (ActiveSet.Louvers.FirstOrDefault(l => l.ID == ReCutSelectedLouver.LouverOrder).Orientation == true)
+
+
+                    //Check Top Vs Top
+                    if (Math.Abs(Convert.ToDouble(RecutReading1)) <= Convert.ToDouble(TopMaximumValue) && Math.Abs(Convert.ToDouble(RecutReading1)) >= Convert.ToDouble(TopMinimumValue))
+                    {
+                        TopColor = Brushes.Green;
+                        //Check Bottom Vs Bottom
+                        if (Math.Abs(Convert.ToDouble(RecutReading2)) <= Convert.ToDouble(BottomMaximumValue) && Math.Abs(Convert.ToDouble(RecutReading2)) >= Convert.ToDouble(BottomMinimumValue))
                         {
-                            ReCutOrientation = "Flip";
-                        }
-                        else
-                        {
-                            ReCutOrientation = "Don't Flip";
+                            BottomColor = Brushes.Green;
+                            //No flip has passed
+                            //IsReplacement = true;
+                            ReCutOrientation = "Do Not Flip";
+                            BottomColor = Brushes.Green;
+                            TxtUserMessage = "Louver is a good replacement";
+                            UpdatePopUp.Execute("ReCut");
                         }
                     }
                     else
                     {
-                        BottomColor = Brushes.Red;
-                        TxtUserMessage = "Louver is NOT a replacement";
-                        VisibilityReCutData = Visibility.Visible;
-                        UpdatePopUp.Execute("ReCut");
+                        //Check Top Vs Bottom
+                        if (Math.Abs(Convert.ToDouble(RecutReading1)) <= Convert.ToDouble(BottomMaximumValue) && Math.Abs(Convert.ToDouble(RecutReading1)) >= Convert.ToDouble(BottomMinimumValue))
+                        {
+                            TopColor = Brushes.Green;
+                            //Check Bottom Vs Top
+                            if (Math.Abs(Convert.ToDouble(RecutReading2)) <= Convert.ToDouble(TopMaximumValue) && Math.Abs(Convert.ToDouble(RecutReading2)) >= Convert.ToDouble(TopMinimumValue))
+                            {
+                                BottomColor = Brushes.Green;
+                                //Flip has passed
+                                //IsReplacement = true;
+                                ReCutOrientation = "Flip Louver";
+                                BottomColor = Brushes.Green;
+                                TxtUserMessage = "Louver is a good replacement";
+                                UpdatePopUp.Execute("ReCut");
+                            }
+                        }
+                        else
+                        {
+                            TopColor = Brushes.Red;
+                            BottomColor = Brushes.Red;
+                            //All checks failed
+                            //IsReplacement = false;
+                            ReCutOrientation = "Do Not Flip";
+                            TxtUserMessage = "Louver is NOT a replacement";
+                            VisibilityReCutData = Visibility.Visible;
+                            UpdatePopUp.Execute("ReCut");
+                        }
                     }
-
                     // Update UI states
                     IsEnabledCheckTop = true;
                     IsEnabledCheckBottom = false;
@@ -1956,7 +2116,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 toPrint.Add(ActiveSet.Louvers[ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID)]);
 
                 // Print the sorted louver IDs
-                _zebra.PrintSortedLouverIDs(toPrint);
+                _zebra.PrintLouverIDs(toPrint);
 
                 // Disconnect from the Zebra printer
                 //_zebra.Disconnect(_Printer);
@@ -1969,6 +2129,16 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 // Close the popup
                 UpdatePopUp.Execute("Close");
+
+                // Connect to the Zebra printer
+                //ZebraPrinter _Printer = _zebra.Connect();
+                List<Louver> toPrint = new List<Louver>();
+
+                // Find and add the louver to be printed based on its ID
+                toPrint.Add(ActiveSet.Louvers[ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID)]);
+
+                // Print the sorted louver IDs
+                _zebra.PrintSortedLouverIDs(toPrint);
 
                 // Reset ReCut-related variables and UI elements
                 ReCutContent = null;
@@ -2031,6 +2201,26 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
             });
 
+            AddNewUser = new BaseCommand(obj =>
+            {
+                UpdateValue();
+                if (NewUserID != null)
+                {
+                    UserIDs.Add(NewUserID);
+                    MessageUser("User ID Added: " + NewUserID);
+                }
+                else
+                {
+                    MessageUser("Issue occured trying to add new user");
+                }
+            });
+
+            ChangeUser = new BaseCommand(obj =>
+            {
+                EmployeeID = null;
+                UpdatePopUp.Execute("UserBadgeIn");
+            });
+
             ExportExcel = new BaseCommand(obj =>
             {
                 // Export data to Excel
@@ -2064,14 +2254,16 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public void StartUp()
         {
-            ConnectToDataQ();
+            //ConnectToDataQ();
 
             //CHANGE - check each file path in the function individually
             //Add messages  if any of the files didn't load in
             if (CheckFile(_jSONSaveLocation + "\\LouverSortData.ini") && CheckFile(_jSONSaveLocation + "\\Globals.ini") && CheckFile(_jSONSaveLocation + "\\DataQ.ini"))
             {
-                LoadFromJson();
+                // LoadFromJson();
             }
+
+
 
             //Make this a function
             if (_dataQ != null)
@@ -2361,7 +2553,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public void ReportInitialize()
         {
             // Generate a report based on the active set and specified gap specification
-            var report = ActiveSet.GenerateReport(GapSpec);
+            var report = ActiveSet.GenerateReport(GapSpecRailToLouver, GapSpecLouverToLouver);
 
             // Populate ReportContent with sorted report items
             ReportContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
@@ -2462,7 +2654,7 @@ namespace Louver_Sort_4._8._1.Helpers
             };
 
             // Load and deserialize LouverSortData.ini
-            _allOrders = LoadJsonFile<OrderManager>(_jSONSaveLocation + "LouverSortData.ini", settings);
+            //_allOrders = LoadJsonFile<OrderManager>(_jSONSaveLocation + "LouverSortData.ini", settings);
 
             // Load and deserialize Globals.ini
             _globals = LoadJsonFile<Globals>(_jSONSaveLocation + "Globals.ini", settings);
@@ -2498,7 +2690,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public void DeleteDataOlderThan90Days()
         {
             DateTime cutoffDate = DateTime.Now.AddDays(-90);
-            var ordersToRemove = new List<OrderWithBarcode>();
+            var ordersToRemove = new ObservableCollection<OrderWithBarcode>();
 
             foreach (var order in _allOrders.OrdersWithBarcodes)
             {
@@ -2546,38 +2738,7 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             return false;
         }
-        public void ExportToExcel(string filename, bool exportByDateRange)
-        {
-            var ordersToExport = new List<OrderWithBarcode>();
 
-            // Select orders based on the export type
-            if (exportByDateRange)
-            {
-                ordersToExport.AddRange(_allOrders.OrdersWithBarcodes.FindAll(order => IsInSelectedRange(order.Order)));
-            }
-            else
-            {
-                ordersToExport.AddRange(_allOrders.OrdersWithBarcodes.FindAll(order => order.Order.BarcodeHelper.Barcode1.Contains(Salesnumber)));
-            }
-
-            // Set Excel package license context
-            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-
-            using (var package = new ExcelPackage())
-            {
-                int sheetIndex = 1;
-                foreach (var order in ordersToExport)
-                {
-                    var sheet = package.Workbook.Worksheets.Add($"Sheet{sheetIndex++}");
-                    FillOrderSheet(sheet, order);
-                }
-
-                if (package.Workbook.Worksheets.Count > 0)
-                {
-                    package.SaveAs(new FileInfo(filename));
-                }
-            }
-        }
         public void Closing()
         {
             try
@@ -2608,12 +2769,47 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             return new ObservableCollection<T>(list);
         }
+        public void ExportToExcel(string filename, bool exportByDateRange)
+        {
+            var ordersToExport = new List<OrderWithBarcode>();
+
+            // Select orders based on the export type
+            if (exportByDateRange)
+            {
+                ordersToExport.AddRange(_allOrders.OrdersWithBarcodes.FindAll(order => IsInSelectedRange(order.Order)));
+            }
+            else
+            {
+                ordersToExport.AddRange(_allOrders.OrdersWithBarcodes.FindAll(order => order.Order.BarcodeHelper.Barcode1.Contains(Salesnumber)));
+            }
+
+            // Set Excel package license context
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage())
+            {
+                SummaryExport(package.Workbook.Worksheets.Add($"Sheet{"Summary"}"), ordersToExport);
+                int sheetIndex = 1;
+                foreach (var order in ordersToExport)
+                {
+                    FillOrderSheet(package.Workbook.Worksheets.Add($"Sheet{sheetIndex++}"), order);
+                }
+                BulkExport(package.Workbook.Worksheets.Add($"Sheet{"Raw"}"), ordersToExport);
+
+                if (package.Workbook.Worksheets.Count > 0)
+                {
+                    package.SaveAs(new FileInfo(filename));
+                }
+            }
+        }
         private void FillOrderSheet(ExcelWorksheet sheet, OrderWithBarcode order)
         {
             sheet.Cells[1, 1].Value = "Barcode 1:";
             sheet.Cells[2, 1].Value = order.BarcodeSet.Barcode1;
             sheet.Cells[1, 2].Value = "Barcode 2:";
             sheet.Cells[2, 2].Value = order.BarcodeSet.Barcode2;
+            sheet.Cells[1, 3].Value = "User:";
+            sheet.Cells[2, 3].Value = order.Order.User;
 
             int row = 3;
 
@@ -2674,9 +2870,9 @@ namespace Louver_Sort_4._8._1.Helpers
                 sheet.Cells[row + 2, 2].Value = louver.Orientation;
                 sheet.Cells[row + 3, 1].Value = "Processed";
                 sheet.Cells[row + 3, 2].Value = louver.Processed;
-                sheet.Cells[row + 4, 1].Value = "Reading Top";
+                sheet.Cells[row + 4, 1].Value = "Reading Blank Side";
                 sheet.Cells[row + 4, 2].Value = louver.Readings.Reading1;
-                sheet.Cells[row + 5, 1].Value = "Reading Bottom";
+                sheet.Cells[row + 5, 1].Value = "Reading Label Side";
                 sheet.Cells[row + 5, 2].Value = louver.Readings.Reading2;
                 sheet.Cells[row + 6, 1].Value = "Deviation";
                 sheet.Cells[row + 6, 2].Value = louver.Deviation;
@@ -2703,9 +2899,9 @@ namespace Louver_Sort_4._8._1.Helpers
                 sheet.Cells[row + 2, 2].Value = louver.Orientation;
                 sheet.Cells[row + 3, 1].Value = "Processed";
                 sheet.Cells[row + 3, 2].Value = louver.Processed;
-                sheet.Cells[row + 4, 1].Value = "Reading Top";
+                sheet.Cells[row + 4, 1].Value = "Reading Blank Side";
                 sheet.Cells[row + 4, 2].Value = louver.Readings.Reading1;
-                sheet.Cells[row + 5, 1].Value = "Reading Bottom";
+                sheet.Cells[row + 5, 1].Value = "Reading Label Side";
                 sheet.Cells[row + 5, 2].Value = louver.Readings.Reading2;
                 sheet.Cells[row + 6, 1].Value = "Deviation";
                 sheet.Cells[row + 6, 2].Value = louver.Deviation;
@@ -2718,6 +2914,172 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 row += 10;
             }
+        }
+        private void BulkExport(ExcelWorksheet sheet, List<OrderWithBarcode> order)
+        {
+            sheet.Cells[1, 1].Value = "Barcode 1:";
+            sheet.Cells[1, 2].Value = "Barcode 2:";
+            sheet.Cells[1, 3].Value = "User:";
+            sheet.Cells[1, 4].Value = "Line:";
+            sheet.Cells[1, 5].Value = "Model:";
+            sheet.Cells[1, 6].Value = "Style:";
+            sheet.Cells[1, 7].Value = "Length:";
+            sheet.Cells[1, 8].Value = "Width:";
+            sheet.Cells[1, 9].Value = "ID:";
+            sheet.Cells[1, 10].Value = "Louver Count:";
+            sheet.Cells[1, 11].Value = "Date Sort Started:";
+            sheet.Cells[1, 12].Value = "Date Sort Finished:";
+            sheet.Cells[1, 13].Value = "Date Reading 1:";
+            sheet.Cells[1, 14].Value = "Date Reading 2:";
+            sheet.Cells[1, 15].Value = "ID:";
+            sheet.Cells[1, 16].Value = "Sorted ID:";
+            sheet.Cells[1, 17].Value = "Orientation:";
+            sheet.Cells[1, 18].Value = "Processed:";
+            sheet.Cells[1, 19].Value = "Reading Unlabled:";
+            sheet.Cells[1, 20].Value = "Reading Labeled:";
+            sheet.Cells[1, 21].Value = "Deviation:";
+            sheet.Cells[1, 22].Value = "Abs Deviation:";
+            sheet.Cells[1, 23].Value = "Rejected:";
+            sheet.Cells[1, 24].Value = "Cause of Rejection:";
+
+            int i = 2;
+            ObservableCollection<Order> orders = new ObservableCollection<Order>();
+
+            foreach (var orderWithBarcode in order)
+            {
+                orders.Add(orderWithBarcode.Order);
+            }
+            foreach (var o in orders)
+            {
+                foreach (var opening in o.Openings)
+                {
+                    foreach (var panels in opening.Panels)
+                    {
+                        foreach (var sets in panels.Sets)
+                        {
+                            foreach (var louver in sets.Louvers)
+                            {
+                                sheet.Cells[i, 1].Value = o.BarcodeHelper.BarcodeSet.Barcode1;
+                                sheet.Cells[i, 2].Value = o.BarcodeHelper.BarcodeSet.Barcode2;
+                                sheet.Cells[i, 3].Value = o.User;
+                                sheet.Cells[i, 4].Value = opening.Line;
+                                sheet.Cells[i, 5].Value = opening.ModelNum;
+                                sheet.Cells[i, 6].Value = opening.Style;
+                                sheet.Cells[i, 7].Value = opening.Length;
+                                sheet.Cells[i, 8].Value = opening.Width;
+                                sheet.Cells[i, 9].Value = panels.ID;
+                                sheet.Cells[i, 10].Value = sets.LouverCount;
+                                sheet.Cells[i, 11].Value = sets.DateSortStarted;
+                                sheet.Cells[i, 12].Value = sets.DateSortFinished;
+                                sheet.Cells[i, 13].Value = louver.Readings.DateReading1;
+                                sheet.Cells[i, 14].Value = louver.Readings.DateReading2;
+                                sheet.Cells[i, 15].Value = louver.ID;
+                                sheet.Cells[i, 16].Value = louver.SortedID;
+                                sheet.Cells[i, 17].Value = louver.Orientation;
+                                sheet.Cells[i, 18].Value = louver.Processed;
+                                sheet.Cells[i, 19].Value = louver.Readings.Reading1;
+                                sheet.Cells[i, 20].Value = louver.Readings.Reading2;
+                                sheet.Cells[i, 21].Value = louver.Deviation;
+                                sheet.Cells[i, 22].Value = louver.AbsDeviation;
+                                sheet.Cells[i, 23].Value = louver.Rejected;
+                                sheet.Cells[i, 24].Value = louver.CauseOfRejection;
+                                i++;
+                            }
+                            foreach (var louver in sets.RejectedLouvers)
+                            {
+                                sheet.Cells[i, 1].Value = o.BarcodeHelper.BarcodeSet.Barcode1;
+                                sheet.Cells[i, 2].Value = o.BarcodeHelper.BarcodeSet.Barcode2;
+                                sheet.Cells[i, 3].Value = o.User;
+                                sheet.Cells[i, 4].Value = opening.Line;
+                                sheet.Cells[i, 5].Value = opening.ModelNum;
+                                sheet.Cells[i, 6].Value = opening.Style;
+                                sheet.Cells[i, 7].Value = opening.Length;
+                                sheet.Cells[i, 8].Value = opening.Width;
+                                sheet.Cells[i, 9].Value = panels.ID;
+                                sheet.Cells[i, 10].Value = sets.LouverCount;
+                                sheet.Cells[i, 11].Value = sets.DateSortStarted;
+                                sheet.Cells[i, 12].Value = sets.DateSortFinished;
+                                sheet.Cells[i, 13].Value = louver.Readings.DateReading1;
+                                sheet.Cells[i, 14].Value = louver.Readings.DateReading2;
+                                sheet.Cells[i, 15].Value = louver.ID;
+                                sheet.Cells[i, 16].Value = louver.SortedID;
+                                sheet.Cells[i, 17].Value = louver.Orientation;
+                                sheet.Cells[i, 18].Value = louver.Processed;
+                                sheet.Cells[i, 19].Value = louver.Readings.Reading1;
+                                sheet.Cells[i, 20].Value = louver.Readings.Reading2;
+                                sheet.Cells[i, 21].Value = louver.Deviation;
+                                sheet.Cells[i, 22].Value = louver.AbsDeviation;
+                                sheet.Cells[i, 23].Value = louver.Rejected;
+                                sheet.Cells[i, 24].Value = louver.CauseOfRejection;
+                                i++;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+        }
+        private void SummaryExport(ExcelWorksheet sheet, List<OrderWithBarcode> order)
+        {
+            sheet.Cells[1, 1].Value = "Total Orders Ran:";
+            sheet.Cells[1, 2].Value = "Total Louvers Ran:";
+            sheet.Cells[1, 3].Value = "Average Devation:";
+            sheet.Cells[1, 4].Value = "Total Rejects:";
+            sheet.Cells[1, 5].Value = "Average Time per Order:";
+            sheet.Cells[1, 6].Value = "Other Values can be added by request:";
+
+            int i = 0;
+            int totallouvers = 0;
+            List<double> Devations = new List<double>();
+            List<TimeSpan> dateTimes = new List<TimeSpan>();
+            sheet.Cells[2, 1].Value = order.Count();
+            ObservableCollection<Order> orders = new ObservableCollection<Order>();
+
+            foreach (var orderWithBarcode in order)
+            {
+                orders.Add(orderWithBarcode.Order);
+            }
+            foreach (var o in orders)
+            {
+                foreach (var opening in o.Openings)
+                {
+                    foreach (var panels in opening.Panels)
+                    {
+                        foreach (var sets in panels.Sets)
+                        {
+                            totallouvers += Convert.ToInt16(sets.LouverCount);
+                            foreach (var louver in sets.Louvers)
+                            {
+                                Devations.Add(louver.AbsDeviation);
+                                i++;
+                            }
+                            sheet.Cells[2, 4].Value = sets.RecordedLouvers.Count();
+                            dateTimes.Add(sets.DateSortFinished - sets.DateSortStarted);
+                            foreach (var louver in sets.RejectedLouvers)
+                            {
+                                Devations.Add(louver.AbsDeviation);
+                                i++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            sheet.Cells[2, 2].Value = totallouvers;
+            sheet.Cells[2, 3].Value = Enumerable.Average(Devations);
+            sheet.Cells[2, 5].Value = AverageTimeSpan(dateTimes);
+        }
+        public static TimeSpan AverageTimeSpan(List<TimeSpan> timeSpans)
+        {
+            if (timeSpans == null || timeSpans.Count == 0)
+            {
+                throw new ArgumentException("The list of TimeSpan objects cannot be null or empty.");
+            }
+
+            long totalTicks = timeSpans.Sum(ts => ts.Ticks);
+            long averageTicks = totalTicks / timeSpans.Count;
+            return new TimeSpan(averageTicks);
         }
         #endregion
     }

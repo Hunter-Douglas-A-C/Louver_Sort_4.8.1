@@ -1,6 +1,7 @@
 ﻿using Louver_Sort_4._8._1.Helpers.LouverStructure;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,10 +12,13 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
     /// </summary>
     [Serializable]
     public class Order
-    {
+    { 
+
+
         private BarcodeHelper _barcodeHelper;
         private List<Opening> _openings = new List<Opening>();
         private double _unit;
+        private string _user;
 
         [JsonProperty("barcodeHelper")]
         public BarcodeHelper BarcodeHelper
@@ -28,6 +32,13 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         {
             get => _unit;
             set => _unit = value;
+        }
+
+        [JsonProperty("user")]
+        public string User
+        {
+            get => _user;
+            set => _user = value;
         }
 
         [JsonProperty("openings")]
@@ -100,5 +111,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             }
             throw new ArgumentException("Opening with the specified line number not found.", nameof(line));
         }
+
+
     }
 }

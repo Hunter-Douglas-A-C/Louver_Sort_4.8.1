@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
@@ -10,6 +11,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
     [Serializable]
     public class Opening
     {
+    
         public enum LouverModels
         {
             MSL01,

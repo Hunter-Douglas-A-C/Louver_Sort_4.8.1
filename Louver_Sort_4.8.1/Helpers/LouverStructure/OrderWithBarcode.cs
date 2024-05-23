@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json; // Make sure to add this using statement
 using System;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 {
@@ -8,7 +10,9 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
     /// </summary>
     [Serializable]
     public class OrderWithBarcode
-    {
+    { 
+
+
         private BarcodeSet _barcodeSet;
         private Order _order;
 
@@ -34,5 +38,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             _order = order;
             _barcodeSet = order.BarcodeHelper.BarcodeSet;
         }
+
+
     }
 }

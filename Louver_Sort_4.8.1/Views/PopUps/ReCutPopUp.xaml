@@ -36,14 +36,14 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Visibility="{Binding VisibilityReCutData}">
-                <TextBlock Text="Blank Side Reading"
+                <TextBlock Text="{DynamicResource BlankSideReadingLabel}"
                            FontSize="30"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center" />
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center">
-                    <TextBlock Text="Min "
+                    <TextBlock Text="{DynamicResource MinLabel}"
                                FontSize="30" />
                     <TextBlock Text="{Binding TopMinimumValue}"
                                FontSize="30" />
@@ -63,18 +63,18 @@
                                FontSize="30" />
                     <TextBlock Text="{Binding TopMaximumValue}"
                                FontSize="30" />
-                    <TextBlock Text=" Max"
+                    <TextBlock Text="{DynamicResource MaxLabel}"
                                FontSize="30" />
                 </StackPanel>
                 <TextBlock Margin="0,50,0,0"
-                           Text="Label Side Reading"
+                           Text="{DynamicResource LabelSideReadingLabel}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            FontSize="30" />
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center">
-                    <TextBlock Text="Min "
+                    <TextBlock Text="{DynamicResource MinLabel}"
                                FontSize="30" />
                     <TextBlock Text="{Binding BottomMinimumValue}"
                                FontSize="30" />
@@ -94,12 +94,12 @@
                                FontSize="30" />
                     <TextBlock Text="{Binding BottomMaximumValue}"
                                FontSize="30" />
-                    <TextBlock Text=" Max"
+                    <TextBlock Text="{Binding TopMaximumValue}"
                                FontSize="30" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center">
-                    <TextBlock Text="Orientation: "
+                    <TextBlock Text="{DynamicResource OrientationLabel}"
                                FontSize="24" />
                     <TextBox MinWidth="100"
                              Text="{Binding ReCutOrientation}" />
@@ -109,14 +109,14 @@
             <StackPanel Orientation="Horizontal"
                         Margin="-50,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <Button x:Name="OkButton"
-                        Content="Approve"
+                        Content="{DynamicResource ApproveButton}"
                         Width="100"
                         Height="75"
 
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
                         Command="{Binding CloseReCutPopUp}" />
-                <Button Content="Reject"
+                <Button Content="{DynamicResource RejectButton}"
                         Width="100"
                         Height="75"
                         VerticalAlignment="Center"

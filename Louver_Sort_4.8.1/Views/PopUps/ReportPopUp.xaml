@@ -36,7 +36,7 @@
                                           Mode="SecondaryDark">
 
                     <StackPanel>
-                        <TextBlock Text="Sorted Report"
+                        <TextBlock Text="{DynamicResource SortedReportLabel}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
                                    FontSize="30" />
@@ -255,19 +255,19 @@
                                     <GridView AllowsColumnReorder="true"
                                               ColumnHeaderToolTip="Louver Data">
                                         <GridViewColumn DisplayMemberBinding="{Binding LouverID}"
-                                                        Header="Unsorted ID"
+                                                        Header="{DynamicResource UnsortedIDListView}"
                                                         Width="175" />
                                         <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
-                                                        Header="Sorted ID"
+                                                        Header="{DynamicResource SortedIDListView2}"
                                                         Width="175" />
                                         <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
-                                                        Header="Deviation"
+                                                        Header="{DynamicResource DeviationListView2}"
                                                         Width="150" />
                                         <GridViewColumn DisplayMemberBinding="{Binding Status}"
-                                                        Header="Bow"
+                                                        Header="{DynamicResource BowListView}"
                                                         Width="150" />
                                         <GridViewColumn DisplayMemberBinding="{Binding GapWarning}"
-                                                        Header="Gap"
+                                                        Header="{DynamicResource GapListVIew}"
                                                         Width="150" />
                                     </GridView>
                                 </ListView.View>
@@ -281,7 +281,7 @@
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
                                 Panel.ZIndex="1">
-                        <Button Content="Reject Selected Louver"
+                        <Button Content="{DynamicResource RejectSelectedLouverButton}"
                                 Command="{Binding RejectSelected}"
                                 IsEnabled="{Binding IsEnabledRejectSelectedLouver}"
                                 Margin="15,15,15,15"
@@ -291,7 +291,7 @@
                                 Style="{StaticResource MaterialDesignRaisedButton}"
                                 materialDesign:ButtonAssist.CornerRadius="10"
                                 ToolTip="Select a louver from the list and remove it" />
-                        <Button Content="Rework Set"
+                        <Button Content="{DynamicResource ReworkSetButton}"
                                 Command="{Binding ReworkSet}"
                                 IsEnabled="{Binding IsEnabledReworkSet}"
                                 Margin="15,15,15,15"
@@ -302,7 +302,7 @@
                                 materialDesign:ButtonAssist.CornerRadius="10"
                                 ToolTip="Print the first set of labels" />
                         <Button Grid.Row="4"
-                                Content="Approve Set"
+                                Content="{DynamicResource ApproveSetButton}"
                                 Command="{Binding ReportApproved}"
                                 IsEnabled="True"
                                 Margin="15,15,15,15"
@@ -335,7 +335,7 @@
                                                  HorizontalAlignment="Center"
                                                  Kind="ArrowBottomLeftThick"
                                                  Foreground="Gray" />
-                        <TextBlock Text="To Reject a Louver - Click from list"
+                        <TextBlock Text="{DynamicResource RejectALouverLabel}"
                                    Foreground="Gray" />
                     </StackPanel>
 

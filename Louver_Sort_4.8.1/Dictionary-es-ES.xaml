@@ -2,10 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:System="clr-namespace:System;assembly=mscorlib">
 
-    
-    
-    
-    
+
+
+
+
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml">
         </ResourceDictionary>
@@ -25,4 +25,76 @@
     <System:String x:Key="SortTab">Clasificar</System:String>
     <System:String x:Key="ReCutTab">ReCut</System:String>
     <System:String x:Key="AdminTab">Administrador</System:String>
+    <System:String x:Key="CalibrateButton">Calibrar</System:String>
+    <System:String x:Key="ShortBarcodeHelperText">Ingrese un código de barras corto</System:String>
+    <System:String x:Key="ShortBarcodeHint">Código de barras corto</System:String>
+    <System:String x:Key="LongBarcodeHelperText">Enter long Barcode</System:String>
+    <System:String x:Key="LongBarcodeHint">Código de barras largo</System:String>
+    <System:String x:Key="ActiveIDLabel">ID activa</System:String>
+    <System:String x:Key="LabelEachLouverLabel">Coloque una etiqueta ordenada en cada rejilla</System:String>
+    <System:String x:Key="BlankSideLabel">Lectura lateral en blanco</System:String>
+    <System:String x:Key="LabelSideLabel">Lectura lateral de la etiqueta</System:String>
+    <System:String x:Key="SortedReportLabel">Informe ordenado</System:String>
+    <System:String x:Key="EnterEmployeeIDLabel">Ingrese la identificación del empleado:</System:String>
+    <System:String x:Key="DeviationLabel">Desviación</System:String>
+    <System:String x:Key="BlankSideReadingLabel">Lectura lateral en blanco</System:String>
+    <System:String x:Key="LouverIDListView">ID de rejilla</System:String>
+    <System:String x:Key="SideListView">Lado</System:String>
+    <System:String x:Key="EnterLouverCountTxt">Introduzca el número de rejillas:</System:String>
+    <System:String x:Key="DistanceListView">Distancia</System:String>
+    <System:String x:Key="CurrentUserLabel">Usuario actual:</System:String>
+    <System:String x:Key="MinLabel"
+                   xml:space="preserve">mín. </System:String>
+    <System:String x:Key="MeasureBlankSideButton">Medir el lado en blanco</System:String>
+    <System:String x:Key="MeasureLabelSideButton">Medir el lado de la etiqueta</System:String>
+    <System:String x:Key="ReviewReportButton">Revisar informe ordenado</System:String>
+    <System:String x:Key="CancelButton">Cancelar</System:String>
+    <System:String x:Key="SortedIDListView">ID ordenado</System:String>
+    <System:String x:Key="DeviationListView">Desviación</System:String>
+    <System:String x:Key="StatusListView">Estado</System:String>
+    <System:String x:Key="ClickHelperText">Haga clic en una rejilla de la lista</System:String>
+    <System:String x:Key="AdminPasswordHint">Clave de administrador</System:String>
+    <System:String x:Key="DataRetentionHint">Período de retención de datos</System:String>
+    <System:String x:Key="RecalibrationHint">Período de recalibración</System:String>
+    <System:String x:Key="BowHint">Especificaciones del arco de rejilla</System:String>
+    <System:String x:Key="RecutLouverToRailHint">Recortar la rejilla según las especificaciones del riel</System:String>
+    <System:String x:Key="MaxLabel"
+                   xml:space="preserve"> máx.</System:String>
+    <System:String x:Key="Recutlouvertolouverhint">ReCut Louver a las especificaciones de Louver</System:String>
+    <System:String x:Key="GapSpecLouverToRailHint">Gap Spec Louver to Rail</System:String>
+    <System:String x:Key="LabelSideReadingLabel">Lectura lateral de la etiqueta</System:String>
+    <System:String x:Key="StepCompletedButton">Paso completado</System:String>
+    <System:String x:Key="OrientationListView">Orientación</System:String>
+    <System:String x:Key="GapSpecLouverToLouver">Gap Spec Rejilla a Rejilla</System:String>
+    <System:String x:Key="CalibrationRejectionHint">Especificaciones de rechazo de calibración</System:String>
+    <System:String x:Key="ExcelExportLocationHint">Ubicación de exportación de Excel</System:String>
+    <System:String x:Key="SalesNumberHint">Número de ventas</System:String>
+    <System:String x:Key="SettingsLabe">Ajustes</System:String>
+    <System:String x:Key="ReportingLabel">Informes</System:String>
+    <System:String x:Key="CalibrationLabel">Calibración</System:String>
+    <System:String x:Key="CalibrateLaserButton">Calibrar láser</System:String>
+    <System:String x:Key="UserIDsLabel">ID de usuario</System:String>
+    <System:String x:Key="AddUserButton">Agregar usuario</System:String>
+    <System:String x:Key="ExportExcelReport">Exportar informe de Excel</System:String>
+    <System:String x:Key="StringUnit">Cadena</System:String>
+    <System:String x:Key="DaysUnit">Días</System:String>
+    <System:String x:Key="OrdersUnit"># de pedidos</System:String>
+    <System:String x:Key="InFtUnit">pulgadas/pies</System:String>
+    <System:String x:Key="InUnit">en</System:String>
+    <System:String x:Key="NewUserIDHint">Nueva identificación de usuario</System:String>
+    <System:String x:Key="EmployeeNumberHint">Número de empleado</System:String>
+    <System:String x:Key="OkButton">DE ACUERDO</System:String>
+    <System:String x:Key="ApproveButton">Aprobar</System:String>
+    <System:String x:Key="RejectButton">Rechazar</System:String>
+    <System:String x:Key="OrientationLabel"
+                   xml:space="preserve">Orientación: </System:String>
+    <System:String x:Key="RejectALouverLabel">Para rechazar una rejilla: haga clic en la lista</System:String>
+    <System:String x:Key="RejectSelectedLouverButton">Rechazar la rejilla seleccionada</System:String>
+    <System:String x:Key="ReworkSetButton">Conjunto de retrabajo</System:String>
+    <System:String x:Key="ApproveSetButton">Aprobar conjunto</System:String>
+    <System:String x:Key="UnsortedIDListView">ID sin clasificar</System:String>
+    <System:String x:Key="SortedIDListView2">ID ordenado</System:String>
+    <System:String x:Key="DeviationListView2">Desviación</System:String>
+    <System:String x:Key="BowListView">Arco</System:String>
+    <System:String x:Key="GapListVIew">Brecha</System:String>
 </ResourceDictionary>

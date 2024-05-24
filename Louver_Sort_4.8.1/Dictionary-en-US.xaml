@@ -13,12 +13,82 @@
             <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Secondary/MaterialDesignColor.Orange.xaml">
             </ResourceDictionary>
         </ResourceDictionary.MergedDictionaries>
-    
-    
-    
-    
+
+
+    <!--<System:String x:Key=""></System:String>-->
+
     <System:String x:Key="CalibrateTab">Calibrate</System:String>
     <System:String x:Key="SortTab">Sort</System:String>
     <System:String x:Key="ReCutTab">ReCut</System:String>
     <System:String x:Key="AdminTab">Admin</System:String>
-    </ResourceDictionary>
+    <System:String x:Key="CalibrateButton">Calibrate</System:String>
+    <System:String x:Key="ShortBarcodeHelperText">Enter short Barcode</System:String>
+    <System:String x:Key="ShortBarcodeHint">Short Barcode</System:String>
+    <System:String x:Key="LongBarcodeHelperText">Enter long Barcode</System:String>
+    <System:String x:Key="LongBarcodeHint">Long Barcode</System:String>
+    <System:String x:Key="ActiveIDLabel">Active ID</System:String>
+    <System:String x:Key="LabelEachLouverLabel">Place sorted label on each louver</System:String>
+    <System:String x:Key="BlankSideLabel">Blank Side Reading</System:String>
+    <System:String x:Key="LabelSideLabel">Label Side Reading</System:String>
+    <System:String x:Key="SortedReportLabel">Sorted Report</System:String>
+    <System:String x:Key="EnterEmployeeIDLabel">Enter Employee ID:</System:String>
+    <System:String x:Key="DeviationLabel">Deviation</System:String>
+    <System:String x:Key="BlankSideReadingLabel">Blank Side Reading</System:String>
+    <System:String x:Key="LouverIDListView">LouverID</System:String>
+    <System:String x:Key="SideListView">Side</System:String>
+    <System:String x:Key="EnterLouverCountTxt">Enter Louver Count:</System:String>
+    <System:String x:Key="DistanceListView">Distance</System:String>
+    <System:String x:Key="CurrentUserLabel">Current User:</System:String>
+    <System:String x:Key="MinLabel" xml:space="preserve">Min </System:String>
+    <System:String x:Key="MeasureBlankSideButton">Measure Blank Side</System:String>
+    <System:String x:Key="MeasureLabelSideButton">Measure Label Side</System:String>
+    <System:String x:Key="ReviewReportButton">Review Sorted Report</System:String>
+    <System:String x:Key="CancelButton">Cancel</System:String>
+    <System:String x:Key="SortedIDListView">Sorted ID</System:String>
+    <System:String x:Key="DeviationListView">Deviation</System:String>
+    <System:String x:Key="StatusListView">Status</System:String>
+    <System:String x:Key="ClickHelperText">Click a louver from the list</System:String>
+    <System:String x:Key="AdminPasswordHint">Admin Password</System:String>
+    <System:String x:Key="DataRetentionHint">Data Retintion Period</System:String>
+    <System:String x:Key="RecalibrationHint">ReCalibartion Period</System:String>
+    <System:String x:Key="BowHint">Louver Bow  Spec</System:String>
+    <System:String x:Key="RecutLouverToRailHint">Recut Louver to Rail Spec</System:String>
+    <System:String x:Key="MaxLabel" xml:space="preserve"> Max</System:String>
+    <System:String x:Key="Recutlouvertolouverhint">ReCut Louver to Louver Spec</System:String>
+    <System:String x:Key="GapSpecLouverToRailHint">Gap Spec Louver to Rail</System:String>
+    <System:String x:Key="LabelSideReadingLabel">Label Side Reading</System:String>
+    <System:String x:Key="StepCompletedButton">Step Completed</System:String>
+    <System:String x:Key="OrientationListView">Orientation</System:String>
+    <System:String x:Key="GapSpecLouverToLouver">Gap Spec Louver to Louver</System:String>
+    <System:String x:Key="CalibrationRejectionHint">Calibration Rejection Spec</System:String>
+    <System:String x:Key="ExcelExportLocationHint">Excel Export Location</System:String>
+    <System:String x:Key="SalesNumberHint">Sales Number</System:String>
+    <System:String x:Key="SettingsLabe">Settings</System:String>
+    <System:String x:Key="ReportingLabel">Reporting</System:String>
+    <System:String x:Key="CalibrationLabel">Calibration</System:String>
+    <System:String x:Key="CalibrateLaserButton">Calibrate Laser</System:String>
+    <System:String x:Key="UserIDsLabel">User IDs</System:String>
+    <System:String x:Key="AddUserButton">Add User</System:String>
+    <System:String x:Key="ExportExcelReport">Export Excel Report</System:String>
+    <System:String x:Key="StringUnit">String</System:String>
+    <System:String x:Key="DaysUnit">Days</System:String>
+    <System:String x:Key="OrdersUnit"># of Orders</System:String>
+    <System:String x:Key="InFtUnit">in/ft</System:String>
+    <System:String x:Key="InUnit">in</System:String>
+    <System:String x:Key="NewUserIDHint">New User ID</System:String>
+    <System:String x:Key="EmployeeNumberHint">Employee Number</System:String>
+    <System:String x:Key="OkButton">OK</System:String>
+    <System:String x:Key="ApproveButton">Approve</System:String>
+    <System:String x:Key="RejectButton">Reject</System:String>
+    <System:String x:Key="OrientationLabel" xml:space="preserve">Orientation: </System:String>
+    <System:String x:Key="RejectALouverLabel">To Reject a Louver - Click from list</System:String>
+    <System:String x:Key="RejectSelectedLouverButton">Reject Selected Louver</System:String>
+    <System:String x:Key="ReworkSetButton">Rework Set</System:String>
+    <System:String x:Key="ApproveSetButton">Approve Set</System:String>
+    <System:String x:Key="UnsortedIDListView">Unsorted ID</System:String>
+    <System:String x:Key="SortedIDListView2">Sorted ID</System:String>
+    <System:String x:Key="DeviationListView2">Deviation</System:String>
+    <System:String x:Key="BowListView">Bow</System:String>
+    <System:String x:Key="GapListVIew">Gap</System:String>
+
+</ResourceDictionary>

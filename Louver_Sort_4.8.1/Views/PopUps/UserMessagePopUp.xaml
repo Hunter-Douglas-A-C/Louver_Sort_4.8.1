@@ -31,7 +31,7 @@
             </materialDesign:ColorZone>
 
             <Button x:Name="OkButton"
-                    Content="OK"
+                    Content="{DynamicResource OkButton}"
                     Width="75"
                     Height="75"
                     Margin="-50,20,0,0"

@@ -126,7 +126,7 @@
                                                           CornerRadius="10"
                                                           Mode="PrimaryDark">
                                     <Button Grid.Row="0"
-                                            Content="Calibrate"
+                                            Content="{DynamicResource CalibrateButton}"
                                             Command="{Binding Calibrate}"
                                             Margin="0,0,0,0"
                                             Width="300"
@@ -211,8 +211,8 @@
                                                                     Width="1300"
                                                                     HorizontalAlignment="Left">
                                                             <TextBox x:Name="barcode1TextBox"
-                                                                     materialDesign:HintAssist.HelperText="Enter short Barcode"
-                                                                     materialDesign:HintAssist.Hint="Short Barcode"
+                                                                     materialDesign:HintAssist.HelperText="{DynamicResource ShortBarcodeHelperText}"
+                                                                     materialDesign:HintAssist.Hint="{DynamicResource ShortBarcodeHint}"
                                                                      materialDesign:HintAssist.HelperTextFontSize="16"
                                                                      FontSize="24"
                                                                      Focusable="True"
@@ -227,8 +227,8 @@
                                                             </TextBox>
                                                             <TextBox x:Name="Barcode2TextBox"
                                                                      Margin="0,40,0,0"
-                                                                     materialDesign:HintAssist.HelperText="Enter long Barcode"
-                                                                     materialDesign:HintAssist.Hint="Long Barcode"
+                                                                     materialDesign:HintAssist.HelperText="{DynamicResource LongBarcodeHelperText}"
+                                                                     materialDesign:HintAssist.Hint="{DynamicResource LongBarcodeHint}"
                                                                      materialDesign:HintAssist.HelperTextFontSize="16"
                                                                      FontSize="24"
                                                                      Focusable="True"
@@ -295,7 +295,7 @@
                                                     materialDesign:ButtonAssist.CornerRadius="10"
                                                     ToolTip="Print the first set of labels" />-->
                                             <Button Grid.Row="0"
-                                                    Content="Measure Blank Side"
+                                                    Content="{DynamicResource MeasureBlankSideButton}"
                                                     Command="{Binding AcqReadingTop}"
                                                     IsEnabled="{Binding IsEnabledAcquareTop}"
                                                     Width="400"
@@ -305,7 +305,7 @@
                                                     materialDesign:ButtonAssist.CornerRadius="10"
                                                     ToolTip="Record the top side warp measurement" />
                                             <Button Grid.Row="1"
-                                                    Content="Measure Label Side"
+                                                    Content="{DynamicResource MeasureLabelSideButton}"
                                                     Command="{Binding AcqReadingBottom}"
                                                     IsEnabled="{Binding IsEnabledAcquireBottom}"
                                                     Width="400"
@@ -315,7 +315,7 @@
                                                     materialDesign:ButtonAssist.CornerRadius="10"
                                                     ToolTip="Record the bottom side warp measurment" />
                                             <Button Grid.Row="3"
-                                                    Content="Review Sorted Report"
+                                                    Content="{DynamicResource ReviewReportButton}"
                                                     Command="{Binding ReviewLouverReport}"
                                                     IsEnabled="{Binding IsEnabledReviewReport}"
                                                     Width="400"
@@ -335,7 +335,7 @@
                     materialDesign:ButtonAssist.CornerRadius="10"
                     ToolTip="Clear all values and start a new set" />-->
                                             <Button Grid.Row="6"
-                                                    Content="Cancel"
+                                                    Content="{DynamicResource CancelButton}"
                                                     Command="{Binding CancelOrder}"
                                                     Width="400"
                                                     Height="100"
@@ -370,7 +370,7 @@
                                                         <StackPanel Grid.Column="0"
                                                                     Grid.Row="1"
                                                                     VerticalAlignment="Center">
-                                                            <TextBlock Text="Active ID"
+                                                            <TextBlock Text="{DynamicResource ActiveIDLabel}"
                                                                        VerticalAlignment="Center"
                                                                        HorizontalAlignment="Center"
                                                                        Margin="0,0,0,15" />
@@ -388,7 +388,7 @@
                                                         </StackPanel>
                                                         <StackPanel VerticalAlignment="Center"
                                                                     Margin="0, 5, 0, 5">
-                                                            <TextBlock Text="Blank Side Reading"
+                                                            <TextBlock Text="{DynamicResource BlankSideLabel}"
                                                                        VerticalAlignment="Center"
                                                                        HorizontalAlignment="Center"
                                                                        Margin="0,0,0,15" />
@@ -409,7 +409,7 @@
                                                                     Grid.Row="1"
                                                                     VerticalAlignment="Center"
                                                                     Margin="0, 5, 0, 5">
-                                                            <TextBlock Text="Label Side Reading"
+                                                            <TextBlock Text="{DynamicResource LabelSideLabel}"
                                                                        VerticalAlignment="Center"
                                                                        HorizontalAlignment="Center"
                                                                        Margin="0,0,0,15" />
@@ -430,7 +430,7 @@
                                                                     Grid.Row="2"
                                                                     VerticalAlignment="Center"
                                                                     Margin="0, 5, 0, 5">
-                                                            <TextBlock Text="Deviation"
+                                                            <TextBlock Text="{DynamicResource DeviationLabel}"
                                                                        VerticalAlignment="Center"
                                                                        HorizontalAlignment="Center"
                                                                        Margin="0,0,0,15" />
@@ -487,13 +487,13 @@
                                                             <ListView.View>
                                                                 <GridView AllowsColumnReorder="true"
                                                                           ColumnHeaderToolTip="Louver Data">
-                                                                    <GridViewColumn Header="LouverID"
+                                                                    <GridViewColumn Header="{DynamicResource LouverIDListView}"
                                                                                     Width="150"
                                                                                     DisplayMemberBinding="{Binding LouverID}" />
-                                                                    <GridViewColumn Header="Side"
+                                                                    <GridViewColumn Header="{DynamicResource SideListView}"
                                                                                     Width="125"
                                                                                     DisplayMemberBinding="{Binding Side}" />
-                                                                    <GridViewColumn Header="Distance"
+                                                                    <GridViewColumn Header="{DynamicResource DistanceListView}"
                                                                                     Width="150"
                                                                                     DisplayMemberBinding="{Binding Distance}" />
                                                                 </GridView>
@@ -653,8 +653,8 @@
                                                             Width="1300"
                                                             HorizontalAlignment="Left">
                                                     <TextBox x:Name="barcode1TextBox2"
-                                                             materialDesign:HintAssist.HelperText="Enter Barcode 1"
-                                                             materialDesign:HintAssist.Hint="Barcode 1"
+                                                             materialDesign:HintAssist.HelperText="{DynamicResource ShortBarcodeHelperText}"
+                                                             materialDesign:HintAssist.Hint="{DynamicResource ShortBarcodeHint}"
                                                              materialDesign:HintAssist.HelperTextFontSize="16"
                                                              Margin="0,0,0,40"
                                                              FontSize="24"
@@ -670,8 +670,8 @@
 
                                                     </TextBox>
                                                     <TextBox x:Name="Barcode2TextBox2"
-                                                             materialDesign:HintAssist.HelperText="Enter Barcode 2"
-                                                             materialDesign:HintAssist.Hint="Barcode 2"
+                                                             materialDesign:HintAssist.HelperText="{DynamicResource LongBarcodeHelperText}"
+                                                             materialDesign:HintAssist.Hint="{DynamicResource LongBarcodeHint}"
                                                              materialDesign:HintAssist.HelperTextFontSize="16"
                                                              FontSize="24"
                                                              Focusable="True"
@@ -689,7 +689,7 @@
 
                                                 <Button Grid.Column="2"
                                                         Grid.Row="0"
-                                                        Content="Cancel"
+                                                        Content="{DynamicResource CancelButton}"
                                                         HorizontalAlignment="Center"
                                                         Command="{Binding CancelRecut}"
                                                         Width="200"
@@ -726,13 +726,13 @@
                                                     <GridView AllowsColumnReorder="true"
                                                               ColumnHeaderToolTip="Louver Data">
                                                         <GridViewColumn DisplayMemberBinding="{Binding LouverOrder}"
-                                                                        Header="Sorted ID"
+                                                                        Header="{DynamicResource SortedIDListView}"
                                                                         Width="200" />
                                                         <GridViewColumn DisplayMemberBinding="{Binding CurrWarp}"
-                                                                        Header="Deviation"
+                                                                        Header="{DynamicResource DeviationListView}"
                                                                         Width="150" />
                                                         <GridViewColumn DisplayMemberBinding="{Binding Status}"
-                                                                        Header="Status"
+                                                                        Header="{DynamicResource StatusListView}"
                                                                         Width="150" />
                                                     </GridView>
                                                 </ListView.View>
@@ -750,7 +750,7 @@
                                                                  HorizontalAlignment="Center"
                                                                  Kind="ArrowBottomLeftThick"
                                                                  Foreground="Gray" />
-                                        <TextBlock Text="Click a louver from the list"
+                                        <TextBlock Text="{DynamicResource ClickHelperText}"
                                                    Foreground="Gray" />
                                     </StackPanel>
 
@@ -777,7 +777,7 @@
                                                     Orientation="Horizontal">
                                             <StackPanel>
                                                 <Button Grid.Row="0"
-                                                        Content="Measure Blank Side"
+                                                        Content="{DynamicResource MeasureBlankSideButton}"
                                                         Command="{Binding CheckTop}"
                                                         IsEnabled="{Binding IsEnabledCheckTop}"
                                                         Width="300"
@@ -787,7 +787,7 @@
                                                         materialDesign:ButtonAssist.CornerRadius="10"
                                                         ToolTip="Print the first set of labels" />
                                                 <Button Grid.Row="0"
-                                                        Content="Measure Label Side"
+                                                        Content="{DynamicResource MeasureLabelSideButton}"
                                                         Command="{Binding CheckBottom}"
                                                         IsEnabled="{Binding IsEnabledCheckBottom}"
                                                         Width="300"
@@ -953,7 +953,7 @@
                                                                   CornerRadius="10"
                                                                   Mode="SecondaryDark"
                                                                   HorizontalAlignment="Left">
-                                            <TextBlock Text="Settings"
+                                            <TextBlock Text="{DynamicResource SettingsLabe}"
                                                        FontSize="24"
                                                        FontWeight="ExtraBold" />
                                         </materialDesign:ColorZone>
@@ -975,13 +975,13 @@
                                                                  FontSize="25"
                                                                  VerticalAlignment="Center"
                                                                  HorizontalAlignment="Stretch"
-                                                                 materialDesign:HintAssist.Hint="Admin Password"
+                                                                 materialDesign:HintAssist.Hint="{DynamicResource AdminPasswordHint}"
                                                                  AcceptsReturn="True"
                                                                  IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                                  Style="{StaticResource MaterialDesignFilledTextBox}"
                                                                  TextWrapping="Wrap"
                                                                  Text="{Binding AdminPassword, Mode=TwoWay}" />
-                                                        <TextBlock Text="String"
+                                                        <TextBlock Text="{DynamicResource StringUnit}"
                                                                    Margin="5,0,0,0"
                                                                    VerticalAlignment="Center"
                                                                    HorizontalAlignment="Center"
@@ -1014,13 +1014,13 @@
                                                         <TextBox MinWidth="300"
                                                                  VerticalAlignment="Top"
                                                                  FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="Data Retintion Period"
+                                                                 materialDesign:HintAssist.Hint="{DynamicResource DataRetentionHint}"
                                                                  AcceptsReturn="True"
                                                                  IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                                  Style="{StaticResource MaterialDesignFilledTextBox}"
                                                                  TextWrapping="Wrap"
                                                                  Text="{Binding DataRetentionPeriod, Mode=TwoWay}" />
-                                                        <TextBlock Text="Days"
+                                                        <TextBlock Text="{DynamicResource DaysUnit}"
                                                                    Margin="5,0,0,0"
                                                                    VerticalAlignment="Center"
                                                                    HorizontalAlignment="Center"
@@ -1036,13 +1036,13 @@
                                                         <TextBox MinWidth="300"
                                                                  VerticalAlignment="Top"
                                                                  FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="ReCalibartion Period"
+                                                                 materialDesign:HintAssist.Hint="{DynamicResource RecalibrationHint}"
                                                                  AcceptsReturn="True"
                                                                  IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                                  Style="{StaticResource MaterialDesignFilledTextBox}"
                                                                  TextWrapping="Wrap"
                                                                  Text="{Binding RecalibratePeriod, Mode=TwoWay}" />
-                                                        <TextBlock Text="Days"
+                                                        <TextBlock Text="{DynamicResource OrdersUnit}"
                                                                    Margin="5,0,0,0"
                                                                    VerticalAlignment="Center"
                                                                    HorizontalAlignment="Center"
@@ -1056,14 +1056,14 @@
                                                                 Margin="0,30,0,0">
                                                         <TextBox MinWidth="300"
                                                                  VerticalAlignment="Top"
-                                                                 materialDesign:HintAssist.Hint="Louver Bow  Spec"
+                                                                 materialDesign:HintAssist.Hint="{DynamicResource BowHint}"
                                                                  AcceptsReturn="True"
                                                                  FontSize="25"
                                                                  IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                                  Style="{StaticResource MaterialDesignFilledTextBox}"
                                                                  TextWrapping="Wrap"
                                                                  Text="{Binding RejectionSpec, Mode=TwoWay}" />
-                                                        <TextBlock Text="in/ft"
+                                                        <TextBlock Text="{DynamicResource InFtUnit}"
                                                                    Margin="5,0,0,0"
                                                                    VerticalAlignment="Center"
                                                                    HorizontalAlignment="Center"
@@ -1077,13 +1077,13 @@
                                                         <TextBox MinWidth="300"
                                                                  VerticalAlignment="Top"
                                                                  FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="Recut Louver to Rail Spec"
+                                                                 materialDesign:HintAssist.Hint="{DynamicResource RecutLouverToRailHint}"
                                                                  AcceptsReturn="True"
                                                                  IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                                  Style="{StaticResource MaterialDesignFilledTextBox}"
                                                                  TextWrapping="Wrap"
                                                                  Text="{Binding ReCutRailSpec, Mode=TwoWay}" />
-                                                        <TextBlock Text="in"
+                                                        <TextBlock Text="{DynamicResource InUnit}"
                                                                    Margin="5,0,0,0"
                                                                    VerticalAlignment="Center"
                                                                    HorizontalAlignment="Center"
@@ -1098,13 +1098,13 @@
                                                         <TextBox MinWidth="300"
                                                                  VerticalAlignment="Top"
                                                                  FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="ReCut Louver to Louver Spec"
+                                                                 materialDesign:HintAssist.Hint="{DynamicResource Recutlouvertolouverhint}"
                                                                  AcceptsReturn="True"
                                                                  IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                                  Style="{StaticResource MaterialDesignFilledTextBox}"
                                                                  TextWrapping="Wrap"
                                                                  Text="{Binding ReCutLouverToLouverSpec, Mode=TwoWay}" />
-                                                        <TextBlock Text="in"
+                                                        <TextBlock Text="{DynamicResource InUnit}"
                                                                    Margin="5,0,0,0"
                                                                    VerticalAlignment="Center"
                                                                    HorizontalAlignment="Center"
@@ -1118,13 +1118,13 @@
                                                         <TextBox MinWidth="300"
                                                                  VerticalAlignment="Top"
                                                                  FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="Gap Spec Louver to Rail"
+                                                                 materialDesign:HintAssist.Hint="{DynamicResource GapSpecLouverToRailHint}"
                                                                  AcceptsReturn="True"
                                                                  IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                                  Style="{StaticResource MaterialDesignFilledTextBox}"
                                                                  TextWrapping="Wrap"
                                                                  Text="{Binding GapSpecLouverToRail, Mode=TwoWay}" />
-                                                        <TextBlock Text="in"
+                                                        <TextBlock Text="{DynamicResource InUnit}"
                                                                    Margin="5,0,0,0"
                                                                    VerticalAlignment="Center"
                                                                    HorizontalAlignment="Center"
@@ -1138,13 +1138,13 @@
                                                         <TextBox MinWidth="300"
                                                                  VerticalAlignment="Top"
                                                                  FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="Gap Spec Louver to Louver"
+                                                                 materialDesign:HintAssist.Hint="{DynamicResource GapSpecLouverToLouver}"
                                                                  AcceptsReturn="True"
                                                                  IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                                  Style="{StaticResource MaterialDesignFilledTextBox}"
                                                                  TextWrapping="Wrap"
                                                                  Text="{Binding GapSpecLouverToLouver, Mode=TwoWay}" />
-                                                        <TextBlock Text="in"
+                                                        <TextBlock Text="{DynamicResource InUnit}"
                                                                    Margin="5,0,0,0"
                                                                    VerticalAlignment="Center"
                                                                    HorizontalAlignment="Center"
@@ -1159,13 +1159,13 @@
                                                         <TextBox MinWidth="300"
                                                                  VerticalAlignment="Top"
                                                                  FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="Calibration Rejection Spec"
+                                                                 materialDesign:HintAssist.Hint="{DynamicResource CalibrationRejectionHint}"
                                                                  AcceptsReturn="True"
                                                                  IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                                  Style="{StaticResource MaterialDesignFilledTextBox}"
                                                                  TextWrapping="Wrap"
                                                                  Text="{Binding CalibrationRejectionSpec, Mode=TwoWay}" />
-                                                        <TextBlock Text="in"
+                                                        <TextBlock Text="{DynamicResource InUnit}"
                                                                    Margin="5,0,0,0"
                                                                    VerticalAlignment="Center"
                                                                    HorizontalAlignment="Center"
@@ -1205,7 +1205,7 @@
                                                                   CornerRadius="10"
                                                                   Mode="SecondaryDark"
                                                                   HorizontalAlignment="Left">
-                                            <TextBlock Text="Reporting"
+                                            <TextBlock Text="{DynamicResource ReportingLabel}"
                                                        FontSize="24"
                                                        FontWeight="ExtraBold" />
                                         </materialDesign:ColorZone>
@@ -1234,7 +1234,7 @@
                                                         <TextBox MaxWidth="400"
                                                                  VerticalAlignment="Top"
                                                                  FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="Excel Export Location"
+                                                                 materialDesign:HintAssist.Hint="{DynamicResource ExcelExportLocationHint}"
                                                                  AcceptsReturn="True"
                                                                  IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                                  Style="{StaticResource MaterialDesignFilledTextBox}"
@@ -1277,7 +1277,7 @@
                                                              Margin="50,50,50,0"
                                                              VerticalAlignment="Top"
                                                              FontSize="25"
-                                                             materialDesign:HintAssist.Hint="Sales Number"
+                                                             materialDesign:HintAssist.Hint="{DynamicResource SalesNumberHint}"
                                                              AcceptsReturn="True"
                                                              IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                              Style="{StaticResource MaterialDesignFilledTextBox}"
@@ -1291,7 +1291,7 @@
                                                                Margin="0,50,0,0" />
 
                                                     <Button Grid.Row="0"
-                                                            Content="Export Excel Report"
+                                                            Content="{DynamicResource ExportExcelReport}"
                                                             Command="{Binding ExportExcel}"
                                                             Margin="0,40,0,40"
                                                             Width="300"
@@ -1328,7 +1328,7 @@
                                                                       CornerRadius="10"
                                                                       Mode="SecondaryDark"
                                                                       HorizontalAlignment="Left">
-                                                <TextBlock Text="Calibration"
+                                                <TextBlock Text="{DynamicResource CalibrationLabel}"
                                                            FontSize="24"
                                                            FontWeight="ExtraBold" />
                                             </materialDesign:ColorZone>
@@ -1341,7 +1341,7 @@
                                                                       Mode="PrimaryDark"
                                                                       Grid.Column="2">
                                                 <Button Grid.Row="0"
-                                                        Content="Calibrate Laser"
+                                                        Content="{DynamicResource CalibrateLaserButton}"
                                                         Command="{Binding CalibrateLaser}"
                                                         Margin="0,0,0,0"
                                                         Width="300"
@@ -1367,7 +1367,7 @@
                                                                       CornerRadius="10"
                                                                       Mode="SecondaryDark"
                                                                       HorizontalAlignment="Left">
-                                                <TextBlock Text="User IDs"
+                                                <TextBlock Text="{DynamicResource UserIDsLabel}"
                                                            FontSize="24"
                                                            FontWeight="ExtraBold" />
                                             </materialDesign:ColorZone>
@@ -1384,14 +1384,14 @@
                                                              FontSize="25"
                                                              VerticalAlignment="Center"
                                                              HorizontalAlignment="Stretch"
-                                                             materialDesign:HintAssist.Hint="New User ID"
+                                                             materialDesign:HintAssist.Hint="{DynamicResource NewUserIDHint}"
                                                              AcceptsReturn="True"
                                                              IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                              Style="{StaticResource MaterialDesignFilledTextBox}"
                                                              TextWrapping="Wrap"
                                                              Text="{Binding NewUserID}" />
                                                     <Button Grid.Row="0"
-                                                            Content="Add User"
+                                                            Content="{DynamicResource AddUserButton}"
                                                             Command="{Binding AddUser}"
                                                             Margin="0,0,0,0"
                                                             Width="300"
@@ -1466,7 +1466,7 @@
                             VerticalAlignment="Top"
                             HorizontalAlignment="Right"
                             Margin="0,10,15,0">
-                    <TextBlock Text="Current User: "
+                    <TextBlock Text="{DynamicResource CurrentUserLabel}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
                                FontSize="24"

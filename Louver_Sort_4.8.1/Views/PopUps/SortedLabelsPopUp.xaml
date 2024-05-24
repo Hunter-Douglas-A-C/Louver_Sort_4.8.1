@@ -28,7 +28,7 @@
                                           CornerRadius="10"
                                           Mode="SecondaryDark"
                                           HorizontalAlignment="Left">
-                    <TextBlock Text="Place sorted label on each louver"
+                    <TextBlock Text="{DynamicResource LabelEachLouverLabel}"
                                FontSize="24"
                                FontWeight="ExtraBold" />
                 </materialDesign:ColorZone>
@@ -61,13 +61,13 @@
                                 <GridView AllowsColumnReorder="true"
                                           ColumnHeaderToolTip="Louver Data">
                                     <GridViewColumn DisplayMemberBinding="{Binding UnsortedID}"
-                                                    Header="UnsortedID"
+                                                    Header="{DynamicResource UnsortedIDListView}"
                                                     Width="150" />
                                     <GridViewColumn DisplayMemberBinding="{Binding SortedID}"
-                                                    Header="SortedID"
+                                                    Header="{DynamicResource SortedIDListView}"
                                                     Width="150" />
                                     <GridViewColumn DisplayMemberBinding="{Binding Orientation}"
-                                                    Header="Orientation"
+                                                    Header="{DynamicResource OrientationListView}"
                                                     Width="150" />
                                 </GridView>
                             </ListView.View>
@@ -80,7 +80,7 @@
                             HorizontalAlignment="Right"
                             Margin="0,20,0,0">
                     <Button x:Name="OkButton"
-                            Content="Completed"
+                            Content="{DynamicResource StepCompletedButton}"
                             Width="150"
                             Height="75"
                             Command="{Binding SortedLabelsComplete}" />

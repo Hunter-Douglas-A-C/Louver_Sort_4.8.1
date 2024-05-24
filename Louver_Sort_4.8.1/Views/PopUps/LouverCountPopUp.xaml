@@ -36,7 +36,7 @@
                                           CornerRadius="10"
                                           Mode="SecondaryDark"
                                           HorizontalAlignment="Left">
-                    <TextBlock Text="Enter Louver Count:"
+                    <TextBlock Text="{DynamicResource EnterLouverCountTxt}"
                                FontSize="24"
                                FontWeight="ExtraBold" />
                 </materialDesign:ColorZone>
@@ -74,7 +74,7 @@
                             HorizontalAlignment="Right"
                             Margin="0,20,0,0">
                     <Button x:Name="OkButton"
-                            Content="OK"
+                            Content="{DynamicResource OkButton}"
                             Width="75"
                             Height="75"
                             Command="{Binding LouverCountOk}"

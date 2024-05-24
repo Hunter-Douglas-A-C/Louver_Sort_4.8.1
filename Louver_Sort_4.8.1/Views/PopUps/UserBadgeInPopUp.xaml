@@ -36,12 +36,12 @@
                                           CornerRadius="10"
                                           Mode="SecondaryDark"
                                           HorizontalAlignment="Left">
-                    <TextBlock Text="Enter Employee ID:"
+                    <TextBlock Text="{DynamicResource EnterEmployeeIDLabel}"
                                FontSize="24"
                                FontWeight="ExtraBold" />
                 </materialDesign:ColorZone>
 
-                <TextBox materialDesign:HintAssist.Hint="Employee Number"
+                <TextBox materialDesign:HintAssist.Hint="{DynamicResource EmployeeNumberHint}"
                          materialDesign:HintAssist.HelperTextFontSize="16"
                          Margin="0,0,0,0"
                          FontSize="24"
@@ -69,7 +69,7 @@
                             HorizontalAlignment="Right"
                             Margin="0,20,0,0">
                     <Button x:Name="OkButton"
-                            Content="OK"
+                            Content="{DynamicResource OkButton}"
                             Width="75"
                             Height="75"
                             Command="{Binding EnterUserID}"

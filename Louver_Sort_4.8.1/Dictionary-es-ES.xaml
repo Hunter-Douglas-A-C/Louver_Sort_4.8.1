@@ -97,4 +97,32 @@
     <System:String x:Key="DeviationListView2">Desviación</System:String>
     <System:String x:Key="BowListView">Arco</System:String>
     <System:String x:Key="GapListVIew">Brecha</System:String>
+
+    <System:String x:Key="IncorrectBarcode">Código de barras incorrecto</System:String>
+    <System:String x:Key="Order Already Sorted">Orden ya ordenada</System:String>
+    <System:String x:Key="Ensure you record the correct louver side">Ensure you record the correct louver side</System:String>
+    <System:String x:Key="Readings are too close together">Readings are too close together</System:String>
+    <System:String x:Key="Order not found">Orden no encontrada</System:String>
+    <System:String x:Key="Incorrect Barcode">Código de barras incorrecto</System:String>
+    <System:String x:Key="User ID Added:">ID de usuario agregado:</System:String>
+    <System:String x:Key="Issue occured trying to add new user">Se produjo un problema al intentar agregar nuevo usuario</System:String>
+    <System:String x:Key="Report Generated">Informe generado</System:String>
+    <System:String x:Key="Place Unsorted Labels on Louvers">Coloque etiquetas sin clasificar en las rejillas</System:String>
+    <System:String x:Key="Disconnect and Reconnect DataQ, restart application">Desconecte y vuelva a conectar DataQ, reinicie la aplicación</System:String>
+
+
+
+    <System:String x:Key="Place calibration plate on top of rail">Coloque la placa de calibración encima del riel.</System:String>
+    <System:String x:Key="Place laser centering plate on slide and adjust sensor until red dot is in the cross hair">Coloque la placa de centrado del láser en el portaobjetos y ajuste el sensor hasta que el punto rojo esté en la cruz.</System:String>
+    <System:String x:Key="Turn laser to teach mode">Gire el láser al modo de enseñanza</System:String>
+    <System:String x:Key="Set calibration plate on top of slide">Coloque la placa de calibración encima del portaobjetos.</System:String>
+    <System:String x:Key="Press plus on the laser">Presione más en el láser</System:String>
+    <System:String x:Key="Set calibration plate on bottom of slide">Coloque la placa de calibración en la parte inferior del portaobjetos.</System:String>
+    <System:String x:Key="Press minus on laser">Presione menos en láser</System:String>
+    <System:String x:Key="Turn dial on laser back to run">Gire el dial del láser nuevamente para ejecutar</System:String>
+    <System:String x:Key="Place calibration plate on bottom of slide">Coloque la placa de calibración en la parte inferior del portaobjetos.</System:String>
+    <System:String x:Key="Place highest step of Louver Sag Gauge on top of rail">Coloque el escalón más alto del Louver Sag Gauge encima del riel</System:String>
+    <System:String x:Key="Place lowest step of Louver Sag Gauge on top of rail">Coloque el escalón más bajo del Louver Sag Gauge encima del riel</System:String>
+    <System:String x:Key="Calibration Passed">Calibración aprobada</System:String>
+    <System:String x:Key="Calibration Failed. Repeat Calibration">Error de calibración. Repetir calibración</System:String>
 </ResourceDictionary>

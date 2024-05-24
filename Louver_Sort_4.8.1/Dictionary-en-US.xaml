@@ -91,4 +91,31 @@
     <System:String x:Key="BowListView">Bow</System:String>
     <System:String x:Key="GapListVIew">Gap</System:String>
 
+    <System:String x:Key="IncorrectBarcode">Incorrect Barcode</System:String>
+    <System:String x:Key="Order Already Sorted">Order Already Sorted</System:String>
+    <System:String x:Key="Ensure you record the correct louver side">Ensure you record the correct louver side</System:String>
+    <System:String x:Key="Readings are too close together">Readings are too close together</System:String>
+    <System:String x:Key="Order not found">Order not found</System:String>
+    <System:String x:Key="Incorrect Barcode">Incorrect Barcode</System:String>
+    <System:String x:Key="User ID Added:">User ID Added:</System:String>
+    <System:String x:Key="Issue occured trying to add new user">Issue occured trying to add new user</System:String>
+    <System:String x:Key="Report Generated">Report Generated</System:String>
+    <System:String x:Key="Place Unsorted Labels on Louvers">Place Unsorted Labels on Louvers</System:String>
+    <System:String x:Key="Disconnect and Reconnect DataQ, restart application">Disconnect and Reconnect DataQ, restart application</System:String>
+
+
+
+    <System:String x:Key="Place calibration plate on top of rail">Place calibration plate on top of rail</System:String>
+    <System:String x:Key="Place laser centering plate on slide and adjust sensor until red dot is in the cross hair">Place laser centering plate on slide and adjust sensor until red dot is in the cross hair</System:String>
+    <System:String x:Key="Turn laser to teach mode">Turn laser to teach mode</System:String>
+    <System:String x:Key="Set calibration plate on top of slide">Set calibration plate on top of slide</System:String>
+    <System:String x:Key="Press plus on the laser">Press plus on the laser</System:String>
+    <System:String x:Key="Set calibration plate on bottom of slide">Set calibration plate on bottom of slide</System:String>
+    <System:String x:Key="Press minus on laser">Press minus on laser</System:String>
+    <System:String x:Key="Turn dial on laser back to run">Turn dial on laser back to run</System:String>
+    <System:String x:Key="Place calibration plate on bottom of slide">Place calibration plate on bottom of slide</System:String>
+    <System:String x:Key="Place highest step of Louver Sag Gauge on top of rail">Place highest step of Louver Sag Gauge on top of rail</System:String>
+    <System:String x:Key="Place lowest step of Louver Sag Gauge on top of rail">Place lowest step of Louver Sag Gauge on top of rail</System:String>
+    <System:String x:Key="Calibration Passed">Calibration Passed</System:String>
+    <System:String x:Key="Calibration Failed. Repeat Calibration">Calibration Failed. Repeat Calibration</System:String>
 </ResourceDictionary>

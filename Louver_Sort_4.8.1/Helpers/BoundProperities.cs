@@ -20,6 +20,8 @@ using System.Diagnostics;
 using OfficeOpenXml;
 using System.Windows.Media;
 using Louver_Sort_4._8._1.Views.PopUps;
+using System.Reflection;
+using Zebra.Sdk.Printer;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -789,10 +791,10 @@ namespace Louver_Sort_4._8._1.Helpers
                     // Find the index of the Louver object with the same ID as ReportSelectedLouver.
                     int index = ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID);
 
-                    //ZebraPrinter _Printer = _zebra.Connect();
+                    ZebraPrinter _Printer = _zebra.Connect();
                     List<Louver> toPrint = new List<Louver> { ActiveSet.Louvers[index] };
-                    _zebra.PrintLouverIDs(toPrint);
-                    //_zebra.Disconnect(_Printer);
+                    _zebra.PrintLouverIDs(_Printer, toPrint);
+                    _zebra.Disconnect(_Printer);
 
                     // If the Louver with the same ID is found, remove it from the collection.
                     if (index != -1)
@@ -1229,10 +1231,23 @@ namespace Louver_Sort_4._8._1.Helpers
                 });
             });
 
+
+            string cultureCode = "en-US";
             ChangeLanguage = new BaseCommand(obj =>
             {
                 // Set the current culture and UI culture to the specified language
-                string cultureCode = obj.ToString();
+                switch (cultureCode)
+                {
+                    case "en-US":
+                        cultureCode = "es-ES";
+                        break;
+                    case "es-ES":
+                        cultureCode = "en-US";
+                        break;
+                    default:
+                        break;
+                }
+
                 Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureCode);
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
 
@@ -1245,19 +1260,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 Application.Current.Resources.MergedDictionaries.Add(resdict);
 
                 // Enable or disable language options based on the selected language
-                switch (cultureCode)
-                {
-                    case "en-US":
-                        EnUSEnabled = false;
-                        EsESEnabled = true;
-                        break;
-                    case "es-ES":
-                        EnUSEnabled = true;
-                        EsESEnabled = false;
-                        break;
-                    default:
-                        break;
-                }
+
             });
 
             FilterEnter = new BaseCommand(obj =>
@@ -1361,7 +1364,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 1: Show calibration popup with instructions for the top plate
                         UpdatePopUp.Execute("Calibrate");
                         VisibilityCalibImage = Visibility.Visible;
-                        CalibTxt = "Place calibration plate on top of rail";
+                        CalibTxt = (Application.Current.Resources["Place calibration plate on top of rail"].ToString());
                         CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
                         CalibTxtBoxHint = "";
                         VisibilityCalibRecord = Visibility.Collapsed;
@@ -1440,7 +1443,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     case 1:
                         // Step 1: Show calibration popup with instructions for centering the laser
                         UpdatePopUp.Execute("CalibrateLaser");
-                        CalibTxt = "Place laser centering plate on slide and adjust sensor until red dot is in the cross hair";
+                        CalibTxt = (Application.Current.Resources["Place laser centering plate on slide and adjust sensor until red dot is in the cross hair"].ToString());
                         CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\1.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
@@ -1449,7 +1452,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     case 2:
                         // Step 2: Show instructions to turn laser to teach mode
                         UpdatePopUp.Execute("CalibrateLaser");
-                        CalibTxt = "Turn laser to teach mode";
+                        CalibTxt = (Application.Current.Resources["Turn laser to teach mode"].ToString());
                         CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
@@ -1458,7 +1461,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     case 3:
                         // Step 3: Show instructions to set calibration plate on top of slide
                         UpdatePopUp.Execute("CalibrateLaser");
-                        CalibTxt = "Set calibration plate on top of slide";
+                        CalibTxt = (Application.Current.Resources["Set calibration plate on top of slide"].ToString());
                         CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\3.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
@@ -1467,7 +1470,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     case 4:
                         // Step 4: Show instructions to press plus on the laser
                         UpdatePopUp.Execute("CalibrateLaser");
-                        CalibTxt = "Press plus on the laser";
+                        CalibTxt = (Application.Current.Resources["Press plus on the laser"].ToString());
                         CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
@@ -1476,7 +1479,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     case 5:
                         // Step 5: Show instructions to set calibration plate on bottom of slide
                         UpdatePopUp.Execute("CalibrateLaser");
-                        CalibTxt = "Set calibration plate on bottom of slide";
+                        CalibTxt = (Application.Current.Resources["Set calibration plate on bottom of slide"].ToString());
                         CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\4.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
@@ -1485,7 +1488,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     case 6:
                         // Step 6: Show instructions to press minus on the laser
                         UpdatePopUp.Execute("CalibrateLaser");
-                        CalibTxt = "Press minus on laser";
+                        CalibTxt = (Application.Current.Resources["Press minus on laser"].ToString());
                         CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
@@ -1494,7 +1497,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     case 7:
                         // Step 7: Show instructions to turn the dial on laser back to run
                         UpdatePopUp.Execute("CalibrateLaser");
-                        CalibTxt = "Turn dial on laser back to run";
+                        CalibTxt = (Application.Current.Resources["Turn dial on laser back to run"].ToString());
                         CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\5.png";
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
@@ -1578,7 +1581,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 if (Barcode1 == null || Barcode2 == null || Barcode1 == "" || Barcode2 == "")
                 {
                     // If either Barcode1 or Barcode2 is null or empty, show an error message and focus on Barcode1
-                    MessageUser("Incorrect Barcode");
+                    MessageUser(Application.Current.Resources["IncorrectBarcode"].ToString());
                     FocusBarcode1 = true;
                 }
                 else
@@ -1588,7 +1591,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     if (order != null)
                     {
                         // If the order already exists, show a message and clear the barcodes
-                        MessageUser("Order Already Sorted");
+                        MessageUser(Application.Current.Resources["Order Already Sorted"].ToString());
                         Barcode1 = "";
                         Barcode2 = "";
                     }
@@ -1725,7 +1728,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     if (Math.Abs(difference.TotalSeconds) < 2)
                     {
                         // Show message if the time difference is too small
-                        MessageUser("Ensure you record the correct louver side");
+                        MessageUser(Application.Current.Resources["Ensure you record the correct louver side"].ToString());
                         return;
                     }
 
@@ -1733,7 +1736,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     if (Math.Abs(Convert.ToDouble(ActiveSet.Louvers[ActiveLouverID - 1].Readings.Reading1 - value)) < 0.007)
                     {
                         // Show message if readings are too close together
-                        MessageUser("Readings are too close together");
+                        MessageUser(Application.Current.Resources["Readings are too close together"].ToString());
                         return;
                     }
 
@@ -1961,7 +1964,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         else
                         {
                             // Show message if order is not found
-                            MessageUser("Order not found");
+                            MessageUser(Application.Current.Resources["Order not found"].ToString());
                             ReCutBarcode1 = "";
                             ReCutBarcode2 = "";
                         }
@@ -1969,14 +1972,14 @@ namespace Louver_Sort_4._8._1.Helpers
                     else
                     {
                         // Show message if either barcode is empty
-                        MessageUser("Incorrect Barcode");
+                        MessageUser(Application.Current.Resources["Incorrect Barcode"].ToString());
                         FocusBarcode1 = true;
                     }
                 }
                 else
                 {
                     // Show message if either barcode is null
-                    MessageUser("Incorrect Barcode");
+                    MessageUser(Application.Current.Resources["Incorrect Barcode"].ToString());
                     FocusBarcode1 = true;
                 }
             });
@@ -2109,17 +2112,17 @@ namespace Louver_Sort_4._8._1.Helpers
             RejectRecut = new BaseCommand(obj =>
             {
                 // Connect to the Zebra printer
-                //ZebraPrinter _Printer = _zebra.Connect();
+                ZebraPrinter _Printer = _zebra.Connect();
                 List<Louver> toPrint = new List<Louver>();
 
                 // Find and add the louver to be printed based on its ID
                 toPrint.Add(ActiveSet.Louvers[ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID)]);
 
                 // Print the sorted louver IDs
-                _zebra.PrintLouverIDs(toPrint);
+                _zebra.PrintLouverIDs(_Printer, toPrint);
 
                 // Disconnect from the Zebra printer
-                //_zebra.Disconnect(_Printer);
+                _zebra.Disconnect(_Printer);
 
                 // Close the popup
                 UpdatePopUp.Execute("Close");
@@ -2131,15 +2134,15 @@ namespace Louver_Sort_4._8._1.Helpers
                 UpdatePopUp.Execute("Close");
 
                 // Connect to the Zebra printer
-                //ZebraPrinter _Printer = _zebra.Connect();
+                ZebraPrinter _Printer = _zebra.Connect();
                 List<Louver> toPrint = new List<Louver>();
 
                 // Find and add the louver to be printed based on its ID
                 toPrint.Add(ActiveSet.Louvers[ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID)]);
 
                 // Print the sorted louver IDs
-                _zebra.PrintSortedLouverIDs(toPrint);
-
+                _zebra.PrintSortedLouverIDs(_Printer, toPrint);
+                _zebra.Disconnect(_Printer);
                 // Reset ReCut-related variables and UI elements
                 ReCutContent = null;
                 TopMinimumValue = null;
@@ -2207,11 +2210,12 @@ namespace Louver_Sort_4._8._1.Helpers
                 if (NewUserID != null)
                 {
                     UserIDs.Add(NewUserID);
-                    MessageUser("User ID Added: " + NewUserID);
+                    MessageUser(Application.Current.Resources["User ID Added:"].ToString() + NewUserID);
+
                 }
                 else
                 {
-                    MessageUser("Issue occured trying to add new user");
+                    MessageUser(Application.Current.Resources["Issue occured trying to add new user"].ToString() + NewUserID);
                 }
             });
 
@@ -2231,7 +2235,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 //CHANGE - add error if report fails
                 // Update user message and show the popup
-                MessageUser("Report Generated");
+                MessageUser(Application.Current.Resources["Report Generated"].ToString());
 
                 // Reset date range and disable the export button
                 DateRangeStart = null;
@@ -2254,7 +2258,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public void StartUp()
         {
-            //ConnectToDataQ();
+            ConnectToDataQ();
 
             //CHANGE - check each file path in the function individually
             //Add messages  if any of the files didn't load in
@@ -2342,7 +2346,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public void PrintSortedLabels()
         {
             List<Louver> toPrint = new List<Louver>();
-
+            ZebraPrinter _Printer = _zebra.Connect();
             // Collect all louver sets from the active panel
             foreach (var set in ActivePanel.GetAllSets())
             {
@@ -2350,8 +2354,8 @@ namespace Louver_Sort_4._8._1.Helpers
             }
 
             // Print the sorted louver IDs
-            _zebra.PrintSortedLouverIDs(toPrint);
-
+            _zebra.PrintSortedLouverIDs(_Printer, toPrint);
+            _zebra.Disconnect(_Printer);
             // Update the state of various UI elements
             IsEnabledPrintUnsortedLabels = false;
             IsEnabledNextLouverSet = true;
@@ -2368,7 +2372,7 @@ namespace Louver_Sort_4._8._1.Helpers
             ActiveSet.StartSort(DateTime.Now);
 
             // Connect to the Zebra printer
-            // ZebraPrinter _Printer = _zebra.Connect();
+            ZebraPrinter _Printer = _zebra.Connect();
             List<Louver> toPrint = new List<Louver>();
 
             // Collect all louver sets from the active panel
@@ -2378,9 +2382,9 @@ namespace Louver_Sort_4._8._1.Helpers
             }
 
             // Print the louver IDs
-            _zebra.PrintLouverIDs(toPrint);
+            _zebra.PrintLouverIDs(_Printer, toPrint);
             // Disconnect from the Zebra printer
-            // _zebra.Disconnect(_Printer);
+             _zebra.Disconnect(_Printer);
 
             // Update the state of various UI elements
             IsEnabledPrintUnsortedLabels = false;
@@ -2388,7 +2392,7 @@ namespace Louver_Sort_4._8._1.Helpers
             IsEnabledAcquireBottom = false;
 
             // Show a message to place unsorted labels on louvers
-            MessageUser("Place Unsorted Labels on Louvers");
+            MessageUser(Application.Current.Resources["Place Unsorted Labels on Louvers"].ToString());
         }
         public void MessageUser(string message)
         {
@@ -2423,7 +2427,7 @@ namespace Louver_Sort_4._8._1.Helpers
         private void UpdatePopupForBottomPlate()
         {
             // Update popup for bottom plate calibration
-            CalibTxt = "Place calibration plate on bottom of slide";
+            CalibTxt = (Application.Current.Resources["Place calibration plate on bottom of slide"].ToString());
             CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibBottom.jpg";
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
@@ -2441,7 +2445,7 @@ namespace Louver_Sort_4._8._1.Helpers
         private void UpdatePopupForHighestStep()
         {
             // Update popup for highest step calibration
-            CalibTxt = "Place highest step of Louver Sag Gauge on top of rail";
+            CalibTxt = (Application.Current.Resources["Place highest step of Louver Sag Gauge on top of rail"].ToString());
             CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
@@ -2462,7 +2466,7 @@ namespace Louver_Sort_4._8._1.Helpers
         private void UpdatePopupForLowestStep()
         {
             // Update popup for lowest step calibration
-            CalibTxt = "Place lowest step of Louver Sag Gauge on top of rail";
+            CalibTxt = (Application.Current.Resources["Place lowest step of Louver Sag Gauge on top of rail"].ToString());
             CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
@@ -2482,11 +2486,11 @@ namespace Louver_Sort_4._8._1.Helpers
             // Handle the result of calibration and update the popup text accordingly
             if (_dataQ._cal.Successful)
             {
-                CalibTxt = "Calibration Passed";
+                CalibTxt = (Application.Current.Resources["Calibration Passed"].ToString());
             }
             else
             {
-                CalibTxt = "Calibration Failed. Repeat Calibration";
+                CalibTxt = (Application.Current.Resources["Calibration Failed. Repeat Calibration"].ToString());
             }
             VisibilityCalibImage = Visibility.Collapsed;
             CalibTxtBoxHint = "";
@@ -2598,14 +2602,14 @@ namespace Louver_Sort_4._8._1.Helpers
                         catch (DataQException ex)
                         {
                             // Handle DataQ connection exception
-                            MessageUser("Disconnect and Reconnect DataQ, restart application");
+                            MessageUser(Application.Current.Resources["Disconnect and Reconnect DataQ, restart application"].ToString());
                             throw ex;
                         }
                     }
                     else
                     {
                         // If DataQ is already connected, prompt user to reconnect and restart application
-                        MessageUser("Disconnect and Reconnect DataQ, restart application");
+                        MessageUser(Application.Current.Resources["Disconnect and Reconnect DataQ, restart application"].ToString());
                         return;
                     }
                 });
@@ -2614,7 +2618,7 @@ namespace Louver_Sort_4._8._1.Helpers
             catch (Exception)
             {
                 // Handle general exceptions and prompt user to reconnect and restart application
-                MessageUser("Disconnect and Reconnect DataQ, restart application");
+                MessageUser(Application.Current.Resources["Disconnect and Reconnect DataQ, restart application"].ToString());
                 throw;
             }
         }

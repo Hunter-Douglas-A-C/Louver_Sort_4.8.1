@@ -14,6 +14,8 @@ using Dataq.Devices;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Input;
+using LibUsbDotNet.Main;
+using LibUsbDotNet;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -38,26 +40,22 @@ namespace Louver_Sort_4._8._1.Helpers
         public DataQHelper()
         {
             string[] portNames = SerialPort.GetPortNames();
+            UsbDeviceFinder myUsbFinder = new UsbDeviceFinder(0x0000, 0x0000);
+            UsbRegDeviceList allDevices = UsbDevice.AllDevices;
 
-            if (portNames.Length == 0)
+
+
+
+
+            if (allDevices.Count > 0)
             {
-                Console.WriteLine("No COM ports found.");
+                DataQModel = "1000";
             }
-            else
+            else if (portNames.Count() > 0)
             {
-                Console.WriteLine("Available COM ports:");
-                foreach (string port in portNames)
-                {
-                    if (port.Contains("1100"))
-                    {
-                        DataQModel = "1000";
-                    }
-                    else if (port.Contains("145") || port.Contains("155"))
-                    {
-                        DataQModel = "100";
-                    }
-                }
+                DataQModel = "100";
             }
+
         }
 
         #region Switch Between DataQs

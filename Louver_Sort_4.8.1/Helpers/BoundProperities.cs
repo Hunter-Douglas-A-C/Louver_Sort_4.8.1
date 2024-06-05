@@ -22,6 +22,8 @@ using System.Windows.Media;
 using Louver_Sort_4._8._1.Views.PopUps;
 using System.Reflection;
 using Zebra.Sdk.Printer;
+using System.IO.Ports;
+using System.Threading.Tasks;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -34,7 +36,6 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
         protected virtual void SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(storage, value))
@@ -44,7 +45,6 @@ namespace Louver_Sort_4._8._1.Helpers
             storage = value;
             OnPropertyChanged(propertyName);
         }
-
         protected void SetProperty<T>(ref ChartValues<T> storage, ChartValues<T> value, [CallerMemberName] String propertyName = "")
         {
             if (ReferenceEquals(storage, value))
@@ -55,8 +55,6 @@ namespace Louver_Sort_4._8._1.Helpers
             storage = value;
             OnPropertyChanged(propertyName);
         }
-
-
 
         #endregion
 
@@ -76,6 +74,7 @@ namespace Louver_Sort_4._8._1.Helpers
         string Barcode2Regex = @"^(PNL[1-9])\/(LXL)\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$";
         string EmptyRegex = @"^$";
         private string _jSONSaveLocation = AppDomain.CurrentDomain.BaseDirectory;
+        string cultureCode = "en-US";
         #endregion
 
         #region Globals
@@ -1083,6 +1082,19 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
             }
+
+
+
+    }
+
+        private Brush _userIDForeground = Brushes.White;
+        public Brush UserIDForeground
+        {
+            get => _userIDForeground;
+            set
+            {
+                SetProperty(ref _userIDForeground, value);
+            }
         }
         #endregion
 
@@ -1144,7 +1156,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 UpdatePopUp.Execute("UserBadgeIn");
             });
 
-
             EnterUserID = new BaseCommand(obj =>
             {
                 bool userfound = false;
@@ -1164,6 +1175,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else
                 {
+                    UserIDForeground = Brushes.Red;
                     EmployeeID = null;
                 }
             });
@@ -1231,8 +1243,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 });
             });
 
-
-            string cultureCode = "en-US";
             ChangeLanguage = new BaseCommand(obj =>
             {
                 // Set the current culture and UI culture to the specified language
@@ -1365,7 +1375,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         UpdatePopUp.Execute("Calibrate");
                         VisibilityCalibImage = Visibility.Visible;
                         CalibTxt = (Application.Current.Resources["Place calibration plate on top of rail"].ToString());
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
+                        CalibImage = PathImage("CalibCheckTop");
                         CalibTxtBoxHint = "";
                         VisibilityCalibRecord = Visibility.Collapsed;
                         _calibStep += 1;
@@ -1376,7 +1386,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         StartCalibrationThread(() =>
                         {
                             UpdatePopUpAndAwait();
-                            ConnectAndSetCalibrationFlat();
+                            ConnectAndSetCalibrationFlatAsync();
                             UpdatePopupForBottomPlate();
                             _calibStep += 1;
                         });
@@ -1387,7 +1397,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         StartCalibrationThread(() =>
                         {
                             UpdatePopUpAndAwait();
-                            ConnectAndSetCalibrationStep();
+                            ConnectAndSetCalibrationStepAsync();
                             UpdatePopupForHighestStep();
                             _calibStep += 1;
                         });
@@ -1398,7 +1408,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         StartCalibrationThread(() =>
                         {
                             UpdatePopUpAndAwait();
-                            ConnectAndCheckCalFlat();
+                            ConnectAndCheckCalFlatAsync();
                             UpdatePopupForLowestStep();
                             _calibStep += 1;
                         });
@@ -1409,7 +1419,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         StartCalibrationThread(() =>
                         {
                             UpdatePopUpAndAwait();
-                            ConnectAndCheckCalStep();
+                            ConnectAndCheckCalStepAsync();
                             HandleCalibrationResult();
                             _calibStep += 1;
                         });
@@ -1444,7 +1454,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 1: Show calibration popup with instructions for centering the laser
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Place laser centering plate on slide and adjust sensor until red dot is in the cross hair"].ToString());
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\1.png";
+                        CalibImage = PathImage("LaserCenterJig");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1453,7 +1463,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 2: Show instructions to turn laser to teach mode
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Turn laser to teach mode"].ToString());
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
+                        CalibImage = PathImage("TurnToTeachMode");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1462,7 +1472,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 3: Show instructions to set calibration plate on top of slide
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Set calibration plate on top of slide"].ToString());
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\3.png";
+                        CalibImage = PathImage("CalibTop");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1471,7 +1481,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 4: Show instructions to press plus on the laser
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Press plus on the laser"].ToString());
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
+                        CalibImage = PathImage("LaserPlusButton");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1480,7 +1490,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 5: Show instructions to set calibration plate on bottom of slide
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Set calibration plate on bottom of slide"].ToString());
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\4.png";
+                        CalibImage = PathImage("CalibBottom");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1489,7 +1499,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 6: Show instructions to press minus on the laser
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Press minus on laser"].ToString());
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\2.png";
+                        CalibImage = PathImage("LaserMinusButton");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1498,7 +1508,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 7: Show instructions to turn the dial on laser back to run
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Turn dial on laser back to run"].ToString());
-                        CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\5.png";
+                        CalibImage = PathImage("TurnToRunMode");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -2253,12 +2263,19 @@ namespace Louver_Sort_4._8._1.Helpers
                 Application.Current.Shutdown();
             });
         }
+        #endregion
 
         #region Code Behind
-
+        public string PathImage(string imageName)
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "\\Images\\", imageName);
+        }
         public void StartUp()
         {
             ConnectToDataQ();
+            //TestComPort();
+
+
 
             //CHANGE - check each file path in the function individually
             //Add messages  if any of the files didn't load in
@@ -2292,6 +2309,13 @@ namespace Louver_Sort_4._8._1.Helpers
                 VisibilitySortSet = Visibility.Collapsed;
                 IsEnabledReCut = Visibility.Collapsed;
             }
+
+
+
+
+            //DELETEME
+            VisibilitySortSet = Visibility.Visible;
+            IsEnabledReCut = Visibility.Visible;
         }
         public void NextLouverSet()
         {
@@ -2384,7 +2408,7 @@ namespace Louver_Sort_4._8._1.Helpers
             // Print the louver IDs
             _zebra.PrintLouverIDs(_Printer, toPrint);
             // Disconnect from the Zebra printer
-             _zebra.Disconnect(_Printer);
+            _zebra.Disconnect(_Printer);
 
             // Update the state of various UI elements
             IsEnabledPrintUnsortedLabels = false;
@@ -2412,14 +2436,14 @@ namespace Louver_Sort_4._8._1.Helpers
             UpdatePopUp.Execute("Close");
             UpdatePopUp.Execute("Await");
         }
-        private void ConnectAndSetCalibrationFlat()
+        private async Task ConnectAndSetCalibrationFlatAsync()
         {
             // Connect to DataQ device if not already connected and set calibration to flat
             if (_dataQ == null)
             {
                 ConnectToDataQ();
             }
-            _dataQ.SetCalibrationFlat();
+            await _dataQ.SetCalibrationFlatAsync();
 
             // Close the current popup
             UpdatePopUp.Execute("Close");
@@ -2428,37 +2452,37 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             // Update popup for bottom plate calibration
             CalibTxt = (Application.Current.Resources["Place calibration plate on bottom of slide"].ToString());
-            CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibBottom.jpg";
+            CalibImage = PathImage("CalibBottom");
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
         }
-        private void ConnectAndSetCalibrationStep()
+        private async Task ConnectAndSetCalibrationStepAsync()
         {
             // Connect to DataQ device if not already connected and set calibration to step
             if (_dataQ == null)
             {
                 ConnectToDataQ();
             }
-            _dataQ.SetCalibrationStep();
+            await _dataQ.SetCalibrationStepAsync();
         }
         private void UpdatePopupForHighestStep()
         {
             // Update popup for highest step calibration
             CalibTxt = (Application.Current.Resources["Place highest step of Louver Sag Gauge on top of rail"].ToString());
-            CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
+            CalibImage = PathImage("CalibTop");
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
         }
-        private void ConnectAndCheckCalFlat()
+        private async Task ConnectAndCheckCalFlatAsync()
         {
             // Connect to DataQ device if not already connected and check calibration flat
             if (_dataQ == null)
             {
                 ConnectToDataQ();
             }
-            _dataQ.CheckCalFlat();
+            await _dataQ.CheckCalFlatAsync();
 
             // Close the current popup
             UpdatePopUp.Execute("Close");
@@ -2467,19 +2491,19 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             // Update popup for lowest step calibration
             CalibTxt = (Application.Current.Resources["Place lowest step of Louver Sag Gauge on top of rail"].ToString());
-            CalibImage = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\CalibTop.jpg";
+            CalibImage = PathImage("CalibCheckTop");
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
         }
-        private void ConnectAndCheckCalStep()
+        private async Task ConnectAndCheckCalStepAsync()
         {
             // Connect to DataQ device if not already connected and check calibration step with rejection specification
             if (_dataQ == null)
             {
                 ConnectToDataQ();
             }
-            _dataQ.CheckCalStep(CalibrationRejectionSpec);
+            await _dataQ.CheckCalStepAsync(CalibrationRejectionSpec);
         }
         private void HandleCalibrationResult()
         {
@@ -2587,14 +2611,13 @@ namespace Louver_Sort_4._8._1.Helpers
                         {
                             // Initialize and connect to DataQ
                             _dataQ = new DataQHelper();
-                            await _dataQ.Connect();
-                            _dataQ.Start();
+                            await _dataQ.StartConnectionAsync();
 
                             // Update UI elements and start monitoring
                             VisibilityDisconnected = Visibility.Collapsed;
                             _stopwatch.Start();
 
-                            //_dataQ.AnalogUpdated += new EventHandler(DataQNewData);
+                            _dataQ.LatestReadingChanged += new EventHandler(DataQNewData);
                             _dataQ.LostConnection += new EventHandler(DataQLostConnection);
 
                             _dataQ.StartActiveMonitoring();
@@ -2742,13 +2765,11 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             return false;
         }
-
-        public void Closing()
+        public async Task ClosingAsync()
         {
             try
             {
-                _dataQ.Stop();
-                _dataQ.Disconnect();
+                await _dataQ.StopConnection();
                 _stopwatch.Stop();
                 _stopwatch.Reset();
             }
@@ -3024,6 +3045,21 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
         }
+        public void DataQNewData(object sender, EventArgs e)
+        {
+            VoltageValues.Add(new MeasureModel
+            {
+                ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
+                Value = Math.Round(_dataQ.LatestReading, 3)
+            });
+            //Debug.WriteLine(_DataQ.GetDistance());
+            if (VoltageValues.Count > 25)
+            {
+                VoltageValues.RemoveAt(0);
+            }
+            //CurrentReading = VoltageValues[VoltageValues.Count].Value.ToString();
+        }
+
         private void SummaryExport(ExcelWorksheet sheet, List<OrderWithBarcode> order)
         {
             sheet.Cells[1, 1].Value = "Total Orders Ran:";
@@ -3088,4 +3124,4 @@ namespace Louver_Sort_4._8._1.Helpers
         #endregion
     }
 }
-#endregion
+

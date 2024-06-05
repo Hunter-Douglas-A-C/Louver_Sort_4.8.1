@@ -20,6 +20,6 @@ namespace Louver_Sort_4._8._1.Helpers
         public int CalibratePeriod = 1;
         public double CalibrationRejectionSpec = 1;
         public string ExcelExportLocation = "B:\\Documents";
-        public List<string> UserIDs = new List<string> { "1111111" };
+        public List<string> UserIDs = new List<string> { "2014301" };
     }
 }

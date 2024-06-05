@@ -32,5 +32,10 @@ namespace Louver_Sort_4._8._1.Views.PopUps
             this.DataContext = boundProperities;
             
         }
+
+        private void TextBox_Error(object sender, ValidationErrorEventArgs e)
+        {
+
+        }
     }
 }

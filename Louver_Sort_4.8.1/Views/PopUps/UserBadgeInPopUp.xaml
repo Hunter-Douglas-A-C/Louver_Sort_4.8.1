@@ -47,7 +47,8 @@
                          FontSize="24"
                          Focusable="True"
                          helpers:FocusExtension.IsFocused="{Binding Path=FocusUserBadgeIn}"
-                         materialDesign:TextFieldAssist.HasClearButton="True">
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         Foreground="{Binding UserIDForeground}">
                     <TextBox.Text>
                         <Binding Path="EmployeeID"
                                  UpdateSourceTrigger="PropertyChanged">

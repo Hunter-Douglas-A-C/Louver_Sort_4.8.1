@@ -44,7 +44,7 @@ namespace Louver_Sort_4._8._1.Views
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            boundProperities.Closing();
+            boundProperities.ClosingAsync();
         }
 
         private void ListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)

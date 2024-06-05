@@ -481,9 +481,6 @@
                                             Value="Center" />
                                 </Style>
                             </ListView.ItemContainerStyle>-->
-                                                            <inter:Interaction.Behaviors>
-                                                                <helpers:CenterSelectedItemBehavior />
-                                                            </inter:Interaction.Behaviors>
                                                             <ListView.View>
                                                                 <GridView AllowsColumnReorder="true"
                                                                           ColumnHeaderToolTip="Louver Data">

@@ -44,7 +44,7 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             catch (Exception ex)
             {
-                //HandleConnectionError(ex);
+                HandleDataQException(ex.Message,ex);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             catch (Exception ex)
             {
-                //HandleDataQException("Failed to start the Dataq DI-155 device.", ex);
+                HandleDataQException("Failed to start the Dataq DI-155 device.", ex);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             catch (Exception ex)
             {
-                //HandleDataQException("Failed to stop the Dataq DI-155 device.", ex);
+                HandleDataQException("Failed to stop the Dataq DI-155 device.", ex);
             }
         }
 
@@ -86,7 +86,7 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             catch (Exception ex)
             {
-                //HandleDataQException("Failed to disconnect the Dataq DI-155 device.", ex);
+                HandleDataQException("Failed to disconnect the Dataq DI-155 device.", ex);
             }
         }
 
@@ -105,7 +105,7 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             catch (Exception ex)
             {
-                //HandleDataQException("Failed to configure default channel settings.", ex);
+                HandleDataQException("Failed to configure default channel settings.", ex);
             }
         }
 
@@ -127,7 +127,7 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             catch (Exception ex)
             {
-                //HandleDataQException("Failed to configure the scan list.", ex);
+                HandleDataQException("Failed to configure the scan list.", ex);
             }
         }
 
@@ -147,8 +147,13 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             catch (Exception ex)
             {
-                //HandleDataQException("Failed to configure digital input channels.", ex);
+                HandleDataQException("Failed to configure digital input channels.", ex);
             }
+        }
+
+        private void HandleDataQException(string message, Exception ex)
+        {
+            throw new DataQException(message, ex);
         }
     }
 }

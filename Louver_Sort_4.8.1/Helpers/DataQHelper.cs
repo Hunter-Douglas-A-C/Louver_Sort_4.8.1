@@ -62,35 +62,135 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public async Task StartConnectionAsync()
         {
-            switch (DataQModel)
+            try
             {
-                case "100":
-                    await DI155.Connect();
-                    await DI155.Start();
-                    break;
+                switch (DataQModel)
+                {
+                    case "100":
+                        try
+                        {
+                            await DI155.Connect();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to connect to DI155.", ex);
+                        }
 
-                case "1000":
-                    await DI1100.Connect();
-                    await DI1100.Start();
-                    break;
+                        try
+                        {
+                            await DI155.Start();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to start DI155.", ex);
+                        }
+                        break;
+
+                    case "1000":
+                        try
+                        {
+                            await DI1100.Connect();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to connect to DI1100.", ex);
+                        }
+
+                        try
+                        {
+                            await DI1100.Start();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to start DI1100.", ex);
+                        }
+                        break;
+
+                    default:
+                        throw new DataQException($"Unsupported DataQModel: {DataQModel}");
+                }
+            }
+            catch (DataQException ex)
+            {
+                // Log the exception details if necessary
+                // LogException(ex);
+
+                // Rethrow the exception to be handled by higher-level code if needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unforeseen exceptions and wrap them in a DataQException
+                throw new DataQException("An unexpected error occurred in StartConnectionAsync.", ex);
             }
         }
+
 
         public async Task StopConnection()
         {
-            switch (DataQModel)
+            try
             {
-                case "100":
-                    await DI155.Stop();
-                    await DI155.Disconnect();
-                    break;
+                switch (DataQModel)
+                {
+                    case "100":
+                        try
+                        {
+                            await DI155.Stop();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to stop DI155.", ex);
+                        }
 
-                case "1000":
-                    await DI1100.Stop();
-                    await DI1100.Disconnect();
-                    break;
+                        try
+                        {
+                            await DI155.Disconnect();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to disconnect DI155.", ex);
+                        }
+                        break;
+
+                    case "1000":
+                        try
+                        {
+                            await DI1100.Stop();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to stop DI1100.", ex);
+                        }
+
+                        try
+                        {
+                            await DI1100.Disconnect();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to disconnect DI1100.", ex);
+                        }
+                        break;
+
+                    default:
+                        throw new DataQException($"Unsupported DataQModel: {DataQModel}");
+                }
+            }
+            catch (DataQException ex)
+            {
+                // Log the exception details if necessary
+                // LogException(ex);
+
+                // Rethrow the exception to be handled by higher-level code if needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unforeseen exceptions and wrap them in a DataQException
+                throw new DataQException("An unexpected error occurred in StopConnection.", ex);
             }
         }
+
         #endregion
 
         #region Events
@@ -235,69 +335,231 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public async void StartActiveMonitoring()
         {
-            switch (DataQModel)
+            try
             {
-                case "100":
-                    await StartMonitoringDI155();
-                    break;
+                switch (DataQModel)
+                {
+                    case "100":
+                        try
+                        {
+                            await StartMonitoringDI155();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to start monitoring DI155.", ex);
+                        }
+                        break;
 
-                case "1000":
-                    await StartMonitoringDI1100();
-                    break;
+                    case "1000":
+                        try
+                        {
+                            await StartMonitoringDI1100();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to start monitoring DI1100.", ex);
+                        }
+                        break;
+
+                    default:
+                        throw new DataQException($"Unsupported DataQModel: {DataQModel}");
+                }
+            }
+            catch (DataQException ex)
+            {
+                // Log the exception details if necessary
+                // LogException(ex);
+
+                // Handle or propagate the exception as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unforeseen exceptions and wrap them in a DataQException
+                throw new DataQException("An unexpected error occurred in StartActiveMonitoring.", ex);
             }
         }
 
+
         private async Task StartMonitoringDI155()
         {
-            DI155.TargetDevice.NewData += PassToMain;
-
-            await Task.Run(async () =>
+            try
             {
-                while (_KeepMonitoring)
-                {
-                    await Task.Delay(100);
-                }
-            });
+                DI155.TargetDevice.NewData += PassToMain;
 
-            DI155.TargetDevice.NewData -= PassToMain;
+                try
+                {
+                    await Task.Run(async () =>
+                    {
+                        while (_KeepMonitoring)
+                        {
+                            await Task.Delay(100);
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    throw new DataQException("An error occurred while monitoring DI155.", ex);
+                }
+                finally
+                {
+                    DI155.TargetDevice.NewData -= PassToMain;
+                }
+            }
+            catch (DataQException ex)
+            {
+                // Log the exception details if necessary
+                // LogException(ex);
+
+                // Handle or propagate the exception as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unforeseen exceptions and wrap them in a DataQException
+                throw new DataQException("An unexpected error occurred in StartMonitoringDI155.", ex);
+            }
         }
+
 
         private async Task StartMonitoringDI1100()
         {
-            cancelRead = new CancellationTokenSource();
-            await DI1100.TargetDevice.AcquisitionStartAsync();
+            try
+            {
+                cancelRead = new CancellationTokenSource();
+                try
+                {
+                    await DI1100.TargetDevice.AcquisitionStartAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw new DataQException("Failed to start acquisition for DI1100.", ex);
+                }
 
-            Task taskRead = new Task(async () => await ReadDataDI1100(), cancelRead.Token);
-            taskRead.Start();
+                try
+                {
+                    Task taskRead = new Task(async () =>
+                    {
+                        try
+                        {
+                            await ReadDataDI1100();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("An error occurred while reading data for DI1100.", ex);
+                        }
+                    }, cancelRead.Token);
+                    taskRead.Start();
+                }
+                catch (Exception ex)
+                {
+                    throw new DataQException("Failed to start the data reading task for DI1100.", ex);
+                }
+            }
+            catch (DataQException ex)
+            {
+                // Log the exception details if necessary
+                // LogException(ex);
+
+                // Handle or propagate the exception as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unforeseen exceptions and wrap them in a DataQException
+                throw new DataQException("An unexpected error occurred in StartMonitoringDI1100.", ex);
+            }
         }
+
 
         private async Task ReadDataDI1100()
         {
-            Dataq.Devices.IChannelIn masterChannel = DI1100.TargetDevice.Channels
-                .OfType<Dataq.Devices.IChannelIn>()
-                .FirstOrDefault();
+            Dataq.Devices.IChannelIn masterChannel;
+            try
+            {
+                masterChannel = DI1100.TargetDevice.Channels
+                    .OfType<Dataq.Devices.IChannelIn>()
+                    .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw new DataQException("Failed to retrieve the master channel for DI1100.", ex);
+            }
 
             while (DI1100.TargetDevice.IsAcquiring)
             {
                 try
                 {
-                    await DI1100.TargetDevice.ReadDataAsync(cancelRead.Token);
+                    try
+                    {
+                        await DI1100.TargetDevice.ReadDataAsync(cancelRead.Token);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new DataQException("Error reading data from DI1100.", ex);
+                    }
+
+                    if (masterChannel?.DataIn.Count == 0) continue;
+
+                    string dataString;
+                    try
+                    {
+                        dataString = ExtractDataAsString(DI1100.TargetDevice.Channels);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new DataQException("Failed to extract data as string for DI1100.", ex);
+                    }
+
+                    try
+                    {
+                        if (_cal.Successful == true)
+                        {
+                            LatestReading = _cal.ConvertToInches(Convert.ToDouble(dataString));
+                        }
+                        else
+                        {
+                        LatestReading = Convert.ToDouble(dataString);
+
+                        }
+                        validReadings.Add(LatestReading);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new DataQException("Error converting data string to double or adding to validReadings for DI1100.", ex);
+                    }
+
+                    try
+                    {
+                        ClearChannelData(DI1100.TargetDevice.Channels);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new DataQException("Failed to clear channel data for DI1100.", ex);
+                    }
                 }
-                catch (OperationCanceledException)
+                catch (DataQException ex)
                 {
-                    break;
+                    // Log the exception details if necessary
+                    // LogException(ex);
+
+                    // Handle or propagate the exception as needed
+                    throw;
                 }
-
-                if (masterChannel?.DataIn.Count == 0) continue;
-
-                string dataString = ExtractDataAsString(DI1100.TargetDevice.Channels);
-                LatestReading = Convert.ToDouble(dataString);
-                validReadings.Add(LatestReading);
-
-                ClearChannelData(DI1100.TargetDevice.Channels);
+                catch (Exception ex)
+                {
+                    // Catch any other unforeseen exceptions and wrap them in a DataQException
+                    throw new DataQException("An unexpected error occurred in ReadDataDI1100.", ex);
+                }
             }
+
             Debug.WriteLine("Stopped" + Environment.NewLine);
         }
+
 
         private string ExtractDataAsString(IEnumerable<Dataq.Devices.IChannel> channels)
         {
@@ -324,30 +586,104 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public double ReadNewData()
         {
-            switch (DataQModel)
+            try
             {
-                case "100":
-                    return ReadDataFromDI155();
+                switch (DataQModel)
+                {
+                    case "100":
+                        try
+                        {
+                            return ReadDataFromDI155();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to read data from DI155.", ex);
+                        }
 
-                case "1000":
-                    return ReadDataFromDI1100();
+                    case "1000":
+                        try
+                        {
+                            return ReadDataFromDI1100();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to read data from DI1100.", ex);
+                        }
 
-                default:
-                    throw new NotSupportedException($"Unsupported DataQModel: {DataQModel}");
+                    default:
+                        throw new DataQException($"Unsupported DataQModel: {DataQModel}");
+                }
+            }
+            catch (DataQException ex)
+            {
+                // Log the exception details if necessary
+                // LogException(ex);
+
+                // Handle or propagate the exception as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unforeseen exceptions and wrap them in a DataQException
+                throw new DataQException("An unexpected error occurred in ReadNewData.", ex);
             }
         }
 
+
         private double ReadDataFromDI155()
         {
-            int scans = DI155.TargetDevice.NumberOfScansAvailable;
-            short channels = (short)DI155.TargetDevice.NumberOfChannelsEnabled;
-            var data = new double[scans * channels];
-            DI155.TargetDevice.GetInterleavedScaledData(data, 0, scans);
+            try
+            {
+                int scans;
+                short channels;
+                double[] data;
 
-            return Convert.ToDouble(string.Join("", data
-                .Select((value, index) => index % channels == 0 ? value.ToString("F4") : "")
-                .Where(value => !string.IsNullOrEmpty(value))));
+                try
+                {
+                    scans = DI155.TargetDevice.NumberOfScansAvailable;
+                    channels = (short)DI155.TargetDevice.NumberOfChannelsEnabled;
+                }
+                catch (Exception ex)
+                {
+                    throw new DataQException("Failed to retrieve the number of scans or channels for DI155.", ex);
+                }
+
+                try
+                {
+                    data = new double[scans * channels];
+                    DI155.TargetDevice.GetInterleavedScaledData(data, 0, scans);
+                }
+                catch (Exception ex)
+                {
+                    throw new DataQException("Failed to get interleaved scaled data from DI155.", ex);
+                }
+
+                try
+                {
+                    return Convert.ToDouble(string.Join("", data
+                        .Select((value, index) => index % channels == 0 ? value.ToString("F4") : "")
+                        .Where(value => !string.IsNullOrEmpty(value))));
+                }
+                catch (Exception ex)
+                {
+                    throw new DataQException("Failed to convert data to double for DI155.", ex);
+                }
+            }
+            catch (DataQException ex)
+            {
+                // Log the exception details if necessary
+                // LogException(ex);
+
+                // Handle or propagate the exception as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unforeseen exceptions and wrap them in a DataQException
+                throw new DataQException("An unexpected error occurred in ReadDataFromDI155.", ex);
+            }
         }
+
 
         private double ReadDataFromDI1100()
         {
@@ -378,33 +714,91 @@ namespace Louver_Sort_4._8._1.Helpers
 
         private async Task WaitForDataCollectionDI155()
         {
-            DI155.TargetDevice.NewData += GetDataHandler;
-
-            int timeoutMilliseconds = 700000000;
-            int intervalMilliseconds = 100;
-            int elapsedMilliseconds = 0;
-
-            await Task.Run(async () =>
+            try
             {
-                while (!_dataReceived && elapsedMilliseconds < timeoutMilliseconds)
-                {
-                    await Task.Delay(intervalMilliseconds);
-                    elapsedMilliseconds += intervalMilliseconds;
-                }
-            });
+                DI155.TargetDevice.NewData += GetDataHandler;
 
-            DI155.TargetDevice.NewData -= GetDataHandler;
+                int timeoutMilliseconds = 700000000;
+                int intervalMilliseconds = 100;
+                int elapsedMilliseconds = 0;
+
+                try
+                {
+                    await Task.Run(async () =>
+                    {
+                        while (!_dataReceived && elapsedMilliseconds < timeoutMilliseconds)
+                        {
+                            await Task.Delay(intervalMilliseconds);
+                            elapsedMilliseconds += intervalMilliseconds;
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    throw new DataQException("An error occurred while waiting for data collection for DI155.", ex);
+                }
+                finally
+                {
+                    DI155.TargetDevice.NewData -= GetDataHandler;
+                }
+
+                if (!_dataReceived)
+                {
+                    throw new DataQException("Data collection for DI155 timed out.");
+                }
+            }
+            catch (DataQException ex)
+            {
+                // Log the exception details if necessary
+                // LogException(ex);
+
+                // Handle or propagate the exception as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unforeseen exceptions and wrap them in a DataQException
+                throw new DataQException("An unexpected error occurred in WaitForDataCollectionDI155.", ex);
+            }
         }
+
 
         private async Task WaitForDataCollectionDI1100()
         {
-            validReadings.Clear();
-
-            while (validReadings.Count < 3)
+            try
             {
-                await Task.Delay(100);
+                validReadings.Clear();
+
+                try
+                {
+                    await Task.Run(async () =>
+                    {
+                        while (validReadings.Count < 3)
+                        {
+                            await Task.Delay(100);
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    throw new DataQException("An error occurred while waiting for data collection for DI1100.", ex);
+                }
+            }
+            catch (DataQException ex)
+            {
+                // Log the exception details if necessary
+                // LogException(ex);
+
+                // Handle or propagate the exception as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unforeseen exceptions and wrap them in a DataQException
+                throw new DataQException("An unexpected error occurred in WaitForDataCollectionDI1100.", ex);
             }
         }
+
 
         private void GetDataHandler(object sender, EventArgs e)
         {

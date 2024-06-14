@@ -49,7 +49,8 @@
                             VerticalContentAlignment="Center"
                             HorizontalContentAlignment="Center" />
         </Border>
-        <Border Panel.ZIndex="0" IsEnabled="{Binding IsEnabledMain}">
+        <Border Panel.ZIndex="0"
+                IsEnabled="{Binding IsEnabledMain}">
             <Border.Effect>
                 <BlurEffect Radius="{Binding MainContentBlurRadius}" />
             </Border.Effect>
@@ -936,57 +937,56 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Viewbox Margin="100,100,100,100">
-                                        
-                                    <StackPanel Grid.Column="0"
-                                                
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Center">
 
-                                        <materialDesign:ColorZone Grid.Row="0"
-                                                                  Grid.ColumnSpan="3"
-                                                                  Padding="16"
-                                                                  Margin="0,0,50,0"
-                                                                  materialDesign:ElevationAssist.Elevation="Dp4"
-                                                                  ClipToBounds="False"
-                                                                  CornerRadius="10"
-                                                                  Mode="SecondaryDark"
-                                                                  HorizontalAlignment="Left">
-                                            <TextBlock Text="{DynamicResource SettingsLabe}"
-                                                       FontSize="24"
-                                                       FontWeight="ExtraBold" />
-                                        </materialDesign:ColorZone>
-                                        <materialDesign:ColorZone Grid.Column="0"
-                                                                  VerticalAlignment="Stretch"
-                                                                  HorizontalAlignment="Stretch"
-                                                                  Padding="16"
-                                                                  materialDesign:ElevationAssist.Elevation="Dp4"
-                                                                  ClipToBounds="False"
-                                                                  CornerRadius="10"
-                                                                  Mode="PrimaryDark">
-                                            <Grid Grid.Column="0">
-                                                <StackPanel VerticalAlignment="Center"
-                                                            HorizontalAlignment="Center">
-                                                    <StackPanel Orientation="Horizontal"
-                                                                VerticalAlignment="Stretch"
-                                                                HorizontalAlignment="Stretch">
-                                                        <TextBox MinWidth="300"
-                                                                 FontSize="25"
-                                                                 VerticalAlignment="Center"
-                                                                 HorizontalAlignment="Stretch"
-                                                                 materialDesign:HintAssist.Hint="{DynamicResource AdminPasswordHint}"
-                                                                 AcceptsReturn="True"
-                                                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                                 Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                                 TextWrapping="Wrap"
-                                                                 Text="{Binding AdminPassword, Mode=TwoWay}" />
-                                                        <TextBlock Text="{DynamicResource StringUnit}"
-                                                                   Margin="5,0,0,0"
-                                                                   VerticalAlignment="Center"
-                                                                   HorizontalAlignment="Center"
-                                                                   FontSize="16" />
-                                                    </StackPanel>
-                                                    <!--<StackPanel Orientation="Horizontal">-->
-                                                    <!--<TextBox MaxWidth="600"
+                                        <StackPanel Grid.Column="0"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center">
+
+                                            <materialDesign:ColorZone Grid.Row="0"
+                                                                      Grid.ColumnSpan="3"
+                                                                      Padding="16"
+                                                                      Margin="0,0,50,0"
+                                                                      materialDesign:ElevationAssist.Elevation="Dp4"
+                                                                      ClipToBounds="False"
+                                                                      CornerRadius="10"
+                                                                      Mode="SecondaryDark"
+                                                                      HorizontalAlignment="Left">
+                                                <TextBlock Text="{DynamicResource SettingsLabe}"
+                                                           FontSize="24"
+                                                           FontWeight="ExtraBold" />
+                                            </materialDesign:ColorZone>
+                                            <materialDesign:ColorZone Grid.Column="0"
+                                                                      VerticalAlignment="Stretch"
+                                                                      HorizontalAlignment="Stretch"
+                                                                      Padding="16"
+                                                                      materialDesign:ElevationAssist.Elevation="Dp4"
+                                                                      ClipToBounds="False"
+                                                                      CornerRadius="10"
+                                                                      Mode="PrimaryDark">
+                                                <Grid Grid.Column="0">
+                                                    <StackPanel VerticalAlignment="Center"
+                                                                HorizontalAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    VerticalAlignment="Stretch"
+                                                                    HorizontalAlignment="Stretch">
+                                                            <TextBox MinWidth="300"
+                                                                     FontSize="25"
+                                                                     VerticalAlignment="Center"
+                                                                     HorizontalAlignment="Stretch"
+                                                                     materialDesign:HintAssist.Hint="{DynamicResource AdminPasswordHint}"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                                     TextWrapping="Wrap"
+                                                                     Text="{Binding AdminPassword, Mode=TwoWay}" />
+                                                            <TextBlock Text="{DynamicResource StringUnit}"
+                                                                       Margin="5,0,0,0"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       FontSize="16" />
+                                                        </StackPanel>
+                                                        <!--<StackPanel Orientation="Horizontal">-->
+                                                        <!--<TextBox MaxWidth="600"
                                                              VerticalAlignment="Top"
                                                              FontSize="40"
                                                              materialDesign:HintAssist.Hint="Louver Data Save Location"
@@ -1005,185 +1005,185 @@
                                                 </StackPanel>-->
 
 
-                                                    <StackPanel Orientation="Horizontal"
-                                                                VerticalAlignment="Stretch"
-                                                                HorizontalAlignment="Stretch"
-                                                                Margin="0,30,0,0">
-                                                        <TextBox MinWidth="300"
-                                                                 VerticalAlignment="Top"
-                                                                 FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="{DynamicResource DataRetentionHint}"
-                                                                 AcceptsReturn="True"
-                                                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                                 Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                                 TextWrapping="Wrap"
-                                                                 Text="{Binding DataRetentionPeriod, Mode=TwoWay}" />
-                                                        <TextBlock Text="{DynamicResource DaysUnit}"
-                                                                   Margin="5,0,0,0"
-                                                                   VerticalAlignment="Center"
-                                                                   HorizontalAlignment="Center"
-                                                                   FontSize="16" />
-                                                    </StackPanel>
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    VerticalAlignment="Stretch"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    Margin="0,30,0,0">
+                                                            <TextBox MinWidth="300"
+                                                                     VerticalAlignment="Top"
+                                                                     FontSize="25"
+                                                                     materialDesign:HintAssist.Hint="{DynamicResource DataRetentionHint}"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                                     TextWrapping="Wrap"
+                                                                     Text="{Binding DataRetentionPeriod, Mode=TwoWay}" />
+                                                            <TextBlock Text="{DynamicResource DaysUnit}"
+                                                                       Margin="5,0,0,0"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       FontSize="16" />
+                                                        </StackPanel>
 
 
 
-                                                    <StackPanel Orientation="Horizontal"
-                                                                VerticalAlignment="Stretch"
-                                                                HorizontalAlignment="Stretch"
-                                                                Margin="0,30,0,0">
-                                                        <TextBox MinWidth="300"
-                                                                 VerticalAlignment="Top"
-                                                                 FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="{DynamicResource RecalibrationHint}"
-                                                                 AcceptsReturn="True"
-                                                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                                 Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                                 TextWrapping="Wrap"
-                                                                 Text="{Binding RecalibratePeriod, Mode=TwoWay}" />
-                                                        <TextBlock Text="{DynamicResource OrdersUnit}"
-                                                                   Margin="5,0,0,0"
-                                                                   VerticalAlignment="Center"
-                                                                   HorizontalAlignment="Center"
-                                                                   FontSize="16" />
-                                                    </StackPanel>
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    VerticalAlignment="Stretch"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    Margin="0,30,0,0">
+                                                            <TextBox MinWidth="300"
+                                                                     VerticalAlignment="Top"
+                                                                     FontSize="25"
+                                                                     materialDesign:HintAssist.Hint="{DynamicResource RecalibrationHint}"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                                     TextWrapping="Wrap"
+                                                                     Text="{Binding RecalibrationPeriod, Mode=TwoWay}" />
+                                                            <TextBlock Text="{DynamicResource OrdersUnit}"
+                                                                       Margin="5,0,0,0"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       FontSize="16" />
+                                                        </StackPanel>
 
 
-                                                    <StackPanel Orientation="Horizontal"
-                                                                VerticalAlignment="Stretch"
-                                                                HorizontalAlignment="Stretch"
-                                                                Margin="0,30,0,0">
-                                                        <TextBox MinWidth="300"
-                                                                 VerticalAlignment="Top"
-                                                                 materialDesign:HintAssist.Hint="{DynamicResource BowHint}"
-                                                                 AcceptsReturn="True"
-                                                                 FontSize="25"
-                                                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                                 Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                                 TextWrapping="Wrap"
-                                                                 Text="{Binding RejectionSpec, Mode=TwoWay}" />
-                                                        <TextBlock Text="{DynamicResource InFtUnit}"
-                                                                   Margin="5,0,0,0"
-                                                                   VerticalAlignment="Center"
-                                                                   HorizontalAlignment="Center"
-                                                                   FontSize="16" />
-                                                    </StackPanel>
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    VerticalAlignment="Stretch"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    Margin="0,30,0,0">
+                                                            <TextBox MinWidth="300"
+                                                                     VerticalAlignment="Top"
+                                                                     materialDesign:HintAssist.Hint="{DynamicResource BowHint}"
+                                                                     AcceptsReturn="True"
+                                                                     FontSize="25"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                                     TextWrapping="Wrap"
+                                                                     Text="{Binding RejectionSpec, Mode=TwoWay}" />
+                                                            <TextBlock Text="{DynamicResource InFtUnit}"
+                                                                       Margin="5,0,0,0"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       FontSize="16" />
+                                                        </StackPanel>
 
-                                                    <StackPanel Orientation="Horizontal"
-                                                                VerticalAlignment="Stretch"
-                                                                HorizontalAlignment="Stretch"
-                                                                Margin="0,30,0,0">
-                                                        <TextBox MinWidth="300"
-                                                                 VerticalAlignment="Top"
-                                                                 FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="{DynamicResource RecutLouverToRailHint}"
-                                                                 AcceptsReturn="True"
-                                                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                                 Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                                 TextWrapping="Wrap"
-                                                                 Text="{Binding ReCutRailSpec, Mode=TwoWay}" />
-                                                        <TextBlock Text="{DynamicResource InUnit}"
-                                                                   Margin="5,0,0,0"
-                                                                   VerticalAlignment="Center"
-                                                                   HorizontalAlignment="Center"
-                                                                   FontSize="16" />
-                                                    </StackPanel>
-
-
-                                                    <StackPanel Orientation="Horizontal"
-                                                                VerticalAlignment="Stretch"
-                                                                HorizontalAlignment="Stretch"
-                                                                Margin="0,30,0,0">
-                                                        <TextBox MinWidth="300"
-                                                                 VerticalAlignment="Top"
-                                                                 FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="{DynamicResource Recutlouvertolouverhint}"
-                                                                 AcceptsReturn="True"
-                                                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                                 Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                                 TextWrapping="Wrap"
-                                                                 Text="{Binding ReCutLouverToLouverSpec, Mode=TwoWay}" />
-                                                        <TextBlock Text="{DynamicResource InUnit}"
-                                                                   Margin="5,0,0,0"
-                                                                   VerticalAlignment="Center"
-                                                                   HorizontalAlignment="Center"
-                                                                   FontSize="16" />
-                                                    </StackPanel>
-
-                                                    <StackPanel Orientation="Horizontal"
-                                                                VerticalAlignment="Stretch"
-                                                                HorizontalAlignment="Stretch"
-                                                                Margin="0,30,0,0">
-                                                        <TextBox MinWidth="300"
-                                                                 VerticalAlignment="Top"
-                                                                 FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="{DynamicResource GapSpecLouverToRailHint}"
-                                                                 AcceptsReturn="True"
-                                                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                                 Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                                 TextWrapping="Wrap"
-                                                                 Text="{Binding GapSpecLouverToRail, Mode=TwoWay}" />
-                                                        <TextBlock Text="{DynamicResource InUnit}"
-                                                                   Margin="5,0,0,0"
-                                                                   VerticalAlignment="Center"
-                                                                   HorizontalAlignment="Center"
-                                                                   FontSize="16" />
-                                                    </StackPanel>
-
-                                                    <StackPanel Orientation="Horizontal"
-                                                                VerticalAlignment="Stretch"
-                                                                HorizontalAlignment="Stretch"
-                                                                Margin="0,30,0,0">
-                                                        <TextBox MinWidth="300"
-                                                                 VerticalAlignment="Top"
-                                                                 FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="{DynamicResource GapSpecLouverToLouver}"
-                                                                 AcceptsReturn="True"
-                                                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                                 Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                                 TextWrapping="Wrap"
-                                                                 Text="{Binding GapSpecLouverToLouver, Mode=TwoWay}" />
-                                                        <TextBlock Text="{DynamicResource InUnit}"
-                                                                   Margin="5,0,0,0"
-                                                                   VerticalAlignment="Center"
-                                                                   HorizontalAlignment="Center"
-                                                                   FontSize="16" />
-                                                    </StackPanel>
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    VerticalAlignment="Stretch"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    Margin="0,30,0,0">
+                                                            <TextBox MinWidth="300"
+                                                                     VerticalAlignment="Top"
+                                                                     FontSize="25"
+                                                                     materialDesign:HintAssist.Hint="{DynamicResource RecutLouverToRailHint}"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                                     TextWrapping="Wrap"
+                                                                     Text="{Binding ReCutRailSpec, Mode=TwoWay}" />
+                                                            <TextBlock Text="{DynamicResource InUnit}"
+                                                                       Margin="5,0,0,0"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       FontSize="16" />
+                                                        </StackPanel>
 
 
-                                                    <StackPanel Orientation="Horizontal"
-                                                                VerticalAlignment="Stretch"
-                                                                HorizontalAlignment="Stretch"
-                                                                Margin="0,30,0,0">
-                                                        <TextBox MinWidth="300"
-                                                                 VerticalAlignment="Top"
-                                                                 FontSize="25"
-                                                                 materialDesign:HintAssist.Hint="{DynamicResource CalibrationRejectionHint}"
-                                                                 AcceptsReturn="True"
-                                                                 IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
-                                                                 Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                                 TextWrapping="Wrap"
-                                                                 Text="{Binding CalibrationRejectionSpec, Mode=TwoWay}" />
-                                                        <TextBlock Text="{DynamicResource InUnit}"
-                                                                   Margin="5,0,0,0"
-                                                                   VerticalAlignment="Center"
-                                                                   HorizontalAlignment="Center"
-                                                                   FontSize="16" />
-                                                    </StackPanel>
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    VerticalAlignment="Stretch"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    Margin="0,30,0,0">
+                                                            <TextBox MinWidth="300"
+                                                                     VerticalAlignment="Top"
+                                                                     FontSize="25"
+                                                                     materialDesign:HintAssist.Hint="{DynamicResource Recutlouvertolouverhint}"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                                     TextWrapping="Wrap"
+                                                                     Text="{Binding ReCutLouverToLouverSpec, Mode=TwoWay}" />
+                                                            <TextBlock Text="{DynamicResource InUnit}"
+                                                                       Margin="5,0,0,0"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       FontSize="16" />
+                                                        </StackPanel>
+
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    VerticalAlignment="Stretch"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    Margin="0,30,0,0">
+                                                            <TextBox MinWidth="300"
+                                                                     VerticalAlignment="Top"
+                                                                     FontSize="25"
+                                                                     materialDesign:HintAssist.Hint="{DynamicResource GapSpecLouverToRailHint}"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                                     TextWrapping="Wrap"
+                                                                     Text="{Binding GapSpecRailToLouver, Mode=TwoWay}" />
+                                                            <TextBlock Text="{DynamicResource InUnit}"
+                                                                       Margin="5,0,0,0"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       FontSize="16" />
+                                                        </StackPanel>
+
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    VerticalAlignment="Stretch"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    Margin="0,30,0,0">
+                                                            <TextBox MinWidth="300"
+                                                                     VerticalAlignment="Top"
+                                                                     FontSize="25"
+                                                                     materialDesign:HintAssist.Hint="{DynamicResource GapSpecLouverToLouver}"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                                     TextWrapping="Wrap"
+                                                                     Text="{Binding GapSpecLouverToLouver, Mode=TwoWay}" />
+                                                            <TextBlock Text="{DynamicResource InUnit}"
+                                                                       Margin="5,0,0,0"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       FontSize="16" />
+                                                        </StackPanel>
+
+
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    VerticalAlignment="Stretch"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    Margin="0,30,0,0">
+                                                            <TextBox MinWidth="300"
+                                                                     VerticalAlignment="Top"
+                                                                     FontSize="25"
+                                                                     materialDesign:HintAssist.Hint="{DynamicResource CalibrationRejectionHint}"
+                                                                     AcceptsReturn="True"
+                                                                     IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
+                                                                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                                                                     TextWrapping="Wrap"
+                                                                     Text="{Binding CalibrationRejectionSpec, Mode=TwoWay}" />
+                                                            <TextBlock Text="{DynamicResource InUnit}"
+                                                                       Margin="5,0,0,0"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center"
+                                                                       FontSize="16" />
+                                                        </StackPanel>
 
 
 
-                                                    <!--<StackPanel Orientation="Horizontal"
+                                                        <!--<StackPanel Orientation="Horizontal"
                                                             VerticalAlignment="Center"
                                                             HorizontalAlignment="Center">
                                                     <TextBlock Text="Use fake Data?" />
                                                     <RadioButton IsChecked="{Binding IsCheckedUseFakeValues}" />
                                                 </StackPanel>-->
-                                                </StackPanel>
-                                            </Grid>
-                                        </materialDesign:ColorZone>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </materialDesign:ColorZone>
 
 
-                                    </StackPanel>
+                                        </StackPanel>
                                     </Viewbox>
 
 
@@ -1387,8 +1387,13 @@
                                                              AcceptsReturn="True"
                                                              IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextBoxEnabledComboBox}"
                                                              Style="{StaticResource MaterialDesignFilledTextBox}"
-                                                             TextWrapping="Wrap"
-                                                             Text="{Binding NewUserID}" />
+                                                             TextWrapping="Wrap">
+                                                        <TextBox.Text>
+                                                        <Binding Path="NewUserID"
+                                                                 UpdateSourceTrigger="PropertyChanged">
+                                                        </Binding>
+                                                        </TextBox.Text>
+                                                    </TextBox>
                                                     <Button Grid.Row="0"
                                                             Content="{DynamicResource AddUserButton}"
                                                             Command="{Binding AddUser}"
@@ -1473,7 +1478,7 @@
                     <TextBlock Text="{Binding EmployeeID}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
-                               FontSize="24"/>
+                               FontSize="24" />
                     <!--<Button Margin="8"
                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
                             Command="{Binding UpdateView}"

@@ -968,20 +968,33 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _newUserID;
             set
             {
+                bool IsNew = true;
                 if (value != null)
                 {
                     if (Regex.IsMatch(value, @"^\d{1,7}$"))
                     {
                         SetProperty(ref _newUserID, value);
+                        if (value.Length == 7)
+                        {
+                            foreach (var item in UserIDs)
+                            {
+                                if (item == value)
+                                {
+                                    IsNew = false;
+                                }
+                            }
+                            if (IsNew)
+                            {
+                               
+                            IsEnabledNewUser = true;
+                            }
+                        }
+                        else
+                        {
+                            IsEnabledNewUser = false;
+                        }
                     }
-                    if (value.Length == 7)
-                    {
-                        IsEnabledNewUser = true;
-                    }
-                    else
-                    {
-                        IsEnabledNewUser = false;
-                    }
+
                 }
                 else
                 {
@@ -1085,7 +1098,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
-    }
+        }
 
         private Brush _userIDForeground = Brushes.White;
         public Brush UserIDForeground
@@ -1221,7 +1234,10 @@ namespace Louver_Sort_4._8._1.Helpers
                             SelectedPopUp = new Views.PopUps.ReportPopUp();
                             break;
                         case "UserBadgeIn":
-                            SelectedPopUp = new Views.PopUps.UserBadgeInPopUp();
+                            if (!(SelectedPopUp is Views.PopUps.UserMessagePopUp))
+                            {
+                                SelectedPopUp = new Views.PopUps.UserBadgeInPopUp();
+                            }
                             break;
                         case "Close":
                             // Reset the user message and hide the popup
@@ -1235,6 +1251,12 @@ namespace Louver_Sort_4._8._1.Helpers
 
                             // Remove the blur effect from the main content
                             MainContentBlurRadius = 0;
+
+
+                            if (EmployeeID == "" || EmployeeID == null)
+                            {
+                                UpdatePopUp.Execute("UserBadgeIn");
+                            }
                             break;
                         default:
                             // Handle any unexpected cases
@@ -1382,47 +1404,50 @@ namespace Louver_Sort_4._8._1.Helpers
                         break;
 
                     case 2:
-                        // Step 2: Start thread to record data and update UI for bottom plate
-                        StartCalibrationThread(() =>
+                        Func<Task> asyncLambda = async () =>
                         {
+                            // Step 2: Start thread to record data and update UI for bottom plate
                             UpdatePopUpAndAwait();
-                            ConnectAndSetCalibrationFlatAsync();
+                            await ConnectAndSetCalibrationFlatAsync();
                             UpdatePopupForBottomPlate();
                             _calibStep += 1;
-                        });
+                        };
+                        asyncLambda.Invoke();
                         break;
-
                     case 3:
-                        // Step 3: Start thread to record data and update UI for the highest step
-                        StartCalibrationThread(() =>
+                        Func<Task> asyncLambda3 = async () =>
                         {
+                            // Step 3: Start thread to record data and update UI for the highest step
                             UpdatePopUpAndAwait();
-                            ConnectAndSetCalibrationStepAsync();
+                            await ConnectAndSetCalibrationStepAsync();
                             UpdatePopupForHighestStep();
                             _calibStep += 1;
-                        });
+                        };
+                        asyncLambda3.Invoke();
                         break;
 
                     case 4:
-                        // Step 4: Start thread to check calibration flat and update UI for the lowest step
-                        StartCalibrationThread(() =>
+                        Func<Task> asyncLambda4 = async () =>
                         {
+                            // Step 4: Start thread to check calibration flat and update UI for the lowest step
                             UpdatePopUpAndAwait();
-                            ConnectAndCheckCalFlatAsync();
+                            await ConnectAndCheckCalFlatAsync();
                             UpdatePopupForLowestStep();
                             _calibStep += 1;
-                        });
+                        };
+                         asyncLambda4.Invoke();
                         break;
 
                     case 5:
-                        // Step 5: Start thread to check calibration step and handle the result
-                        StartCalibrationThread(() =>
+                        Func<Task> asyncLambda5 = async () =>
                         {
+                            // Step 5: Start thread to check calibration step and handle the result
                             UpdatePopUpAndAwait();
-                            ConnectAndCheckCalStepAsync();
+                            await ConnectAndCheckCalStepAsync();
                             HandleCalibrationResult();
                             _calibStep += 1;
-                        });
+                        };
+                        asyncLambda5.Invoke();
                         break;
 
                     case 6:
@@ -2270,21 +2295,16 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "\\Images\\", imageName);
         }
-        public void StartUp()
+        public async Task StartUp()
         {
-            ConnectToDataQ();
-            //TestComPort();
-
-
+            await ConnectToDataQ();
 
             //CHANGE - check each file path in the function individually
             //Add messages  if any of the files didn't load in
-            if (CheckFile(_jSONSaveLocation + "\\LouverSortData.ini") && CheckFile(_jSONSaveLocation + "\\Globals.ini") && CheckFile(_jSONSaveLocation + "\\DataQ.ini"))
+            if (CheckFile(_jSONSaveLocation + "\\LouverSortData.ini") && CheckFile(_jSONSaveLocation + "\\Globals.ini"))
             {
-                // LoadFromJson();
+                LoadFromJson();
             }
-
-
 
             //Make this a function
             if (_dataQ != null)
@@ -2441,7 +2461,7 @@ namespace Louver_Sort_4._8._1.Helpers
             // Connect to DataQ device if not already connected and set calibration to flat
             if (_dataQ == null)
             {
-                ConnectToDataQ();
+                await ConnectToDataQ();
             }
             await _dataQ.SetCalibrationFlatAsync();
 
@@ -2462,7 +2482,7 @@ namespace Louver_Sort_4._8._1.Helpers
             // Connect to DataQ device if not already connected and set calibration to step
             if (_dataQ == null)
             {
-                ConnectToDataQ();
+                await ConnectToDataQ();
             }
             await _dataQ.SetCalibrationStepAsync();
         }
@@ -2480,7 +2500,7 @@ namespace Louver_Sort_4._8._1.Helpers
             // Connect to DataQ device if not already connected and check calibration flat
             if (_dataQ == null)
             {
-                ConnectToDataQ();
+                await ConnectToDataQ();
             }
             await _dataQ.CheckCalFlatAsync();
 
@@ -2501,7 +2521,7 @@ namespace Louver_Sort_4._8._1.Helpers
             // Connect to DataQ device if not already connected and check calibration step with rejection specification
             if (_dataQ == null)
             {
-                ConnectToDataQ();
+                await ConnectToDataQ();
             }
             await _dataQ.CheckCalStepAsync(CalibrationRejectionSpec);
         }
@@ -2580,68 +2600,60 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         public void ReportInitialize()
         {
-            // Generate a report based on the active set and specified gap specification
-            var report = ActiveSet.GenerateReport(GapSpecRailToLouver, GapSpecLouverToLouver);
-
-            // Populate ReportContent with sorted report items
-            ReportContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
-            IsEnabledApproveSet = true;
-
-            // Check each item in the report for failure status
-            foreach (var item in report)
-            {
-                if (item.Status == "FAIL")
-                {
-                    // If any item has a status of "FAIL", disable approval and set the selected louver
-                    ReportSelectedLouver = item;
-                    IsEnabledApproveSet = false;
-                }
-            }
-        }
-        public void ConnectToDataQ()
-        {
             try
             {
-                // Start a new thread to handle DataQ connection
-                Thread test = new Thread(async () =>
+                // Generate a report based on the active set and specified gap specification
+                var report = ActiveSet.GenerateReport(GapSpecRailToLouver, GapSpecLouverToLouver);
+
+                // Populate ReportContent with sorted report items
+                ReportContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
+                IsEnabledApproveSet = true;
+
+                // Check each item in the report for failure status
+                foreach (var item in report)
                 {
-                    if (_dataQ == null)
+                    if (item.Status == "FAIL")
                     {
-                        try
-                        {
-                            // Initialize and connect to DataQ
-                            _dataQ = new DataQHelper();
-                            await _dataQ.StartConnectionAsync();
-
-                            // Update UI elements and start monitoring
-                            VisibilityDisconnected = Visibility.Collapsed;
-                            _stopwatch.Start();
-
-                            _dataQ.LatestReadingChanged += new EventHandler(DataQNewData);
-                            _dataQ.LostConnection += new EventHandler(DataQLostConnection);
-
-                            _dataQ.StartActiveMonitoring();
-                        }
-                        catch (DataQException ex)
-                        {
-                            // Handle DataQ connection exception
-                            MessageUser(Application.Current.Resources["Disconnect and Reconnect DataQ, restart application"].ToString());
-                            throw ex;
-                        }
+                        // If any item has a status of "FAIL", disable approval and set the selected louver
+                        ReportSelectedLouver = item;
+                        IsEnabledApproveSet = false;
                     }
-                    else
-                    {
-                        // If DataQ is already connected, prompt user to reconnect and restart application
-                        MessageUser(Application.Current.Resources["Disconnect and Reconnect DataQ, restart application"].ToString());
-                        return;
-                    }
-                });
-                test.Start();
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
+            {
+                MessageUser("Error when initializing report " + ex.Message);
+                throw;
+            }
+
+        }
+        public async Task ConnectToDataQ()
+        {
+
+            // Start a new thread to handle DataQ connection
+            try
+            {
+
+                // Initialize and connect to DataQ
+                _dataQ = new DataQHelper();
+                await _dataQ.StartConnectionAsync();
+
+                // Update UI elements and start monitoring
+                VisibilityDisconnected = Visibility.Collapsed;
+                _stopwatch.Start();
+
+                _dataQ.LatestReadingChanged += new EventHandler(DataQNewData);
+                _dataQ.LostConnection += new EventHandler(DataQLostConnection);
+
+                _dataQ.StartActiveMonitoring();
+
+
+            }
+
+            catch (Exception ex)
             {
                 // Handle general exceptions and prompt user to reconnect and restart application
-                MessageUser(Application.Current.Resources["Disconnect and Reconnect DataQ, restart application"].ToString());
+                MessageUser(ex.Message);
                 throw;
             }
         }
@@ -2674,45 +2686,78 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         public void LoadFromJson()
         {
-            var settings = new JsonSerializerSettings
+            try
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+                // Load and deserialize LouverSortData.ini
+                _allOrders = LoadJsonFile<OrderManager>(_jSONSaveLocation + "LouverSortData.ini", settings);
 
-            // Load and deserialize LouverSortData.ini
-            //_allOrders = LoadJsonFile<OrderManager>(_jSONSaveLocation + "LouverSortData.ini", settings);
-
-            // Load and deserialize Globals.ini
-            _globals = LoadJsonFile<Globals>(_jSONSaveLocation + "Globals.ini", settings);
-
-            // Load and deserialize DataQ.ini if it exists and is not "null"
-            var dataQJson = File.ReadAllText(_jSONSaveLocation + "DataQ.ini");
-            if (dataQJson != "null" && _dataQ != null)
-            {
-                _dataQ._cal = JsonConvert.DeserializeObject<Calibration>(dataQJson, settings);
+                // Load and deserialize Globals.ini
+                _globals = LoadJsonFile<Globals>(_jSONSaveLocation + "Globals.ini", settings);
             }
-            else
+            catch (Exception ex)
             {
-                _dataQ._cal = new Calibration();
+                MessageUser("Error when loading existing orders " + ex.Message);
+                throw;
             }
+            try
+            {
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+
+                // Load and deserialize Globals.ini
+                _globals = LoadJsonFile<Globals>(_jSONSaveLocation + "Globals.ini", settings);
+            }
+            catch (Exception ex)
+            {
+                MessageUser("Error when loading user variables " + ex.Message);
+                throw;
+            }
+
+
+            //// Load and deserialize DataQ.ini if it exists and is not "null"
+            //var dataQJson = File.ReadAllText(_jSONSaveLocation + "DataQ.ini");
+            //if (dataQJson != "null" && _dataQ != null)
+            //{
+            //    _dataQ._cal = JsonConvert.DeserializeObject<Calibration>(dataQJson, settings);
+            //}
+            //else
+            //{
+            //    _dataQ._cal = new Calibration();
+            //}
         }
         public void SaveToJson()
         {
-            DeleteDataOlderThan90Days();
-            var serializer = new JsonSerializer();
-
-            // Serialize and save LouverSortData.ini
-            SaveJsonFile(_jSONSaveLocation + "LouverSortData.ini", _allOrders, serializer);
-
-            // Serialize and save Globals.ini
-            SaveJsonFile(_jSONSaveLocation + "Globals.ini", _globals, serializer);
-
-            // Serialize and save DataQ.ini
-            if (_dataQ != null)
+            try
             {
-                SaveJsonFile(_jSONSaveLocation + "DataQ.ini", _dataQ._cal, serializer);
+                DeleteDataOlderThan90Days();
+                var serializer = new JsonSerializer();
+
+                // Serialize and save LouverSortData.ini
+                SaveJsonFile(_jSONSaveLocation + "LouverSortData.ini", _allOrders, serializer);
+
+                // Serialize and save Globals.ini
+                SaveJsonFile(_jSONSaveLocation + "Globals.ini", _globals, serializer);
+
+                // Serialize and save DataQ.ini
+                if (_dataQ != null)
+                {
+                    SaveJsonFile(_jSONSaveLocation + "DataQ.ini", _dataQ._cal, serializer);
+                }
             }
+            catch (Exception ex)
+            {
+                MessageUser("Error saving data to Json " + ex.Message);
+                throw;
+            }
+
         }
         public void DeleteDataOlderThan90Days()
         {

@@ -16,8 +16,8 @@
         Closing="Window_Closing"
         Height="1080"
         Width="1920"
-        WindowStyle="SingleBorderWindow"
-        WindowState="Normal"
+        WindowStyle="None"
+        WindowState="Maximized"
         ResizeMode="NoResize">
 
     <Window.InputBindings>

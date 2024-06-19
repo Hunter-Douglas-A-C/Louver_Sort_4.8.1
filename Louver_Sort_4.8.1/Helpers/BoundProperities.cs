@@ -1397,7 +1397,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         UpdatePopUp.Execute("Calibrate");
                         VisibilityCalibImage = Visibility.Visible;
                         CalibTxt = (Application.Current.Resources["Place calibration plate on top of rail"].ToString());
-                        CalibImage = PathImage("CalibTop");
+                        CalibImage = PathImage("CalibTopOfRail");
                         CalibTxtBoxHint = "";
                         VisibilityCalibRecord = Visibility.Collapsed;
                         _calibStep += 1;
@@ -2473,7 +2473,7 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             // Update popup for bottom plate calibration
             CalibTxt = (Application.Current.Resources["Place calibration plate on bottom of slide"].ToString());
-            CalibImage = PathImage("CalibTop");
+            CalibImage = PathImage("CalibCheckBottomOfRail");
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
@@ -2491,7 +2491,7 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             // Update popup for highest step calibration
             CalibTxt = (Application.Current.Resources["Place highest step of Louver Sag Gauge on top of rail"].ToString());
-            CalibImage = PathImage("CalibTop");
+            CalibImage = PathImage("CalibCheckFirstStep");
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");
@@ -2512,7 +2512,7 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             // Update popup for lowest step calibration
             CalibTxt = (Application.Current.Resources["Place lowest step of Louver Sag Gauge on top of rail"].ToString());
-            CalibImage = PathImage("CalibTop");
+            CalibImage = PathImage("CalibCheckSecondStep");
             CalibTxtBoxHint = "";
             VisibilityCalibRecord = Visibility.Collapsed;
             UpdatePopUp.Execute("Calibrate");

@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ClipperLib;
+using LiveCharts.Wpf;
+using LiveCharts.Wpf.Charts.Base;
 using Louver_Sort_4._8._1.Helpers;
 using Louver_Sort_4._8._1.Views;
 using Microsoft.Win32;
@@ -38,8 +40,45 @@ namespace Louver_Sort_4._8._1.Views
             boundProperities.VisibilityPopUp = Visibility.Hidden;
             boundProperities.IsEnabledMain = true;
             boundProperities.MainContentBlurRadius = 0;
+
+            Chart.DataContextChanged += OnDataContextChanged;
+            ReCutChart.DataContextChanged += OnDataContextChanged;
         }
 
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is CartesianChart chart)
+            {
+                if (IsChartVisible(chart))
+                {
+                    // Resume chart updates
+                    chart.DisableAnimations = false;
+                }
+                else
+                {
+                    // Pause chart updates
+                    chart.DisableAnimations = true;
+                }
+            }
+        }
+
+        private bool IsChartVisible(CartesianChart chart)
+        {
+            // Determine if the chart is visible (this can be customized based on your tab control implementation)
+            var parent = VisualTreeHelper.GetParent(chart);
+            while (parent != null && !(parent is TabItem))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+
+            if (parent is TabItem tabItem)
+            {
+                var tabControl = VisualTreeHelper.GetParent(tabItem) as TabControl;
+                return tabControl?.SelectedItem == tabItem;
+            }
+
+            return false;
+        }
 
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

@@ -813,7 +813,7 @@
                                                                   CornerRadius="10"
                                                                   Mode="PrimaryDark">
                                             <Grid>
-                                                <lvc:CartesianChart>
+                                                <lvc:CartesianChart x:Name="ReCutChart">
                                                     <lvc:CartesianChart.Series>
                                                         <lvc:LineSeries Values="{Binding VoltageValues}" />
                                                     </lvc:CartesianChart.Series>

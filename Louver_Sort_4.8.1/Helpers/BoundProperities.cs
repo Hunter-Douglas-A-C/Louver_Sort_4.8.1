@@ -2293,7 +2293,7 @@ namespace Louver_Sort_4._8._1.Helpers
         #region Code Behind
         public string PathImage(string imageName)
         {
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "\\Images\\", imageName);
+            return $"pack://application:,,,/Images/{imageName}";
         }
         public async Task StartUp()
         {

@@ -2363,8 +2363,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
             ////DELETEME
-            VisibilitySortSet = Visibility.Visible;
-            IsEnabledReCut = Visibility.Visible;
+            //VisibilitySortSet = Visibility.Visible;
+            //IsEnabledReCut = Visibility.Visible;
         }
         public void NextLouverSet()
         {

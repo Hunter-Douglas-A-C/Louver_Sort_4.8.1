@@ -24,6 +24,7 @@ using System.Reflection;
 using Zebra.Sdk.Printer;
 using System.IO.Ports;
 using System.Threading.Tasks;
+using Louver_Sort_4._8._1.Views;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -1771,8 +1772,21 @@ namespace Louver_Sort_4._8._1.Helpers
                     if (Math.Abs(Convert.ToDouble(ActiveSet.Louvers[ActiveLouverID - 1].Readings.Reading1 - value)) < 0.007)
                     {
                         // Show message if readings are too close together
-                        MessageUser(Application.Current.Resources["Readings are too close together"].ToString());
-                        return;
+                        //MessageUser(Application.Current.Resources["Readings are too close together"].ToString());
+                        //return;
+                        bool? Result = false;
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            Result = new MessageBoxCustom("Reading are too close together \n Do you want to keep this value?", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                            //MessageBoxResult result = MessageBox.Show("Reading are too close together. Do you want to keep this value?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        });
+
+                        if (Result.Value == false)
+                        {
+                            UpdatePopUp.Execute("Close");
+                            // User clicked No
+                            return;
+                        }
                     }
 
                     // Set the second reading and update the UI
@@ -2281,6 +2295,20 @@ namespace Louver_Sort_4._8._1.Helpers
 
             ShutDown = new BaseCommand(obj =>
             {
+                bool? Result = false;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Result = new MessageBoxCustom("Are you sure you want to close?", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                    //MessageBoxResult result = MessageBox.Show("Reading are too close together. Do you want to keep this value?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                });
+
+                if (Result.Value == false)
+                {
+                    UpdatePopUp.Execute("Close");
+                    // User clicked No
+                    return;
+                }
+
                 // Save the current state to a JSON file
                 SaveToJson();
 
@@ -2335,8 +2363,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
             ////DELETEME
-            //VisibilitySortSet = Visibility.Visible;
-            //IsEnabledReCut = Visibility.Visible;
+            VisibilitySortSet = Visibility.Visible;
+            IsEnabledReCut = Visibility.Visible;
         }
         public void NextLouverSet()
         {

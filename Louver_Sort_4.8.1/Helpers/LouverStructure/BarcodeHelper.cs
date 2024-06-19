@@ -106,7 +106,15 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             _order = int.Parse(match.Groups["Order"].Value);
             _line = int.Parse(match.Groups["Line"].Value);
             _unit = int.Parse(match.Groups["Unit"].Value);
-            _panelID = int.Parse(match.Groups["Panel"].Value.Replace("P", ""));
+            if (match.Groups["Panel"].Value.Contains("P"))
+            {
+                _panelID = int.Parse(match.Groups["Panel"].Value.Replace("P", ""));
+            }
+            else if (match.Groups["Panel"].Value.Contains("L"))
+            {
+                _panelID = int.Parse(match.Groups["Panel"].Value.Replace("L", ""));
+            }
+
         }
 
 

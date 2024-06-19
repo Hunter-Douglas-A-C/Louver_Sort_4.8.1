@@ -273,6 +273,9 @@
     <Compile Include="Helpers\LouverStructure\Set.cs" />
     <Compile Include="Helpers\LouverStructure\SetID.cs" />
     <Compile Include="Helpers\ZebraPrinterHelper.cs" />
+    <Compile Include="Views\MessageBoxCustom.xaml.cs">
+      <DependentUpon>MessageBoxCustom.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PopUps\AwaitResultPopUp.xaml.cs">
       <DependentUpon>AwaitResultPopUp.xaml</DependentUpon>
     </Compile>
@@ -320,6 +323,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\MessageBoxCustom.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PopUps\AwaitResultPopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

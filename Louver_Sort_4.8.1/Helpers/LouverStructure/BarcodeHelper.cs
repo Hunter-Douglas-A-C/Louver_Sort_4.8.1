@@ -95,7 +95,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         /// <param name="barcode1">The Barcode1 data string.</param>
         private void ParseBarcode1(string barcode1)
         {
-            string pattern = @"(?<Order>\d{8})(?<Line>\d{3})(?<Unit>\d{5})(?<Panel>P\d{1})";
+            string pattern = @"(?<Order>\d{8})(?<Line>\d{3})(?<Unit>\d{5})(?<Panel>.\d{1})";
             Match match = Regex.Match(barcode1, pattern);
             if (!match.Success)
             {
@@ -115,7 +115,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         /// <param name="barcode2">The Barcode2 data string.</param>
         private void ParseBarcode2(string barcode2)
         {
-            string pattern = @"^(PNL[1-9])\/(LXL)\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$";
+            string pattern = @"(P..[1-9]\s{0,1}.{0,2})\/(L.{2,3})\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$";
             Match match = Regex.Match(barcode2, pattern);
             if (!match.Success)
             {
@@ -123,7 +123,16 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             }
 
             // Extract and parse data from Barcode2
-            _panelID = int.Parse(match.Groups[1].Value.Replace("PNL", ""));
+            string value = match.Groups[1].Value;
+
+            if (value.Contains("PNL"))
+            {
+                _panelID = int.Parse(value.Replace("PNL", ""));
+            }
+            else if (value.Contains("PST"))
+            {
+                _panelID = int.Parse(value.Replace("PST1 P", ""));
+            }
             _style = match.Groups[2].Value == "LXL" ? LouverStyle.LouverStyles.XL : LouverStyle.LouverStyles.Standard;
             _width = double.Parse(match.Groups[3].Value.Replace("L", ""));
             _length = double.Parse(match.Groups[4].Value.Replace("L", ""));

@@ -560,12 +560,13 @@ namespace Louver_Sort_4._8._1.Helpers
             Debug.WriteLine("Stopped" + Environment.NewLine);
         }
 
-
         private string ExtractDataAsString(IEnumerable<Dataq.Devices.IChannel> channels)
         {
             return string.Join("", channels
                 .OfType<Dataq.Devices.IChannelIn>()
-                .Select(ch => ch.DataIn.FirstOrDefault().ToString().Substring(0, 7)));
+                .Select(ch => ch.DataIn.LastOrDefault())
+                .Where(data => data != null)
+                .Select(data => data.ToString().Substring(0, Math.Min(7, data.ToString().Length))));
         }
 
         private void ClearChannelData(IEnumerable<Dataq.Devices.IChannel> channels)

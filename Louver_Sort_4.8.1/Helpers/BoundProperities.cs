@@ -70,8 +70,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
         #region Generic
         //Generic
-        string Barcode1Regex = @"^\d{16}P\d$";
-        string Barcode2Regex = @"^(PNL[1-9])\/(LXL)\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$";
+        string Barcode1Regex = @"^\d{16}.\d$";
+        string Barcode2Regex = @"(P..[1-9]\s{0,1}.{0,2})\/(L.{2,3})\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$";
         string EmptyRegex = @"^$";
         private string _jSONSaveLocation = AppDomain.CurrentDomain.BaseDirectory;
         string cultureCode = "en-US";

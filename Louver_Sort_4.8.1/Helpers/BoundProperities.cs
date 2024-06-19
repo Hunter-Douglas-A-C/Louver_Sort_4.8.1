@@ -3093,17 +3093,18 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         public void DataQNewData(object sender, EventArgs e)
         {
-            VoltageValues.Add(new MeasureModel
-            {
-                ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
-                Value = Math.Round(_dataQ.LatestReading, 3)
+            App.Current.Dispatcher.Invoke(() => {
+                VoltageValues.Add(new MeasureModel
+                {
+                    ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
+                    Value = Math.Round(_dataQ.LatestReading, 3)
+                });
+                if (VoltageValues.Count > 25)
+                {
+                    VoltageValues.RemoveAt(0);
+                }
             });
-            //Debug.WriteLine(_DataQ.GetDistance());
-            if (VoltageValues.Count > 25)
-            {
-                VoltageValues.RemoveAt(0);
-            }
-            //CurrentReading = VoltageValues[VoltageValues.Count].Value.ToString();
+
         }
 
         private void SummaryExport(ExcelWorksheet sheet, List<OrderWithBarcode> order)

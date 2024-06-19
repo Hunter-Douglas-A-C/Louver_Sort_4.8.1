@@ -109,6 +109,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             _panelID = int.Parse(match.Groups["Panel"].Value.Replace("P", ""));
         }
 
+
         /// <summary>
         /// Parses data from Barcode2.
         /// </summary>

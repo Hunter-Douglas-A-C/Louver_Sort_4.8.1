@@ -2683,6 +2683,9 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 // Handle general exceptions and prompt user to reconnect and restart application
                 MessageUser(ex.Message);
+                IsEnabledCalibrate = true;
+                VisibilitySortSet = Visibility.Collapsed;
+                IsEnabledReCut = Visibility.Collapsed;
                 throw;
             }
         }

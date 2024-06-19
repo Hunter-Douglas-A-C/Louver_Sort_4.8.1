@@ -1479,7 +1479,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 1: Show calibration popup with instructions for centering the laser
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Place laser centering plate on slide and adjust sensor until red dot is in the cross hair"].ToString());
-                        CalibImage = PathImage("CalibTop");
+                        CalibImage = PathImage("LaserCentering");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1488,7 +1488,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 2: Show instructions to turn laser to teach mode
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Turn laser to teach mode"].ToString());
-                        CalibImage = PathImage("CalibTop");
+                        CalibImage = PathImage("TurnToTeachMode");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1497,7 +1497,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 3: Show instructions to set calibration plate on top of slide
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Set calibration plate on top of slide"].ToString());
-                        CalibImage = PathImage("CalibTop");
+                        CalibImage = PathImage("SetTopofRange");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1506,7 +1506,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 4: Show instructions to press plus on the laser
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Press plus on the laser"].ToString());
-                        CalibImage = PathImage("CalibTop");
+                        CalibImage = PathImage("TurnToTeachMode");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1515,7 +1515,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 5: Show instructions to set calibration plate on bottom of slide
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Set calibration plate on bottom of slide"].ToString());
-                        CalibImage = PathImage("CalibTop");
+                        CalibImage = PathImage("SetBottomofRange");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1524,7 +1524,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 6: Show instructions to press minus on the laser
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Press minus on laser"].ToString());
-                        CalibImage = PathImage("CalibTop");
+                        CalibImage = PathImage("TurnToTeachMode");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;
@@ -1533,7 +1533,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         // Step 7: Show instructions to turn the dial on laser back to run
                         UpdatePopUp.Execute("CalibrateLaser");
                         CalibTxt = (Application.Current.Resources["Turn dial on laser back to run"].ToString());
-                        CalibImage = PathImage("CalibTop");
+                        CalibImage = PathImage("TurnToRunMode");
                         VisibilityCalibImage = Visibility.Visible;
                         _calibStep += 1;
                         break;

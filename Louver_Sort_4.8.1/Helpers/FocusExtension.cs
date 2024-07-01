@@ -31,12 +31,16 @@ namespace Louver_Sort_4._8._1.Helpers
         private static void OnIsFocusedPropertyChanged(DependencyObject d,
                 DependencyPropertyChangedEventArgs e)
         {
-            var uie = (UIElement)d;
-            if ((bool)e.NewValue)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                uie.Focus();
-                Keyboard.Focus(uie);
-            }
+                
+                var uie = (UIElement)d;
+                if ((bool)e.NewValue)
+                {
+                    uie.Focus();
+                    Keyboard.Focus(uie);
+                }
+            });
         }
     }
 }

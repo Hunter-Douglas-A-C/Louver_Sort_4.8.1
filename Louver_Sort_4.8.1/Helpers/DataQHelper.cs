@@ -73,7 +73,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to connect to DI155.", ex);
+                            throw new DataQException("Failed to connect to DI155.  Please restart app", ex);
                         }
 
                         try
@@ -82,7 +82,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to start DI155.", ex);
+                            throw new DataQException("Failed to start DI155.  Please restart app", ex);
                         }
                         break;
 
@@ -93,7 +93,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to connect to DI1100.", ex);
+                            throw new DataQException("Failed to connect to DI1100. Please restart app", ex);
                         }
 
                         try
@@ -102,7 +102,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to start DI1100.", ex);
+                            throw new DataQException("Failed to start DI1100. Please restart app", ex);
                         }
                         break;
 
@@ -165,6 +165,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         try
                         {
                             await DI1100.Disconnect();
+                            cancelRead.Cancel();
                         }
                         catch (Exception ex)
                         {
@@ -276,59 +277,6 @@ namespace Louver_Sort_4._8._1.Helpers
             return calAverages.Average();
         }
 
-        //public void SetCalibrationFlat()
-        //{
-        //    List<double> CalAverages = new List<double>();
-        //    //for (int i = 0; i < 2; i++)
-        //    //{
-        //    CalAverages.Add(WaitForDataCollection(false).Result);
-        //    //}
-
-        //    _cal.FlatReading = CalAverages.Average();
-        //}
-
-        //public void SetCalibrationStep()
-        //{
-        //    List<double> CalAverages = new List<double>();
-        //    //for (int i = 0; i < 2; i++)
-        //    //{
-        //    CalAverages.Add(WaitForDataCollection(false).Result);
-        //    //}
-
-        //    _cal.StepReading = CalAverages.Average();
-
-
-
-        //    _cal.CalculateLineEquation(Tuple.Create(_cal.FlatReading, 0.0), Tuple.Create(_cal.StepReading, _cal.StepValue));
-        //}
-
-        //public void CheckCalFlat()
-        //{
-        //    List<double> CalAverages = new List<double>();
-        //    CalAverages.Add(WaitForDataCollection(true).Result);
-
-        //    _cal.CheckFlat = CalAverages.Average();
-        //}
-
-        //public void CheckCalStep(double range)
-        //{
-        //    List<double> CalAverages = new List<double>();
-        //    CalAverages.Add(WaitForDataCollection(true).Result);
-
-        //    _cal.CheckStep = CalAverages.Average();
-
-        //    _cal.CheckCalibration(range);
-        //}
-
-        //public double GetSlope()
-        //{
-        //    if (_cal != null)
-        //    {
-        //        return _cal.Slope;
-        //    }
-        //    return 0.0;
-
-        //}
         #endregion
 
         #region Monitoring Functions
@@ -346,7 +294,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to start monitoring DI155.", ex);
+                            throw new DataQException("Failed to start monitoring DI155.  Please restart app", ex);
                         }
                         break;
 
@@ -357,7 +305,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to start monitoring DI1100.", ex);
+                            throw new DataQException("Failed to start monitoring DI1100.  Please restart app", ex);
                         }
                         break;
 
@@ -433,7 +381,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 catch (Exception ex)
                 {
-                    throw new DataQException("Failed to start acquisition for DI1100.", ex);
+                    throw new DataQException("Failed to start acquisition for DI1100.  Please restart app", ex);
                 }
 
                 try
@@ -446,14 +394,14 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("An error occurred while reading data for DI1100.", ex);
+                            throw new DataQException("An error occurred while reading data for DI1100.  Please restart app", ex);
                         }
                     }, cancelRead.Token);
                     taskRead.Start();
                 }
                 catch (Exception ex)
                 {
-                    throw new DataQException("Failed to start the data reading task for DI1100.", ex);
+                    throw new DataQException("Failed to start the data reading task for DI1100.  Please restart app", ex);
                 }
             }
             catch (DataQException ex)
@@ -483,7 +431,7 @@ namespace Louver_Sort_4._8._1.Helpers
             }
             catch (Exception ex)
             {
-                throw new DataQException("Failed to retrieve the master channel for DI1100.", ex);
+                throw new DataQException("Failed to retrieve the master channel for DI1100.  Please restart app", ex);
             }
 
             while (DI1100.TargetDevice.IsAcquiring)
@@ -517,16 +465,20 @@ namespace Louver_Sort_4._8._1.Helpers
 
                     try
                     {
-                        if (_cal.Successful == true)
+                        if (dataString != null)
                         {
-                            LatestReading = _cal.ConvertToInches(Convert.ToDouble(dataString));
-                        }
-                        else
-                        {
-                        LatestReading = Convert.ToDouble(dataString);
+                            if (_cal.Successful == true)
+                            {
+                                LatestReading = _cal.ConvertToInches(Convert.ToDouble(dataString));
+                            }
+                            else
+                            {
+                                LatestReading = Convert.ToDouble(dataString);
 
+                            }
+                            validReadings.Add(LatestReading);
                         }
-                        validReadings.Add(LatestReading);
+
                     }
                     catch (Exception ex)
                     {
@@ -598,7 +550,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to read data from DI155.", ex);
+                            throw new DataQException("Failed to read data from DI155.  Please restart app", ex);
                         }
 
                     case "1000":
@@ -608,7 +560,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to read data from DI1100.", ex);
+                            throw new DataQException("Failed to read data from DI1100.  Please restart app", ex);
                         }
 
                     default:
@@ -813,304 +765,6 @@ namespace Louver_Sort_4._8._1.Helpers
         }
 
 
-
-
-        //public async void StartActiveMonitoring()
-        //{
-        //    switch (DataQModel)
-        //    {
-        //        case "100":
-        //            DI155.TargetDevice.NewData += PassToMain;
-
-        //            await Task.Run(async () =>
-        //            {
-        //                while (_KeepMonitoring)
-        //                {
-        //                    await Task.Delay(100);
-        //                }
-        //            });
-
-        //            DI155.TargetDevice.NewData -= PassToMain;
-        //            break;
-
-        //        case "1000":
-
-        //            // Everything is good, so...
-        //            cancelRead = new CancellationTokenSource(); // Create the cancellation token
-        //            await DI1100.TargetDevice.AcquisitionStartAsync(); // start acquiring
-
-        //            Task taskRead = new Task(async() =>
-        //            {
-        //                // Capture the first channel programmed as an input (MasterChannel)
-        //                // and use it to track data availability for all input channels
-        //                Dataq.Devices.IChannelIn MasterChannel = null;
-        //                for (int index = 0; index < DI1100.TargetDevice.Channels.Count; index++)
-        //                {
-        //                    if (DI1100.TargetDevice.Channels[index] is Dataq.Devices.IChannelIn)
-        //                    {
-        //                        MasterChannel = (Dataq.Devices.IChannelIn)DI1100.TargetDevice.Channels[index]; // We have our channel
-        //                        break;
-        //                    }
-        //                }
-
-        //                // Keep reading while acquiring data
-        //                while (DI1100.TargetDevice.IsAcquiring)
-        //                {
-        //                    // Read data and catch if cancelled (to exit loop and continue)
-        //                    try
-        //                    {
-        //                        // Throws an error if acquisition has been cancelled
-        //                        // Otherwise refreshes the buffer DataIn with new data
-        //                        await DI1100.TargetDevice.ReadDataAsync(cancelRead.Token);
-        //                    }
-        //                    catch (OperationCanceledException)
-        //                    {
-        //                        // Get here if acquisition cancelled
-        //                        break;
-        //                    }
-
-        //                    // Get here if acquisition is still active
-        //                    if (MasterChannel.DataIn.Count == 0)
-        //                    {
-        //                        // Get here if no data in the channel buffer
-        //                        continue;
-        //                    }
-
-        //                    // We have data. Convert it to strings
-        //                    string temp = "";
-        //                    string temp1 = "";
-
-        //                    for (int index = 0; index < 1; index++) // This is the row (scan) counter
-        //                    {
-        //                        foreach (var ch in DI1100.TargetDevice.Channels) // This is the column (channel) counter
-        //                        {
-        //                            // Get a channel value and convert it to a string
-        //                            if (ch is Dataq.Devices.IChannelIn channelIn)
-        //                            {
-        //                                temp1 = channelIn.DataIn[index].ToString();
-        //                                // Trim the output to prevent overrunning the display
-        //                                if (temp1.Length > 7)
-        //                                {
-        //                                    temp1 = temp1.Substring(0, 7);
-        //                                }
-        //                                temp += temp1; // Append the channel value to the output
-        //                            }
-        //                        }
-        //                    }
-
-
-        //                    // Purge displayed data
-        //                    foreach (var ch in DI1100.TargetDevice.Channels)
-        //                    {
-        //                        if (ch is Dataq.Devices.IChannelIn channelIn)
-        //                        {
-        //                            channelIn.DataIn.Clear();
-        //                        }
-        //                    }
-
-        //                    LatestReading = Convert.ToDouble(temp);
-        //                    validReadings.Add(LatestReading);
-        //                }
-        //              Debug.WriteLine("Stopped" + Environment.NewLine);
-        //            }, cancelRead.Token);
-        //            taskRead.Start();
-
-        //            break;
-        //    }
-        //}
-
-        //private void PassToMain(object sender, EventArgs e)
-        //{
-        //    if (_cal != null)
-        //    {
-        //        LatestReading = _cal.ConvertToInches(ReadNewData());
-        //    }
-        //}
-
-        //public double ReadNewData()
-        //{
-        //    string ResponseString = "";
-        //    switch (DataQModel)
-        //    {
-        //        case "100":
-        //            int Scans = DI155.TargetDevice.NumberOfScansAvailable;
-        //            short Channels = (short)DI155.TargetDevice.NumberOfChannelsEnabled;
-        //            var DI_155_Data = new double[(Scans * Channels)]; // will hold all data for the scan
-
-
-        //            // Attempt to retrieve and process the data
-        //            DI155.TargetDevice.GetInterleavedScaledData(DI_155_Data, 0, Scans);
-
-        //            for (int Row = 0; Row < Scans; Row++)
-        //            {
-        //                ResponseString += DI_155_Data[Row * Channels + 0].ToString("F4");
-        //            }
-        //            break;
-
-        //        case "1000":
-        //            //cancelRead.Cancel();
-
-        //            //// Everything is good, so...
-        //            //cancelRead = new CancellationTokenSource(); // Create the cancellation token
-        //            //DI1100.TargetDevice.AcquisitionStartAsync(); // start acquiring
-        //            //    // Capture the first channel programmed as an input (MasterChannel)
-        //            //    // and use it to track data availability for all input channels
-        //            //    Dataq.Devices.IChannelIn MasterChannel = null;
-        //            //    for (int index = 0; index < DI1100.TargetDevice.Channels.Count; index++)
-        //            //    {
-        //            //        if (DI1100.TargetDevice.Channels[index] is Dataq.Devices.IChannelIn)
-        //            //        {
-        //            //            MasterChannel = (Dataq.Devices.IChannelIn)DI1100.TargetDevice.Channels[index]; // We have our channel
-        //            //            break;
-        //            //        }
-        //            //    }
-
-        //            //    // Keep reading while acquiring data
-        //            //    while (DI1100.TargetDevice.IsAcquiring && validReadings.Count < 3)
-        //            //    {
-        //            //        // Read data and catch if cancelled (to exit loop and continue)
-        //            //        try
-        //            //        {
-        //            //            // Throws an error if acquisition has been cancelled
-        //            //            // Otherwise refreshes the buffer DataIn with new data
-        //            //            DI1100.TargetDevice.ReadDataAsync(cancelRead.Token);
-        //            //        }
-        //            //        catch (OperationCanceledException)
-        //            //        {
-        //            //            // Get here if acquisition cancelled
-        //            //            break;
-        //            //        }
-
-
-
-        //            //        // We have data. Convert it to strings
-        //            //        string temp1 = "";
-
-        //            //        for (int index = 0; index < 1; index++) // This is the row (scan) counter
-        //            //        {
-        //            //            foreach (var ch in DI1100.TargetDevice.Channels) // This is the column (channel) counter
-        //            //            {
-        //            //                // Get a channel value and convert it to a string
-        //            //                if (ch is Dataq.Devices.IChannelIn channelIn)
-        //            //                {
-        //            //                    temp1 = channelIn.DataIn[index].ToString();
-        //            //                    // Trim the output to prevent overrunning the display
-        //            //                    if (temp1.Length > 7)
-        //            //                    {
-        //            //                        temp1 = temp1.Substring(0, 7);
-        //            //                    }
-        //            //                    ResponseString = temp1; // Append the channel value to the output
-
-        //            //                validReadings.Add(Convert.ToDouble(ResponseString));
-        //            //                }
-        //            //            }
-        //            //        }
-
-        //            //        // Purge displayed data
-        //            //        foreach (var ch in DI1100.TargetDevice.Channels)
-        //            //        {
-        //            //            if (ch is Dataq.Devices.IChannelIn channelIn)
-        //            //            {
-        //            //                channelIn.DataIn.Clear();
-        //            //            }
-        //            //        }
-        //            //    }
-
-        //            break;
-        //    }
-
-        //    return Convert.ToDouble(ResponseString);
-        //}
-
-        //public async Task<double> WaitForDataCollection(bool UseCalibration = false)
-        //{
-        //    _dataReceived = false;
-        //    validReadings.Clear();
-
-        //    switch (DataQModel)
-        //    {
-        //        case "100":
-        //            DI155.TargetDevice.NewData += GetDataHandler;
-
-        //            // Wait for the task to complete (i.e., for GetData to be called 5 times)
-        //            await Task.Run(async () =>
-        //            {
-        //                int timeoutMilliseconds = 700000000; // Adjust timeout as needed
-        //                int intervalMilliseconds = 100; // Adjust interval as needed
-        //                int elapsedMilliseconds = 0;
-
-        //                while (!_dataReceived && elapsedMilliseconds < timeoutMilliseconds)
-        //                {
-        //                    await Task.Delay(intervalMilliseconds);
-        //                    elapsedMilliseconds += intervalMilliseconds;
-        //                }
-        //            });
-
-        //            // Unsubscribe from the event
-        //            DI155.TargetDevice.NewData -= GetDataHandler;
-        //            //DI_155.NewData += GetDI155Data;
-        //            break;
-
-        //        case "1000":
-
-        //            //const double threshold = 0.002; // Adjust this threshold as needed
-        //            //double reading = ReadNewData();
-
-        //            validReadings.Clear();
-
-        //            while (validReadings.Count < 3)
-        //            {
-        //                Thread.Sleep(100);
-        //            }
-
-        //            break;
-        //    }
-
-
-        //    // Return the recorded data
-        //    if (UseCalibration)
-        //    {
-        //        //Debug.WriteLine("AVERAGE    " + _cal.ConvertToInches(validReadings.Average()) + "   ");
-        //        double value = _cal.ConvertToInches(validReadings.Average());
-        //        return value;
-        //    }
-        //    else
-        //    {
-        //        //Debug.WriteLine("AVERAGE    " + validReadings.Average() + "   ");
-        //        return validReadings.Average();
-        //    }
-
-
-        //    //DI_155.NewData -= GetDI155Data;
-        //    // Subscribe to the event
-        //}
-
-        //private void GetDataHandler(object sender, EventArgs e)
-        //{
-        //    //const double threshold = 0.002; // Adjust this threshold as needed
-        //    double reading = ReadNewData();
-
-        //    if (validReadings.Count > 0)
-        //    {
-        //        //if (threshold <= validReadings.Average() - reading)
-        //        //{
-        //        validReadings.Add(reading);
-        //        //Debug.WriteLine("Voltage    " + reading + "   ");
-        //        //Debug.WriteLine("Inches    " + _cal.ConvertToInches(reading) + "   ");
-        //        //}
-        //    }
-        //    else
-        //    {
-        //        validReadings.Add(reading);
-        //        //Debug.WriteLine("Voltage    " + reading + "   ");
-        //        //Debug.WriteLine("Inches    " + _cal.ConvertToInches(reading) + "   ");
-        //    }
-
-        //    if (validReadings.Count >= 2)
-        //    {
-        //        _dataReceived = true;
-        //    }
-        //}
 
         #endregion
     }

@@ -12,6 +12,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Data;
+
+
 using LiveCharts.Configurations;
 using LiveCharts;
 using Louver_Sort_4._8._1.Helpers.LouverStructure;
@@ -669,20 +671,29 @@ namespace Louver_Sort_4._8._1.Helpers
             get => _txtLouverCount;
             set
             {
-                Regex regex = new Regex("[0-9]");
-                if (regex.IsMatch(value.ToString()) && value > 0)
+                try
                 {
-                    IsEnabledLouverCountOk = true;
-                    SetProperty(ref _txtLouverCount, value);
+                    Regex regex = new Regex("[0-9]");
+                    if (regex.IsMatch(value.ToString()) && value > 0)
+                    {
+                        IsEnabledLouverCountOk = true;
+                        SetProperty(ref _txtLouverCount, value);
+                    }
+                    else if (value == null)
+                    {
+                        IsEnabledLouverCountOk = false;
+                        SetProperty(ref _txtLouverCount, value);
+                    }
+                    else
+                    {
+                        IsEnabledLouverCountOk = false;
+                    }
+
                 }
-                else if (value == null)
+                catch (Exception ex)
                 {
-                    IsEnabledLouverCountOk = false;
-                    SetProperty(ref _txtLouverCount, value);
-                }
-                else
-                {
-                    IsEnabledLouverCountOk = false;
+                    MessageUser(ex.Message);
+                    throw;
                 }
             }
         }
@@ -791,10 +802,20 @@ namespace Louver_Sort_4._8._1.Helpers
                     // Find the index of the Louver object with the same ID as ReportSelectedLouver.
                     int index = ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID);
 
-                    ZebraPrinter _Printer = _zebra.Connect();
-                    List<Louver> toPrint = new List<Louver> { ActiveSet.Louvers[index] };
-                    _zebra.PrintLouverIDs(_Printer, toPrint);
-                    _zebra.Disconnect(_Printer);
+
+                    try
+                    {
+                        ZebraPrinter _Printer = _zebra.Connect();
+                        List<Louver> toPrint = new List<Louver> { ActiveSet.Louvers[index] };
+                        _zebra.PrintLouverIDs(_Printer, toPrint);
+                        _zebra.Disconnect(_Printer);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageUser(ex.Message);
+                        throw;
+                    }
 
                     // If the Louver with the same ID is found, remove it from the collection.
                     if (index != -1)
@@ -986,8 +1007,8 @@ namespace Louver_Sort_4._8._1.Helpers
                             }
                             if (IsNew)
                             {
-                               
-                            IsEnabledNewUser = true;
+
+                                IsEnabledNewUser = true;
                             }
                         }
                         else
@@ -1301,7 +1322,17 @@ namespace Louver_Sort_4._8._1.Helpers
                 // Check if printing unsorted labels is enabled and the selected tab index is 1
                 if (IsEnabledPrintUnsortedLabels && SelectedTabIndex == 1)
                 {
-                    PrintUnsortedLabels();
+                    try
+                    {
+                        PrintUnsortedLabels();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageUser(ex.Message);
+                        throw;
+                    }
+
                     return;
                 }
 
@@ -1350,7 +1381,16 @@ namespace Louver_Sort_4._8._1.Helpers
                 // Check if the current popup is Report and approval is enabled
                 if (SelectedPopUp is ReportPopUp && IsEnabledApproveSet)
                 {
-                    PrintSortedLabels();
+                    try
+                    {
+                        PrintSortedLabels();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageUser(ex.Message);
+                        throw;
+                    }
                     return;
                 }
 
@@ -1436,7 +1476,7 @@ namespace Louver_Sort_4._8._1.Helpers
                             UpdatePopupForLowestStep();
                             _calibStep += 1;
                         };
-                         asyncLambda4.Invoke();
+                        asyncLambda4.Invoke();
                         break;
 
                     case 5:
@@ -1464,6 +1504,9 @@ namespace Louver_Sort_4._8._1.Helpers
                         {
                             HandleSuccessfulCalibration();
                         }
+
+
+                        FocusBarcode1 = true;
                         break;
 
                     default:
@@ -1552,10 +1595,10 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         else
                         {
-                            VisibilitySortSet = Visibility.Visible;
-                            IsEnabledReCut = Visibility.Visible;
-                            VisibilityAdjustCalib = Visibility.Collapsed;
-                            SelectedTabIndex = 1;
+                            VisibilitySortSet = Visibility.Collapsed;
+                            IsEnabledReCut = Visibility.Collapsed;
+                            VisibilityAdjustCalib = Visibility.Visible;
+                            SelectedTabIndex = 0;
                         }
                         break;
 
@@ -1650,45 +1693,63 @@ namespace Louver_Sort_4._8._1.Helpers
 
             LouverCountOk = new BaseCommand(obj =>
             {
-                UpdateValue();
+                try
+                {
+                    UpdateValue();
 
-                // Check if the Louver Count is valid; if not, return
-                if (TxtLouverCount == null || TxtLouverCount == 0) return;
+                    // Check if the Louver Count is valid; if not, return
+                    if (TxtLouverCount == null || TxtLouverCount == 0) return;
 
-                // Close the popup
-                UpdatePopUp.Execute("Close");
+                    // Close the popup
+                    UpdatePopUp.Execute("Close");
 
-                // Create a new order and update the global order count
-                var order = _allOrders.CreateOrderAfterScanAndFillAllVariables(
-                    new BarcodeSet(Barcode1, Barcode2),
-                    Convert.ToInt32(TxtLouverCount)
-                );
-                order.User = EmployeeID;
-                _globals.OrderCount++;
+                    // Create a new order and update the global order count
+                    var order = _allOrders.CreateOrderAfterScanAndFillAllVariables(
+                        new BarcodeSet(Barcode1, Barcode2),
+                        Convert.ToInt32(TxtLouverCount)
+                    );
+                    order.User = EmployeeID;
+                    _globals.OrderCount++;
 
-                // Initialize active louver ID and active panel
-                ActiveLouverID = 1;
-                ActivePanel = order.GetOpeningByLine(order.BarcodeHelper.Line).GetPanel(order.BarcodeHelper.PanelID);
-                ActiveSet = ActivePanel.GetSet(order.BarcodeHelper.Set);
+                    // Initialize active louver ID and active panel
+                    ActiveLouverID = 1;
+                    ActivePanel = order.GetOpeningByLine(order.BarcodeHelper.Line).GetPanel(order.BarcodeHelper.PanelID);
+                    ActiveSet = ActivePanel.GetSet(order.BarcodeHelper.Set);
 
-                // Update current order details
-                CurBarcode1 = order.BarcodeHelper.BarcodeSet.Barcode1.ToString();
-                CurBarcode2 = order.BarcodeHelper.BarcodeSet.Barcode2.ToString();
-                CurOrder = order.BarcodeHelper.Order.ToString();
-                CurLine = order.BarcodeHelper.Line.ToString();
-                CurUnit = order.BarcodeHelper.Unit.ToString();
-                CurPanelID = order.BarcodeHelper.PanelID.ToString();
-                CurLouverSet = order.BarcodeHelper.Set.ToString();
-                CurXL = order.BarcodeHelper.Style == LouverStructure.LouverStyle.LouverStyles.XL;
-                CurWidth = order.BarcodeHelper.Width.ToString();
-                CurLength = order.BarcodeHelper.Length.ToString();
+                    // Update current order details
+                    CurBarcode1 = order.BarcodeHelper.BarcodeSet.Barcode1.ToString();
+                    CurBarcode2 = order.BarcodeHelper.BarcodeSet.Barcode2.ToString();
+                    CurOrder = order.BarcodeHelper.Order.ToString();
+                    CurLine = order.BarcodeHelper.Line.ToString();
+                    CurUnit = order.BarcodeHelper.Unit.ToString();
+                    CurPanelID = order.BarcodeHelper.PanelID.ToString();
+                    CurLouverSet = order.BarcodeHelper.Set.ToString();
+                    CurXL = order.BarcodeHelper.Style == LouverStructure.LouverStyle.LouverStyles.XL;
+                    CurWidth = order.BarcodeHelper.Width.ToString();
+                    CurLength = order.BarcodeHelper.Length.ToString();
 
-                // Generate recorded louvers and set the selected louver
-                ListViewContent = ActiveSet.GenerateRecordedLouvers();
-                ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
+                    // Generate recorded louvers and set the selected louver
+                    ListViewContent = ActiveSet.GenerateRecordedLouvers();
+                    ListViewSelectedLouver = ListViewContent.FirstOrDefault(x => x.LouverID == ActiveLouverID);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageUser(ex.Message);
+                    throw;
+                }
 
                 // Execute print unsorted labels command
-                PrintUnsortedLabels();
+                try
+                {
+                    PrintUnsortedLabels();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageUser(ex.Message);
+                    throw;
+                }
 
             });
 
@@ -1720,7 +1781,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     UpdatePopUp.Execute("Await");
 
                     // Collect data and set the reading for the active louver
-                    double value = _dataQ.WaitForDataCollection(true).Result;
+                    double value = _dataQ.WaitForDataCollection(false).Result;
                     ActiveSet.Louvers[ActiveLouverID - 1].Readings.SetReading1(value);
                     ActiveTopReading = value;
 
@@ -1757,15 +1818,25 @@ namespace Louver_Sort_4._8._1.Helpers
                     });
 
                     // Collect data and calculate the time difference
-                    value = _dataQ.WaitForDataCollection(true).Result;
+                    value = _dataQ.WaitForDataCollection(false).Result;
                     TimeSpan difference = ActiveSet.Louvers[ActiveLouverID - 1].Readings.DateReading1 - DateTime.Now;
 
                     // Check if the time difference and reading difference are within acceptable ranges
-                    if (Math.Abs(difference.TotalSeconds) < 2)
+                    if (Math.Abs(difference.TotalSeconds) < 1.5)
                     {
-                        // Show message if the time difference is too small
-                        MessageUser(Application.Current.Resources["Ensure you record the correct louver side"].ToString());
-                        return;
+                        bool? Result = false;
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            Result = new MessageBoxCustom("Ensure you record the correct louver side \n Do you want to keep this value?", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                            //MessageBoxResult result = MessageBox.Show("Reading are too close together. Do you want to keep this value?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        });
+
+                        if (Result.Value == false)
+                        {
+                            UpdatePopUp.Execute("Close");
+                            // User clicked No
+                            return;
+                        }
                     }
 
                     // Check if the reading difference is within acceptable range
@@ -1913,7 +1984,16 @@ namespace Louver_Sort_4._8._1.Helpers
 
             ReportApproved = new BaseCommand(obj =>
             {
-                PrintSortedLabels();
+                try
+                {
+                    PrintSortedLabels();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageUser(ex.Message);
+                    throw;
+                }
                 // Initialize the sorted labels popup
                 SortedLabelsPopUpInitialize();
             });
@@ -2160,18 +2240,28 @@ namespace Louver_Sort_4._8._1.Helpers
 
             RejectRecut = new BaseCommand(obj =>
             {
-                // Connect to the Zebra printer
-                ZebraPrinter _Printer = _zebra.Connect();
-                List<Louver> toPrint = new List<Louver>();
 
-                // Find and add the louver to be printed based on its ID
-                toPrint.Add(ActiveSet.Louvers[ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID)]);
+                try
+                {
+                    // Connect to the Zebra printer
+                    ZebraPrinter _Printer = _zebra.Connect();
+                    List<Louver> toPrint = new List<Louver>();
 
-                // Print the sorted louver IDs
-                _zebra.PrintLouverIDs(_Printer, toPrint);
+                    // Find and add the louver to be printed based on its ID
+                    toPrint.Add(ActiveSet.Louvers[ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID)]);
 
-                // Disconnect from the Zebra printer
-                _zebra.Disconnect(_Printer);
+                    // Print the sorted louver IDs
+                    _zebra.PrintLouverIDs(_Printer, toPrint);
+
+                    // Disconnect from the Zebra printer
+                    _zebra.Disconnect(_Printer);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageUser(ex.Message);
+                    throw;
+                }
 
                 // Close the popup
                 UpdatePopUp.Execute("Close");
@@ -2182,16 +2272,25 @@ namespace Louver_Sort_4._8._1.Helpers
                 // Close the popup
                 UpdatePopUp.Execute("Close");
 
-                // Connect to the Zebra printer
-                ZebraPrinter _Printer = _zebra.Connect();
-                List<Louver> toPrint = new List<Louver>();
+                try
+                {
+                    // Connect to the Zebra printer
+                    ZebraPrinter _Printer = _zebra.Connect();
+                    List<Louver> toPrint = new List<Louver>();
 
-                // Find and add the louver to be printed based on its ID
-                toPrint.Add(ActiveSet.Louvers[ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID)]);
+                    // Find and add the louver to be printed based on its ID
+                    toPrint.Add(ActiveSet.Louvers[ActiveSet.Louvers.FindIndex(louver => louver.ID == ReCutSelectedLouver.LouverID)]);
 
-                // Print the sorted louver IDs
-                _zebra.PrintSortedLouverIDs(_Printer, toPrint);
-                _zebra.Disconnect(_Printer);
+                    // Print the sorted louver IDs
+                    _zebra.PrintSortedLouverIDs(_Printer, toPrint);
+                    _zebra.Disconnect(_Printer);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageUser(ex.Message);
+                    throw;
+                }
                 // Reset ReCut-related variables and UI elements
                 ReCutContent = null;
                 TopMinimumValue = null;
@@ -2408,7 +2507,7 @@ namespace Louver_Sort_4._8._1.Helpers
             FocusBarcode1 = true;
 
             // Check if calibration is needed based on order count
-            if (_globals.OrderCount > _globals.CalibratePeriod)
+            if (_globals.OrderCount > _globals.RecalibrationPeriod)
             {
                 IsEnabledCalibrate = true;
                 VisibilitySortSet = Visibility.Collapsed;
@@ -2418,17 +2517,26 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         public void PrintSortedLabels()
         {
-            List<Louver> toPrint = new List<Louver>();
-            ZebraPrinter _Printer = _zebra.Connect();
-            // Collect all louver sets from the active panel
-            foreach (var set in ActivePanel.GetAllSets())
+            try
             {
-                toPrint.AddRange(set.GetLouverSet());
-            }
+                List<Louver> toPrint = new List<Louver>();
+                ZebraPrinter _Printer = _zebra.Connect();
+                // Collect all louver sets from the active panel
+                foreach (var set in ActivePanel.GetAllSets())
+                {
+                    toPrint.AddRange(set.GetLouverSet());
+                }
 
-            // Print the sorted louver IDs
-            _zebra.PrintSortedLouverIDs(_Printer, toPrint);
-            _zebra.Disconnect(_Printer);
+                // Print the sorted louver IDs
+                _zebra.PrintSortedLouverIDs(_Printer, toPrint);
+                _zebra.Disconnect(_Printer);
+
+            }
+            catch (Exception ex)
+            {
+                MessageUser(ex.Message);
+                throw;
+            }
             // Update the state of various UI elements
             IsEnabledPrintUnsortedLabels = false;
             IsEnabledNextLouverSet = true;
@@ -2441,23 +2549,33 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         public void PrintUnsortedLabels()
         {
-            // Start sorting the active set with the current date and time
-            ActiveSet.StartSort(DateTime.Now);
 
-            // Connect to the Zebra printer
-            ZebraPrinter _Printer = _zebra.Connect();
-            List<Louver> toPrint = new List<Louver>();
-
-            // Collect all louver sets from the active panel
-            foreach (var set in ActivePanel.GetAllSets())
+            try
             {
-                toPrint.AddRange(set.GetLouverSet());
-            }
+                // Start sorting the active set with the current date and time
+                ActiveSet.StartSort(DateTime.Now);
 
-            // Print the louver IDs
-            _zebra.PrintLouverIDs(_Printer, toPrint);
-            // Disconnect from the Zebra printer
-            _zebra.Disconnect(_Printer);
+                // Connect to the Zebra printer
+                ZebraPrinter _Printer = _zebra.Connect();
+                List<Louver> toPrint = new List<Louver>();
+
+                // Collect all louver sets from the active panel
+                foreach (var set in ActivePanel.GetAllSets())
+                {
+                    toPrint.AddRange(set.GetLouverSet());
+                }
+
+                // Print the louver IDs
+                _zebra.PrintLouverIDs(_Printer, toPrint);
+                // Disconnect from the Zebra printer
+                _zebra.Disconnect(_Printer);
+
+            }
+            catch (Exception ex)
+            {
+                MessageUser(ex.Message);
+                throw;
+            }
 
             // Update the state of various UI elements
             IsEnabledPrintUnsortedLabels = false;
@@ -3124,7 +3242,8 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         public void DataQNewData(object sender, EventArgs e)
         {
-            App.Current.Dispatcher.Invoke(() => {
+            App.Current.Dispatcher.Invoke(() =>
+            {
                 VoltageValues.Add(new MeasureModel
                 {
                     ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
@@ -3132,6 +3251,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 });
                 if (VoltageValues.Count > 25)
                 {
+                    double Value = Math.Round(_dataQ.LatestReading, 3);
                     VoltageValues.RemoveAt(0);
                 }
             });
@@ -3198,6 +3318,13 @@ namespace Louver_Sort_4._8._1.Helpers
             long totalTicks = timeSpans.Sum(ts => ts.Ticks);
             long averageTicks = totalTicks / timeSpans.Count;
             return new TimeSpan(averageTicks);
+        }
+
+
+
+        public void Focus(bool focus)
+        {
+            focus = true;
         }
         #endregion
     }

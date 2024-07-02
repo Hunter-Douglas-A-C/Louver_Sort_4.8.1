@@ -57,7 +57,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public async Task Disconnect()
         {
-            
+            TargetDevice.Disconnect();
         }
 
         public void Start()
@@ -91,8 +91,17 @@ namespace Louver_Sort_4._8._1.Helpers
             //Console.WriteLine($"Sampling Rate: {DI_145.SampleRatePerChannel:F3}");
 
             TargetDevice.NewDataMinimum = 1; // Set the number of scans to acquire before the NewData event fires
-            TargetDevice.Start(); // Start scanning
-            Debug.WriteLine("Stall Test");
+            try
+            {
+                StartResultCode test = TargetDevice.Start(); // Start scanning
+                Debug.WriteLine("Stall Test");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         public async Task Stop()

@@ -756,27 +756,50 @@ namespace Louver_Sort_4._8._1.Helpers
             double[] DI_145_Data = new double[scans * channels]; // Will hold all data for the scan
             string responseString = "";
 
-            // Move data into temporary array
-            DI145.TargetDevice.GetInterleavedScaledData(DI_145_Data, 0, scans);
+            //// Move data into temporary array
+            //DI145.TargetDevice.GetInterleavedScaledData(DI_145_Data, 0, scans);
 
-            // Now move it to the console
-            for (int row = 0; row < scans; row++)
+            //// Now move it to the console
+            //for (int row = 0; row < scans; row++)
+            //{
+            //    for (short column = 0; column < channels; column++)
+            //    {
+            //        responseString += DI_145_Data[column + (row * channels)].ToString("+'00.00;-00.00");
+            //        if (column != channels - 1)
+            //        {
+            //            responseString += ", "; // Append a comma only if this is not the last displayed value
+            //        }
+            //    }
+            //    Console.WriteLine(responseString); // Output to the console
+            //    responseString = ""; // Reset responseString
+
+
+            //}
+
+
+
+
+
+
+            try
             {
-                for (short column = 0; column < channels; column++)
-                {
-                    responseString += DI_145_Data[column + (row * channels)].ToString("+'00.00;-00.00");
-                    if (column != channels - 1)
-                    {
-                        responseString += ", "; // Append a comma only if this is not the last displayed value
-                    }
-                }
-                Console.WriteLine(responseString); // Output to the console
-                responseString = ""; // Reset responseString
-
-
+                DI_145_Data = new double[scans * channels];
+                DI145.TargetDevice.GetInterleavedScaledData(DI_145_Data, 0, scans);
+            }
+            catch (Exception ex)
+            {
+                throw new DataQException("Failed to get interleaved scaled data from DI145.", ex);
             }
 
-            return Convert.ToDouble(responseString);
+            try
+            {
+                double test = (DI_145_Data.Sum() / DI_145_Data.Length);
+                return test;
+            }
+            catch (Exception ex)
+            {
+                throw new DataQException("Failed to convert data to double for DI145.", ex);
+            }
         }
 
         public async Task<double> WaitForDataCollection(bool useCalibration = false)

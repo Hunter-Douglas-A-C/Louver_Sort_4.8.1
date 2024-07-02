@@ -94,8 +94,9 @@
                                FontSize="30" />
                     <TextBlock Text="{Binding BottomMaximumValue}"
                                FontSize="30" />
-                    <TextBlock Text="{Binding TopMaximumValue}"
+                    <TextBlock Text="{DynamicResource MaxLabel}"
                                FontSize="30" />
+                    
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center">

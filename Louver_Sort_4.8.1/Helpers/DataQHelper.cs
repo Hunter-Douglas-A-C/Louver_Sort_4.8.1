@@ -32,6 +32,7 @@ namespace Louver_Sort_4._8._1.Helpers
         List<double> validReadings = new List<double>();
         public DI155 DI155 = new DI155();
         public DI1100 DI1100 = new DI1100();
+        public DI145 DI145 = new DI145();
         public string DataQModel;
         private CancellationTokenSource cancelRead;
         private bool _dataReceived = false;
@@ -106,6 +107,27 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         break;
 
+                    case "145":
+                        try
+                        {
+                            await DI145.Connect();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to connect to DI145. Please restart app", ex);
+                        }
+
+                        try
+                        {
+                            await DI145.Start();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to start DI145. Please restart app", ex);
+                        }
+                        break;
+
+
                     default:
                         throw new DataQException($"Unsupported DataQModel: {DataQModel}");
                 }
@@ -170,6 +192,27 @@ namespace Louver_Sort_4._8._1.Helpers
                         catch (Exception ex)
                         {
                             throw new DataQException("Failed to disconnect DI1100.", ex);
+                        }
+                        break;
+
+                    case "145":
+                        try
+                        {
+                            await DI145.Stop();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to stop DI145.", ex);
+                        }
+
+                        try
+                        {
+                            await DI145.Disconnect();
+                            cancelRead.Cancel();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to disconnect DI145.", ex);
                         }
                         break;
 
@@ -309,6 +352,17 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         break;
 
+                    case "145":
+                        try
+                        {
+                            await StartMonitoringDI145();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to start monitoring DI145.  Please restart app", ex);
+                        }
+                        break;
+
                     default:
                         throw new DataQException($"Unsupported DataQModel: {DataQModel}");
                 }
@@ -369,7 +423,6 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
-
         private async Task StartMonitoringDI1100()
         {
             try
@@ -419,6 +472,49 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
+        private async Task StartMonitoringDI145()
+        {
+
+
+            try
+            {
+                DI145.TargetDevice.NewData += PassToMain;
+
+                try
+                {
+                    await Task.Run(async () =>
+                    {
+                        while (_KeepMonitoring)
+                        {
+                            await Task.Delay(100);
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    throw new DataQException("An error occurred while monitoring DI145.", ex);
+                }
+                finally
+                {
+                    DI145.TargetDevice.NewData -= PassToMain;
+                }
+            }
+            catch (DataQException ex)
+            {
+                // Log the exception details if necessary
+                // LogException(ex);
+
+                // Handle or propagate the exception as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unforeseen exceptions and wrap them in a DataQException
+                throw new DataQException("An unexpected error occurred in StartMonitoring DI145.", ex);
+            }
+
+
+        }
 
         private async Task ReadDataDI1100()
         {
@@ -582,7 +678,6 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
-
         private double ReadDataFromDI155()
         {
             try
@@ -637,10 +732,36 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
-
         private double ReadDataFromDI1100()
         {
             return validReadings.LastOrDefault();
+        }
+
+        private async Task ReadDataFromDI145()
+        {
+            // This is the event handler for DI-145 data. Get here when new data is available during a scan
+            int scans = DI145.TargetDevice.NumberOfScansAvailable;
+            int channels = DI145.TargetDevice.NumberOfChannelsEnabled;
+            double[] DI_145_Data = new double[scans * channels]; // Will hold all data for the scan
+            string responseString = "";
+
+            // Move data into temporary array
+            DI145.TargetDevice.GetInterleavedScaledData(DI_145_Data, 0, scans);
+
+            // Now move it to the console
+            for (int row = 0; row < scans; row++)
+            {
+                for (short column = 0; column < channels; column++)
+                {
+                    responseString += DI_145_Data[column + (row * channels)].ToString("+'00.00;-00.00");
+                    if (column != channels - 1)
+                    {
+                        responseString += ", "; // Append a comma only if this is not the last displayed value
+                    }
+                }
+                Console.WriteLine(responseString); // Output to the console
+                responseString = ""; // Reset responseString
+            }
         }
 
         public async Task<double> WaitForDataCollection(bool useCalibration = false)
@@ -656,6 +777,10 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 case "1000":
                     await WaitForDataCollectionDI1100();
+                    break;
+
+                case "145":
+                    await WaitForDataCollectionDI145();
                     break;
 
                 default:
@@ -715,7 +840,6 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
-
         private async Task WaitForDataCollectionDI1100()
         {
             try
@@ -752,6 +876,55 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
+        private async Task WaitForDataCollectionDI145()
+        {
+            try
+            {
+                DI145.TargetDevice.NewData += GetDataHandler;
+
+                int timeoutMilliseconds = 700000000;
+                int intervalMilliseconds = 100;
+                int elapsedMilliseconds = 0;
+
+                try
+                {
+                    await Task.Run(async () =>
+                    {
+                        while (!_dataReceived && elapsedMilliseconds < timeoutMilliseconds)
+                        {
+                            await Task.Delay(intervalMilliseconds);
+                            elapsedMilliseconds += intervalMilliseconds;
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    throw new DataQException("An error occurred while waiting for data collection for DI145.", ex);
+                }
+                finally
+                {
+                    DI145.TargetDevice.NewData -= GetDataHandler;
+                }
+
+                if (!_dataReceived)
+                {
+                    throw new DataQException("Data collection for DI155 timed out.");
+                }
+            }
+            catch (DataQException ex)
+            {
+                // Log the exception details if necessary
+                // LogException(ex);
+
+                // Handle or propagate the exception as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Catch any other unforeseen exceptions and wrap them in a DataQException
+                throw new DataQException("An unexpected error occurred in WaitForDataCollection DI145.", ex);
+            }
+        }
 
         private void GetDataHandler(object sender, EventArgs e)
         {
@@ -763,8 +936,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 _dataReceived = true;
             }
         }
-
-
 
         #endregion
     }

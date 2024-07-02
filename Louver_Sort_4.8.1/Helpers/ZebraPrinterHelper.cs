@@ -162,7 +162,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 throw new ZebraException("Printer is not specified.", ex);
             }
             catch (ZebraException ex)
-            {
+            { 
                 throw new ZebraException("Failed to print sorted louver IDs.", ex);
             }
             catch (Exception ex)

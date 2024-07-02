@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -57,7 +59,17 @@ namespace Louver_Sort_4._8._1.Helpers
 
         public async Task Disconnect()
         {
-            TargetDevice.Disconnect();
+            using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1)))
+            {
+                try
+                {
+                    await Task.Run(() => TargetDevice.Disconnect(), cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    Console.WriteLine("Disconnect operation timed out.");
+                }
+            }
         }
 
         public void Start()

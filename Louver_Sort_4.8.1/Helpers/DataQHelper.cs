@@ -484,7 +484,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
             try
             {
-                DI145.TargetDevice.NewData += PassToMain;
+                DI145.TargetDevice.NewData += GetDataHandler;
 
                 try
                 {
@@ -502,7 +502,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 finally
                 {
-                    DI145.TargetDevice.NewData -= PassToMain;
+                    DI145.TargetDevice.NewData -= GetDataHandler;
                 }
             }
             catch (DataQException ex)
@@ -805,8 +805,9 @@ namespace Louver_Sort_4._8._1.Helpers
                 double test = (DI_145_Data.Sum() / DI_145_Data.Length);
                 if (test != double.NaN)
                 {
-                    return test;
 
+                    LatestReading = test;
+                    return test;
                 }
                 else
                 {
@@ -933,37 +934,71 @@ namespace Louver_Sort_4._8._1.Helpers
 
         private async Task WaitForDataCollectionDI145()
         {
+            //try
+            //{
+            //    DI145.TargetDevice.NewData += GetDataHandler;
+
+            //    int timeoutMilliseconds = 700000000;
+            //    int intervalMilliseconds = 100;
+            //    int elapsedMilliseconds = 0;
+
+            //    try
+            //    {
+            //        await Task.Run(async () =>
+            //        {
+            //            while (!_dataReceived && elapsedMilliseconds < timeoutMilliseconds)
+            //            {
+            //                await Task.Delay(intervalMilliseconds);
+            //                elapsedMilliseconds += intervalMilliseconds;
+            //            }
+            //        });
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        throw new DataQException("An error occurred while waiting for data collection for DI145.", ex);
+            //    }
+            //    finally
+            //    {
+            //        DI145.TargetDevice.NewData -= GetDataHandler;
+            //    }
+
+            //    if (!_dataReceived)
+            //    {
+            //        throw new DataQException("Data collection for DI155 timed out.");
+            //    }
+            //}
+            //catch (DataQException ex)
+            //{
+            //    // Log the exception details if necessary
+            //    // LogException(ex);
+
+            //    // Handle or propagate the exception as needed
+            //    throw;
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Catch any other unforeseen exceptions and wrap them in a DataQException
+            //    throw new DataQException("An unexpected error occurred in WaitForDataCollection DI145.", ex);
+            //}
+
+
             try
             {
-                DI145.TargetDevice.NewData += GetDataHandler;
-
-                int timeoutMilliseconds = 700000000;
-                int intervalMilliseconds = 100;
-                int elapsedMilliseconds = 0;
+                validReadings.Clear();
 
                 try
                 {
                     await Task.Run(async () =>
                     {
-                        while (!_dataReceived && elapsedMilliseconds < timeoutMilliseconds)
+                        while (validReadings.Count < 3)
                         {
-                            await Task.Delay(intervalMilliseconds);
-                            elapsedMilliseconds += intervalMilliseconds;
+                            await Task.Delay(100);
                         }
                     });
                 }
                 catch (Exception ex)
                 {
-                    throw new DataQException("An error occurred while waiting for data collection for DI145.", ex);
-                }
-                finally
-                {
-                    DI145.TargetDevice.NewData -= GetDataHandler;
-                }
-
-                if (!_dataReceived)
-                {
-                    throw new DataQException("Data collection for DI155 timed out.");
+                    throw new DataQException("An error occurred while waiting for data collection for DI1100.", ex);
                 }
             }
             catch (DataQException ex)
@@ -977,18 +1012,15 @@ namespace Louver_Sort_4._8._1.Helpers
             catch (Exception ex)
             {
                 // Catch any other unforeseen exceptions and wrap them in a DataQException
-                throw new DataQException("An unexpected error occurred in WaitForDataCollection DI145.", ex);
+                throw new DataQException("An unexpected error occurred in WaitForDataCollectionDI1100.", ex);
             }
 
-
-
-           
         }
 
         private void GetDataHandler(object sender, EventArgs e)
         {
             double reading = ReadNewData();
-             if (!double.IsNaN(reading))
+            if (!double.IsNaN(reading))
             {
                 validReadings.Add(reading);
 

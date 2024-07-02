@@ -1434,7 +1434,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 switch (_calibStep)
                 {
                     case 1:
-                        _dataQ.StopActiveMonitoring();
+                        //_dataQ.StopActiveMonitoring();
 
                         // Step 1: Show calibration popup with instructions for the top plate
                         UpdatePopUp.Execute("Calibrate");
@@ -1843,7 +1843,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     }
 
                     // Check if the reading difference is within acceptable range
-                    if (Math.Abs(Convert.ToDouble(ActiveSet.Louvers[ActiveLouverID - 1].Readings.Reading1 - value)) < 0.007)
+                    if (Math.Abs(Convert.ToDouble(ActiveSet.Louvers[ActiveLouverID - 1].Readings.Reading1 - value)) < 0.001)
                     {
                         // Show message if readings are too close together
                         //MessageUser(Application.Current.Resources["Readings are too close together"].ToString());
@@ -2797,7 +2797,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
                 //CHANGE ME
-                //_dataQ.StartActiveMonitoring();
+                _dataQ.StartActiveMonitoring();
 
 
             }

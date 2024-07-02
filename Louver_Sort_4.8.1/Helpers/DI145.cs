@@ -14,7 +14,7 @@ namespace Louver_Sort_4._8._1.Helpers
         private double[] CollectedData = new double[11]; // Array to hold acquired data
         private string[] ChannelConfig = new string[11]; // Array to retain the channel configuration
 
-        public async Task Connect()
+        public void Connect()
         {
             // Discover connected devices
             DataqDeviceArray = Discovery.DiscoverAllDevices();
@@ -52,9 +52,6 @@ namespace Louver_Sort_4._8._1.Helpers
 
             // Now define the default settings for the digital inputs
             ChannelConfig[8] = "Off"; // Turn off both discrete input bits
-
-            // Everything's good, so create an event handler that fires when new DI-145 data is available
-            TargetDevice.NewData += GetDI145Data;
         }
 
         public async Task Disconnect()
@@ -62,7 +59,7 @@ namespace Louver_Sort_4._8._1.Helpers
             
         }
 
-        public async Task Start()
+        public void Start()
         {
             // This method configures the DI-145 scan list
             var range = new Dataq.Range<double>(); // Holds the FSR of the rate channel. Analog ranges are fixed at ±10 Vfs

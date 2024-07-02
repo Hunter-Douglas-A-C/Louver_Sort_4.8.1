@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using LibUsbDotNet.Main;
 using LibUsbDotNet;
+using System.Windows.Markup;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -53,8 +54,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 DataQModel = "1000";
             }
             else if (portNames.Count() > 0)
-            {
-                DataQModel = "100";
+            { 
+                DataQModel = "145";
             }
 
         }
@@ -110,7 +111,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     case "145":
                         try
                         {
-                            await DI145.Connect();
+                            DI145.Connect();
                         }
                         catch (Exception ex)
                         {
@@ -119,7 +120,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
                         try
                         {
-                            await DI145.Start();
+                            DI145.Start();
                         }
                         catch (Exception ex)
                         {
@@ -659,6 +660,16 @@ namespace Louver_Sort_4._8._1.Helpers
                             throw new DataQException("Failed to read data from DI1100.  Please restart app", ex);
                         }
 
+                    case "145":
+                        try
+                        {
+                            return ReadDataFromDI145();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new DataQException("Failed to read data from DI145.  Please restart app", ex);
+                        }
+
                     default:
                         throw new DataQException($"Unsupported DataQModel: {DataQModel}");
                 }
@@ -737,7 +748,7 @@ namespace Louver_Sort_4._8._1.Helpers
             return validReadings.LastOrDefault();
         }
 
-        private async Task ReadDataFromDI145()
+        private double ReadDataFromDI145()
         {
             // This is the event handler for DI-145 data. Get here when new data is available during a scan
             int scans = DI145.TargetDevice.NumberOfScansAvailable;
@@ -761,7 +772,11 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 Console.WriteLine(responseString); // Output to the console
                 responseString = ""; // Reset responseString
+
+
             }
+
+            return Convert.ToDouble(responseString);
         }
 
         public async Task<double> WaitForDataCollection(bool useCalibration = false)

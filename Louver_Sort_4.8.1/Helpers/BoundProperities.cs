@@ -1434,6 +1434,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 switch (_calibStep)
                 {
                     case 1:
+                        _dataQ.StopActiveMonitoring();
+
                         // Step 1: Show calibration popup with instructions for the top plate
                         UpdatePopUp.Execute("Calibrate");
                         VisibilityCalibImage = Visibility.Visible;
@@ -1503,6 +1505,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         else
                         {
                             HandleSuccessfulCalibration();
+                            _dataQ.StartActiveMonitoring();
                         }
 
 
@@ -2792,7 +2795,9 @@ namespace Louver_Sort_4._8._1.Helpers
                 _dataQ.LatestReadingChanged += new EventHandler(DataQNewData);
                 _dataQ.LostConnection += new EventHandler(DataQLostConnection);
 
-                _dataQ.StartActiveMonitoring();
+
+                //CHANGE ME
+                //_dataQ.StartActiveMonitoring();
 
 
             }

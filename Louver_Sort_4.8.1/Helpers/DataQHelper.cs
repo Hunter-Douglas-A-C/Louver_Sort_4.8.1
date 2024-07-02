@@ -54,7 +54,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 DataQModel = "1000";
             }
             else if (portNames.Count() > 0)
-            { 
+            {
                 DataQModel = "145";
             }
 
@@ -147,7 +147,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 throw new DataQException("An unexpected error occurred in StartConnectionAsync.", ex);
             }
         }
-
 
         public async Task StopConnection()
         {
@@ -383,6 +382,10 @@ namespace Louver_Sort_4._8._1.Helpers
             }
         }
 
+        public async Task StopActiveMonitoring()
+        {
+            DI145.TargetDevice.NewData -= PassToMain;
+        }
 
         private async Task StartMonitoringDI155()
         {
@@ -628,9 +631,13 @@ namespace Louver_Sort_4._8._1.Helpers
 
         private void PassToMain(object sender, EventArgs e)
         {
-            if (_cal != null)
+            if (_cal.Successful)
             {
                 LatestReading = _cal.ConvertToInches(ReadNewData());
+            }
+            else
+            {
+                LatestReading = ReadNewData();
             }
         }
 
@@ -794,7 +801,15 @@ namespace Louver_Sort_4._8._1.Helpers
             try
             {
                 double test = (DI_145_Data.Sum() / DI_145_Data.Length);
-                return test;
+                if (test != double.NaN)
+                {
+                    return test;
+
+                }
+                else
+                {
+                    return double.NaN;
+                }
             }
             catch (Exception ex)
             {
@@ -962,12 +977,20 @@ namespace Louver_Sort_4._8._1.Helpers
                 // Catch any other unforeseen exceptions and wrap them in a DataQException
                 throw new DataQException("An unexpected error occurred in WaitForDataCollection DI145.", ex);
             }
+
+
+
+           
         }
 
         private void GetDataHandler(object sender, EventArgs e)
         {
             double reading = ReadNewData();
-            validReadings.Add(reading);
+             if (!double.IsNaN(reading))
+            {
+                validReadings.Add(reading);
+
+            }
 
             if (validReadings.Count >= 2)
             {

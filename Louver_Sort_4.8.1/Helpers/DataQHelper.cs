@@ -17,6 +17,7 @@ using System.Windows.Input;
 using LibUsbDotNet.Main;
 using LibUsbDotNet;
 using System.Windows.Markup;
+using Zebra.Sdk.Comm;
 
 namespace Louver_Sort_4._8._1.Helpers
 {
@@ -111,18 +112,38 @@ namespace Louver_Sort_4._8._1.Helpers
                         break;
 
                     case "145":
+                        var cts = new CancellationTokenSource();
+                        cts.CancelAfter(3000); // Set timeout to 3 seconds
+
                         try
                         {
-                            DI145.Connect();
+                            Task connectTask = Task.Run(() => DI145.Connect(), cts.Token);
+
+                            if (!connectTask.Wait(3000)) // Wait for 3 seconds
+                            {
+                                throw new TimeoutException("Connection attempt timed out.");
+                            }
                         }
-                        catch (Exception ex)
+                        catch (Exception ex) when (ex is TimeoutException || ex is OperationCanceledException)
                         {
                             throw new DataQException("Failed to connect to DI145. Please restart app", ex);
                         }
 
                         try
                         {
-                            DI145.Start();
+
+                            var cts2 = new CancellationTokenSource();
+                            cts2.CancelAfter(3000); // Set timeout to 3 seconds
+
+                            Task connectTask = Task.Run(() => DI145.Start(), cts2.Token);
+
+                            if (!connectTask.Wait(3000)) // Wait for 3 seconds
+                            {
+                                throw new TimeoutException("Start attempt timed out.");
+                            }
+
+
+
                         }
                         catch (Exception ex)
                         {
@@ -200,7 +221,15 @@ namespace Louver_Sort_4._8._1.Helpers
                     case "145":
                         try
                         {
-                            await DI145.Stop();
+                            var cts2 = new CancellationTokenSource();
+                            cts2.CancelAfter(3000); // Set timeout to 3 seconds
+
+                            Task connectTask = Task.Run(() => DI145.Stop(), cts2.Token);
+
+                            if (!connectTask.Wait(3000)) // Wait for 3 seconds
+                            {
+                                throw new TimeoutException("Start attempt timed out.");
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -209,7 +238,15 @@ namespace Louver_Sort_4._8._1.Helpers
 
                         try
                         {
-                            await DI145.Disconnect();
+                            var cts2 = new CancellationTokenSource();
+                            cts2.CancelAfter(3000); // Set timeout to 3 seconds
+
+                            Task connectTask = Task.Run(() => DI145.Disconnect(), cts2.Token);
+
+                            if (!connectTask.Wait(3000)) // Wait for 3 seconds
+                            {
+                                throw new TimeoutException("Start attempt timed out.");
+                            }
                             cancelRead.Cancel();
                         }
                         catch (Exception ex)

@@ -53,6 +53,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             _louverID = id;
             _louverOrder = order;
             _currWarp = warp;
+            _orientation = _o ? "Flip" : "";
             _status = rejected ? "Fail" : "Pass";
             _gapWarning = IsGap;
         }

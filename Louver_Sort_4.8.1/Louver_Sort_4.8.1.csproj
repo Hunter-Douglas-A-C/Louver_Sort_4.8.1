@@ -249,6 +249,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\DI1100.cs" />
+    <Compile Include="Helpers\DI145.cs" />
     <Compile Include="Helpers\DI155.cs" />
     <Compile Include="Helpers\FocusExtension.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

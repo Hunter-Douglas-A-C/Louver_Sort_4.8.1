@@ -17,7 +17,6 @@ namespace Louver_Sort_4._8._1.Helpers
         public int DataRetentionPeriod = 90;
         public int RecalibrationPeriod = 10;
         public int OrderCount = 0;
-        public int CalibratePeriod = 1;
         public double CalibrationRejectionSpec = 1;
         public string ExcelExportLocation = "B:\\Documents";
         public List<string> UserIDs = new List<string> { "2014301" };

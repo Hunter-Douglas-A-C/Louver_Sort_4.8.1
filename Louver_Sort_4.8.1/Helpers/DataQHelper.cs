@@ -319,7 +319,20 @@ namespace Louver_Sort_4._8._1.Helpers
 
         #endregion
 
+
         #region Calibration
+
+
+        public void ResetCalibration()
+        {
+            _cal.StepReading = 0;
+            _cal.FlatReading = 0;
+            _cal.Intercept = 0;
+            _cal.Successful = false;
+            _cal.CheckFlat = 0;
+            _cal.CheckStep = 0;
+            _cal.Slope = 0;
+        }
 
         public async Task SetCalibrationFlatAsync()
         {
@@ -842,11 +855,20 @@ namespace Louver_Sort_4._8._1.Helpers
             try
             {
                 double test = (DI_145_Data.Sum() / DI_145_Data.Length);
-                if (test != double.NaN)
+                if (!double.IsNaN(test))
                 {
 
-                    LatestReading = test;
-                    return test;
+                    if (_cal.Successful == true)
+                    {
+                        LatestReading = _cal.ConvertToInches(Convert.ToDouble(test));
+                        return LatestReading;
+                    }
+                    else
+                    {
+                        LatestReading = Convert.ToDouble(test);
+
+                        return LatestReading;
+                    }
                 }
                 else
                 {

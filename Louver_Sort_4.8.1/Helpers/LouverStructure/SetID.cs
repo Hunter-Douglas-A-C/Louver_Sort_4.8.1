@@ -30,7 +30,8 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         {
             Top,
             Middle,
-            Bottom
+            Bottom,
+            Single
         }
 
         /// <summary>
@@ -40,7 +41,8 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         {
             { "T", SetId.Top },
             { "M", SetId.Middle },
-            { "B", SetId.Bottom }
+            { "B", SetId.Bottom },
+            { "-", SetId.Single },
         };
 
         /// <summary>
@@ -54,7 +56,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             {
                 return setId;
             }
-            return SetId.Top; // Default value if input is not found
+            return SetId.Single; // Default value if input is not found
         }
 
         /// <summary>

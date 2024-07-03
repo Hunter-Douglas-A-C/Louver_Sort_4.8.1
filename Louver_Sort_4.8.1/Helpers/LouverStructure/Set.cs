@@ -262,7 +262,7 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             {
                 double gapSpec = (item.SortedID == _louvers.First().SortedID || item.SortedID == _louvers.Last().SortedID) ? GapSpecLouverToRail : GapSpecLouverToLouver;
 
-                if ((LastDev + item.AbsDeviation) > gapSpec)
+                if ((LastDev + item.AbsDeviation) < gapSpec)
                 {
                     _reportData.Add(new ReportListView(item.ID, item.SortedID, item.AbsDeviation, item.Rejected, item.Orientation, "Pass"));
                 }

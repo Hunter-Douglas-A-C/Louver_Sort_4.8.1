@@ -74,7 +74,7 @@ namespace Louver_Sort_4._8._1.Helpers
         #region Generic
         //Generic
         string Barcode1Regex = @"^\d{16}.\d$";
-        string Barcode2Regex = @"(P..[1-9]\s{0,1}.{0,2})\/(L.{2,3})\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L.)$";
+        string Barcode2Regex = @"(P..[1-9]\s{0,1}.{0,2})\/(L.{2,3})\/(L\d+\.\d+)\/(L\d+\.\d+)\/(L[TMB-])$";
         string EmptyRegex = @"^$";
         private string _jSONSaveLocation = AppDomain.CurrentDomain.BaseDirectory;
         string cultureCode = "en-US";
@@ -2449,6 +2449,9 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         public async Task StartUp()
         {
+
+   
+
             await ConnectToDataQ();
 
             //CHANGE - check each file path in the function individually
@@ -2488,6 +2491,10 @@ namespace Louver_Sort_4._8._1.Helpers
             ////DELETEME
             //VisibilitySortSet = Visibility.Visible;
             //IsEnabledReCut = Visibility.Visible;
+
+
+
+            _globals.OrderCount = 0;
         }
         public void NextLouverSet()
         {
@@ -2531,12 +2538,15 @@ namespace Louver_Sort_4._8._1.Helpers
             FocusBarcode1 = true;
 
             // Check if calibration is needed based on order count
-            if (_globals.OrderCount > _globals.RecalibrationPeriod)
+            if (_globals.OrderCount > RecalibrationPeriod)
             {
                 IsEnabledCalibrate = true;
                 VisibilitySortSet = Visibility.Collapsed;
                 IsEnabledReCut = Visibility.Collapsed;
                 SelectedTabIndex = 0;
+                _dataQ.ResetCalibration();
+
+                _globals.OrderCount = 0;
             }
         }
         public void PrintSortedLabels()
@@ -3267,12 +3277,12 @@ namespace Louver_Sort_4._8._1.Helpers
 
         }
 
-        private  void OnTimedEvent(Object source, ElapsedEventArgs e)
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             DataQNewData();
         }
 
-        private  void SetTimer(double intervalInSeconds)
+        private void SetTimer(double intervalInSeconds)
         {
             // Create a timer with the specified interval.
             _timer = new System.Timers.Timer(intervalInSeconds);
@@ -3284,27 +3294,24 @@ namespace Louver_Sort_4._8._1.Helpers
         }
 
 
-        public  void DataQNewData()
+        public void DataQNewData()
         {
-            _callCounter++;  // Increment the counter each time the function is called
 
-            // Only add to the VoltageValues list if the counter is even
-            if (_callCounter % 10 == 0)
+
+            App.Current.Dispatcher.Invoke(() =>
             {
-                App.Current.Dispatcher.Invoke(() =>
+                VoltageValues.Add(new MeasureModel
                 {
-                    VoltageValues.Add(new MeasureModel
-                    {
-                        ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
-                        Value = Math.Round(_dataQ.LatestReading, 3)
-                    });
-                    if (VoltageValues.Count > 25)
-                    {
-                        VoltageValues.RemoveAt(0);
-                    }
+                    ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
+                    Value = Math.Round(_dataQ.LatestReading, 3)
                 });
-            }
+                if (VoltageValues.Count > 25)
+                {
+                    VoltageValues.RemoveAt(0);
+                }
+            });
         }
+
 
         private void SummaryExport(ExcelWorksheet sheet, List<OrderWithBarcode> order)
         {

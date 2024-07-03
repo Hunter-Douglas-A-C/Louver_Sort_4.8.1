@@ -3256,22 +3256,28 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
         }
+        private int _callCounter = 0;  // Add this field to your class
+
         public void DataQNewData(object sender, EventArgs e)
         {
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                VoltageValues.Add(new MeasureModel
-                {
-                    ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
-                    Value = Math.Round(_dataQ.LatestReading, 3)
-                });
-                if (VoltageValues.Count > 25)
-                {
-                    double Value = Math.Round(_dataQ.LatestReading, 3);
-                    VoltageValues.RemoveAt(0);
-                }
-            });
+            _callCounter++;  // Increment the counter each time the function is called
 
+            // Only add to the VoltageValues list if the counter is even
+            if (_callCounter % 10 == 0)
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    VoltageValues.Add(new MeasureModel
+                    {
+                        ElapsedMilliseconds = _stopwatch.Elapsed.TotalSeconds,
+                        Value = Math.Round(_dataQ.LatestReading, 3)
+                    });
+                    if (VoltageValues.Count > 25)
+                    {
+                        VoltageValues.RemoveAt(0);
+                    }
+                });
+            }
         }
 
         private void SummaryExport(ExcelWorksheet sheet, List<OrderWithBarcode> order)

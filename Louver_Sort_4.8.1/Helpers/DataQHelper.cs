@@ -52,7 +52,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
             if (allDevices.Count > 0)
             {
-                DataQModel = "1000";
+                DataQModel = "3000";
             }
             else if (portNames.Count() > 0)
             {
@@ -91,7 +91,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         break;
 
-                    case "1000":
+                    case "3000":
                         try
                         {
                             await DI1100.Connect();
@@ -117,12 +117,14 @@ namespace Louver_Sort_4._8._1.Helpers
 
                         try
                         {
-                            Task connectTask = Task.Run(() => DI145.Connect(), cts.Token);
+                            //Task connectTask = Task.Run(() => DI145.Connect(), cts.Token);
 
-                            if (!connectTask.Wait(3000)) // Wait for 3 seconds
-                            {
-                                throw new TimeoutException("Connection attempt timed out.");
-                            }
+                            //if (!connectTask.Wait(3000)) // Wait for 3 seconds
+                            //{
+                            //    throw new TimeoutException("Connection attempt timed out.");
+                            //}
+
+                            DI145.Connect();
                         }
                         catch (Exception ex) when (ex is TimeoutException || ex is OperationCanceledException)
                         {
@@ -132,17 +134,17 @@ namespace Louver_Sort_4._8._1.Helpers
                         try
                         {
 
-                            var cts2 = new CancellationTokenSource();
-                            cts2.CancelAfter(3000); // Set timeout to 3 seconds
+                            //var cts2 = new CancellationTokenSource();
+                            //cts2.CancelAfter(3000); // Set timeout to 3 seconds
 
-                            Task connectTask = Task.Run(() => DI145.Start(), cts2.Token);
+                            //Task connectTask = Task.Run(() => DI145.Start(), cts2.Token);
 
-                            if (!connectTask.Wait(3000)) // Wait for 3 seconds
-                            {
-                                throw new TimeoutException("Start attempt timed out.");
-                            }
+                            //if (!connectTask.Wait(3000)) // Wait for 3 seconds
+                            //{
+                            //    throw new TimeoutException("Start attempt timed out.");
+                            //}
 
-
+                            DI145.Start();
 
                         }
                         catch (Exception ex)
@@ -197,7 +199,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         break;
 
-                    case "1000":
+                    case "3000":
                         try
                         {
                             await DI1100.Stop();
@@ -380,7 +382,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         break;
 
-                    case "1000":
+                    case "3000":
                         try
                         {
                             await StartMonitoringDI1100();
@@ -696,7 +698,7 @@ namespace Louver_Sort_4._8._1.Helpers
                             throw new DataQException("Failed to read data from DI155.  Please restart app", ex);
                         }
 
-                    case "1000":
+                    case "3000":
                         try
                         {
                             return ReadDataFromDI1100();
@@ -868,7 +870,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     await WaitForDataCollectionDI155();
                     break;
 
-                case "1000":
+                case "3000":
                     await WaitForDataCollectionDI1100();
                     break;
 

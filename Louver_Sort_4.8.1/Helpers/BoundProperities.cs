@@ -815,7 +815,14 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                     }
                 }
+                else
+                {
+                    IsEnabledCheckTop = false;
+                }
                 IsEnabledCheckTop = true;
+
+
+                MessageUser("Label louver and measure blank and labeled side");
             }
         }
 
@@ -2009,6 +2016,10 @@ namespace Louver_Sort_4._8._1.Helpers
 
                             // Enable ReCut cancel button
                             IsEnabledReCutCancel = true;
+
+
+
+                            MessageUser("Select louver to recut from list");
                         }
                         else
                         {

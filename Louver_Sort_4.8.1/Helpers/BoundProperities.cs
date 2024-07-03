@@ -12,7 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Data;
-
+using System.Timers;
 
 using LiveCharts.Configurations;
 using LiveCharts;
@@ -81,6 +81,12 @@ namespace Louver_Sort_4._8._1.Helpers
         #endregion
 
         #region Globals
+
+        private static System.Timers.Timer _timer;
+        private static double _intervalInSeconds = 500; // Set the interval in seconds
+
+
+
         // Globals
         public string AdminPassword
         {
@@ -1186,6 +1192,10 @@ namespace Louver_Sort_4._8._1.Helpers
         #region CommandImplementation
         public BoundProperities()
         {
+
+            SetTimer(_intervalInSeconds);
+
+
             var Mapper = Mappers.Xy<MeasureModel>()
             .X(x => x.ElapsedMilliseconds)
             .Y(x => x.Value);
@@ -2803,7 +2813,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 VisibilityDisconnected = Visibility.Collapsed;
                 _stopwatch.Start();
 
-                _dataQ.LatestReadingChanged += new EventHandler(DataQNewData);
+                //_dataQ.LatestReadingChanged += new EventHandler(DataQNewData);
                 _dataQ.LostConnection += new EventHandler(DataQLostConnection);
 
 
@@ -3256,7 +3266,25 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
         }
-        public void DataQNewData(object sender, EventArgs e)
+
+        private  void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            DataQNewData();
+        }
+
+        private  void SetTimer(double intervalInSeconds)
+        {
+            // Create a timer with the specified interval.
+            _timer = new System.Timers.Timer(intervalInSeconds);
+
+            // Hook up the event handler for the Elapsed event.
+            _timer.Elapsed += OnTimedEvent;
+            _timer.AutoReset = true;
+            _timer.Enabled = true;
+        }
+
+
+        public  void DataQNewData()
         {
             App.Current.Dispatcher.Invoke(() =>
             {

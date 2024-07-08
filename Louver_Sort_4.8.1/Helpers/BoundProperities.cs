@@ -1006,10 +1006,10 @@ namespace Louver_Sort_4._8._1.Helpers
                 bool IsNew = true;
                 if (value != null)
                 {
-                    if (Regex.IsMatch(value, @"^\d{1,7}$"))
+                    if (Regex.IsMatch(value, @"^\d{1,10}$"))
                     {
                         SetProperty(ref _newUserID, value);
-                        if (value.Length == 7)
+                        if (value.Length > 1)
                         {
                             foreach (var item in UserIDs)
                             {

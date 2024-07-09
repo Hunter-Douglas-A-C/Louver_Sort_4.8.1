@@ -142,14 +142,14 @@ namespace Louver_Sort_4._8._1.Helpers
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},60^A0N,40,40^FDUnsorted:^FS");
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 180 : 420)},60^A0N,40,40^FD{louvers[i].ID}^FS");
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},100^A0N,40,40^FDSorted:^FS");
-                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 160 : 380)},100^A0N,40,40^FD{louvers[i].SortedID}^FS");
+                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 160 : 380)},100^A0N,120,120^FD{louvers[i].SortedID}^FS");
                     }
                     else
                     {
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},60^A0N,40,40^FDUnsorted:^FS");
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 180 : 420)},60^A0N,40,40^FD{louvers[i].ID}^FS");
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},100^A0N,40,40^FDSorted:^FS");
-                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 160 : 380)},100^A0N,40,40^FD{louvers[i].SortedID} F^FS");
+                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 160 : 380)},100^A0N,120,120^FD{louvers[i].SortedID} F^FS");
                     }
 
                     if (i % 2 == 1 || i == louvers.Count - 1) zplBuilder.Append("^XZ");

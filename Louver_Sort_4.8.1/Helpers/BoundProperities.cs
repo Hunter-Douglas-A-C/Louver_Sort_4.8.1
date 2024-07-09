@@ -2383,7 +2383,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     UserIDs.Add(NewUserID);
                     MessageUser(Application.Current.Resources["User ID Added:"].ToString() + NewUserID);
-
+                    NewUserID = "";
                 }
                 else
                 {
@@ -3027,6 +3027,14 @@ namespace Louver_Sort_4._8._1.Helpers
         }
         public void ExportToExcel(string filename, bool exportByDateRange)
         {
+            if (filename.Contains("Select export location ->"))
+            {
+                MessageUser("No export location selected");
+                return;
+            }
+
+
+
             var ordersToExport = new List<OrderWithBarcode>();
 
             // Select orders based on the export type
@@ -3044,6 +3052,8 @@ namespace Louver_Sort_4._8._1.Helpers
 
             using (var package = new ExcelPackage())
             {
+                try
+                {
                 SummaryExport(package.Workbook.Worksheets.Add($"Sheet{"Summary"}"), ordersToExport);
                 int sheetIndex = 1;
                 foreach (var order in ordersToExport)
@@ -3055,6 +3065,13 @@ namespace Louver_Sort_4._8._1.Helpers
                 if (package.Workbook.Worksheets.Count > 0)
                 {
                     package.SaveAs(new FileInfo(filename));
+                }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageUser("Error generating report " + ex.Message);
+                    throw;
                 }
             }
         }

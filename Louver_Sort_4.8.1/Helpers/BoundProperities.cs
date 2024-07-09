@@ -818,7 +818,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         List<Louver> toPrint = new List<Louver> { ActiveSet.Louvers[index] };
                         _zebra.PrintLouverIDs(_Printer, toPrint);
                         _zebra.Disconnect(_Printer);
-
+                        MessageUser("Label louver and measure blank and labeled side");
                     }
                     catch (Exception ex)
                     {
@@ -852,7 +852,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 IsEnabledCheckTop = true;
 
 
-                MessageUser("Label louver and measure blank and labeled side");
+
             }
         }
 
@@ -1212,7 +1212,7 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 if (SelectedTabIndex != 3)
                 {
-                   VisibilityAdmin = Visibility.Collapsed;
+                    VisibilityAdmin = Visibility.Collapsed;
                     VisilityPassword = Visibility.Visible;
                     Password = null;
                 }
@@ -2298,6 +2298,8 @@ namespace Louver_Sort_4._8._1.Helpers
                     // Disconnect from the Zebra printer
                     _zebra.Disconnect(_Printer);
 
+                    MessageUser("Label louver and measure blank and labeled side");
+
                 }
                 catch (Exception ex)
                 {
@@ -2306,7 +2308,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
 
                 // Close the popup
-                UpdatePopUp.Execute("Close");
+                //UpdatePopUp.Execute("Close");
             });
 
             CloseReCutPopUp = new BaseCommand(obj =>
@@ -3459,10 +3461,10 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
- 
 
 
-      
+
+
 
     }
 }

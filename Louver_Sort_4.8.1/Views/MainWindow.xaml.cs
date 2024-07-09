@@ -45,6 +45,11 @@ namespace Louver_Sort_4._8._1.Views
             ReCutChart.DataContextChanged += OnDataContextChanged;
         }
 
+        private void myListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ScanListView.ScrollIntoView(ScanListView.SelectedItem);
+        }
+
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (sender is CartesianChart chart)

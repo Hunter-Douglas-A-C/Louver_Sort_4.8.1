@@ -19,7 +19,9 @@
         TextElement.FontSize="10"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        FontFamily="{DynamicResource MaterialDesignFont}">
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        KeyDown="Window_KeyDown">
+    
     <Grid Background="{DynamicResource MaterialDesign.Brush.Primary.Dark}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="197*" />

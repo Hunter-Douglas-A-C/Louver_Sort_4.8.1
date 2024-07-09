@@ -273,6 +273,7 @@
     <Compile Include="Helpers\LouverStructure\ReportListView.cs" />
     <Compile Include="Helpers\LouverStructure\Set.cs" />
     <Compile Include="Helpers\LouverStructure\SetID.cs" />
+    <Compile Include="Helpers\TabControlSelectionChangedBehavior.cs" />
     <Compile Include="Helpers\ZebraPrinterHelper.cs" />
     <Compile Include="Views\MessageBoxCustom.xaml.cs">
       <DependentUpon>MessageBoxCustom.xaml</DependentUpon>

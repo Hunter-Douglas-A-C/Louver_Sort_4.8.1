@@ -1029,11 +1029,11 @@ namespace Louver_Sort_4._8._1.Helpers
                             IsEnabledNewUser = false;
                         }
                     }
-
                 }
                 else
                 {
                     _newUserID = value;
+                    OnPropertyChanged(nameof(NewUserID));
                 };
             }
         }
@@ -1149,6 +1149,8 @@ namespace Louver_Sort_4._8._1.Helpers
         #endregion
 
         #region Commands
+
+        public ICommand TabChangedCommand { get; set; }
         public ICommand MainLoaded { get; set; }
         public ICommand EnterUserID { get; set; }
         public ICommand UpdatePopUp { get; set; }
@@ -1202,6 +1204,18 @@ namespace Louver_Sort_4._8._1.Helpers
             LiveCharts.Charting.For<MeasureModel>(Mapper);
 
             StartUp();
+
+            TabChangedCommand = new BaseCommand(obj =>
+            {
+                if (SelectedTabIndex != 3)
+                {
+                   VisibilityAdmin = Visibility.Collapsed;
+                    VisilityPassword = Visibility.Visible;
+                    Password = null;
+                }
+            });
+
+
 
             MainLoaded = new BaseCommand(obj =>
             {
@@ -1936,7 +1950,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     // Find the index of the Louver object with the same ID as ReportSelectedLouver.
                     int index = ActiveSet.Louvers.FindIndex(louver => louver.ID == ReportSelectedLouver.LouverID);
-
+                    int ID = ReportSelectedLouver.LouverID;
                     // If the Louver with the same ID is found, process the rejection.
                     if (index != -1)
                     {
@@ -1944,12 +1958,12 @@ namespace Louver_Sort_4._8._1.Helpers
                         ReportContent.Remove(ReportSelectedLouver);
 
                         // Set the cause of rejection and move the louver to the rejected collection
-                        ActiveSet.Louvers[index].CauseOfRejection = "User Rejected";
-                        ActiveSet.RejectedLouvers.Add(ActiveSet.Louvers[index]);
-                        ActiveSet.Louvers.Remove(ActiveSet.Louvers[index]);
-
+                        ActiveSet.Louvers.Find(louver => louver.ID == ReportSelectedLouver.LouverID).CauseOfRejection = "User Rejected";
+                        ActiveSet.RejectedLouvers.Add(ActiveSet.Louvers.Find(louver => louver.ID == ReportSelectedLouver.LouverID));
+                        ActiveSet.Louvers.Remove(ActiveSet.Louvers.Find(louver => louver.ID == ReportSelectedLouver.LouverID));
+                        ActiveSet.Louvers = ActiveSet.Louvers.OrderBy(x => x.ID).ToList();
                         // Add a new louver with the same ID and re-order the louvers
-                        ActiveSet.Louvers.Add(new Louver(index + 1));
+                        ActiveSet.Louvers.Add(new Louver(ID));
                         ActiveSet.Louvers = ActiveSet.Louvers.OrderBy(x => x.ID).ToList();
                     }
                 }
@@ -2383,11 +2397,20 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     UserIDs.Add(NewUserID);
                     MessageUser(Application.Current.Resources["User ID Added:"].ToString() + NewUserID);
-                    NewUserID = "";
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        NewUserID = null;
+                        UpdateValue();
+                    });
                 }
                 else
                 {
                     MessageUser(Application.Current.Resources["Issue occured trying to add new user"].ToString() + NewUserID);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        NewUserID = null;
+                        UpdateValue();
+                    });
                 }
             });
 
@@ -2400,14 +2423,18 @@ namespace Louver_Sort_4._8._1.Helpers
             ExportExcel = new BaseCommand(obj =>
             {
                 // Export data to Excel
-                ExportToExcel(Path.Combine(ExcelExportLocation, $"LouverSortExport_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.xlsx"), true);
+                bool result = ExportToExcel(Path.Combine(ExcelExportLocation, $"LouverSortExport_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.xlsx"), true);
 
 
                 //CHANGE - check if date range is entered or sales number and export using that
 
                 //CHANGE - add error if report fails
                 // Update user message and show the popup
-                MessageUser(Application.Current.Resources["Report Generated"].ToString());
+                if (result)
+                {
+                    MessageUser(Application.Current.Resources["Report Generated"].ToString());
+                }
+
 
                 // Reset date range and disable the export button
                 DateRangeStart = null;
@@ -2450,7 +2477,7 @@ namespace Louver_Sort_4._8._1.Helpers
         public async Task StartUp()
         {
 
-   
+
 
             await ConnectToDataQ();
 
@@ -3025,13 +3052,13 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             return new ObservableCollection<T>(list);
         }
-        public void ExportToExcel(string filename, bool exportByDateRange)
+        public bool ExportToExcel(string filename, bool exportByDateRange)
         {
-            if (filename.Contains("Select export location ->"))
-            {
-                MessageUser("No export location selected");
-                return;
-            }
+            //if (filename.Contains(""))
+            //{
+            //    MessageUser("No export location selected");
+            //    return false;
+            //}
 
 
 
@@ -3047,6 +3074,12 @@ namespace Louver_Sort_4._8._1.Helpers
                 ordersToExport.AddRange(_allOrders.OrdersWithBarcodes.FindAll(order => order.Order.BarcodeHelper.Barcode1.Contains(Salesnumber)));
             }
 
+            if (ordersToExport.Count < 1)
+            {
+                MessageUser("No orders in the date range selected");
+                return false;
+            }
+
             // Set Excel package license context
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
@@ -3054,26 +3087,29 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 try
                 {
-                SummaryExport(package.Workbook.Worksheets.Add($"Sheet{"Summary"}"), ordersToExport);
-                int sheetIndex = 1;
-                foreach (var order in ordersToExport)
-                {
-                    FillOrderSheet(package.Workbook.Worksheets.Add($"Sheet{sheetIndex++}"), order);
-                }
-                BulkExport(package.Workbook.Worksheets.Add($"Sheet{"Raw"}"), ordersToExport);
+                    SummaryExport(package.Workbook.Worksheets.Add($"Sheet{"Summary"}"), ordersToExport);
+                    int sheetIndex = 1;
+                    foreach (var order in ordersToExport)
+                    {
+                        FillOrderSheet(package.Workbook.Worksheets.Add($"Sheet{sheetIndex++}"), order);
+                    }
+                    BulkExport(package.Workbook.Worksheets.Add($"Sheet{"Raw"}"), ordersToExport);
 
-                if (package.Workbook.Worksheets.Count > 0)
-                {
-                    package.SaveAs(new FileInfo(filename));
-                }
+                    if (package.Workbook.Worksheets.Count > 0)
+                    {
+                        package.SaveAs(new FileInfo(filename));
+                    }
 
                 }
                 catch (Exception ex)
                 {
                     MessageUser("Error generating report " + ex.Message);
+                    return false;
                     throw;
                 }
             }
+
+            return true;
         }
         private void FillOrderSheet(ExcelWorksheet sheet, OrderWithBarcode order)
         {
@@ -3399,6 +3435,29 @@ namespace Louver_Sort_4._8._1.Helpers
             focus = true;
         }
         #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+      
+
     }
 }
 

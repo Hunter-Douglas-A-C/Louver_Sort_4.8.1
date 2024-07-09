@@ -60,7 +60,7 @@ namespace Louver_Sort_4._8._1.Helpers
             }
 
 
-            DataQModel = "145";
+            DataQModel = "3000";
         }
 
         #region Switch Between DataQs

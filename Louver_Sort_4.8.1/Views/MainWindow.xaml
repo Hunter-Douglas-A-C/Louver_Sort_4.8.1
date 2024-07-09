@@ -64,13 +64,15 @@
                                 materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
                                 Style="{StaticResource MaterialDesignNavigationRailTabControl}"
                                 TabStripPlacement="Top"
-                                SelectedIndex="{Binding SelectedTabIndex}">
-                        <i:Interaction.Triggers>
+                                SelectedIndex="{Binding SelectedTabIndex}"
+                                helpers:TabControlSelectionChangedBehavior.Command="{Binding TabChangedCommand}">
+                        <!--TabControlSelectionChangedBehavior.Command="{Binding TabChangedCommand}">-->
+                        <!--<i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
-                                <!--<cmd:EventToCommand Command="{Binding TabSelectionChangedCommand}"
-                                            PassEventArgsToCommand="True" />-->
+                                <cmd:EventToCommand Command="{Binding TabSelectionChangedCommand}"
+                                            PassEventArgsToCommand="True" />
                             </i:EventTrigger>
-                        </i:Interaction.Triggers>
+                        </i:Interaction.Triggers>-->
 
 
 
@@ -1389,9 +1391,11 @@
                                                              Style="{StaticResource MaterialDesignFilledTextBox}"
                                                              TextWrapping="Wrap">
                                                         <TextBox.Text>
-                                                        <Binding Path="NewUserID"
-                                                                 UpdateSourceTrigger="PropertyChanged">
-                                                        </Binding>
+                                                            <Binding Path="NewUserID"
+                                                                     UpdateSourceTrigger="PropertyChanged"
+                                                                     Mode="TwoWay"
+                                                                     TargetNullValue=''>
+                                                            </Binding>
                                                         </TextBox.Text>
                                                     </TextBox>
                                                     <Button Grid.Row="0"
@@ -1531,7 +1535,8 @@
                     <Button Margin="8"
                             Style="{StaticResource MaterialDesignRaisedDarkButton}"
                             Command="{Binding ShutDown}"
-                            ToolTip="Close the Program">
+                            ToolTip="Close the Program"
+                            Panel.ZIndex="99">
                         <materialDesign:PackIcon Width="24"
                                                  Height="24"
                                                  Kind="Close" />

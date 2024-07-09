@@ -1385,6 +1385,14 @@ namespace Louver_Sort_4._8._1.Helpers
                     return;
                 }
 
+                // Check if reviewing the louver report is enabled and the selected tab index is 1
+                if (IsEnabledReviewReport)
+                {
+                    ReviewLouverReport.Execute("");
+                    return;
+                }
+
+
                 // Check if acquiring top reading is enabled and the selected tab index is 1
                 if (IsEnabledAcquareTop && SelectedTabIndex == 1)
                 {
@@ -1399,12 +1407,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     return;
                 }
 
-                // Check if reviewing the louver report is enabled and the selected tab index is 1
-                if (IsEnabledReviewReport && SelectedTabIndex == 1)
-                {
-                    ReviewLouverReport.Execute("");
-                    return;
-                }
+
 
                 if (IsEnabledReviewReport == true)
                 {

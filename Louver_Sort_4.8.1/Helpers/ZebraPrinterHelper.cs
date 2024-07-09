@@ -32,7 +32,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     throw new ZebraException("No Zebra USB printers were discovered.");
                 }
-
                 Connection connection = discoveredPrinter.GetConnection();
                 connection.Open();
                 return ZebraPrinterFactory.GetInstance(PrinterLanguage.ZPL, connection);
@@ -141,15 +140,15 @@ namespace Louver_Sort_4._8._1.Helpers
                     {
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},20^A0N,40,40^FDUnsorted:^FS");
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 180 : 420)},20^A0N,40,40^FD{louvers[i].ID}^FS");
-                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},100^A0N,40,40^FDSorted:^FS");
-                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 140 : 380)},100^A0N,100,100^FD{louvers[i].SortedID}^FS");
+                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},100^A0N,20,20^FDSorted:^FS");
+                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 80 : 320)},100^A0N,100,100^FD{louvers[i].SortedID}^FS");
                     }
                     else
                     {
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},20^A0N,40,40^FDUnsorted:^FS");
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 180 : 420)},20^A0N,40,40^FD{louvers[i].ID}^FS");
-                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},100^A0N,40,40^FDSorted:^FS");
-                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 140 : 380)},100^A0N,100,100^FD{louvers[i].SortedID}F^FS");
+                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},100^A0N,20,20^FDSorted:^FS");
+                        zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 80 : 320)},100^A0N,80,80^FD{louvers[i].SortedID}F^FS");
                     }
 
                     if (i % 2 == 1 || i == louvers.Count - 1) zplBuilder.Append("^XZ");

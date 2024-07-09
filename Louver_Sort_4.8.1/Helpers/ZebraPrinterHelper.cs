@@ -32,7 +32,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     throw new ZebraException("No Zebra USB printers were discovered.");
                 }
-
                 Connection connection = discoveredPrinter.GetConnection();
                 connection.Open();
                 return ZebraPrinterFactory.GetInstance(PrinterLanguage.ZPL, connection);

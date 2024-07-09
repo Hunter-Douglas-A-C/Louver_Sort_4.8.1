@@ -28,6 +28,7 @@ using System.IO.Ports;
 using System.Threading.Tasks;
 using Louver_Sort_4._8._1.Views;
 
+
 namespace Louver_Sort_4._8._1.Helpers
 {
     internal class BoundProperities : INotifyPropertyChanged
@@ -2808,12 +2809,14 @@ namespace Louver_Sort_4._8._1.Helpers
             }
 
         }
+
         public async Task ConnectToDataQ()
         {
 
             // Start a new thread to handle DataQ connection
             try
             {
+
 
                 // Initialize and connect to DataQ
                 _dataQ = new DataQHelper();

@@ -52,7 +52,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
             if (allDevices.Count > 0)
             {
-                DataQModel = "3000";
+                DataQModel = "145";
             }
             else if (portNames.Count() > 0)
             {
@@ -60,7 +60,20 @@ namespace Louver_Sort_4._8._1.Helpers
             }
 
 
+
+
+
+            //CHANGE THIS TO SWITCH DATAQ
+            //
+            //
+            //If DataQ 155 enter in "100"
+            //If DataQ159 enter in "100"
+            //If DataQ1100 enter in "1000"
+            //If DataQ145 enter in "145"
             DataQModel = "145";
+            //
+            //
+            //End
         }
 
         #region Switch Between DataQs
@@ -91,7 +104,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         break;
 
-                    case "3000":
+                    case "1000":
                         try
                         {
                             await DI1100.Connect();
@@ -199,7 +212,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         break;
 
-                    case "3000":
+                    case "1000":
                         try
                         {
                             await DI1100.Stop();
@@ -395,7 +408,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         break;
 
-                    case "3000":
+                    case "1000":
                         try
                         {
                             await StartMonitoringDI1100();
@@ -711,7 +724,7 @@ namespace Louver_Sort_4._8._1.Helpers
                             throw new DataQException("Failed to read data from DI155.  Please restart app", ex);
                         }
 
-                    case "3000":
+                    case "1000":
                         try
                         {
                             return ReadDataFromDI1100();
@@ -892,7 +905,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     await WaitForDataCollectionDI155();
                     break;
 
-                case "3000":
+                case "1000":
                     await WaitForDataCollectionDI1100();
                     break;
 

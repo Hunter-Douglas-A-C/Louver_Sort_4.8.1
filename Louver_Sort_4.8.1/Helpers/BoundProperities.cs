@@ -78,6 +78,8 @@ namespace Louver_Sort_4._8._1.Helpers
         string EmptyRegex = @"^$";
         private string _jSONSaveLocation = AppDomain.CurrentDomain.BaseDirectory;
         string cultureCode = "en-US";
+        bool MessageBoxCustomShown = false;
+        bool Bypass = false;
         #endregion
 
         #region Globals
@@ -1366,6 +1368,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
                     return;
                 }
+
 
                 // Check if the current popup is LouverCount
                 if (SelectedPopUp is LouverCountPopUp)

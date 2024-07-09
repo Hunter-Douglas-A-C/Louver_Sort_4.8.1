@@ -99,7 +99,15 @@ namespace Louver_Sort_4._8._1.Views
                 this.Close();
             }
 
-            private void btnNo_Click(object sender, RoutedEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                btnYes_Click(this, new RoutedEventArgs());
+            }
+        }
+
+        private void btnNo_Click(object sender, RoutedEventArgs e)
             {
                 this.DialogResult = false;
                 this.Close();

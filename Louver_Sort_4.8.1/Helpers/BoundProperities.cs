@@ -1919,8 +1919,8 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
 
                         // If all readings are completed, update the UI state
-                        IsEnabledAcquareTop = false;
-                        IsEnabledAcquireBottom = false;
+                        IsEnabledAcquareTop = true;
+                        IsEnabledAcquireBottom = true;
                         IsEnabledReviewReport = true;
                         ListViewSelectedLouver = null;
                     });

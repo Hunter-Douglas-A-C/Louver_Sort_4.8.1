@@ -1111,11 +1111,11 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 if (value != null)
                 {
-                    if (Regex.IsMatch(value, @"^\d{1,7}$"))
+                    if (Regex.IsMatch(value, @"^\d{1,10}$"))
                     {
                         SetProperty(ref _employeeID, value);
                     }
-                    if (value.Length == 7)
+                    if (value.Length > 1)
                     {
                         IsEnabledUserID = true;
                     }

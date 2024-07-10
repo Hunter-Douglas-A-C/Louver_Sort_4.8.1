@@ -1359,7 +1359,6 @@ namespace Louver_Sort_4._8._1.Helpers
                     try
                     {
                         PrintUnsortedLabels();
-
                     }
                     catch (Exception ex)
                     {
@@ -1369,7 +1368,6 @@ namespace Louver_Sort_4._8._1.Helpers
 
                     return;
                 }
-
 
                 // Check if the current popup is LouverCount
                 if (SelectedPopUp is LouverCountPopUp)
@@ -1391,23 +1389,6 @@ namespace Louver_Sort_4._8._1.Helpers
                     ReviewLouverReport.Execute("");
                     return;
                 }
-
-
-                // Check if acquiring top reading is enabled and the selected tab index is 1
-                if (IsEnabledAcquareTop && SelectedTabIndex == 1)
-                {
-                    AcqReadingTop.Execute("");
-                    return;
-                }
-
-                // Check if acquiring bottom reading is enabled, no popup is selected, and the selected tab index is 1
-                if (IsEnabledAcquireBottom && SelectedPopUp == null && SelectedTabIndex == 1)
-                {
-                    AcqReadingBottom.Execute("");
-                    return;
-                }
-
-
 
                 if (IsEnabledReviewReport == true)
                 {
@@ -1443,6 +1424,21 @@ namespace Louver_Sort_4._8._1.Helpers
                     SortedLabelsComplete.Execute("");
                     return;
                 }
+
+                // Check if acquiring top reading is enabled and the selected tab index is 1
+                if (IsEnabledAcquareTop && SelectedTabIndex == 1)
+                {
+                    AcqReadingTop.Execute("");
+                    return;
+                }
+
+                // Check if acquiring bottom reading is enabled, no popup is selected, and the selected tab index is 1
+                if (IsEnabledAcquireBottom && SelectedPopUp == null && SelectedTabIndex == 1)
+                {
+                    AcqReadingBottom.Execute("");
+                    return;
+                }
+
 
                 // Check if the current popup is CalibratePopUp
                 if (SelectedPopUp is CalibratePopUp)
@@ -3443,8 +3439,6 @@ namespace Louver_Sort_4._8._1.Helpers
             long averageTicks = totalTicks / timeSpans.Count;
             return new TimeSpan(averageTicks);
         }
-
-
 
         public void Focus(bool focus)
         {

@@ -2598,6 +2598,8 @@ namespace Louver_Sort_4._8._1.Helpers
                     toPrint.AddRange(set.GetLouverSet());
                 }
 
+                toPrint = toPrint.OrderBy(x => x.ID).ToList();
+
                 // Print the sorted louver IDs
                 _zebra.PrintSortedLouverIDs(_Printer, toPrint);
                 _zebra.Disconnect(_Printer);

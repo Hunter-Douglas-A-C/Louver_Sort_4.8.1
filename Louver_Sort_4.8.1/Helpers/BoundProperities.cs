@@ -1409,6 +1409,11 @@ namespace Louver_Sort_4._8._1.Helpers
 
 
 
+                if (IsEnabledReviewReport == true)
+                {
+                    ReviewLouverReport.Execute("");
+                }
+
                 // Check if the current popup is Report and rework is enabled
                 if (SelectedPopUp is ReportPopUp && IsEnabledReworkSet)
                 {
@@ -1965,9 +1970,9 @@ namespace Louver_Sort_4._8._1.Helpers
                         ReportContent.Remove(ReportSelectedLouver);
 
                         // Set the cause of rejection and move the louver to the rejected collection
-                        ActiveSet.Louvers.Find(louver => louver.ID == ReportSelectedLouver.LouverID).CauseOfRejection = "User Rejected";
-                        ActiveSet.RejectedLouvers.Add(ActiveSet.Louvers.Find(louver => louver.ID == ReportSelectedLouver.LouverID));
-                        ActiveSet.Louvers.Remove(ActiveSet.Louvers.Find(louver => louver.ID == ReportSelectedLouver.LouverID));
+                        ActiveSet.Louvers.Find(louver => louver.ID == ID).CauseOfRejection = "User Rejected";
+                        ActiveSet.RejectedLouvers.Add(ActiveSet.Louvers.Find(louver => louver.ID == ID));
+                        ActiveSet.Louvers.Remove(ActiveSet.Louvers.Find(louver => louver.ID == ID));
                         ActiveSet.Louvers = ActiveSet.Louvers.OrderBy(x => x.ID).ToList();
                         // Add a new louver with the same ID and re-order the louvers
                         ActiveSet.Louvers.Add(new Louver(ID));

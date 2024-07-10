@@ -3030,7 +3030,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     foreach (var set in panel.Sets)
                     {
-                        if (set.DateSortFinished < DateRangeEnd || set.DateSortFinished > DateRangeStart)
+                        if (set.DateSortFinished < DateRangeEnd && set.DateSortStarted > DateRangeStart)
                         {
                             return true;
                         }

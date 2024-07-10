@@ -317,7 +317,7 @@
                                                     ToolTip="Record the bottom side warp measurment" />
                                             <Button Grid.Row="3"
                                                     Content="{DynamicResource ReviewReportButton}"
-                                                    Command="{Binding ReviewLouverReport}"
+                                                    Command="{Binding ExportDifferentSorts}"
                                                     IsEnabled="{Binding IsEnabledReviewReport}"
                                                     Width="400"
                                                     Height="100"

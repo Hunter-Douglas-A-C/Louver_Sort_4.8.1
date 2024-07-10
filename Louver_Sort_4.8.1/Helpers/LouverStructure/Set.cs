@@ -19,6 +19,8 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
         private DateTime _dateSortFinished;
         private double _louverCount;
         private List<Louver> _louvers = new List<Louver>();
+        public List<Louver> BlankSideSortedlouvers = new List<Louver>();
+        public List<Louver> LabelSideSortedlouvers = new List<Louver>();
         private List<Louver> _rejectedlouvers = new List<Louver>();
         private ObservableCollection<LouverListView> _recordedLouvers = new ObservableCollection<LouverListView>();
         private ObservableCollection<ReportListView> _reportData = new ObservableCollection<ReportListView>();
@@ -222,6 +224,130 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
 
             // Update the collection
             _recordedLouvers = GenerateRecordedLouvers();
+        }
+
+        public void SortLabelSideOnly()
+        {
+            foreach (var item in Louvers)
+            {
+                item.CalcValuesLabelSide();
+            }
+
+            // Sort Louvers by AbsWarp
+            List<Louver> sortedLouvers = Louvers.OrderBy(x => x.Readings.Reading1).ToList();
+
+            // Add the first Louver to the sortedLouvers list
+            _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = 1;
+            sortedLouvers.RemoveAt(0);
+            if (sortedLouvers.Count > 0)
+            {
+                var bottom = sortedLouvers[0];
+                sortedLouvers.RemoveAt(0);
+
+                int startIndex = 2;
+                int endIndex = _louvers.Count - 1; // Start from the end
+
+                while (sortedLouvers.Count > 0)
+                {
+                    if (sortedLouvers.Count != 0)
+                    {
+                        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = startIndex;
+                        sortedLouvers.RemoveAt(0);
+                        startIndex++;
+                    }
+
+                    if (sortedLouvers.Count != 0)
+                    {
+                        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = endIndex;
+                        sortedLouvers.RemoveAt(0);
+                        endIndex--;
+                    }
+                }
+
+                //int i = 2;
+                //while (sortedLouvers.Count > 0)
+                //{
+                //    if (sortedLouvers.Count != 0)
+                //    {
+                //        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = i;
+                //        sortedLouvers.RemoveAt(0);
+                //    }
+
+                //    if (sortedLouvers.Count != 0)
+                //    {
+                //        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = _louvers.Count - i;
+                //        sortedLouvers.RemoveAt(0);
+                //    }
+
+                //    i++;
+                //}
+
+                LabelSideSortedlouvers[Louvers.FindIndex(x => x.ID == bottom.ID)].SortedID = _louvers.Count;
+            }
+
+
+            // Update the collection
+            _recordedLouvers = GenerateRecordedLouvers();
+        }
+
+        public void SortBlankSideOnly()
+        {
+            foreach (var item in Louvers)
+            {
+                item.CalcValuesBlankSide();
+            }
+
+            // Sort Louvers by AbsWarp
+            List<Louver> sortedLouvers = Louvers.OrderBy(x => x.Readings.Reading2).ToList();
+
+            // Add the first Louver to the sortedLouvers list
+            _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = 1;
+            sortedLouvers.RemoveAt(0);
+            if (sortedLouvers.Count > 0)
+            {
+                var bottom = sortedLouvers[0];
+                sortedLouvers.RemoveAt(0);
+
+                int startIndex = 2;
+                int endIndex = _louvers.Count - 1; // Start from the end
+
+                while (sortedLouvers.Count > 0)
+                {
+                    if (sortedLouvers.Count != 0)
+                    {
+                        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = startIndex;
+                        sortedLouvers.RemoveAt(0);
+                        startIndex++;
+                    }
+
+                    if (sortedLouvers.Count != 0)
+                    {
+                        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = endIndex;
+                        sortedLouvers.RemoveAt(0);
+                        endIndex--;
+                    }
+                }
+
+                //int i = 2;
+                //while (sortedLouvers.Count > 0)
+                //{
+                //    if (sortedLouvers.Count != 0)
+                //    {
+                //        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = i;
+                //        sortedLouvers.RemoveAt(0);
+                //    }
+
+                //    if (sortedLouvers.Count != 0)
+                //    {
+                //        _louvers[Louvers.FindIndex(x => x.ID == sortedLouvers[0].ID)].SortedID = _louvers.Count - i;
+                //        sortedLouvers.RemoveAt(0);
+                //    }
+
+                //    i++;
+                //}
+
+                BlankSideSortedlouvers[Louvers.FindIndex(x => x.ID == bottom.ID)].SortedID = _louvers.Count;
+            }
         }
 
         /// <summary>

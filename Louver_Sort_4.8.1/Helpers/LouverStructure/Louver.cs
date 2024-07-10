@@ -123,6 +123,30 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             }
         }
 
+        public void CalcValuesBlankSide()
+        {
+            if (_readings.Reading1 < 0)
+            {
+                _orientation = true;
+            }
+            else
+            {
+                _orientation = false;
+            }
+        }
+
+        public void CalcValuesLabelSide()
+        {
+            if (_readings.Reading2 < 0)
+            {
+                _orientation = true;
+            }
+            else
+            {
+                _orientation = false;
+            }
+        }
+
 
 
         /// <summary>

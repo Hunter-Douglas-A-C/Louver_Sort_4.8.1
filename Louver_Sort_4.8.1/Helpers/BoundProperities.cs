@@ -1187,11 +1187,88 @@ namespace Louver_Sort_4._8._1.Helpers
         public ICommand ExportExcel { get; set; }
         public ICommand ShutDown { get; set; }
 
+
+        public ICommand ExportDifferentSorts { get; set; }
+
         #endregion
 
         #region CommandImplementation
         public BoundProperities()
         {
+
+            ExportDifferentSorts = new BaseCommand(obj =>
+            {
+                ActiveSet.Sort();
+                foreach (var louver in ActiveSet.Louvers)
+                {
+                    Debug.WriteLine("Louver Unsorted ID: " + louver.ID);
+                    Debug.WriteLine("\n");
+                    Debug.WriteLine("Louver Deviation Sorted ID: " + louver.SortedID);
+                    Debug.WriteLine("\n");
+                    Debug.WriteLine("Louver orientation: " + louver.Orientation);
+
+                    Debug.WriteLine("\n");
+                    Debug.WriteLine("\n");
+                }
+
+                ActiveSet.SortBlankSideOnly();
+                foreach (var louver in ActiveSet.Louvers)
+                {
+                    Debug.WriteLine("Louver Unsorted ID: " + louver.ID);
+                    Debug.WriteLine("\n");
+                    Debug.WriteLine("Louver Blank Side Sorted ID: " + louver.SortedID);
+                    Debug.WriteLine("\n");
+                    Debug.WriteLine("Louver orientation: " + louver.Orientation);
+
+                    Debug.WriteLine("\n");
+                    Debug.WriteLine("\n");
+                }
+
+                ActiveSet.SortLabelSideOnly();
+                foreach (var louver in ActiveSet.Louvers)
+                {
+                    Debug.WriteLine("Louver Unsorted ID: " + louver.ID);
+                    Debug.WriteLine("\n");
+                    Debug.WriteLine("Louver Label Side Sorted Sorted ID: " + louver.SortedID);
+                    Debug.WriteLine("\n");
+                    Debug.WriteLine("Louver orientation: " + louver.Orientation);
+
+                    Debug.WriteLine("\n");
+                    Debug.WriteLine("\n");
+                }
+
+
+
+
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             SetTimer(_intervalInSeconds);
 

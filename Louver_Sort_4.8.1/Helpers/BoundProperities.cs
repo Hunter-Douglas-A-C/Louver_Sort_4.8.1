@@ -3439,8 +3439,6 @@ namespace Louver_Sort_4._8._1.Helpers
             return new TimeSpan(averageTicks);
         }
 
-
-
         public void Focus(bool focus)
         {
             focus = true;

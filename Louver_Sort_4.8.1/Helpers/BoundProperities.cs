@@ -1944,6 +1944,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 // Generate the recorded louvers and update the ListView content
                 ListViewContent = ActiveSet.GenerateRecordedLouvers();
 
+
+
                 // Display the report popup
                 UpdatePopUp.Execute("Report");
 
@@ -2026,6 +2028,28 @@ namespace Louver_Sort_4._8._1.Helpers
 
             ReportApproved = new BaseCommand(obj =>
             {
+                bool messagedonce = false;
+                foreach (var item in ReportContent)
+                {
+                    if (!messagedonce)
+                    {
+                        if (item.Status == "Fail")
+                        {
+                            messagedonce = true;
+                            bool? Result = false;
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                Result = new MessageBoxCustom("Some louvers have failed the bow check.\nAre you sure you want to approve the report?", MessageType.Confirmation, MessageButtons.YesNo).ShowDialog();
+                            });
+
+                            if (Result.Value == false)
+                            {
+                                return;
+                            }
+                        }
+                    }
+
+                }
                 try
                 {
                     PrintSortedLabels();
@@ -2827,6 +2851,13 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 // Populate ReportContent with sorted report items
                 ReportContent = new ObservableCollection<ReportListView>(report.OrderBy(r => r.LouverOrder));
+                foreach (var item in ReportContent)
+                {
+                    //if (item.Status == "Fail")
+                    //{
+                    //    fsdafdsa
+                    //}
+                }
                 IsEnabledApproveSet = true;
 
                 // Check each item in the report for failure status

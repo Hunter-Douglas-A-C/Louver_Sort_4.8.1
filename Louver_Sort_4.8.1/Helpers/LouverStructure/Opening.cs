@@ -97,16 +97,22 @@ namespace Louver_Sort_4._8._1.Helpers.LouverStructure
             switch (combinedInput)
             {
                 case "Standard:2.5":
+                case "Standard:25":
                     return LouverModels.MSL01;
                 case "Standard:3.5":
+                case "Standard:35":
                     return LouverModels.MSL02;
                 case "Standard:4.5":
+                case "Standard:45":
                     return LouverModels.MSL03;
                 case "XL:2.5":
+                case "XL:25":
                     return LouverModels.MSL04;
                 case "XL:3.5":
+                case "XL:35":
                     return LouverModels.MSL05;
                 case "XL:4.5":
+                case "XL:45":
                     return LouverModels.MSL06;
                 default:
                     throw new ArgumentException("Invalid combination of style and width");

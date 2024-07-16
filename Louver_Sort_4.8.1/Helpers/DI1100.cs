@@ -120,6 +120,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     await TargetDevice.ConnectAsync();
                     await TargetDevice.AcquisitionStopAsync();
                     await TargetDevice.QueryDeviceAsync();
+        
                 }
                 else
                 {
@@ -143,6 +144,8 @@ namespace Louver_Sort_4._8._1.Helpers
                 HandleDataQException("An error occurred while connecting to the DI-1100 device.", ex);
             }
         }
+
+
 
         public async Task Disconnect()
         {
@@ -181,7 +184,7 @@ namespace Louver_Sort_4._8._1.Helpers
             try
             {
                 Dataq.Devices.DI1100.AnalogVoltageIn analogChan = (Dataq.Devices.DI1100.AnalogVoltageIn)TargetDevice.ChannelFactory(typeof(Dataq.Devices.DI1100.AnalogVoltageIn), 1);
-                TargetDevice.SetSampleRateOnChannels(2000);
+                TargetDevice.SetSampleRateOnChannels(38000);
 
                 if (cancelRead != null)
                 {
@@ -194,7 +197,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else
                 {
-                    TargetDevice.SetSampleRateOnChannels(2000);
+                    TargetDevice.SetSampleRateOnChannels(38000);
                     await TargetDevice.InitializeAsync(); // configure the device as defined. Errors if no channels are enabled
                 }
             }

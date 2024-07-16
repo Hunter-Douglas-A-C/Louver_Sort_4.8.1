@@ -103,6 +103,7 @@ namespace Louver_Sort_4._8._1.Helpers
             //Console.WriteLine($"Sampling Rate: {DI_145.SampleRatePerChannel:F3}");
 
             TargetDevice.NewDataMinimum = 1; // Set the number of scans to acquire before the NewData event fires
+            //TargetDevice.SampleRatePerChannel = 35000;
             try
             {
                 StartResultCode test = TargetDevice.Start(); // Start scanning

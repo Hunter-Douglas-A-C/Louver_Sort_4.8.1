@@ -1196,6 +1196,9 @@ namespace Louver_Sort_4._8._1.Helpers
         #region CommandImplementation
         public BoundProperities()
         {
+            try
+            {
+
 
             SetTimer(_intervalInSeconds);
 
@@ -2498,6 +2501,13 @@ namespace Louver_Sort_4._8._1.Helpers
                 // Shut down the application
                 Application.Current.Shutdown();
             });
+
+            }
+            catch (Exception ex)
+            {
+                MessageUser(ex.Message);
+                throw;
+            }
         }
         #endregion
 

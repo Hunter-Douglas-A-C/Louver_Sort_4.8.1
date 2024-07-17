@@ -185,7 +185,7 @@ namespace Louver_Sort_4._8._1.Helpers
             {
                 Dataq.Devices.DI1100.AnalogVoltageIn analogChan = (Dataq.Devices.DI1100.AnalogVoltageIn)TargetDevice.ChannelFactory(typeof(Dataq.Devices.DI1100.AnalogVoltageIn), 1);
                 TargetDevice.SetSampleRateOnChannels(38000);
-
+                
                 if (cancelRead != null)
                 {
                     // get here if an acquisition process is in progress and we've been commanded to stop

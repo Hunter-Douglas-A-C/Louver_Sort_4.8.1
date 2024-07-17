@@ -185,11 +185,11 @@ namespace Louver_Sort_4._8._1.Helpers
             if (printer == null)
                 throw new ArgumentNullException(nameof(printer));
 
-            //var (isReady, statusMessage) = CheckStatus(printer);
-            //if (!isReady)
-            //{
-            //    throw new ZebraException(statusMessage);
-            //}
+            var (isReady, statusMessage) = CheckStatus(printer);
+            if (!isReady)
+            {
+                throw new ZebraException(statusMessage);
+            }
 
             try
             {

@@ -2517,9 +2517,14 @@ namespace Louver_Sort_4._8._1.Helpers
 
             //CHANGE - check each file path in the function individually
             //Add messages  if any of the files didn't load in
-            if (CheckFile(_jSONSaveLocation + "\\LouverSortData.ini") && CheckFile(_jSONSaveLocation + "\\Globals.ini"))
+            if (CheckFile(_jSONSaveLocation + "\\LouverSortData.ini"))
             {
-                LoadFromJson();
+                LoadLouverDataFromJson();
+            }
+
+            if (CheckFile(_jSONSaveLocation + "\\Globals.ini"))
+            {
+                LoadGlobalsFromJson();
             }
 
             //Make this a function
@@ -2942,7 +2947,9 @@ namespace Louver_Sort_4._8._1.Helpers
                 return false;
             }
         }
-        public void LoadFromJson()
+
+      
+        public void LoadLouverDataFromJson()
         {
             try
             {
@@ -2953,15 +2960,20 @@ namespace Louver_Sort_4._8._1.Helpers
                 };
                 // Load and deserialize LouverSortData.ini
                 _allOrders = LoadJsonFile<OrderManager>(_jSONSaveLocation + "LouverSortData.ini", settings);
-
-                // Load and deserialize Globals.ini
-                _globals = LoadJsonFile<Globals>(_jSONSaveLocation + "Globals.ini", settings);
+                if (_allOrders != null)
+                {
+                    MessageUser("Error when loading existing orders ");
+                }
             }
             catch (Exception ex)
             {
                 MessageUser("Error when loading existing orders " + ex.Message);
                 throw;
             }
+        }
+
+        public void LoadGlobalsFromJson()
+        {
             try
             {
                 var settings = new JsonSerializerSettings
@@ -2972,24 +2984,16 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 // Load and deserialize Globals.ini
                 _globals = LoadJsonFile<Globals>(_jSONSaveLocation + "Globals.ini", settings);
+                if (_globals != null)
+                {
+                    MessageUser("Error when loading user variables");
+                }
             }
             catch (Exception ex)
             {
                 MessageUser("Error when loading user variables " + ex.Message);
                 throw;
             }
-
-
-            //// Load and deserialize DataQ.ini if it exists and is not "null"
-            //var dataQJson = File.ReadAllText(_jSONSaveLocation + "DataQ.ini");
-            //if (dataQJson != "null" && _dataQ != null)
-            //{
-            //    _dataQ._cal = JsonConvert.DeserializeObject<Calibration>(dataQJson, settings);
-            //}
-            //else
-            //{
-            //    _dataQ._cal = new Calibration();
-            //}
         }
         public void SaveToJson()
         {

@@ -171,7 +171,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         throw new DataQException($"Unsupported DataQModel: {DataQModel}");
                 }
             }
-            catch (DataQException ex)
+            catch (DataQException)
             {
                 // Log the exception details if necessary
                 // LogException(ex);
@@ -274,7 +274,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         throw new DataQException($"Unsupported DataQModel: {DataQModel}");
                 }
             }
-            catch (DataQException ex)
+            catch (DataQException )
             {
                 // Log the exception details if necessary
                 // LogException(ex);

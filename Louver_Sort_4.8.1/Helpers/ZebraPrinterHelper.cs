@@ -109,6 +109,10 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 Print(printer, zplBuilder.ToString());
                 Thread.Sleep(500);
+
+
+                if (!CheckStatus(printer).IsReady)
+                    throw new ZebraException("Print failed.");
             }
             catch (ArgumentNullException ex)
             {
@@ -155,6 +159,10 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 Print(printer, zplBuilder.ToString());
                 Thread.Sleep(500);
+
+
+                if (!CheckStatus(printer).IsReady)
+                    throw new ZebraException("Print failed");
             }
             catch (ArgumentNullException ex)
             {
@@ -185,11 +193,11 @@ namespace Louver_Sort_4._8._1.Helpers
             if (printer == null)
                 throw new ArgumentNullException(nameof(printer));
 
-            var (isReady, statusMessage) = CheckStatus(printer);
-            if (!isReady)
-            {
-                throw new ZebraException(statusMessage);
-            }
+            //var (isReady, statusMessage) = CheckStatus(printer);
+            //if (!isReady)
+            //{
+            //    throw new ZebraException(statusMessage);
+            //}
 
             try
             {
@@ -224,6 +232,7 @@ namespace Louver_Sort_4._8._1.Helpers
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown when a null ZebraPrinter instance is passed.</exception>
         public (bool IsReady, string Message) CheckStatus(ZebraPrinter zebraPrinter)
+        
         {
             if (zebraPrinter == null)
                 throw new ArgumentNullException(nameof(zebraPrinter));

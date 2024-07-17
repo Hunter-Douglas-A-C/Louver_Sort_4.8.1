@@ -13,7 +13,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Data;
 using System.Timers;
-
 using LiveCharts.Configurations;
 using LiveCharts;
 using Louver_Sort_4._8._1.Helpers.LouverStructure;

@@ -2517,12 +2517,12 @@ namespace Louver_Sort_4._8._1.Helpers
             //return Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "\\Images\\", imageName);
             return $"pack://application:,,,/Images/{imageName}.png";
         }
-        public async Task StartUp()
+        public void StartUp()
         {
 
 
 
-            await ConnectToDataQ();
+            ConnectToDataQ();
 
             //CHANGE - check each file path in the function individually
             //Add messages  if any of the files didn't load in
@@ -2969,7 +2969,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 };
                 // Load and deserialize LouverSortData.ini
                 _allOrders = LoadJsonFile<OrderManager>(_jSONSaveLocation + "LouverSortData.ini", settings);
-                if (_allOrders != null)
+                if (_allOrders == null)
                 {
                     MessageUser("Error when loading existing orders ");
                 }
@@ -2993,7 +2993,7 @@ namespace Louver_Sort_4._8._1.Helpers
 
                 // Load and deserialize Globals.ini
                 _globals = LoadJsonFile<Globals>(_jSONSaveLocation + "Globals.ini", settings);
-                if (_globals != null)
+                if (_globals == null)
                 {
                     MessageUser("Error when loading user variables");
                 }

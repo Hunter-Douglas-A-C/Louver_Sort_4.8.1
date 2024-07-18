@@ -108,7 +108,7 @@ namespace Louver_Sort_4._8._1.Helpers
                     if (i % 2 == 1 || i == louvers.Count - 1) zplBuilder.Append("^XZ");
                 }
                 Print(printer, zplBuilder.ToString());
-                Thread.Sleep(500);
+                
 
 
                 if (!CheckStatus(printer).IsReady)
@@ -158,7 +158,6 @@ namespace Louver_Sort_4._8._1.Helpers
                     if (i % 2 == 1 || i == louvers.Count - 1) zplBuilder.Append("^XZ");
                 }
                 Print(printer, zplBuilder.ToString());
-                Thread.Sleep(500);
 
 
                 if (!CheckStatus(printer).IsReady)
@@ -231,42 +230,92 @@ namespace Louver_Sort_4._8._1.Helpers
         /// the current state or any issues detected.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown when a null ZebraPrinter instance is passed.</exception>
-        public (bool IsReady, string Message) CheckStatus(ZebraPrinter zebraPrinter)
-        
+        //public (bool IsReady, string Message) CheckStatus(ZebraPrinter zebraPrinter)
+
+        //{
+        //    if (zebraPrinter == null)
+        //        throw new ArgumentNullException(nameof(zebraPrinter));
+
+        //    try
+        //    {
+        //        Thread.Sleep(1000);
+        //        PrinterStatus printerStatus = zebraPrinter.GetCurrentStatus();
+
+        //        if (printerStatus.isReadyToPrint)
+        //        {
+        //            return (true, "Ready to Print");
+        //        }
+        //        else
+        //        {
+        //            string errorMessage = DeterminePrinterErrorMessage(printerStatus);
+        //            return (false, errorMessage);
+        //        }
+        //    }
+        //    catch (ConnectionException ex)
+        //    {
+        //        throw new ZebraException("Failed to check printer status.", ex);
+        //    }
+        //    catch (IOException ex)
+        //    {
+        //        throw new ZebraException("I/O error while checking printer status.", ex);
+        //    }
+        //    catch (UnauthorizedAccessException ex)
+        //    {
+        //        throw new ZebraException("Unauthorized access while checking printer status.", ex);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new ZebraException("An unexpected error occurred while checking printer status.", ex);
+        //    }
+        //}
+        public (bool IsReady, string Message) CheckStatus(ZebraPrinter zebraPrinter, int maxRetries = 3, int delayBetweenRetriesMs = 1000)
         {
             if (zebraPrinter == null)
                 throw new ArgumentNullException(nameof(zebraPrinter));
 
-            try
+            int attempt = 0;
+            while (attempt < maxRetries)
             {
-                PrinterStatus printerStatus = zebraPrinter.GetCurrentStatus();
+                try
+                {
+                    Thread.Sleep(delayBetweenRetriesMs);
+                    PrinterStatus printerStatus = zebraPrinter.GetCurrentStatus();
 
-                if (printerStatus.isReadyToPrint)
-                {
-                    return (true, "Ready to Print");
+                    if (printerStatus.isReadyToPrint)
+                    {
+                        return (true, "Ready to Print");
+                    }
+                    else
+                    {
+                        string errorMessage = DeterminePrinterErrorMessage(printerStatus);
+                        return (false, errorMessage);
+                    }
                 }
-                else
+                catch (ConnectionException ex)
                 {
-                    string errorMessage = DeterminePrinterErrorMessage(printerStatus);
-                    return (false, errorMessage);
+                    if (attempt == maxRetries - 1)
+                        throw new ZebraException("Failed to check printer status after multiple attempts.", ex);
                 }
+                catch (IOException ex)
+                {
+                    if (attempt == maxRetries - 1)
+                        throw new ZebraException("I/O error while checking printer status after multiple attempts.", ex);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    if (attempt == maxRetries - 1)
+                        throw new ZebraException("Unauthorized access while checking printer status after multiple attempts.", ex);
+                }
+                catch (Exception ex)
+                {
+                    if (attempt == maxRetries - 1)
+                        throw new ZebraException("An unexpected error occurred while checking printer status after multiple attempts.", ex);
+                }
+
+                attempt++;
             }
-            catch (ConnectionException ex)
-            {
-                throw new ZebraException("Failed to check printer status.", ex);
-            }
-            catch (IOException ex)
-            {
-                throw new ZebraException("I/O error while checking printer status.", ex);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new ZebraException("Unauthorized access while checking printer status.", ex);
-            }
-            catch (Exception ex)
-            {
-                throw new ZebraException("An unexpected error occurred while checking printer status.", ex);
-            }
+
+            return (false, "Failed to get printer status after multiple attempts.");
         }
 
         /// <summary>

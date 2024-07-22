@@ -70,7 +70,7 @@ namespace Louver_Sort_4._8._1.Helpers
             //If DataQ159 enter in "100"
             //If DataQ1100 enter in "1000"
             //If DataQ145 enter in "145"
-            DataQModel = "145";
+            DataQModel = "1000";
             //
             //
             //End

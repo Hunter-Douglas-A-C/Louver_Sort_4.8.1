@@ -197,7 +197,6 @@ namespace Louver_Sort_4._8._1.Helpers
                 }
                 else
                 {
-                    TargetDevice.SetSampleRateOnChannels(20000);
                     await TargetDevice.InitializeAsync(); // configure the device as defined. Errors if no channels are enabled
                 }
             }

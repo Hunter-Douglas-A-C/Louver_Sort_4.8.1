@@ -140,7 +140,7 @@ namespace Louver_Sort_4._8._1.Helpers
                 {
                     if (i % 2 == 0) zplBuilder.Append("^XA");
 
-                    if (!louvers[i].Orientation)
+                    if (louvers[i].Orientation)
                     {
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 20 : 260)},20^A0N,40,40^FDUnsorted:^FS");
                         zplBuilder.AppendLine($"^FO{(i % 2 == 0 ? 180 : 420)},20^A0N,40,40^FD{louvers[i].ID}^FS");

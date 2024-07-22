@@ -2700,7 +2700,11 @@ namespace Louver_Sort_4._8._1.Helpers
         {
             // Display a message to the user
             TxtUserMessage = message;
-            UpdatePopUp.Execute("Message");
+
+            if (UpdatePopUp != null)
+            {
+                UpdatePopUp.Execute("Message");
+            }
         }
         private void StartCalibrationThread(ThreadStart action)
         {

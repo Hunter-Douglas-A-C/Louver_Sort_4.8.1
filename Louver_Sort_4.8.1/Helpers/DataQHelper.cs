@@ -70,7 +70,7 @@ namespace Louver_Sort_4._8._1.Helpers
             //If DataQ159 enter in "100"
             //If DataQ1100 enter in "1000"
             //If DataQ145 enter in "145"
-            DataQModel = "1000";
+            DataQModel = "145";
             //
             //
             //End
@@ -91,7 +91,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to connect to DI155.  Please restart app", ex);
+                            throw new DataQException("Failed to connect to DI155.  Please restart app. Sensor no encontrado, favor de reiniciar la aplicación.", ex);
                         }
 
                         try
@@ -100,7 +100,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to start DI155.  Please restart app", ex);
+                            throw new DataQException("Failed to start DI155.  Please restart app. Sensor no encontrado, favor de reiniciar la aplicación.", ex);
                         }
                         break;
 
@@ -111,7 +111,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to connect to DI1100. Please restart app", ex);
+                            throw new DataQException("Failed to connect to DI1100. Please restart app. Sensor no encontrado, favor de reiniciar la aplicación.", ex);
                         }
 
                         try
@@ -120,7 +120,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to start DI1100. Please restart app", ex);
+                            throw new DataQException("Failed to start DI1100. Please restart app. Sensor no encontrado, favor de reiniciar la aplicación.", ex);
                         }
                         break;
 
@@ -141,7 +141,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex) when (ex is TimeoutException || ex is OperationCanceledException)
                         {
-                            throw new DataQException("Failed to connect to DI145. Please restart app", ex);
+                            throw new DataQException("Failed to connect to DI145. Please restart app. Sensor no encontrado, favor de reiniciar la aplicación.", ex);
                         }
 
                         try
@@ -162,7 +162,7 @@ namespace Louver_Sort_4._8._1.Helpers
                         }
                         catch (Exception ex)
                         {
-                            throw new DataQException("Failed to start DI145. Please restart app", ex);
+                            throw new DataQException("Failed to start DI145. Please restart app. Sensor no encontrado, favor de reiniciar la aplicación.", ex);
                         }
                         break;
 
